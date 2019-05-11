@@ -1,0 +1,27 @@
+{
+  "name": "myLocalProj",
+  "version": "1.0.0",
+  "description": "",
+  "main": "myapp.js",
+  "scripts": {
+    "start": "node myapp.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "bootstrap": "^4.3.1",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-fileupload": "^1.1.4",
+    "file-api": "^0.10.4",
+    "fs": "0.0.1-security",
+    "jade": "^1.11.0",
+    "mysql": "^2.17.1",
+    "node-fetch": "^2.3.0",
+    "nodemailer": "^4.7.0",
+    "path": "^0.12.7",
+    "req-flash": "0.0.3",
+    "shelljs": "^0.8.2"
+  }
+}

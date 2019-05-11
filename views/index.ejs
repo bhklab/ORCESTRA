@@ -1,0 +1,43 @@
+<% include partials/header.ejs %>
+    <div class="table-wrapper">
+        <% if (players.length > 0) {%>
+            <table class="table table-hovered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">DOI</th>
+                        <th scope="col">Dataset</th>
+                        <th scope="col">Dataset Version</th>
+                        <th scope="col">Drug Sensitivity</th>
+                        <th scope="col">Genome</th>
+                        <th scope="col">RNAseq tool/version</th>
+                        <th scope="col">Transcriptome</th>
+                        <th scope="col">Summary Page</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% players.forEach((player, index) => { %>
+                        <tr>
+                            <th scope="row"><%= player.id %></th>
+                            <td><%= player.dataset %></td>
+                            <td><%= player.dataset_ver %></td>
+                            <td><%= player.drug_sens %></td>
+                            <td><%= player.genome %></td>
+                            <td><%= player.rnaseq %></td>
+                            <td><%= player.transcriptome%></td>
+                            <td><%= player.metadata %></td>
+                            <td>
+                                
+                                <a href="/delete/<%= player.id %>" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p class="text-center">No PSets have been generated. Go <a href="/requestPSet" >here</a> to generate one.</p>
+        <% } %>
+    </div>
+</div>
+</body>
+</html>
