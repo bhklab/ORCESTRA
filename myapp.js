@@ -42,16 +42,21 @@ const db = mysql.createConnection ({
   password: "Bhklab1234@",
   database : 'pachyderm' 
 });
-
+db.timeout = 0;
 // connect to database
 db.connect((err) => {
+  db.timeout = 0;
+  setInterval(function () {
+    db.query('SELECT 1');
+}, 5000);
+  
     if (err) {
         throw err;
     }
     console.log('Connected to database');
+
 });
 global.db = db;
-
 
 
 // routes for the app
