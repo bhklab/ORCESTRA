@@ -5,7 +5,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var app = express();
 const {getHomePage} = require('./routes/index2');
-const {deletePlayer, editPlayer, editPlayerPage} = require('./routes/player');
+const {deletePset, editPset, editPsetPage} = require('./routes/pset');
 const port = 2000;
 
 // support json encoded bodies
@@ -37,10 +37,10 @@ app.route('/requestPSet')
 // create connection to database
 // the mysql.createConnection function takes in a configuration object which contains host, user, password and the database name.
 const db = mysql.createConnection ({
-  host: "pachydermdatabase.mysql.database.azure.com",
-  user: "anthony@pachydermdatabase",
-  password: "Bhklab1234@",
-  database : 'pachyderm' 
+  host: process.env.DBhost,
+  user: process.env.DBuser,
+  password: process.env.DBpass,
+  database : process.env.DBname 
 });
 db.timeout = 0;
 // connect to database
@@ -64,9 +64,9 @@ app.set('port', process.env.port || port); // set express to use this port
 app.use(express.static(path.join(__dirname, 'public'))); // configure express to use public folder
 app.use(fileUpload()); // configure fileupload
 app.get('/psets', getHomePage);
-app.get('/edit/:id', editPlayerPage);
-app.get('/delete/:id', deletePlayer);
-app.post('/edit/:id', editPlayer);
+app.get('/edit/:id', editPsetPage);
+app.get('/delete/:id', deletePset);
+app.post('/edit/:id', editPset);
 
 
 app.listen(port, () => {
