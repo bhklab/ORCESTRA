@@ -7,10 +7,10 @@ var fs = require("fs");
 var app = express();
 
 var connection = mysql.createConnection({
-  host: "pachydermdatabase.mysql.database.azure.com",
-  user: "anthony@pachydermdatabase",
-  password: "Bhklab1234@",
-  database : 'pachyderm'
+  host: process.env.DBhost,
+  user: process.env.DBuser,
+  password: process.env.DBpass,
+  database : process.env.DBname 
 });
 
 
