@@ -8,6 +8,7 @@ const {getHomePage} = require('./routes/index2');
 const {deletePset, editPset, editPsetPage} = require('./routes/pset');
 const port = 2000;
 
+
 // support json encoded bodies
 app.use(bodyParser.json());
 // support encoded bodies
@@ -33,15 +34,26 @@ app.route('/requestPSet')
 	});
 
 
+const fs = require('fs');
+const doAsync = require('doasync');
+
+let param1 = fs.readFileSync(process.env.DBhost, "utf8")
+let param2 = fs.readFileSync(process.env.DBuser, "utf8")
+let param3 = fs.readFileSync(process.env.DBpass, "utf8")
+let param4 = fs.readFileSync(process.env.DBname, "utf8")
+
 
 // create connection to database
 // the mysql.createConnection function takes in a configuration object which contains host, user, password and the database name.
 const db = mysql.createConnection ({
-  host: process.env.DBhost,
-  user: process.env.DBuser,
-  password: process.env.DBpass,
-  database : process.env.DBname 
+  host: param1,
+  user: param2,
+  password: param3,
+  database : param4
 });
+
+
+
 db.timeout = 0;
 // connect to database
 db.connect((err) => {

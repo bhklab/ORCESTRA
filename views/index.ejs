@@ -1,6 +1,6 @@
 <% include partials/header.ejs %>
     <div class="table-wrapper">
-        <% if (players.length > 0) {%>
+        <% if (psets.length > 0) {%>
             <table class="table table-hovered">
                 <thead class="thead-dark">
                     <tr>
@@ -8,27 +8,29 @@
                         <th scope="col">Dataset</th>
                         <th scope="col">Dataset Version</th>
                         <th scope="col">Drug Sensitivity</th>
-                        <th scope="col">Genome</th>
-                        <th scope="col">RNAseq tool/version</th>
-                        <th scope="col">Transcriptome</th>
+                        <th scope="col">RNA tool</th>
+                        <th scope="col">Exome tool</th>
+                        <th scope="col">RNA Ref</th>
+                        <th scope="col">Exome Ref</th>
                         <th scope="col">Summary Page</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% players.forEach((player, index) => { %>
+                    <% psets.forEach((pset, index) => { %>
                         <tr>
-                            <th scope="row"><%= player.id %></th>
-                            <td><%= player.dataset %></td>
-                            <td><%= player.dataset_ver %></td>
-                            <td><%= player.drug_sens %></td>
-                            <td><%= player.genome %></td>
-                            <td><%= player.rnaseq %></td>
-                            <td><%= player.transcriptome%></td>
-                            <td><%= player.metadata %></td>
+                            <th scope="row"><%= pset.id %></th>
+                            <td><%= pset.dataset %></td>
+                            <td><%= pset.dataset_ver %></td>
+                            <td><%= pset.drug_sens %></td>
+                            <td><%= pset.rnaseq %></td>
+                            <td><%= pset.exomeseq %></td>
+                            <td><%= pset.rna_ref%></td>
+                            <td><%= pset.exome_ref%></td>
+                            <td><%= pset.metadata %></td>
                             <td>
                                 
-                                <a href="/delete/<%= player.id %>" class="btn btn-sm btn-danger">Delete</a>
+                                <a href="/delete/<%= pset.id %>" class="btn btn-sm btn-danger">Delete</a>
                             </td>
                         </tr>
                     <% }) %>

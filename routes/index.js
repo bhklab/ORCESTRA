@@ -3,16 +3,23 @@ var mysql = require('mysql');
 var router = express.Router();
 const shell = require('shelljs');
 
-var fs = require("fs");
 var app = express();
 
-var connection = mysql.createConnection({
-  host: process.env.DBhost,
-  user: process.env.DBuser,
-  password: process.env.DBpass,
-  database : process.env.DBname 
-});
 
+const fs = require('fs');
+const doAsync = require('doasync');
+
+let param1 = fs.readFileSync(process.env.DBhost, "utf8")
+let param2 = fs.readFileSync(process.env.DBuser, "utf8")
+let param3 = fs.readFileSync(process.env.DBpass, "utf8")
+let param4 = fs.readFileSync(process.env.DBname, "utf8")
+
+var connection = mysql.createConnection({
+  host: param1,
+  user: param2,
+  password: param3,
+  database : param4
+});
 
 
 
@@ -66,8 +73,8 @@ connection.connect(function(err) {
 
 
 
-    fs.writeFile("/Users/anthonymammoliti/Desktop/selection.txt",  osr + '\n' + genomer + '\n' + g2r + '\n' + verr + '\n' + corr + '\n' + phr2 + '\n' + bvr + '\n' + email , function (err) {
-    shell.exec('~/Desktop/anthonymammoliti/Desktop/process.sh');
+    fs.writeFile("/home/app/selection.txt",  osr + '\n' + genomer + '\n' + g2r + '\n' + verr + '\n' + corr + '\n' + phr2 + '\n' + bvr + '\n' + email , function (err) {
+    shell.exec('/home/app/getpset.sh');
     // Checks if there is an error
     if (err) return console.log(err);
     });

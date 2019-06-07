@@ -13,3 +13,6 @@ RUN npm install
 COPY --chown=node:node . .
 EXPOSE 2000
 CMD [ "node", "myapp.js" ]
+
+
+
