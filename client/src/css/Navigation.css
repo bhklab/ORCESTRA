@@ -1,0 +1,43 @@
+header {
+    top: 0%;
+    position:fixed;
+    width:100%;
+    background:white;
+    height:63px;
+    color:rgb(16, 22, 77);
+    z-index:999;
+    border-bottom:10px solid rgb(210, 241, 241);
+    padding:0px 50px;
+}
+
+header img {
+    width:45px;
+    height:45px;
+    margin-top:5px;
+}
+
+header a {
+    color:rgb(61, 64, 90);
+    font-size:14px;
+    margin:13px 20px;
+    padding-bottom:3px;
+    font-weight:bold;
+    transition: .2s ease-out;
+}
+
+header a:hover {
+    text-decoration:none;
+    border-bottom:1px solid rgb(241, 144, 33);
+    transition: .2s ease-out;
+}
+
+.home-button {
+    color:rgb(61, 64, 90);
+    font-weight:bold;
+    top:14px;
+    left:4px;
+}
+
+.home-button:hover {
+    cursor:pointer;
+}

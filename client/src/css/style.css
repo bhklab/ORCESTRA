@@ -17,9 +17,9 @@ button {
 button:focus {outline:0;}
 
 h1 {
-    color:rgb(61, 64, 90);    
+    color:rgb(61, 64, 90);
+    
 }
-
 #progress {
     width:0px;
     height:70px;
