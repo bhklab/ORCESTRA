@@ -1,0 +1,70 @@
+.mainContent{
+    width: 100%;
+    margin-top: 10%;
+}
+
+.pageContent{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    /* margin-top: 8%; */
+}
+
+.home {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.home h1 {
+    left: 0;
+    margin: auto;
+    width: 100%;
+    text-align:center;
+    font-size:100px;
+    color:rgb(61, 64, 90);
+}
+
+.home h2 {
+    left: 0;
+    margin: auto;
+    width: 100%;
+    text-align:center;
+    font-size:16px;
+    text-transform:uppercase;
+    font-weight:bold;
+    color:rgb(61, 64, 90);
+}
+
+.links {
+    width: 700px;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 50px; 
+    padding-right: 50px;
+    background-color:rgb(255, 255, 255,0.35);
+    border-radius: 25px;
+    height:300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.button {
+    background-color: rgb(61, 64, 90);
+    border-radius: 15px;
+    border: none;
+    padding: 35px 30px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button:hover{
+    background-color: rgb(85, 89, 117);
+    color: rgb(241, 144, 33);
+}

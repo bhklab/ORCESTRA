@@ -1,16 +1,15 @@
 import React from 'react';
-import '../css/App.css';
+import './App.css';
 
-import Navigation from './Navigation';
-import AppContainer from './AppContainer';
-import OrcestraMain from './OrcestraMain';
+import Navigation from '../Navigation/Navigation';
+import Main from '../Main/Main';
 
 class App extends React.Component {
 	render(){
 		return (
 			<div className="App">
 				<Navigation />
-				<OrcestraMain />
+				<Main />
 			</div>
 		);
 	}

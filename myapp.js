@@ -10,11 +10,7 @@ app.use(bodyParser.json());
 // support encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); 
 
-// [view engine] setup
-//app.set('views', path.join(__dirname, '/views'));
 app.set('js', path.join(__dirname, 'js'));
-//app.engine('html', require('ejs').renderFile);
-//app.set('view engine', 'html');
 
 app.use('/', router);
 
@@ -26,27 +22,3 @@ app.listen(port, () => {
 });
 
 //Change local host to domain on GoDaddy. http://publicip:3000
-
-//  const {getHomePage} = require('./routes/index2');
-//  const {deletePset, editPset, editPsetPage} = require('./routes/pset');
-
-//set public path;
-// var publicDir = path.join(__dirname,'/public');
-// app.use(express.static(publicDir));
-
-// app.route('/requestPSet')
-//  	.get(function (req, res) {
-// 		res.sendFile(__dirname + '/views/request.html');;
-// 	});
-
-
-//const fs = require('fs');
-//const doAsync = require('doasync');
-
-// routes for the app
-
-// app.use(fileUpload()); // configure fileupload
-// app.get('/psets', getHomePage);
-// app.get('/edit/:id', editPsetPage);
-// app.get('/delete/:id', deletePset);
-// app.post('/edit/:id', editPset);
