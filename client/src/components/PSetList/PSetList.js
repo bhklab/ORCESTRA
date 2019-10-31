@@ -2,20 +2,32 @@ import React from 'react';
 import './PSetList.css';
 import Navigation from '../Navigation/Navigation'
 import {MultiSelect} from 'primereact/multiselect';
+import {Dropdown} from 'primereact/dropdown';
 
 class PSetList extends React.Component{
+    constructor(){
+        super();
+        this.state = {
+            users: [],
+            datasetSelected: null,
+            versionSelected: []
+        }
+
+        this.onDatasetChange = this.onDatasetChange.bind(this);
+        this.onVersionChange = this.onVersionChange.bind(this);
+    }
 
     // template for the dropdown options
-    cityTemplate(option) {
+    dataTemplate(option) {
         return (
-            <div className="p-clearfix">
-                <span style={{fontSize:'1em',float:'right',margin:'1em .5em 0 0'}}>{option.name}</span>
+            <div className="">
+                <span style={{fontSize:'1em',margin:'1em .5em 0 0'}}>{option.name}</span>
             </div>
         );
     }
 
     // template for the selected options
-    selectedCityTemplate(item) {
+    selectedDataTemplate(item) {
         if (item) {
             return (
                 <div className="my-multiselected-item-token">
@@ -24,15 +36,18 @@ class PSetList extends React.Component{
             );
         }
         else {
-            return <span>Choose</span>
+            return <span>Choose from options</span>
         }
     }
-    
-    state = {
-        users: [],
-        citiesSelected: []
+
+    onDatasetChange(e){
+        this.setState({datasetSelected: e.value});
     }
-	
+
+    onVersionChange(e){
+        this.setState({versionSelected: e.value});
+    }
+    
 	componentDidMount(){
 		fetch('/pset')  
             .then(res => res.json())
@@ -44,12 +59,34 @@ class PSetList extends React.Component{
     }
     
     render(){
-        const citiesOptions = [
-            {name: 'New York', code: 'NY'},
-            {name: 'Rome', code: 'RM'},
-            {name: 'London', code: 'LDN'},
-            {name: 'Istanbul', code: 'IST'},
-            {name: 'Paris', code: 'PRS'}
+        const datasetOptions = [
+            {name: 'Leuk AML'},
+            {name: 'Leuk Cell line'}
+        ];
+        
+        const dataVersionOptions = [
+            {name: '1.1'},
+            {name: '2.2'},
+            {name: '3.3'},
+            {name: '4.4'},
+            {name: '5.5'}
+        ];
+
+        const genomeOptions = [
+            {name: 'GRCh38'},
+            {name: 'GRCh37'}
+        ];
+
+        const datatypeOptions = [
+            {name: 'RNA'},
+            {name: 'DNA'}
+        ];
+
+        const toolVersionOptions = [
+            {name: 'Tool 1 version 1.1'},
+            {name: 'Tool 2 version 2.1'},
+            {name: 'Tool 3 version 3.1'},
+            {name: 'Tool 4 version 4.1'}
         ];
         
         return(
@@ -60,7 +97,20 @@ class PSetList extends React.Component{
                     <div className='pSetListContainer'>
                         <div className='pSetFilter'>
                             <h2>PSet Filter</h2>
-                            <MultiSelect className='inputSelect' optionLabel='name' value={this.state.citiesSelected} options={citiesOptions} onChange={(e) => this.setState({citiesSelected: e.value})} filter={true} itemTemplate={this.cityTemplate} selectedItemTemplate={this.selectedCityTemplate} />
+
+                            <label>Dataset:</label>
+                            <MultiSelect id='select-dataset' className='inputSelect' optionLabel='name' 
+                                value={this.state.datasetSelected} 
+                                options={datasetOptions} onChange={this.onDatasetChange} 
+                                filter={true} itemTemplate={this.dataTemplate} selectedItemTemplate={this.selectedDataTemplate} 
+                            />
+
+                            <label>Version:</label>
+                            <MultiSelect id='select-dataset-version' className='inputSelect' optionLabel='name' 
+                                value={this.state.versionSelected} 
+                                options={dataVersionOptions} onChange={this.onVersionChange} 
+                                filter={true} itemTemplate={this.dataTemplate} selectedItemTemplate={this.selectedDataTemplate} 
+                            />  
                         </div>
                         <div className='pSetTable'>
                             <h2>Users</h2>
