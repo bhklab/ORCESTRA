@@ -8,75 +8,68 @@
 
 .pSetTable {
     width: 70%;
-    border: 1px solid #000000;
+    margin-left: 50px;
 }
 
-.inputSelect {
-    width: 100%;
-}
-
-.my-multiselected-item-token {
-    padding-left: 3px;
-    padding-right: 3px;
-    margin-top: 2px;
-    margin-left: 2px;
-    margin-right: 2px;
-    border-radius: 2px;
-    background-color: #3D405A;
-    color: #ffffff;
-    font-weight: bold;
-    font-size: 12px;
-    display: inline-block;
-}
-
-
-body .p-multiselect:not(.p-disabled).p-focus{
-    border-color: #555975;
-    box-shadow: 0 0 0 0.1em #555975;
-}
-
-.p-multiselect-panel .p-multiselect-items{
-    font-size: 12px;
-}
-
-body .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
-    color:#3D405A;
-    border-color: #ffffff;
-    background-color: #ffffff;
-}
-
-body .p-checkbox .p-checkbox-box.p-highlight {
-    color: #ffffff;
-    border-color: #3D405A;
-    background-color: #3D405A;
-}
-
-body .p-checkbox .p-checkbox-box.p-highlight:not(.p-disabled):hover {
-    color: #ffffff;
-    border-color: #555975;
-    background-color: #555975;
-}
-
-body .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover{
-    background-color: #ffffff;
-}
-
-body .p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-multiselect-filter-icon {
+.pSetSelectionSummary {
+    max-width: 100%;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
     color: #3D405A;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
-body .p-checkbox .p-checkbox-box:not(.p-disabled).p-focus {
-    border-color: #555975;
-    box-shadow: 0 0 0 0.1em #ffffff;
+.pSetSelectionSummary h2 {
+    margin: 0;
+    padding-top: 0.65em;
 }
 
-body .p-inputtext:enabled:focus {
-    border-color: #555975;
-    box-shadow: 0 0 0 0.1em #555975;
+.pSetSummaryContainer {
+    display: flex;
+    padding-top: 5px;
+    font-size: 20px;
 }
 
-body .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus {
-    border-color: #ffffff;
-    box-shadow: 0 0 0 0.1em #ffffff;
-
+.pSetSummaryItem {
+    margin-right: 30px;
 }
+
+.pSetSelectedList {
+    margin-top: -20px;
+}
+
+.pSetSelectedList ul{
+    width: 300px;
+    height: 100px;
+    margin-top: -20px;
+    font-size: 12px;
+    overflow: auto;
+}
+
+.pSetSummaryNum {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+body .p-component {
+    font-size: 12px;
+    font-family: "Raleways", "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+body .p-datatable .p-datatable-tbody > tr.p-highlight  {
+    background-color: #ffffff;
+    color: #333333;
+    font-weight: bold;
+}
+
+body .p-datatable .p-datatable-tbody > tr:nth-child(even).p-highlight  {
+    background-color: #f9f9f9;
+    color: #333333;
+    font-weight: bold;
+}
+  

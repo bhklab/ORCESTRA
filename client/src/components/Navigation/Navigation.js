@@ -1,13 +1,17 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom'
 import './Navigation.css';
 
 const Navigation = () => (
     <header>
-        <a href='/'><img src="./images/trumpet-orcestra.png" alt='' /></a>
+        <NavLink exact to='/'><img src="./images/trumpet-orcestra.png" alt='' /></NavLink>
         <div className='navBar'>
-            <div><a href="https://pharmacodb.pmgenomics.ca" target="_blank">PharmacoDB</a></div>
-            <div><a href="https://www.pmgenomics.ca/bhklab/" target="_blank">Contact</a></div>
-            <div><a href="http://localhost:3000/" >Home</a></div>
+            <div><NavLink exact to='/' activeClassName='active-link'>Home</NavLink></div>
+            <div><NavLink exact to="/PSetList" activeClassName='active-link'>Search</NavLink></div>
+            <div><NavLink exact to="/PSetRequest" activeClassName='active-link'>Request</NavLink></div>
+            <div><NavLink exact to="/Stats" activeClassName='active-link'>Statistics</NavLink></div>
+            <div><NavLink exact to="https://pharmacodb.pmgenomics.ca">PharmacoDB</NavLink></div>
+            <div><NavLink exact to="https://www.pmgenomics.ca/bhklab/">Contact</NavLink></div>    
         </div>
     </header>
 );

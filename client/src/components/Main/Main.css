@@ -3,12 +3,6 @@
     margin-top: 10%;
 }
 
-.pageContent{
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 .home {
     width: 60%;
     margin-left: auto;
@@ -42,7 +36,7 @@
     margin-right: auto;
     padding-left: 50px; 
     padding-right: 50px;
-    background-color:rgb(255, 255, 255,0.2);
+    background-color:rgb(255, 255, 255,0.5);
     border-radius: 25px;
     height:300px;
     display: flex;

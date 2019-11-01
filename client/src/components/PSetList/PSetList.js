@@ -1,122 +1,81 @@
 import React from 'react';
 import './PSetList.css';
 import Navigation from '../Navigation/Navigation'
-import {MultiSelect} from 'primereact/multiselect';
-import {Dropdown} from 'primereact/dropdown';
+import PSetFilter from './subcomponents/PSetFilter';
+import {DataTable} from 'primereact/datatable';
+import {Column} from 'primereact/column';
+import {Button} from 'primereact/button';
+import {ScrollPanel} from 'primereact/scrollpanel';
 
 class PSetList extends React.Component{
     constructor(){
         super();
         this.state = {
-            users: [],
-            datasetSelected: null,
-            versionSelected: []
+            datasets: [],
+            selectedPSets: []
         }
-
-        this.onDatasetChange = this.onDatasetChange.bind(this);
-        this.onVersionChange = this.onVersionChange.bind(this);
+        this.evaluateList = this.evaluateList.bind(this);
     }
 
-    // template for the dropdown options
-    dataTemplate(option) {
-        return (
-            <div className="">
-                <span style={{fontSize:'1em',margin:'1em .5em 0 0'}}>{option.name}</span>
-            </div>
-        );
-    }
-
-    // template for the selected options
-    selectedDataTemplate(item) {
-        if (item) {
-            return (
-                <div className="my-multiselected-item-token">
-                    <span>{item.name}</span>
-                </div>
-            );
-        }
-        else {
-            return <span>Choose from options</span>
-        }
-    }
-
-    onDatasetChange(e){
-        this.setState({datasetSelected: e.value});
-    }
-
-    onVersionChange(e){
-        this.setState({versionSelected: e.value});
-    }
-    
 	componentDidMount(){
-		fetch('/pset')  
+		fetch('http://dummy.restapiexample.com/api/v1/employees')  
             .then(res => res.json())
-            .then(users => this.setState({users}));
+            .then(datasets=> this.setState({datasets}));
     }
 
-    result(params){
-        console.log(params);
+    evaluateList(list){
+        if(list.length > 0){
+            return(
+                <ul>
+                    {list.map((pset) => 
+                        <li key={pset.id}>
+                            {pset.employee_name}
+                        </li>
+                    )}
+                </ul>
+            );
+        } else {
+            return(<ul><li>None</li></ul>)
+        }
     }
     
     render(){
-        const datasetOptions = [
-            {name: 'Leuk AML'},
-            {name: 'Leuk Cell line'}
-        ];
-        
-        const dataVersionOptions = [
-            {name: '1.1'},
-            {name: '2.2'},
-            {name: '3.3'},
-            {name: '4.4'},
-            {name: '5.5'}
-        ];
-
-        const genomeOptions = [
-            {name: 'GRCh38'},
-            {name: 'GRCh37'}
-        ];
-
-        const datatypeOptions = [
-            {name: 'RNA'},
-            {name: 'DNA'}
-        ];
-
-        const toolVersionOptions = [
-            {name: 'Tool 1 version 1.1'},
-            {name: 'Tool 2 version 2.1'},
-            {name: 'Tool 3 version 3.1'},
-            {name: 'Tool 4 version 4.1'}
-        ];
         
         return(
             <React.Fragment>
                 <Navigation />
                 <div className='pageContent'>
-                    <h1>PSetList Page</h1>
+                    <h1>Search for existing Pharmaco Datasets</h1>
                     <div className='pSetListContainer'>
-                        <div className='pSetFilter'>
-                            <h2>PSet Filter</h2>
-
-                            <label>Dataset:</label>
-                            <MultiSelect id='select-dataset' className='inputSelect' optionLabel='name' 
-                                value={this.state.datasetSelected} 
-                                options={datasetOptions} onChange={this.onDatasetChange} 
-                                filter={true} itemTemplate={this.dataTemplate} selectedItemTemplate={this.selectedDataTemplate} 
-                            />
-
-                            <label>Version:</label>
-                            <MultiSelect id='select-dataset-version' className='inputSelect' optionLabel='name' 
-                                value={this.state.versionSelected} 
-                                options={dataVersionOptions} onChange={this.onVersionChange} 
-                                filter={true} itemTemplate={this.dataTemplate} selectedItemTemplate={this.selectedDataTemplate} 
-                            />  
-                        </div>
+                        <PSetFilter />
                         <div className='pSetTable'>
-                            <h2>Users</h2>
-                            {this.state.users.map(user =>
-                                <div key={user.id}>{user.username}</div>
-                            )}
+                            <div className='pSetSelectionSummary'>
+                                <h2>Summary</h2>
+                                <div className='pSetSummaryContainer'>
+                                    <div className='pSetSummaryItem'>
+                                        <span className='pSetSummaryNum'>{this.state.datasets.length}</span> matches found.
+                                    </div>
+                                    <div className='pSetSummaryItem'>
+                                        <span className='pSetSummaryNum'>{this.state.selectedPSets.length}</span> selected.
+                                    </div>
+                                    <div className='pSetSummaryItem pSetSelectedList'>
+                                        <h5>Selected PSets:</h5> 
+                                        {this.evaluateList(this.state.selectedPSets)}
+                                    </div>
+                                </div>
+                                <Button label='Save' />
+                            </div>
+                            <DataTable value={this.state.datasets.slice(0, 50)} selection={this.state.selectedPSets} onSelectionChange={e => this.setState({selectedPSets: e.value})} scrollable={true} scrollHeight="600px">
+                                <Column selectionMode="multiple" style={{width:'3.5em'}}/>
+                                <Column field='id' header='DOI' style={{width:'5em'}}/>
+                                <Column field='employee_name' header='Dataset' style={{width:'30em'}} />
+                                <Column field='employee_age' header='Dataset Version' />
+                                <Column field='' header='Drug Sensitivity' />
+                                <Column field='' header='RNA Tool' />
+                                <Column field='' header='Exome Tool' />
+                                <Column field='' header='RNA Ref' />
+                                <Column field='' header='Summary' />
+                            </DataTable>
                         </div>
                     </div>
                 </div>

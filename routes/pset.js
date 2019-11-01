@@ -1,8 +1,11 @@
 //const fs = require('fs');
+const request = require('request');
+const dbUtil = require('../db/dbUtil');
 
 const getPsetList = function(req, res){
-    // let query = "SELECT * FROM `psets` ORDER BY id ASC"; // query database to get all the psets
-
+    //let query = "SELECT * FROM `psets` ORDER BY id ASC"; // query database to get all the psets
+    //let db = dbUtil.getDB();
+    //db.connect();
     // // execute query
     // db.query(query, (err, result) => {
     //     if (err) {
@@ -13,6 +16,7 @@ const getPsetList = function(req, res){
     //         ,psets: result
     //     });
     // });
+
     res.json([{id: 3, username: "samsepi0l"}, {id: 4, username: "D0loresH4ze"}]);
 }
 

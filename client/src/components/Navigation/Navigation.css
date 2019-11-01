@@ -2,7 +2,7 @@ header {
     top: 0%;
     /* position:fixed; */
     width:100%;
-    background-color:rgb(255,255,255, 0.5);
+    background-color:rgb(255,255,255, 0.7);
     height:90px;
 }
 
@@ -23,13 +23,21 @@ header a {
 
 header a:hover {
     text-decoration:none;
-    border-bottom:1px solid rgb(241, 144, 33);
+    color: #555975;
+    border-bottom:3px solid rgb(241, 144, 33);
     transition: .2s ease-out;
 }
 
+.active-link{
+    text-decoration:none;
+    color: #555975;
+    border-bottom:3px solid rgb(241, 144, 33);
+}
+
 .navBar {
-    margin-right: 150px;
-    width: 20%;
+    margin-right: 100px;
+    width: 30%;
+    min-width: 620px;
     height: 100%;
     float: right;
     display: flex;

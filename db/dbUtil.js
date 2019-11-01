@@ -1,15 +1,16 @@
 var mysql = require('mysql');
 
-let host = ""; //fs.readFileSync(process.env.DBhost, "utf8")
-let user = ""; //fs.readFileSync(process.env.DBuser, "utf8")
-let pwd = ""; //fs.readFileSync(process.env.DBpass, "utf8")
-let name = ""; //fs.readFileSync(process.env.DBname, "utf8")
+let host = "pachydermdatabase.mysql.database.azure.com"; //fs.readFileSync(process.env.DBhost, "utf8")
+let user = "anthony@pachydermdatabase"; //fs.readFileSync(process.env.DBuser, "utf8")
+let pwd = "Bhklab1234@"; //fs.readFileSync(process.env.DBpass, "utf8")
+let database = ""; //fs.readFileSync(process.env.DBname, "utf8")
 
 let _db = mysql.createConnection ({
     host: host,
     user: user,
     password: pwd,
-    database : name
+    database : database,
+    port: 3306
 });
 
 module.exports = {
@@ -21,7 +22,8 @@ module.exports = {
                _db.query('SELECT 1');
            }, 5000);
            if(err){
-               throw err;
+            console.log("Error!!!");   
+            throw err;
            }
            console.log('Connected to database');
        }); 
