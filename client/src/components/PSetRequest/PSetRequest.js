@@ -23,13 +23,13 @@ class PSetRequest extends React.Component{
                 <Navigation />
                 <div className='pageContent'>
                     <h1>Request Pipeline Analysis</h1>
-                    <ul>
+                    {<ul>
                         {this.state.datasets.map((data) => 
                             <li>
-                                {data.username}
+                                {data.id}
                             </li>
                         )}
-                    </ul> 
+                    </ul>}
                 </div>
             </React.Fragment>
         );

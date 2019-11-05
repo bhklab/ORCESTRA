@@ -18,7 +18,7 @@ class PSetList extends React.Component{
     }
 
 	componentDidMount(){
-		fetch('http://dummy.restapiexample.com/api/v1/employees')  
+		fetch('/pset')  
             .then(res => res.json())
             .then(datasets=> this.setState({datasets}));
     }
@@ -29,7 +29,7 @@ class PSetList extends React.Component{
                 <ul>
                     {list.map((pset) => 
                         <li key={pset.id}>
-                            {pset.employee_name}
+                            {pset.id}
                         </li>
                     )}
                 </ul>
@@ -67,14 +67,15 @@ class PSetList extends React.Component{
                             </div>
                             <DataTable value={this.state.datasets.slice(0, 50)} selection={this.state.selectedPSets} onSelectionChange={e => this.setState({selectedPSets: e.value})} scrollable={true} scrollHeight="600px">
                                 <Column selectionMode="multiple" style={{width:'3.5em'}}/>
-                                <Column field='id' header='DOI' style={{width:'5em'}}/>
-                                <Column field='employee_name' header='Dataset' style={{width:'30em'}} />
-                                <Column field='employee_age' header='Dataset Version' />
-                                <Column field='' header='Drug Sensitivity' />
-                                <Column field='' header='RNA Tool' />
-                                <Column field='' header='Exome Tool' />
-                                <Column field='' header='RNA Ref' />
-                                <Column field='' header='Summary' />
+                                <Column className='textField' field='id' header='DOI' style={{width:'8em'}}/>
+                                <Column className='textField' field='dataset' header='Dataset' style={{width:'6em'}} />
+                                <Column className='textField' field='dataset_ver' header='Dataset Version' style={{width:'7em'}}/>
+                                <Column className='textField' field='drug_sens' header='Drug Sensitivity' style={{width:'7em'}}/>
+                                <Column className='textField' field='rnaseq' header='RNA Tool' style={{width:'7em'}} />
+                                <Column className='textField' field='exomeseq' header='Exome Tool' style={{width:'15em'}} />
+                                <Column className='textField' field='rna_ref' header='RNA Ref' />
+                                <Column className='textField' field='exome_ref' header='Exome Ref' />
+                                <Column className='textField' field='metadata' header='Metadata' />
                             </DataTable>
                         </div>
                     </div>

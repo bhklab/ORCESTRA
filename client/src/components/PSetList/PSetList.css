@@ -72,4 +72,8 @@ body .p-datatable .p-datatable-tbody > tr:nth-child(even).p-highlight  {
     color: #333333;
     font-weight: bold;
 }
+
+.textField{
+    word-wrap: break-word;
+}
   
