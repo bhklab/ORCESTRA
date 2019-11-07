@@ -15,12 +15,13 @@ class PSetList extends React.Component{
             selectedPSets: []
         }
         this.evaluateList = this.evaluateList.bind(this);
+        this.filterPSet = this.filterPSet.bind(this);
     }
 
 	componentDidMount(){
 		fetch('/pset')  
             .then(res => res.json())
-            .then(datasets=> this.setState({datasets}));
+            .then(resData => this.setState({datasets: resData}));
     }
 
     evaluateList(list){
@@ -28,8 +29,8 @@ class PSetList extends React.Component{
             return(
                 <ul>
                     {list.map((pset) => 
-                        <li key={pset.id}>
-                            {pset.id}
+                        <li key={pset.doi}>
+                            {pset.doi}
                         </li>
                     )}
                 </ul>
@@ -37,6 +38,13 @@ class PSetList extends React.Component{
         } else {
             return(<ul><li>None</li></ul>)
         }
+    }
+
+    filterPSet(api){
+        console.log(api);
+        fetch(api)  
+            .then(res => res.json())
+            .then(resData => this.setState({datasets: resData}));
     }
     
     render(){
@@ -47,7 +55,7 @@ class PSetList extends React.Component{
                 <div className='pageContent'>
                     <h1>Search for existing Pharmaco Datasets</h1>
                     <div className='pSetListContainer'>
-                        <PSetFilter />
+                        <PSetFilter filterPSet={this.filterPSet} />
                         <div className='pSetTable'>
                             <div className='pSetSelectionSummary'>
                                 <h2>Summary</h2>
@@ -67,14 +75,14 @@ class PSetList extends React.Component{
                             </div>
                             <DataTable value={this.state.datasets.slice(0, 50)} selection={this.state.selectedPSets} onSelectionChange={e => this.setState({selectedPSets: e.value})} scrollable={true} scrollHeight="600px">
                                 <Column selectionMode="multiple" style={{width:'3.5em'}}/>
-                                <Column className='textField' field='id' header='DOI' style={{width:'8em'}}/>
-                                <Column className='textField' field='dataset' header='Dataset' style={{width:'6em'}} />
-                                <Column className='textField' field='dataset_ver' header='Dataset Version' style={{width:'7em'}}/>
-                                <Column className='textField' field='drug_sens' header='Drug Sensitivity' style={{width:'7em'}}/>
-                                <Column className='textField' field='rnaseq' header='RNA Tool' style={{width:'7em'}} />
-                                <Column className='textField' field='exomeseq' header='Exome Tool' style={{width:'15em'}} />
-                                <Column className='textField' field='rna_ref' header='RNA Ref' />
-                                <Column className='textField' field='exome_ref' header='Exome Ref' />
+                                <Column className='textField' field='doi' header='DOI' style={{width:'18em'}}/>
+                                <Column className='textField' field='datasetName' header='Dataset' style={{width:'6em'}} />
+                                <Column className='textField' field='datasetVersion' header='Dataset Version' style={{width:'7em'}}/>
+                                <Column className='textField' field='drugSensitivity' header='Drug Sensitivity' style={{width:'7em'}}/>
+                                <Column className='textField' field='rnaTool' header='RNA Tool' style={{width:'10em'}} />
+                                <Column className='textField' field='exomeTool' header='Exome Tool' style={{width:'10em'}} />
+                                <Column className='textField' field='rnaRef' header='RNA Ref' style={{width:'10em'}} />
+                                <Column className='textField' field='exomeRef' header='Exome Ref' style={{width:'10em'}} />
                                 <Column className='textField' field='metadata' header='Metadata' />
                             </DataTable>
                         </div>

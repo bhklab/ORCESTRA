@@ -2,15 +2,36 @@
 const request = require('request');
 const dbUtil = require('../db/dbUtil');
 
+function restructureData(dataset){
+    tools = '';
+    for(i = 0; i < dataset.length; i++){
+        dataset[i].rnaTool = flattenArray(dataset[i].rnaTool);
+        dataset[i].rnaRef = flattenArray(dataset[i].rnaRef);
+        dataset[i].exomeTool = flattenArray(dataset[i].exomeTool);
+        dataset[i].exomeRef = flattenArray(dataset[i].exomeRef);
+    }
+    return dataset;
+}
+
+function flattenArray(arrayData){
+    var str ='';
+    for(let i = 0; i < arrayData.length; i++){
+        str += arrayData[i];
+        str += '\n';
+    }
+    return(str);
+}
+
 const getPsetList = function(req, res){
-    dbUtil.selectAllPSets(function(err, result){
-        if(err){
-            console.log("Error: selectAllPSets");
-            res.status(500).send(err);
+    dbUtil.selectPSets(req.query, function(result){
+        if(result.status = 'success'){
+            var dataset = restructureData(result.data);
+            res.send(dataset);
+        }else{
+            res.status(500).send(result.data);
         }
-        //console.log("Success: selectAllPSets");
-        res.json(result);
-    });   
+    });
+
 }
 
 const editPsetPage = function(req, res){

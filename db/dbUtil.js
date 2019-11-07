@@ -1,51 +1,72 @@
-var mysql = require('mysql');
+let mongo = require('mongodb').MongoClient;
+let connStr = 'mongodb+srv://root:root@development-cluster-ptdz3.azure.mongodb.net/test?retryWrites=true&w=majority'
 
-let host = "pachydermdatabase.mysql.database.azure.com"; //fs.readFileSync(process.env.DBhost, "utf8")
-let user = "anthony@pachydermdatabase"; //fs.readFileSync(process.env.DBuser, "utf8")
-let pwd = "Bhklab1234@"; //fs.readFileSync(process.env.DBpass, "utf8")
-let database = "pachyderm"; //fs.readFileSync(process.env.DBname, "utf8")
+function connectWithClient(callback){
+    mongo.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
+        callback(err, client);
+    });
+}
 
-let _db = mysql.createConnection ({
-    host: host,
-    user: user,
-    password: pwd,
-    database : database,
-    port: 3306
-});
+function getQueryFilterSet(query){
+    var querySet = {};
+    var queryArray = [];
+    if(!query){
+        return(querySet);
+    } 
+    
+    if(query.dsv){
+        queryArray.push(getQueryFilter('datasetVersion', query.dsv));
+    }
+
+    if(query.dsn){
+        queryArray.push(getQueryFilter('datasetName', query.dsn));
+    }
+
+    if(query.exot){
+        queryArray.push(getQueryFilter('exomeTool', query.exot));
+    }
+
+    if(query.rnar){
+        queryArray.push(getQueryFilter('rnaRef', query.rnar));
+    }
+
+    if(queryArray.length){
+        querySet = {$and: queryArray};
+    }
+    return(querySet);
+}
+
+function getQueryFilter(keyName, filterValue){
+    var filterObj = {};
+    if(!Array.isArray(filterValue)){
+        filterObj[keyName] = filterValue;
+        return(filterObj);
+    }
+    filterObj[keyName] = {$in: filterValue};
+    return(filterObj);
+}
+
 
 module.exports = {
-    // connect: function(){
-    //    _db.timeout = 0;
-    //    _db.connect((err) => {
-    //        _db.timeout = 0;
-    //        setInterval(function(){
-    //            _db.query('SELECT 1');
-    //        }, 5000);
-    //        if(err){
-    //         console.log("Error!!!");   
-    //         throw err;
-    //        }
-    //        console.log('Connected to database');
-    //    }); 
-    // },
-    getDB: function(){
-        return _db;
-    },
-
-    // executeQuery: function(query){
-    //     _db.query(query, (err, result) => {
-    //         if (err) {
-    //             console.log("Error: executeQuery");
-    //             return(err);
-    //         }
-    //         return(result);
-    //     });
-    // },
-
-    selectAllPSets: function(callback){
-        let query = "SELECT * FROM `psets` ORDER BY id ASC"; // query database to get all the psets
-        _db.query(query, (err, result) => {
-            callback(err, result);
-        });
+    
+    selectPSets: function(query, callback){   
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 'error', data: err});
+            }
+            const db = client.db('orcestra-dev');
+            const collection = db.collection('pset');
+            var queryFilterSet = getQueryFilterSet(query); 
+            console.log(queryFilterSet);
+            collection.find(queryFilterSet).toArray((err, data) => {
+                if(err){
+                    client.close();
+                    callback({status: 'error', data: err});
+                }
+                client.close();
+                callback({status: 'success', data: data});
+            });
+        });   
     }
+
 }

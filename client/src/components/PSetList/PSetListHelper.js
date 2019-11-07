@@ -2,15 +2,13 @@ import React from 'react';
 
 export const datasetOptions = [
     {name: 'Leuk AML'},
-    {name: 'Leuk Cell line'}
+    {name: 'Leuk Cell line'},
+    {name: 'GRAY'}
 ];
 
 export const dataVersionOptions = [
-    {name: '1.1'},
-    {name: '2.2'},
-    {name: '3.3'},
-    {name: '4.4'},
-    {name: '5.5'}
+    {name: '2017'},
+    {name: '2019'}
 ];
 
 export const genomeOptions = [
@@ -24,10 +22,11 @@ export const datatypeOptions = [
 ];
 
 export const toolVersionOptions = [
-    {name: 'Tool 1 version 1.1'},
-    {name: 'Tool 2 version 2.1'},
-    {name: 'Tool 3 version 3.1'},
-    {name: 'Tool 4 version 4.1'}
+    {name: 'exome_tool_1'},
+    {name: 'BWA/0.6.2'},
+    {name: 'SNPEff/4.0'},
+    {name: 'VarScan/2.3.2'},
+    {name: 'MuTect1'}
 ];
 
 // template for the dropdown options
@@ -51,4 +50,50 @@ export function selectedDataTemplate(item) {
     else {
         return <span>Select...</span>
     }
+}
+
+export function getFilterSet(dataType, genome, toolVersion, dataset, datasetVersion){
+    var filterset = {}
+    filterset.datasetVersion = toFilterArray(datasetVersion);
+    filterset.datasetName = toFilterArray(dataset);
+    filterset.exomeTool = toFilterArray(toolVersion);
+    filterset.rnaRef = toFilterArray(genome);
+    return(filterset);
+}
+
+export function toFilterArray(selectedValues){
+    var filterArray = [];
+    for(let i = 0; i < selectedValues.length; i++){
+        filterArray.push(selectedValues[i].name);
+    }
+    return(filterArray);
+}
+
+export function buildAPIStrFragment(keyName, filterArray){
+    var apiFragment = '';
+    if(filterArray.length > 0){
+        for(let i = 0; i < filterArray.length; i++){
+            apiFragment += keyName + '=' + filterArray[i]
+            if(i < filterArray.length - 1){
+                apiFragment += '&';
+            }
+        }
+    }   
+    return(apiFragment);
+}
+
+export function buildAPIStr(filterSet){
+    let apiStr = '/pset?';
+    let apiFragments = [];
+    apiFragments.push(buildAPIStrFragment('dsv', filterSet.datasetVersion));
+    apiFragments.push(buildAPIStrFragment('dsn', filterSet.datasetName));
+    apiFragments.push(buildAPIStrFragment('exot', filterSet.exomeTool));
+    apiFragments.push(buildAPIStrFragment('rnar', filterSet.rnaRef));
+    for(let i = 0; i < apiFragments.length; i++){
+        if(apiFragments[i].length > 0){
+            apiStr += apiFragments[i] + '&';
+        }
+    }
+    apiStr = apiStr.replace(/&$/, '');
+    return(apiStr);
 }
