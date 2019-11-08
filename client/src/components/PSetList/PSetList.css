@@ -53,27 +53,3 @@
     font-size: 50px;
     font-weight: bold;
 }
-
-body .p-component {
-    font-size: 12px;
-    font-family: "Raleways", "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-}
-
-body .p-datatable .p-datatable-tbody > tr.p-highlight  {
-    background-color: #ffffff;
-    color: #333333;
-    font-weight: bold;
-}
-
-body .p-datatable .p-datatable-tbody > tr:nth-child(even).p-highlight  {
-    background-color: #f9f9f9;
-    color: #333333;
-    font-weight: bold;
-}
-
-.textField{
-    word-wrap: break-word;
-}
-  

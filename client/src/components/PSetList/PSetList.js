@@ -5,7 +5,6 @@ import PSetFilter from './subcomponents/PSetFilter';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import {Button} from 'primereact/button';
-import {ScrollPanel} from 'primereact/scrollpanel';
 
 class PSetList extends React.Component{
     constructor(){
@@ -61,7 +60,7 @@ class PSetList extends React.Component{
                                 <h2>Summary</h2>
                                 <div className='pSetSummaryContainer'>
                                     <div className='pSetSummaryItem'>
-                                        <span className='pSetSummaryNum'>{this.state.datasets.length}</span> matches found.
+                                        <span className='pSetSummaryNum'>{this.state.datasets.length}</span> {this.state.datasets.length == 1 ? ' match' : ' matches'} found.
                                     </div>
                                     <div className='pSetSummaryItem'>
                                         <span className='pSetSummaryNum'>{this.state.selectedPSets.length}</span> selected.

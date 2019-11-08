@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import './PrimeStyle.css';
 
 import Navigation from '../Navigation/Navigation';
 import Main from '../Main/Main';

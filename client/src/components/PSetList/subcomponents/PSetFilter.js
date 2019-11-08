@@ -2,7 +2,8 @@ import React from 'react';
 import {InputSwitch} from 'primereact/inputswitch';
 import {MultiSelect} from 'primereact/multiselect';
 import {Button} from 'primereact/button';
-import * as Helper from '../PSetListHelper';
+import * as Helper from '../../PSetQueryHelper';
+import * as FormData from '../../FormData';
 import './PSetFilter.css';
 
 class PSetFilter extends React.Component {
@@ -24,7 +25,6 @@ class PSetFilter extends React.Component {
     handleFilterChange = event => {
         event.preventDefault();
         this.setState({[event.target.id]: event.value}, () => {
-            console.log(event.target);
             if(this.state.autoUpdateChecked){
                 this.sendFilterPSetRequest();
             }
@@ -56,8 +56,8 @@ class PSetFilter extends React.Component {
                         <label>Datatype:</label>
                         <MultiSelect id='datatypeSelected' className='inputSelect' optionLabel='name'
                             value={this.state.datatypeSelected} 
-                            options={Helper.datatypeOptions} onChange={(e)=>this.setState({datatypeSelected: e.value})} 
-                            filter={false} itemTemplate={Helper.dataTemplate} selectedItemTemplate={Helper.selectedDataTemplate} 
+                            options={FormData.datatypeOptions} onChange={this.handleFilterChange} 
+                            filter={false} itemTemplate={FormData.dataTemplate} selectedItemTemplate={FormData.selectedDataTemplate} 
                         />
                     </div>
 
@@ -65,8 +65,8 @@ class PSetFilter extends React.Component {
                         <label>Genome:</label>
                         <MultiSelect id='genomeSelected' className='inputSelect' optionLabel='name'
                             value={this.state.genomeSelected} 
-                            options={Helper.genomeOptions} onChange={(e)=>this.setState({genomeSelected: e.value})} 
-                            filter={true} itemTemplate={Helper.dataTemplate} selectedItemTemplate={Helper.selectedDataTemplate} 
+                            options={FormData.genomeOptions} onChange={this.handleFilterChange} 
+                            filter={true} itemTemplate={FormData.dataTemplate} selectedItemTemplate={FormData.selectedDataTemplate} 
                         />
                     </div>
 
@@ -74,8 +74,8 @@ class PSetFilter extends React.Component {
                         <label>Tool + Version:</label>
                         <MultiSelect id='toolVersionSelected' className='inputSelect' optionLabel='name' 
                             value={this.state.toolVersionSelected} 
-                            options={Helper.toolVersionOptions} onChange={(e)=>this.setState({toolVersionSelected: e.value})} 
-                            filter={true} itemTemplate={Helper.dataTemplate} selectedItemTemplate={Helper.selectedDataTemplate} 
+                            options={FormData.toolVersionOptions} onChange={this.handleFilterChange} 
+                            filter={true} itemTemplate={FormData.dataTemplate} selectedItemTemplate={FormData.selectedDataTemplate} 
                         />
                     </div>
 
@@ -83,8 +83,8 @@ class PSetFilter extends React.Component {
                         <label>Dataset:</label>
                         <MultiSelect id='datasetSelected' className='inputSelect' optionLabel='name' 
                             value={this.state.datasetSelected} 
-                            options={Helper.datasetOptions} onChange={(e)=>this.setState({datasetSelected: e.value})} 
-                            filter={true} itemTemplate={Helper.dataTemplate} selectedItemTemplate={Helper.selectedDataTemplate} 
+                            options={FormData.datasetOptions} onChange={this.handleFilterChange} 
+                            filter={true} itemTemplate={FormData.dataTemplate} selectedItemTemplate={FormData.selectedDataTemplate} 
                         />
                     </div>
 
@@ -92,8 +92,8 @@ class PSetFilter extends React.Component {
                         <label>Version:</label>
                         <MultiSelect id='versionSelected' className='inputSelect' optionLabel='name' 
                             value={this.state.versionSelected} 
-                            options={Helper.dataVersionOptions} onChange={this.handleFilterChange} 
-                            filter={true} itemTemplate={Helper.dataTemplate} selectedItemTemplate={Helper.selectedDataTemplate} 
+                            options={FormData.dataVersionOptions} onChange={this.handleFilterChange} 
+                            filter={true} itemTemplate={FormData.dataTemplate} selectedItemTemplate={FormData.selectedDataTemplate} 
                         /> 
                     </div>
 
