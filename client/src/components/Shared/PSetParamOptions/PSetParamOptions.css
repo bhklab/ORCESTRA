@@ -1,0 +1,17 @@
+.reqInputSet {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.filterSet {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.paramInput {
+    flex-grow: 1;
+}

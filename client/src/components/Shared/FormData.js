@@ -17,8 +17,8 @@ export const drugSensitivityOptions = [
 ];
 
 export const genomeOptions = [
-    {name: 'GRCh38'},
-    {name: 'GRCh37'}
+    {name: 'GRCh37'},
+    {name: 'GRCh38'}
 ];
 
 export const datatypeOptions = [
@@ -34,12 +34,29 @@ export const toolVersionOptions = [
     {name: 'MuTect1'}
 ];
 
+export const rnaToolVersionOptions = [
+    {name: 'Kallisto/0.44.0', datatype: 'RNA'},
+    {name: 'Kallisto/0.43.1', datatype: 'RNA'},
+    {name: 'Salmon/11.3', datatype: 'RNA'},
+    {name: 'Salmon/11.2', datatype: 'RNA'},
+    {name: 'STAR/2.7.0', datatype: 'RNA'},
+    {name: 'STAR/2.5.0', datatype: 'RNA'}
+];
+
+export const dnaToolVersionOptions = [
+    {name: 'MuTect1', datatype: 'DNA'},
+    {name: 'MuTect2', datatype: 'DNA'}
+];
+
 export const rnaToolRefOptions = [
-    {name: 'exome_tool_1'},
-    {name: 'BWA/0.6.2'},
-    {name: 'SNPEff/4.0'},
-    {name: 'VarScan/2.3.2'},
-    {name: 'MuTect1'}
+    {name: 'Ensembl GRCh38 v89 Transcriptome'},
+    {name: 'Gencode v23lift37 Transcriptome'},
+    {name: 'Ensembl GRCh37 v67 Transcriptome'},
+];
+
+export const dnaToolRefOptions = [
+    {name: 'GRCh37'},
+    {name: 'GRCh38'}
 ];
 
 // template for the dropdown options

@@ -2,8 +2,9 @@ import React from 'react';
 import {InputSwitch} from 'primereact/inputswitch';
 import {MultiSelect} from 'primereact/multiselect';
 import {Button} from 'primereact/button';
-import * as Helper from '../../PSetQueryHelper';
-import * as FormData from '../../FormData';
+import * as Helper from '../../Shared/PSetAPIHelper';
+import * as FormData from '../../Shared/FormData';
+import PSetParamOptions from '../../Shared/PSetParamOptions/PSetParamOptions';
 import './PSetFilter.css';
 
 class PSetFilter extends React.Component {
@@ -12,10 +13,15 @@ class PSetFilter extends React.Component {
         this.state = {
             autoUpdateChecked: false,
             datatypeSelected: [],
+            datasetSelected: [],
+            versionSelected: [],
             genomeSelected: [],
             toolVersionSelected: [],
-            datasetSelected: [],
-            versionSelected: []
+            rnaToolRefSelected: [],
+            dnaToolRefSelected: [],
+            toolVersionOptions: FormData.rnaToolVersionOptions.concat(FormData.dnaToolVersionOptions),
+            hideRNARef: false,
+            hideDNARef: false
         }
         this.handleFilterChange= this.handleFilterChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -52,50 +58,27 @@ class PSetFilter extends React.Component {
                         <label>Enable Automtic Table Update: </label>
                         <InputSwitch checked={this.state.autoUpdateChecked} onChange={(e) => this.setState({autoUpdateChecked: e.value})} />
                     </div>
-                    <div className='filterSet'>
-                        <label>Datatype:</label>
-                        <MultiSelect id='datatypeSelected' className='inputSelect' optionLabel='name'
-                            value={this.state.datatypeSelected} 
-                            options={FormData.datatypeOptions} onChange={this.handleFilterChange} 
-                            filter={false} itemTemplate={FormData.dataTemplate} selectedItemTemplate={FormData.selectedDataTemplate} 
-                        />
-                    </div>
 
-                    <div className='filterSet'>
-                        <label>Genome:</label>
-                        <MultiSelect id='genomeSelected' className='inputSelect' optionLabel='name'
-                            value={this.state.genomeSelected} 
-                            options={FormData.genomeOptions} onChange={this.handleFilterChange} 
-                            filter={true} itemTemplate={FormData.dataTemplate} selectedItemTemplate={FormData.selectedDataTemplate} 
-                        />
-                    </div>
+                    <PSetParamOptions id='datatypeSelected' className='filterSet' isHidden={false} parameterName='Datatype:' 
+                        parameterOptions={FormData.datatypeOptions} selectedParameter={this.state.datatypeSelected} handleUpdateSelection={this.handleFilterChange} />
 
-                    <div className='filterSet'>
-                        <label>Tool + Version:</label>
-                        <MultiSelect id='toolVersionSelected' className='inputSelect' optionLabel='name' 
-                            value={this.state.toolVersionSelected} 
-                            options={FormData.toolVersionOptions} onChange={this.handleFilterChange} 
-                            filter={true} itemTemplate={FormData.dataTemplate} selectedItemTemplate={FormData.selectedDataTemplate} 
-                        />
-                    </div>
+                    <PSetParamOptions id='datasetSelected' className='filterSet' isHidden={false} parameterName='Dataset:' 
+                        parameterOptions={FormData.datasetOptions} selectedParameter={this.state.datasetSelected} handleUpdateSelection={this.handleFilterChange} />
 
-                    <div className='filterSet'>
-                        <label>Dataset:</label>
-                        <MultiSelect id='datasetSelected' className='inputSelect' optionLabel='name' 
-                            value={this.state.datasetSelected} 
-                            options={FormData.datasetOptions} onChange={this.handleFilterChange} 
-                            filter={true} itemTemplate={FormData.dataTemplate} selectedItemTemplate={FormData.selectedDataTemplate} 
-                        />
-                    </div>
+                    <PSetParamOptions id='versionSelected' className='filterSet' isHidden={false} parameterName='Dataset Version:' 
+                        parameterOptions={FormData.dataVersionOptions} selectedParameter={this.state.versionSelected} handleUpdateSelection={this.handleFilterChange} />
+                    
+                    <PSetParamOptions id='genomeSelected' className='filterSet' isHidden={false} parameterName='Genome:' 
+                        parameterOptions={FormData.genomeOptions} selectedParameter={this.state.genomeSelected} handleUpdateSelection={this.handleFilterChange} />
+                    
+                    <PSetParamOptions id='toolVersionSelected' className='filterSet' isHidden={false} parameterName='Tool + Version:' 
+                        parameterOptions={this.state.toolVersionOptions} selectedParameter={this.state.toolVersionSelected} handleUpdateSelection={this.handleFilterChange} />
 
-                    <div className='filterSet'>
-                        <label>Version:</label>
-                        <MultiSelect id='versionSelected' className='inputSelect' optionLabel='name' 
-                            value={this.state.versionSelected} 
-                            options={FormData.dataVersionOptions} onChange={this.handleFilterChange} 
-                            filter={true} itemTemplate={FormData.dataTemplate} selectedItemTemplate={FormData.selectedDataTemplate} 
-                        /> 
-                    </div>
+                    <PSetParamOptions id='rnaToolRefSelected' className='filterSet' isHidden={false} parameterName='RNA Tool Ref:' 
+                        parameterOptions={FormData.rnaToolRefOptions} selectedParameter={this.state.rnaToolRefSelected} handleUpdateSelection={this.handleFilterChange} />
+                    
+                    <PSetParamOptions id='dnaToolRefSelected' className='filterSet' isHidden={false} parameterName='DNA Tool Ref:' 
+                        parameterOptions={FormData.dnaToolRefOptions} selectedParameter={this.state.dnaToolRefSelected} handleUpdateSelection={this.handleFilterChange} />
 
                     <Button type='submit' label='Search' onClick={this.handleClick} disabled={this.state.autoUpdateChecked}/>
                 </div>

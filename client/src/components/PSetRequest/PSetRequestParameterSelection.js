@@ -1,39 +1,46 @@
 import React from 'react';
 import './PSetRequest.css';
 
+// props: isHidden, parameterName, parameter[]
+
 class PSetRequestParameterSelection extends React.Component{
 
     constructor(){
         super();
         this.displaySelectedParameter = this.displaySelectedParameter.bind(this);
-        this.displayNoneSelectedMsg = this.displayNoneSelectedMsg.bind(this);
     }
 
     displaySelectedParameter(parameters){
         var str = '';
-        for(let i = 0; i < parameters.length; i++){
-            str += parameters[i].name;
-            if(i != parameters.length -1 ){
-                str += ', ';
+        if(Array.isArray(parameters)){
+            for(let i = 0; i < parameters.length; i++){
+                str += parameters[i].name;
+                if(i !== parameters.length -1 ){
+                    str += ', ';
+                }
             }
+        }else{
+            str = parameters.name;
         }
-        return(str);
-    }
-
-    displayNoneSelectedMsg(){
+        if(str){
+            return(str);
+        }
         return(
             <span className='noneSelectedMsg'>None selected</span>
         );
     }
 
     render(){
+        if(this.props.isHidden){
+            return(null);
+        }
         return(
             <div className='parameterSelectionSet'>
                 <div className='parameterName'>
                     {this.props.parameterName}:
                 </div>
                 <div className='parameterSelection'>
-                    {this.props.parameter.length ? this.displaySelectedParameter(this.props.parameter) : this.displayNoneSelectedMsg()}
+                    {this.displaySelectedParameter(this.props.parameter)}
                 </div>
             </div>
         );

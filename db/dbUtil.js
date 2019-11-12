@@ -46,10 +46,24 @@ function getQueryFilter(keyName, filterValue){
     return(filterObj);
 }
 
+function setId(db, collectionName, callback){
+    const collection = db.collection('counters');
+    collection.findOneAndUpdate(
+        { '_id': collectionName },
+        { '$inc': {'count': 1} },
+        { upsert: true, returnOriginal: false }, 
+        (err, result) => {
+            if(err){
+                callback(err, result);
+            }
+            callback(err, result.value);
+    });
+}
+
 
 module.exports = {
     
-    selectPSets: function(query, callback){   
+    selectPSets: function(query, callback){       
         connectWithClient((err, client) => {
             if(err){
                 callback({status: 'error', data: err});
@@ -57,7 +71,6 @@ module.exports = {
             const db = client.db('orcestra-dev');
             const collection = db.collection('pset');
             var queryFilterSet = getQueryFilterSet(query); 
-            console.log(queryFilterSet);
             collection.find(queryFilterSet).toArray((err, data) => {
                 if(err){
                     client.close();
@@ -67,6 +80,30 @@ module.exports = {
                 callback({status: 'success', data: data});
             });
         });   
+    },
+
+    insertPSetRequest: function(pset, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 'error', data: err});
+            }
+            const db = client.db('orcestra-dev');
+            setId(db, 'pset', (error, counter) => {
+                if(error){
+                    callback({status: 'error', data: error});
+                }
+                pset._id = counter.count;
+                const collection = db.collection('pset');
+                collection.insertOne(pset, (err, result) => {
+                    if(err){
+                        client.close();
+                        callback({status: 'error', data: err});
+                    }
+                    client.close();
+                    callback({status: 'success', data: {message: 'success'}});
+                });      
+            });   
+        });
     }
 
 }

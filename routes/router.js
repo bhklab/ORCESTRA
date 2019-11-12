@@ -10,5 +10,6 @@ const user = require('./user');
 // configuring router
 router.get('/', home.getHome);
 router.get('/pset', pset.getPsetList);
+router.post('/requestPset', pset.postPsetData);
 
 module.exports = router;

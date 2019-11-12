@@ -140,4 +140,21 @@ body .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-
 
 /* End PSetFilter component */
   
+body .p-inputtext {
+    font-size: 12px;
+}
+
+body .p-dropdown:not(.p-disabled).p-focus{
+    background-color: #555975;
+    border: 1px solid #555975;
+    box-shadow: 0 0 0 0.1em #555975;
+}
+
+body .p-dropdown-panel .p-dropdown-filter-container .p-dropdown-filter-icon {
+    color: #3D405A;
+}
+
+body .p-dropdown-panel .p-dropdown-filter-container {
+    width: 100%;
+}
 

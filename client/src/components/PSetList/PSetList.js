@@ -28,7 +28,7 @@ class PSetList extends React.Component{
             return(
                 <ul>
                     {list.map((pset) => 
-                        <li key={pset.doi}>
+                        <li key={pset._id}>
                             {pset.doi}
                         </li>
                     )}
@@ -60,7 +60,7 @@ class PSetList extends React.Component{
                                 <h2>Summary</h2>
                                 <div className='pSetSummaryContainer'>
                                     <div className='pSetSummaryItem'>
-                                        <span className='pSetSummaryNum'>{this.state.datasets.length}</span> {this.state.datasets.length == 1 ? ' match' : ' matches'} found.
+                                        <span className='pSetSummaryNum'>{this.state.datasets.length}</span> {this.state.datasets.length === 1 ? ' match' : ' matches'} found.
                                     </div>
                                     <div className='pSetSummaryItem'>
                                         <span className='pSetSummaryNum'>{this.state.selectedPSets.length}</span> selected.

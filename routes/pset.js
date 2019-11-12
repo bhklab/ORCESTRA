@@ -22,6 +22,40 @@ function flattenArray(arrayData){
     return(str);
 }
 
+function buildReqArray(parameters, datatype=null){
+    var paramArray = [];
+    if(!datatype){
+        for(let i = 0; i < parameters.length; i++){
+            paramArray.push(parameters[i].name);
+        }
+    }else{
+        for(let i = 0; i < parameters.length; i++){
+            if(parameters[i].datatype === datatype){
+                paramArray.push(parameters[i].name);
+            }    
+        }
+    }
+    return(paramArray);
+}
+
+function buildPSetObject(reqData){
+    var pset = {};
+    pset._id = null,
+    pset.status = 'pending';
+    pset.doi = '{ doi: }';
+    pset.datasetName = reqData.reqDataset.name;
+    pset.datasetVersion = reqData.reqDatasetVersion.name;
+    pset.dataType = buildReqArray(reqData.reqDatatype);
+    pset.genome = reqData.reqGenome.name;
+    pset.drugSensitivity = reqData.reqDrugSensitivity.name;
+    pset.rnaTool = buildReqArray(reqData.reqToolVersion, 'RNA');
+    pset.rnaRef = buildReqArray(reqData.reqRNAToolRef);
+    pset.exomeTool = buildReqArray(reqData.reqToolVersion, 'DNA');
+    pset.exomeRef = buildReqArray(reqData.reqDNAToolRef);
+    pset.metadata = '{ metadata }'
+    return(pset);
+}
+
 const getPsetList = function(req, res){
     dbUtil.selectPSets(req.query, function(result){
         if(result.status = 'success'){
@@ -34,49 +68,18 @@ const getPsetList = function(req, res){
 
 }
 
-const editPsetPage = function(req, res){
-    // let PsetId = req.params.id;
-    // let query = "SELECT * FROM `psets` WHERE id = '" + PsetId + "' ";
-    // db.query(query, (err, result) => {
-    //     if (err) {
-    //         return res.status(500).send(err);
-    //     }
-    //     res.render('edit-Pset.ejs', {
-    //         title: "Edit  Pset"
-    //         ,Pset: result[0]
-    //         ,message: ''
-    //     });
-    // });
-}
-
-const editPset = function(req, res){
-    // let PsetId = req.params.id;
-    // let metadata = req.body.metadata;
-
-    // let query = "UPDATE `psets` SET `metadata` = '" + metadata + "' WHERE `psets`.`id` = '" + PsetId + "'";
-    // db.query(query, (err, result) => {
-    //     if (err) {
-    //         return res.status(500).send(err);
-    //     }
-    //     res.redirect('/psets');
-    // });
-}
-
-const deletePset = function(req, res){
-//     let PsetId = req.params.id;
-//     let deleteUserQuery = 'DELETE FROM psets WHERE `psets`.`id` = "' + PsetId + '"';
-
-//     db.query(deleteUserQuery, (err, result) => {
-//        if (err) {
-//             return res.status(500).send(err);
-//         }
-//         res.redirect('/psets');
-//    });
+const postPsetData = function(req, res){
+    var pset = buildPSetObject(req.body.reqData);
+    dbUtil.insertPSetRequest(pset, function(result){
+        if(result.status = 'success'){
+            res.send(result.data);
+        }else{
+            res.status(500).send(result.data);
+        }
+    });
 }
 
 module.exports = {
     getPsetList,
-    editPsetPage,
-    editPset,
-    deletePset
+    postPsetData,
 };

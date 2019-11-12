@@ -6,7 +6,7 @@
 
 .psetRequestForm {
     background-color: rgba(255, 255, 255, 0.8);
-    font-size: 16px;
+    font-size: 14px;
     padding: 15px 30px 30px 30px;
     border-radius: 15px;
     width: 40%;
@@ -15,17 +15,6 @@
 
 .psetRequestForm form{
     margin-top: 30px;
-}
-
-.reqInputSet {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 50px;
-}
-
-.reqInput {
-    flex-grow: 1;
 }
 
 .requestSelectionSummary {
@@ -72,7 +61,7 @@
 
 .parameterSelectionSet {
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .parameterName {
