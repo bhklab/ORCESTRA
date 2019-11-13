@@ -13,6 +13,10 @@ function getQueryFilterSet(query){
     if(!query){
         return(querySet);
     } 
+
+    if(query.dtp){
+        queryArray.push(getQueryFilter('datatype', query.dtp));
+    }
     
     if(query.dsv){
         queryArray.push(getQueryFilter('datasetVersion', query.dsv));
@@ -22,12 +26,28 @@ function getQueryFilterSet(query){
         queryArray.push(getQueryFilter('datasetName', query.dsn));
     }
 
+    if(query.gnm){
+        queryArray.push(getQueryFilter('genome', query.gnm));
+    }
+
+    if(query.rnat){
+        queryArray.push(getQueryFilter('rnaTool', query.rnat));
+    }
+
     if(query.exot){
         queryArray.push(getQueryFilter('exomeTool', query.exot));
     }
 
     if(query.rnar){
         queryArray.push(getQueryFilter('rnaRef', query.rnar));
+    }
+
+    if(query.exor){
+        queryArray.push(getQueryFilter('exomeRef', query.exor));
+    }
+
+    if(query.dst){
+        queryArray.push(getQueryFilter('drugSensitivity', query.dst));
     }
 
     if(queryArray.length){
@@ -71,6 +91,7 @@ module.exports = {
             const db = client.db('orcestra-dev');
             const collection = db.collection('pset');
             var queryFilterSet = getQueryFilterSet(query); 
+            console.log(queryFilterSet);
             collection.find(queryFilterSet).toArray((err, data) => {
                 if(err){
                     client.close();

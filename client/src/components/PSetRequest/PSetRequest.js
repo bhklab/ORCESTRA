@@ -30,7 +30,6 @@ class PSetRequest extends React.Component{
         this.handleSubmitRequest = this.handleSubmitRequest.bind(this);
         this.updateParameterSelection = this.updateParameterSelection.bind(this);
         this.queryPSet = this.queryPSet.bind(this);
-        this.evaluateParameterInput = this.evaluateParameterInput.bind(this);
         this.isNoneSelected = this.isNoneSelected.bind(this);
         this.displayPSetLink = this.displayPSetLink.bind(this);
         this.updateDatatypeSelectionEvent = this.updateDatatypeSelectionEvent.bind(this);
@@ -66,39 +65,72 @@ class PSetRequest extends React.Component{
     updateParameterSelection = event => {
         event.preventDefault();
         this.setState({[event.target.id]: event.value}, () => {
-            var filterset = APIHelper.getFilterSet(null, this.state.reqGenome, this.state.reqToolVersion, this.state.reqDataset, this.state.reqDatasetVersion);
+            console.log(this.state.reqDataset);
+            var filterset = APIHelper.getFilterSet(
+                this.state.reqDatatype, 
+                this.state.reqGenome, 
+                this.state.reqToolVersion, 
+                this.state.reqDataset, 
+                this.state.reqDatasetVersion,
+                this.state.reqDrugSensitivity,
+                this.state.reqRNAToolRef,
+                this.state.reqDNAToolRef
+            );
             console.log(filterset);
-            var apiStr = APIHelper.buildAPIStr(filterset);
-            console.log(apiStr);
-            this.queryPSet(apiStr);
+            if(!this.isNoneSelected(filterset)){
+                var apiStr = APIHelper.buildAPIStr(filterset);
+                console.log(apiStr);
+                this.queryPSet(apiStr);
+            }else{
+                this.setState({queryResult: []});
+            }
         });
     }
 
     updateDatatypeSelectionEvent = event => {
         this.setState({[event.target.id]: event.value}, () => {
             this.setToolVersionState(event, () => {
-                console.log('RNARef:' + this.state.hideRNARef);
-                console.log('DNARef:' + this.state.hideDNARef);
-                var filterset = APIHelper.getFilterSet(null, this.state.reqGenome, this.state.reqToolVersion, this.state.reqDataset, this.state.reqDatasetVersion);
+                console.log('toolversion: ' + this.state.reqToolVersion);
+                var filterset = APIHelper.getFilterSet(
+                    this.state.reqDatatype, 
+                    this.state.reqGenome, 
+                    this.state.reqToolVersion, 
+                    this.state.reqDataset, 
+                    this.state.reqDatasetVersion,
+                    this.state.reqDrugSensitivity,
+                    this.state.reqRNAToolRef,
+                    this.state.reqDNAToolRef
+                );
                 console.log(filterset);
-                var apiStr = APIHelper.buildAPIStr(filterset);
-                console.log(apiStr);
-                this.queryPSet(apiStr);
+                if(!this.isNoneSelected(filterset)){
+                    var apiStr = APIHelper.buildAPIStr(filterset);
+                    console.log(apiStr);
+                    this.queryPSet(apiStr);
+                }else{
+                    this.setState({queryResult: []});
+                }
             });
         });   
     }
 
     setToolVersionState(event, callback){
         if(event.value.length === 1){
+            var tools = this.state.reqToolVersion;
             if(this.state.reqDatatype[0].name === 'RNA'){
+                tools = tools.filter((tool)=>{return(tool.datatype==='RNA')});              
                 this.setState({
                     toolVersionOptions: FormData.rnaToolVersionOptions,
-                    hideDNARef: true
+                    hideDNARef: true,
+                    reqToolVersion: tools,
+                    reqDNAToolRef: []
                 }, callback);
             }else{
+                tools = tools.filter((tool)=>{return(tool.datatype==='DNA')}); 
                 this.setState({
                     toolVersionOptions: FormData.dnaToolVersionOptions, 
-                    hideRNARef: true
+                    hideRNARef: true,
+                    reqToolVersion: tools,
+                    reqRNAToolRef: []
                 }, callback);
             }
         }else{
@@ -113,27 +145,19 @@ class PSetRequest extends React.Component{
     queryPSet(api){
         fetch(api)  
             .then(res => res.json())
-            .then(resData => this.setState({queryResult: resData}));
+            .then(resData => this.setState({queryResult: resData}, ()=>{console.log(this.state.queryResult)}));
     }
 
-    evaluateParameterInput(){
-        if(this.isNoneSelected()){
-            this.setState({queryResult: []}, () => {
-                return(0);
-            });
-        }else{
-            return(this.state.queryResult.length);
-        }   
-    }
-
-    isNoneSelected(){
-        if((!this.state.reqDataset || !this.state.reqDataset.length) && 
-            (!this.state.reqDatasetVersion || !this.state.reqDatasetVersion.length) && 
-            (!this.state.reqDatatype || !this.state.reqDatatype.length) && 
-            (!this.state.reqDrugSensitivity || !this.state.reqDrugSensitivity.length) && 
-            (!this.state.reqGenome || !this.state.reqGenome.length) &&
-            (!this.state.reqRNAToolRef || !this.state.reqRNAToolRef.length) &&
-            (!this.state.reqToolVersion || !this.state.reqToolVersion.length)){
+    isNoneSelected(filterset){
+        if(!filterset.datatype.length && 
+            !filterset.datasetName.length && 
+            !filterset.datasetVersion.length && 
+            !filterset.genome.length && 
+            !filterset.rnaTool.length &&
+            !filterset.exomeTool.length &&
+            !filterset.rnaRef.length &&
+            !filterset.exomeRef.length &&
+            !filterset.drugSensitivity.length){
             return(true);
         }
         return(false);
@@ -184,9 +208,9 @@ class PSetRequest extends React.Component{
                             <div className='psetAvailability'>
                                 <h3>Available PSets with Your Parameter Selection</h3>
                                 <div className='psetAvail'>
-                                    <span className='pSetNum'>{this.state.queryResult.length ? this.evaluateParameterInput() : '0'}</span> 
-                                    {this.state.queryResult.length === 1 && !this.isNoneSelected() ? 'match' : 'matches' } found.
-                                    <span className='pSetAvailLink'>{ this.state.queryResult.length && !this.isNoneSelected() ? this.displayPSetLink() : '' }</span>
+                                    <span className='pSetNum'>{this.state.queryResult.length}</span> 
+                                    {this.state.queryResult.length === 1 ? 'match' : 'matches' } found.
+                                    <span className='pSetAvailLink'>{ this.state.queryResult.length ? this.displayPSetLink() : '' }</span>
                                 </div>
                             </div>
                             <div className='requestProfile'>
