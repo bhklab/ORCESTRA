@@ -7,6 +7,8 @@ import {InputText} from 'primereact/inputtext';
 import * as APIHelper from '../Shared/PSetAPIHelper';
 import PSetRequestParameterSelection from './PSetRequestParameterSelection';
 import PSetParamOptions from '../Shared/PSetParamOptions/PSetParamOptions';
+import PSetRequestModal from './subcomponents/PSetRequestModal';
+import {Messages} from 'primereact/messages';
 
 class PSetRequest extends React.Component{
     
@@ -14,6 +16,7 @@ class PSetRequest extends React.Component{
         super();
         this.state = {
             queryResult: [],
+            selectedPSets: [],
             reqDataset: {},
             reqDatasetVersion: {},
             reqGenome: {},
@@ -25,19 +28,34 @@ class PSetRequest extends React.Component{
             reqEmail: '',
             toolVersionOptions: FormData.rnaToolVersionOptions.concat(FormData.dnaToolVersionOptions),
             hideRNARef: false,
-            hideDNARef: false
+            hideDNARef: false,
+            notReadyToSubmit: true,
+            isModalVisible: false,
+            disableModalSaveBtn: true
         }
         this.handleSubmitRequest = this.handleSubmitRequest.bind(this);
-        this.updateParameterSelection = this.updateParameterSelection.bind(this);
+        this.saveSelectedPSets = this.saveSelectedPSets.bind(this);
+        this.afterSubmitRequest = this.afterSubmitRequest.bind(this);
         this.queryPSet = this.queryPSet.bind(this);
-        this.isNoneSelected = this.isNoneSelected.bind(this);
-        this.displayPSetLink = this.displayPSetLink.bind(this);
+        
+        this.updateParameterSelection = this.updateParameterSelection.bind(this);
         this.updateDatatypeSelectionEvent = this.updateDatatypeSelectionEvent.bind(this);
+        this.updateReqEmailInputEvent = this.updateReqEmailInputEvent.bind(this);
         this.setToolVersionState = this.setToolVersionState.bind(this);
+        this.isNoneSelected = this.isNoneSelected.bind(this);
+        this.isNotReadyToSubmit = this.isNotReadyToSubmit.bind(this);
+        this.isSelected = this.isSelected.bind(this);
+        this.isValidEmail = this.isValidEmail.bind(this);
+        this.initializeState = this.initializeState.bind(this);
+        
+        this.showModal = this.showModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
+        this.updatePSetSelection = this.updatePSetSelection.bind(this);
     }
 
     handleSubmitRequest = event => {
         event.preventDefault();
+        this.notReadyToSubmit = true;
         fetch('/requestPset', {
             method: 'POST',
             body: JSON.stringify({
@@ -58,14 +76,23 @@ class PSetRequest extends React.Component{
             }
         })
             .then(res => res.json())
-            .then(resData => console.log('response: ' + resData.message))
-            .catch(err => console.log('error: ' + err));
+            .then(resData => this.afterSubmitRequest(1, resData))
+            .catch(err => this.afterSubmitRequest(0, err));
+    }
+
+    afterSubmitRequest(success, resData){
+        this.initializeState();
+        if(success){
+            this.messages.show({severity: 'success', summary: resData.summary, detail: resData.message});
+        }else{
+            this.messages.show({severity: 'error', summary: 'An error occured', detail: resData });
+        }    
     }
 
     updateParameterSelection = event => {
         event.preventDefault();
+        this.state.notReadyToSubmit = this.isNotReadyToSubmit();
         this.setState({[event.target.id]: event.value}, () => {
-            console.log(this.state.reqDataset);
             var filterset = APIHelper.getFilterSet(
                 this.state.reqDatatype, 
                 this.state.reqGenome, 
@@ -83,14 +110,15 @@ class PSetRequest extends React.Component{
                 this.queryPSet(apiStr);
             }else{
                 this.setState({queryResult: []});
-            }
+            } 
         });
     }
 
     updateDatatypeSelectionEvent = event => {
+        event.preventDefault();
+        this.state.notReadyToSubmit = this.isNotReadyToSubmit();
         this.setState({[event.target.id]: event.value}, () => {
             this.setToolVersionState(event, () => {
-                console.log('toolversion: ' + this.state.reqToolVersion);
                 var filterset = APIHelper.getFilterSet(
                     this.state.reqDatatype, 
                     this.state.reqGenome, 
@@ -111,6 +139,12 @@ class PSetRequest extends React.Component{
                 }
             });
         });   
+    }
+
+    updateReqEmailInputEvent = event => {
+        event.preventDefault();
+        this.state.notReadyToSubmit = this.isNotReadyToSubmit();
+        this.setState({reqEmail: event.target.value});
     }
 
     setToolVersionState(event, callback){
@@ -148,6 +182,34 @@ class PSetRequest extends React.Component{
             .then(resData => this.setState({queryResult: resData}, ()=>{console.log(this.state.queryResult)}));
     }
 
+    saveSelectedPSets = event => {
+        if(this.state.selectedPSets.length){
+            var userPSet = { username: 'user1' };
+            event.preventDefault();
+            console.log(this.state.selectedPSets);
+            var psetId = [];
+            for(let i = 0; i < this.state.selectedPSets.length; i++){
+                psetId.push(this.state.selectedPSets[i]._id);
+            }
+            console.log(psetId);
+            userPSet.psetId = psetId;
+
+            fetch('/updateUserPSet', {
+                method: 'POST',
+                body: JSON.stringify({reqData: userPSet}),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+                .then(res => res.json())
+                .then(resData => this.afterSubmitRequest(1, resData))
+                .catch(err => this.afterSubmitRequest(0, err));
+
+        }else{
+            console.log('nothing to save');
+        }
+    }
+
     isNoneSelected(filterset){
         if(!filterset.datatype.length && 
             !filterset.datasetName.length && 
@@ -163,18 +225,127 @@ class PSetRequest extends React.Component{
         return(false);
     }
 
-    displayPSetLink(){
-        return(
-            <span><a href='#'>View Available PSet(s)</a></span>
-        );
+    isNotReadyToSubmit(){
+        if(!this.isSelected(this.state.reqDatatype)){
+            return(true);
+        }else if(this.state.reqDatatype.length === 1){
+            if(this.state.reqDatatype[0] === 'RNA' && !this.isSelected(this.state.reqRNAToolRef)){
+                return(true);
+            }else if(this.state.reqDatatype[0] === 'DNA' && !this.isSelected(this.state.reqDNAToolRef)){
+                return(true);
+            }
+        }else{
+            if(!this.isSelected(this.state.reqRNAToolRef)){
+                return(true);
+            }
+            if(!this.isSelected(this.state.reqDNAToolRef)){
+                return(true);
+            }
+        }
+
+        if(!this.isSelected(this.state.reqGenome)){
+            return(true);
+        } 
+        if(!this.isSelected(this.state.reqToolVersion)){
+            return(true);
+        } 
+        if(!this.isSelected(this.state.reqDataset)){
+            return(true);
+        }
+        if(!this.isSelected(this.state.reqDatasetVersion)){
+            return(true);
+        }
+        if(!this.isSelected(this.state.reqDrugSensitivity)){
+            return(true);
+        }
+        if(!this.isValidEmail(this.state.reqEmail)){
+            return(true);
+        }
+        return(false);
+    }
+
+    isSelected(reqParam){
+        if(typeof reqParam === 'undefined' || reqParam === null){
+            return(false);
+        }
+        if(Array.isArray(reqParam) && !reqParam.length){
+            return(false);
+        }
+        return(true);
+    }
+
+    isValidEmail(email){
+        if(typeof email === 'undefined' || email === null){
+            return(false);
+        }
+        if(email.length === 0){
+            return(false);
+        }
+        return(true);
+    }
+
+    initializeState(){
+        this.setState({
+            queryResult: [],
+            selectedPSets: [],
+            reqDataset: {},
+            reqDatasetVersion: {},
+            reqGenome: {},
+            reqDrugSensitivity: {},
+            reqDatatype: [],
+            reqToolVersion: [],
+            reqRNAToolRef: [],
+            reqDNAToolRef: [],
+            reqEmail: '',
+            toolVersionOptions: FormData.rnaToolVersionOptions.concat(FormData.dnaToolVersionOptions),
+            hideRNARef: false,
+            hideDNARef: false,
+            notReadyToSubmit: true,
+            isModalVisible: false,
+            disableModalSaveBtn: true
+        });
+    }
+
+    showModal(){
+        this.setState({isModalVisible: true});
     }
     
+    hideModal(){
+        this.setState({
+            isModalVisible: false, 
+            selectedPSets: [],
+            disableModalSaveBtn: true
+        });
+    }
+
+    updatePSetSelection(value){
+        this.setState({selectedPSets: value}, () => {
+            if(this.isSelected(this.state.selectedPSets)){
+                this.setState({disableModalSaveBtn: false});
+            }
+        });
+    }
+
     render(){
+        const availablePSetModalLink = ( 
+            <PSetRequestModal 
+                visible={this.state.isModalVisible} 
+                show={this.showModal} 
+                hide={this.hideModal} 
+                tableValue={this.state.queryResult} 
+                selectedValue={this.state.selectedPSets}
+                disableSaveBtn={this.state.disableModalSaveBtn}
+                onSelectionChange={this.updatePSetSelection}
+                onSave={this.saveSelectedPSets}
+            />
+        );
+
         return(
             <React.Fragment>
                 <Navigation />
                 <div className='pageContent'>
                     <h1>Request Pipeline Analysis</h1>
+                    <Messages ref={(el) => this.messages = el} />
                     <div className='psetRequest'>
                         <div className='psetRequestForm'>
                             <h3>Pipeline Analysis Request Form</h3>
@@ -198,10 +369,10 @@ class PSetRequest extends React.Component{
 
                                 <div className='reqInputSet'>
                                     <label>Email to receive DOI:</label>
-                                    <InputText className='paramInput' value={this.state.value} onChange={(e) => this.setState({value: e.target.value})} />
+                                    <InputText id='reqEmail' className='paramInput' value={this.state.reqEmail || ''} onChange={this.updateReqEmailInputEvent} />
                                 </div>
 
-                                <Button label='Submit Request' type='submit' onClick={this.handleSubmitRequest}/>
+                                <Button label='Submit Request' type='submit' onClick={this.handleSubmitRequest} disabled={this.state.notReadyToSubmit}/>
                             </form>
                         </div>
                         <div className='requestSelectionSummary'>
@@ -210,7 +381,7 @@ class PSetRequest extends React.Component{
                                 <div className='psetAvail'>
                                     <span className='pSetNum'>{this.state.queryResult.length}</span> 
                                     {this.state.queryResult.length === 1 ? 'match' : 'matches' } found.
-                                    <span className='pSetAvailLink'>{ this.state.queryResult.length ? this.displayPSetLink() : '' }</span>
+                                    <span className='pSetAvailLink'>{ this.state.queryResult.length ? availablePSetModalLink : '' }</span>
                                 </div>
                             </div>
                             <div className='requestProfile'>

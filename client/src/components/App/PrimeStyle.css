@@ -158,3 +158,10 @@ body .p-dropdown-panel .p-dropdown-filter-container {
     width: 100%;
 }
 
+body .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+    background-color: #555975;
+}
+body .p-link:focus {
+    box-shadow: 0 0 0 0.2em #555975;
+}
+

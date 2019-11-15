@@ -4,6 +4,7 @@ import App from './App/App';
 import PSetList from './PSetList/PSetList';
 import PSetRequest from './PSetRequest/PSetRequest';
 import Stats from './Stats/Stats'
+import Profile from './Profile/Profile';
 
 const Router = () => (
     <BrowserRouter>
@@ -12,6 +13,7 @@ const Router = () => (
             <Route exact path ='/PSetList' component={PSetList}/>
             <Route exact path ='/PSetRequest' component={PSetRequest}/>
             <Route exact path ='/Stats' component={Stats}/>
+            <Route exact path ='/Profile' component={Profile}/>
         </Switch>
     </BrowserRouter>
 )

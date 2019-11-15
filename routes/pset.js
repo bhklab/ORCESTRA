@@ -1,5 +1,3 @@
-//const fs = require('fs');
-const request = require('request');
 const dbUtil = require('../db/dbUtil');
 
 function restructureData(dataset){
@@ -58,7 +56,7 @@ function buildPSetObject(reqData){
 
 const getPsetList = function(req, res){
     dbUtil.selectPSets(req.query, function(result){
-        if(result.status = 'success'){
+        if(result.status){
             var dataset = restructureData(result.data);
             res.send(dataset);
         }else{
@@ -71,7 +69,7 @@ const getPsetList = function(req, res){
 const postPsetData = function(req, res){
     var pset = buildPSetObject(req.body.reqData);
     dbUtil.insertPSetRequest(pset, function(result){
-        if(result.status = 'success'){
+        if(result.status){
             res.send(result.data);
         }else{
             res.status(500).send(result.data);

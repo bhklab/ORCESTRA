@@ -10,6 +10,7 @@ const Navigation = () => (
             <div><NavLink exact to="/PSetList" activeClassName='active-link'>Search</NavLink></div>
             <div><NavLink exact to="/PSetRequest" activeClassName='active-link'>Request</NavLink></div>
             <div><NavLink exact to="/Stats" activeClassName='active-link'>Statistics</NavLink></div>
+            <div><NavLink exact to="/Profile" activeClassName='active-link'>Profile</NavLink></div>
             <div><NavLink exact to="https://pharmacodb.pmgenomics.ca">PharmacoDB</NavLink></div>
             <div><NavLink exact to="https://www.pmgenomics.ca/bhklab/">Contact</NavLink></div>    
         </div>

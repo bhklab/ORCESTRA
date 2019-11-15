@@ -80,7 +80,6 @@ function setId(db, collectionName, callback){
     });
 }
 
-
 module.exports = {
     
     selectPSets: function(query, callback){       
@@ -91,14 +90,14 @@ module.exports = {
             const db = client.db('orcestra-dev');
             const collection = db.collection('pset');
             var queryFilterSet = getQueryFilterSet(query); 
-            console.log(queryFilterSet);
+            //console.log(queryFilterSet);
             collection.find(queryFilterSet).toArray((err, data) => {
                 if(err){
                     client.close();
-                    callback({status: 'error', data: err});
+                    callback({status: 0, data: err});
                 }
                 client.close();
-                callback({status: 'success', data: data});
+                callback({status: 1, data: data});
             });
         });   
     },
@@ -106,24 +105,54 @@ module.exports = {
     insertPSetRequest: function(pset, callback){
         connectWithClient((err, client) => {
             if(err){
-                callback({status: 'error', data: err});
+                callback({status: 0, data: err});
             }
             const db = client.db('orcestra-dev');
             setId(db, 'pset', (error, counter) => {
                 if(error){
-                    callback({status: 'error', data: error});
+                    callback({status: 0, data: error});
                 }
                 pset._id = counter.count;
                 const collection = db.collection('pset');
                 collection.insertOne(pset, (err, result) => {
                     if(err){
                         client.close();
-                        callback({status: 'error', data: err});
+                        callback({status: 0, data: err});
                     }
                     client.close();
-                    callback({status: 'success', data: {message: 'success'}});
+                    callback({status: 1, 
+                        data: {
+                            summary: 'Request Submitted',
+                            message: 'Your request has been successfully submitted'
+                        }});
                 });      
             });   
+        });
+    },
+
+    updateUserPset: function(userPSet, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db('orcestra-dev');
+            const collection = db.collection('user');
+            collection.findOneAndUpdate(
+                {'username': userPSet.username},
+                {'$addToSet': {'userPSets': {'$each': userPSet.psetId}}},
+                (err, result) => {
+                    if(err){
+                        client.close();
+                        callback({status: 0, data: err});
+                    }
+                    client.close();
+                    callback({status: 1, 
+                        data: {
+                            summary: 'PSets Saved',
+                            message: 'The selected PSets have been saved.'
+                        }});
+                }
+            );
         });
     }
 

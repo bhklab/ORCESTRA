@@ -16,6 +16,9 @@ export function getFilterSet(datatype, genome, toolVersion, dataset, datasetVers
 
 function toFilterArray(selectedValues){
     var filterArray = [];
+    if(typeof selectedValues === 'undefined' || selectedValues === null){
+        return(filterArray);
+    }
     if(Object.keys(selectedValues).length === 0 && selectedValues.constructor === Object){
         return(filterArray);
     }
@@ -24,7 +27,7 @@ function toFilterArray(selectedValues){
             filterArray.push(selectedValues[i].name);
         }
         return(filterArray);
-    }
+    }  
     filterArray.push(selectedValues.name);
     return(filterArray);
 }
