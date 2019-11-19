@@ -1,24 +1,5 @@
 const dbUtil = require('../db/dbUtil');
-
-function restructureData(dataset){
-    tools = '';
-    for(i = 0; i < dataset.length; i++){
-        dataset[i].rnaTool = flattenArray(dataset[i].rnaTool);
-        dataset[i].rnaRef = flattenArray(dataset[i].rnaRef);
-        dataset[i].exomeTool = flattenArray(dataset[i].exomeTool);
-        dataset[i].exomeRef = flattenArray(dataset[i].exomeRef);
-    }
-    return dataset;
-}
-
-function flattenArray(arrayData){
-    var str ='';
-    for(let i = 0; i < arrayData.length; i++){
-        str += arrayData[i];
-        str += '\n';
-    }
-    return(str);
-}
+const helper = require('../helper/apiHelper');
 
 function buildReqArray(parameters, datatype=null){
     var paramArray = [];
@@ -57,7 +38,7 @@ function buildPSetObject(reqData){
 const getPsetList = function(req, res){
     dbUtil.selectPSets(req.query, function(result){
         if(result.status){
-            var dataset = restructureData(result.data);
+            var dataset = helper.restructureData(result.data);
             res.send(dataset);
         }else{
             res.status(500).send(result.data);
@@ -68,7 +49,17 @@ const getPsetList = function(req, res){
 
 const postPsetData = function(req, res){
     var pset = buildPSetObject(req.body.reqData);
-    dbUtil.insertPSetRequest(pset, function(result){
+    dbUtil.insertPSetRequest(pset, req.body.reqData.reqEmail, function(result){
+        if(result.status){
+            res.send(result.data);
+        }else{
+            res.status(500).send(result.data);
+        }
+    });
+}
+
+const cancelPSetRequest = function(req, res){
+    dbUtil.cancelPSetRequest(req.body.psetID, req.body.username, function(result){
         if(result.status){
             res.send(result.data);
         }else{
@@ -80,4 +71,5 @@ const postPsetData = function(req, res){
 module.exports = {
     getPsetList,
     postPsetData,
+    cancelPSetRequest
 };

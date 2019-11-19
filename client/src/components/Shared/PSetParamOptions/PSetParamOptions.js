@@ -8,11 +8,6 @@ import {Dropdown} from 'primereact/dropdown';
 
 class PSetRequestParamOptions extends React.Component {
 
-    constructor(){
-        super();
-
-    }
-
     render(){
         if(this.props.isHidden){
             return(null);

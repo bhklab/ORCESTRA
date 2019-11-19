@@ -56,7 +56,7 @@ class PSetRequest extends React.Component{
     handleSubmitRequest = event => {
         event.preventDefault();
         this.notReadyToSubmit = true;
-        fetch('/requestPset', {
+        fetch('/pset/request', {
             method: 'POST',
             body: JSON.stringify({
                 reqData: {
@@ -85,13 +85,13 @@ class PSetRequest extends React.Component{
         if(success){
             this.messages.show({severity: 'success', summary: resData.summary, detail: resData.message});
         }else{
-            this.messages.show({severity: 'error', summary: 'An error occured', detail: resData });
+            this.messages.show({severity: 'error', summary: 'An error occured', detail: resData.toString(), sticky: true});
         }    
     }
 
     updateParameterSelection = event => {
         event.preventDefault();
-        this.state.notReadyToSubmit = this.isNotReadyToSubmit();
+        this.setState({notReadyToSubmit: this.isNotReadyToSubmit()});
         this.setState({[event.target.id]: event.value}, () => {
             var filterset = APIHelper.getFilterSet(
                 this.state.reqDatatype, 
@@ -116,7 +116,7 @@ class PSetRequest extends React.Component{
 
     updateDatatypeSelectionEvent = event => {
         event.preventDefault();
-        this.state.notReadyToSubmit = this.isNotReadyToSubmit();
+        this.setState({notReadyToSubmit: this.isNotReadyToSubmit()});
         this.setState({[event.target.id]: event.value}, () => {
             this.setToolVersionState(event, () => {
                 var filterset = APIHelper.getFilterSet(
@@ -143,7 +143,7 @@ class PSetRequest extends React.Component{
 
     updateReqEmailInputEvent = event => {
         event.preventDefault();
-        this.state.notReadyToSubmit = this.isNotReadyToSubmit();
+        this.setState({notReadyToSubmit: this.isNotReadyToSubmit()});
         this.setState({reqEmail: event.target.value});
     }
 
@@ -184,7 +184,7 @@ class PSetRequest extends React.Component{
 
     saveSelectedPSets = event => {
         if(this.state.selectedPSets.length){
-            var userPSet = { username: 'user1' };
+            var userPSet = { username: 'user1@email.com' };
             event.preventDefault();
             console.log(this.state.selectedPSets);
             var psetId = [];
@@ -194,7 +194,7 @@ class PSetRequest extends React.Component{
             console.log(psetId);
             userPSet.psetId = psetId;
 
-            fetch('/updateUserPSet', {
+            fetch('/user/pset/add', {
                 method: 'POST',
                 body: JSON.stringify({reqData: userPSet}),
                 headers: {

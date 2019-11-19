@@ -1,12 +1,40 @@
 const dbUtil = require('../db/dbUtil');
+const helper = require('../helper/apiHelper');
 
-function getUser(){
-
+function getUser(req, res){
+    console.log(req.query.username);
+    dbUtil.selectUser(req.query.username, function(result){
+        if(result.status){
+            res.send(result.data);
+        }else{
+            res.status(500).send(result.data);
+        }
+    });
 }
 
-function updateUserPset(req, res){
+function getUserPSet(req, res){
+    dbUtil.selectUserPSets(req.query.username, function(result){
+        if(result.status){
+            res.send(helper.restructureData(result.data));
+        }else{
+            res.status(500).send(result.data);
+        }
+    });
+}
+
+function addToUserPset(req, res){
     var userPSet = req.body.reqData;
-    dbUtil.updateUserPset(userPSet, function(result){
+    dbUtil.addToUserPset(userPSet, function(result){
+        if(result.status){
+            res.send(result.data);
+        }else{
+            res.status(500).send(result.data);
+        }
+    });
+}
+
+function removeUserPSet(req, res){
+    dbUtil.removeUserPSets(req.body.username, req.body.psetID, function(result){
         if(result.status){
             res.send(result.data);
         }else{
@@ -17,5 +45,7 @@ function updateUserPset(req, res){
 
 module.exports = {
     getUser,
-    updateUserPset
+    getUserPSet,
+    addToUserPset,
+    removeUserPSet
 }

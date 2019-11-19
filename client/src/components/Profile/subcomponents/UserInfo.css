@@ -1,0 +1,21 @@
+.userInfoContainer {
+    color: #3D405A;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    width: 20%;
+    max-width: 300px;
+    max-height: 210px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    border-radius: 10px;
+}
+
+.userInfo{
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.userInfoBtn{
+    margin-top: 40px;
+}

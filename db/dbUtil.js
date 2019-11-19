@@ -15,7 +15,7 @@ function getQueryFilterSet(query){
     } 
 
     if(query.dtp){
-        queryArray.push(getQueryFilter('datatype', query.dtp));
+        queryArray.push(getQueryFilter('dataType', query.dtp));
     }
     
     if(query.dsv){
@@ -49,6 +49,8 @@ function getQueryFilterSet(query){
     if(query.dst){
         queryArray.push(getQueryFilter('drugSensitivity', query.dst));
     }
+
+    queryArray.push({'status': 'complete'});
 
     if(queryArray.length){
         querySet = {$and: queryArray};
@@ -90,7 +92,6 @@ module.exports = {
             const db = client.db('orcestra-dev');
             const collection = db.collection('pset');
             var queryFilterSet = getQueryFilterSet(query); 
-            //console.log(queryFilterSet);
             collection.find(queryFilterSet).toArray((err, data) => {
                 if(err){
                     client.close();
@@ -102,7 +103,7 @@ module.exports = {
         });   
     },
 
-    insertPSetRequest: function(pset, callback){
+    insertPSetRequest: function(pset, username, callback){
         connectWithClient((err, client) => {
             if(err){
                 callback({status: 0, data: err});
@@ -119,18 +120,109 @@ module.exports = {
                         client.close();
                         callback({status: 0, data: err});
                     }
-                    client.close();
-                    callback({status: 1, 
-                        data: {
-                            summary: 'Request Submitted',
-                            message: 'Your request has been successfully submitted'
-                        }});
+                    const user = db.collection('user');
+                    user.findOneAndUpdate(
+                        {'username': username},
+                        {'$addToSet': {'userPSets': pset._id}},
+                        {'upsert': true},
+                        (err, result) => {
+                            if(err){
+                                client.close();
+                                callback({status: 0, data: err});
+                            }
+                            client.close();
+                            callback({
+                                status: 1, 
+                                data: {
+                                    summary: 'Request Submitted',
+                                    message: 'Your request has been successfully submitted'
+                                }
+                            });
+                    });
                 });      
             });   
         });
     },
 
-    updateUserPset: function(userPSet, callback){
+    cancelPSetRequest: function(psetID, username=null, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db('orcestra-dev');
+            const pset = db.collection('pset');
+            pset.deleteMany({'_id': {'$in': psetID}}, (err, data) => {
+                if(err){
+                    client.close();
+                    callback({status: 0, data: err});
+                }
+                const user = db.collection('user');
+                user.findOneAndUpdate(
+                    {'username': username},
+                    {'$pull': {'userPSets': {'$in': psetID}}},
+                    (err, result) => {
+                        if(err){
+                            client.close();
+                            callback({status: 0, data: err});
+                        }
+                        client.close();
+                        callback({
+                            status: 1, 
+                            data: {
+                                summary: 'PSet Request(s) Cancelled',
+                                message: 'The selected PSet request(s) have been cancelled.'
+                            }
+                        });
+                    }
+                );
+            });
+        });
+    },
+
+    selectUser: function(username, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db('orcestra-dev');
+            const user = db.collection('user');
+            user.findOne({'username': username}, (err, data) => {
+                if(err){
+                    client.close();
+                    callback({status: 0, data: err});
+                }
+                client.close();
+                callback({status: 1, data: data});
+            });
+        });
+    },
+
+    selectUserPSets: function(username, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db('orcestra-dev');
+            const user = db.collection('user');
+            user.findOne({'username': username}, (err, user) => {
+                if(err){
+                    client.close();
+                    callback({status: 0, data: err});
+                }
+                const pset = db.collection('pset');
+                pset.find({'_id': {'$in': user.userPSets}}).toArray((err, data) => {
+                    if(err){
+                        client.close();
+                        callback({status: 0, data: err});
+                    }
+                    client.close();
+                    callback({status: 1, data: data});
+                });
+            });
+        });
+    },
+
+    addToUserPset: function(userPSet, callback){
         connectWithClient((err, client) => {
             if(err){
                 callback({status: 0, data: err});
@@ -150,6 +242,32 @@ module.exports = {
                         data: {
                             summary: 'PSets Saved',
                             message: 'The selected PSets have been saved.'
+                        }});
+                }
+            );
+        });
+    },
+
+    removeUserPSets: function(username, userPSets, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db('orcestra-dev');
+            const collection = db.collection('user');
+            collection.findOneAndUpdate(
+                {'username': username},
+                {'$pull': {'userPSets': {'$in': userPSets}}},
+                (err, result) => {
+                    if(err){
+                        client.close();
+                        callback({status: 0, data: err});
+                    }
+                    client.close();
+                    callback({status: 1, 
+                        data: {
+                            summary: 'Updated Saved PSets',
+                            message: 'The selected PSet(s) have been removed from the saved list.'
                         }});
                 }
             );

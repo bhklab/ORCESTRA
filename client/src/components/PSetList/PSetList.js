@@ -56,7 +56,7 @@ class PSetList extends React.Component{
     saveSelectedPSets = event => {
         event.preventDefault();
         if(this.state.selectedPSets.length){
-            var userPSet = { username: 'user1' };
+            var userPSet = { username: 'user1@email.com' };
             console.log(this.state.selectedPSets);
             var psetId = [];
             for(let i = 0; i < this.state.selectedPSets.length; i++){
@@ -65,7 +65,7 @@ class PSetList extends React.Component{
             console.log(psetId);
             userPSet.psetId = psetId;
 
-            fetch('/updateUserPSet', {
+            fetch('/user/pset/add', {
                 method: 'POST',
                 body: JSON.stringify({reqData: userPSet}),
                 headers: {
@@ -86,7 +86,7 @@ class PSetList extends React.Component{
         if(success){
             this.messages.show({severity: 'success', summary: resData.summary, detail: resData.message});
         }else{
-            this.messages.show({severity: 'error', summary: 'An error occured', detail: resData });
+            this.messages.show({severity: 'error', summary: 'An error occured', detail: resData.toString(), sticky: true});
         }    
     }
 

@@ -1,0 +1,24 @@
+.userPSet {
+    width: 100%;
+    max-width: 1300px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    color: #3D405A;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.userPSetContent{
+    margin-top: 20px;
+}
+
+.userPSet h2{
+    margin: 0;
+    padding-top: 0.65em;
+}
+
+.footer{
+    margin-top: 20px;
+}

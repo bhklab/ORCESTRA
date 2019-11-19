@@ -8,8 +8,16 @@ const user = require('./user');
 
 // configuring router
 router.get('/', home.getHome);
+
+// pset
 router.get('/pset', pset.getPsetList);
-router.post('/requestPset', pset.postPsetData);
-router.post('/updateUserPSet', user.updateUserPset);
+router.post('/pset/request', pset.postPsetData);
+router.post('/pset/cancel', pset.cancelPSetRequest);
+
+// user
+router.get('/user', user.getUser);
+router.get('/user/pset', user.getUserPSet);
+router.post('/user/pset/add', user.addToUserPset);
+router.post('/user/pset/remove', user.removeUserPSet);
 
 module.exports = router;
