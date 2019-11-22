@@ -16,6 +16,8 @@ router.post('/pset/cancel', pset.cancelPSetRequest);
 
 // user
 router.get('/user', user.getUser);
+router.get('/user/check', user.checkUser);
+router.post('/user/login', user.loginUser);
 router.get('/user/pset', user.getUserPSet);
 router.post('/user/pset/add', user.addToUserPset);
 router.post('/user/pset/remove', user.removeUserPSet);

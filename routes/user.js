@@ -2,10 +2,45 @@ const dbUtil = require('../db/dbUtil');
 const helper = require('../helper/apiHelper');
 
 function getUser(req, res){
-    console.log(req.query.username);
     dbUtil.selectUser(req.query.username, function(result){
         if(result.status){
             res.send(result.data);
+        }else{
+            res.status(500).send(result.data);
+        }
+    });
+}
+
+function checkUser(req, res){
+    dbUtil.selectUser(req.query.username, function(result){
+        if(result.status){
+            if(result.data){
+                if(result.data.registered){
+                    res.send({registered: true});
+                }else{
+                    res.send({registered: false});
+                }   
+            }else{
+                res.send({registered: false})
+            }
+        }else{
+            res.status(500).send(result.data);
+        }
+    });
+}
+
+function loginUser(req, res){
+    dbUtil.selectUser(req.body.user.username, function(result){
+        if(result.status){
+            if(result.data){
+                if(result.data.password === req.body.user.password){
+                    res.send({authenticated: true});
+                }else{
+                    res.send({authenticated: false});
+                } 
+            }else{
+                res.send({authenticated: false});
+            }      
         }else{
             res.status(500).send(result.data);
         }
@@ -45,6 +80,8 @@ function removeUserPSet(req, res){
 
 module.exports = {
     getUser,
+    checkUser,
+    loginUser,
     getUserPSet,
     addToUserPset,
     removeUserPSet
