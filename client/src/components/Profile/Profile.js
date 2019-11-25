@@ -122,7 +122,7 @@ class Profile extends React.Component{
     render(){   
         return(
             <React.Fragment>
-                <Navigation />
+                <Navigation routing={this.props}/>
                 <div className='pageContent'>
                     <h1>Your Profile</h1>
                     <div className='userProfile'>

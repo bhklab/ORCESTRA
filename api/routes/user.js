@@ -34,7 +34,7 @@ function loginUser(req, res){
         if(result.status){
             if(result.data){
                 if(result.data.password === req.body.user.password){
-                    res.send({authenticated: true});
+                    res.send({authenticated: true, user: req.body.user.username});
                 }else{
                     res.send({authenticated: false});
                 } 

@@ -342,7 +342,7 @@ class PSetRequest extends React.Component{
 
         return(
             <React.Fragment>
-                <Navigation />
+                <Navigation routing={this.props}/>
                 <div className='pageContent'>
                     <h1>Request Pipeline Analysis</h1>
                     <Messages ref={(el) => this.messages = el} />

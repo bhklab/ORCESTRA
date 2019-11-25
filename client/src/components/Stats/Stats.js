@@ -6,7 +6,7 @@ class Stats extends React.Component{
     render(){
         return(
             <React.Fragment>
-                <Navigation />
+                <Navigation routing={this.props} />
                 <div className='pageContent'>
                     <h1>Stats Page</h1>
                 </div>

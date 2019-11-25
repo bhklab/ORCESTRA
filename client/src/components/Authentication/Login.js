@@ -3,6 +3,7 @@ import Navigation from '../Navigation/Navigation';
 import { Redirect } from 'react-router-dom';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
+import {Messages} from 'primereact/messages';
 import {AuthContext} from '../../context/auth';
 import './Login.css';
 
@@ -135,10 +136,11 @@ class Login extends React.Component{
         })
         .then(res => res.json())
         .then(data => {
-            this.initializeState();
             if(data.authenticated){
-                this.context.setAuthToken(true);
-                console.log(this.context);
+                this.initializeState();
+                this.context.setAuthToken(data);
+            }else{
+                this.messages.show({severity: 'error', summary: 'Login Failed', detail: 'Please re-enter your email and password.'});
             }
         });
     }
@@ -190,14 +192,15 @@ class Login extends React.Component{
         return('');
     }
     
-    render(){
+    render(){     
         return(
             <React.Fragment>
-                <Navigation />
-                {this.context.authenticated ? <Redirect to='/'/> : 
+                <Navigation routing={this.props} />
+                {this.context.authenticated ? <Redirect to={this.props.location.state.path}/> : 
                     <div className='mainContent'>
                         <div className="loginRegContent">
                             <h2>Login/Register</h2>
+                            <Messages ref={(el) => this.messages = el}></Messages>
                             <h4>Enter your email:</h4>
                             <div className='emailInput'>
                                 <InputText type='email' name='email' value={this.state.email} onChange={this.handleInputChange}/>

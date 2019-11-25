@@ -119,7 +119,7 @@ class PSetList extends React.Component{
         
         return(
             <React.Fragment>
-                <Navigation />
+                <Navigation routing={this.props} />
                 <div className='pageContent'>
                     <h1>Search for existing Pharmaco Datasets</h1>
                     <div className='pSetListContainer'>

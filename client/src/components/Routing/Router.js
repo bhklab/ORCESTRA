@@ -14,8 +14,14 @@ class Router extends React.Component{
         super();
         this.state = {
             authenticated: false,
+            user: '',
+            // authenticated: true,
+            // user: 'user1@email.com',
             setAuthToken: (value) => {
-                this.setState({authenticated: value});
+                this.setState({
+                    authenticated: value.authenticated,
+                    user: value.user
+                });
             }
         }
     }
@@ -25,16 +31,16 @@ class Router extends React.Component{
         const profile = (
             <Profile />
         );
-        
+
         return(
             <AuthContext.Provider value={this.state}>
                 <BrowserRouter>
                     <Switch>
-                        <Route exact path ='/' component={App}/>
-                        <Route exact path ='/PSetList' component={PSetList}/>
-                        <Route exact path ='/PSetRequest' component={PSetRequest}/>
-                        <Route exact path ='/Stats' component={Stats}/>
-                        <Route exact path='/Authentication' component={Login} />
+                        <Route exact path ='/' render={(props)=><App path='/' {...props} />} /> 
+                        <Route exact path ='/PSetList' render={(props)=><PSetList path='/PSetList' {...props} />}/>
+                        <Route exact path ='/PSetRequest' render={(props)=><PSetRequest path='/PSetRequest' {...props} />}/>
+                        <Route exact path ='/Stats' render={(props)=><Stats path='/Stats' {...props} />}/>
+                        <Route exact path='/Authentication' render={(props) => <Login {...props} />} />
                         <PrivateRoute path='/Profile' component={profile} redirect='/Authentication' />
                     </Switch>
                 </BrowserRouter>
@@ -42,28 +48,5 @@ class Router extends React.Component{
         );
     }
 }
-
-// function Router(){   
-//     // const [authTokens, setAuthTokens] = useState();
-//     // const setTokens = (data) => {
-//     //     localStorage.setItem("tokens", JSON.stringify(data));
-//     //     setAuthTokens(data);
-//     // }
-//     const authTokens = true;
-//     return(
-//         <AuthContext.Provider value={authTokens}>
-//             <BrowserRouter>
-//                 <Switch>
-//                     <Route exact path ='/' component={App}/>
-//                     <Route exact path ='/PSetList' component={PSetList}/>
-//                     <Route exact path ='/PSetRequest' component={PSetRequest}/>
-//                     <Route exact path ='/Stats' component={Stats}/>
-//                     <Route exact path='/Authentication' component={Login} />
-//                     <PrivateRoute path='/Profile' component={Profile} redirect='/Authentication' />
-//                 </Switch>
-//             </BrowserRouter>
-//         </AuthContext.Provider>
-//     );
-// }
 
 export default Router;
