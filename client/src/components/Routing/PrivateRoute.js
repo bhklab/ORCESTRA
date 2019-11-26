@@ -5,9 +5,21 @@ import {AuthContext} from '../../context/auth';
 class PrivateRoute extends React.Component {
     
     static contextType = AuthContext;
+
+    componentDidMount(){
+        fetch('/user/checkToken')
+            .then(res => {
+                if(res.status === 200){
+                    return(res.json());
+                }else{
+                    console.log('token invalid');
+                    return({authenticated: false, username: ''});
+                }
+            })
+            .then(data => {this.context.setAuthToken(data)});
+    }
     
     render(){
-        console.log(this.props);
         const userAuth = this.context;
         return(
             <Route            

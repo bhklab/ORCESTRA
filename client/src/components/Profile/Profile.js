@@ -4,6 +4,7 @@ import Navigation from '../Navigation/Navigation'
 import UserInfo from './subcomponents/UserInfo';
 import UserPSet from './subcomponents/UserPSet';
 import {Messages} from 'primereact/messages';
+import {AuthContext} from '../../context/auth';
 
 class Profile extends React.Component{
 
@@ -22,8 +23,10 @@ class Profile extends React.Component{
         this.removePSetByID = this.removePSetByID.bind(this);
     }
 
+    static contextType = AuthContext;
+
     componentDidMount(){
-        fetch('/user/pset/?username=user1@email.com')  
+        fetch('/user/pset/?username=' + this.context.username)  
             .then(res => res.json())
             .then(resData => {
                 let complete = [];
@@ -49,7 +52,7 @@ class Profile extends React.Component{
         }
         fetch('/user/pset/remove', {
             method: 'POST',
-            body: JSON.stringify({username: 'user1@email.com', psetID: psetID}),
+            body: JSON.stringify({username: this.context.username, psetID: psetID}),
             headers: {
                 'Content-type': 'application/json'
             }
@@ -74,7 +77,7 @@ class Profile extends React.Component{
         }
         fetch('/pset/cancel', {
             method: 'POST',
-            body: JSON.stringify({username: 'user1@email.com', psetID: psetID}),
+            body: JSON.stringify({username: this.context.username, psetID: psetID}),
             headers: {
                 'Content-type': 'application/json'
             }

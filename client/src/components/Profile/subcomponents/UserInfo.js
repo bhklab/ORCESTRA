@@ -1,6 +1,7 @@
 import React from 'react';
 import './UserInfo.css'
 import {Button} from 'primereact/button';
+import {AuthContext} from '../../../context/auth';
 
 class UserInfo extends React.Component{
     
@@ -13,8 +14,10 @@ class UserInfo extends React.Component{
         this.hideModal = this.hideModal.bind(this);
     }
 
+    static contextType = AuthContext;
+
     componentDidMount(){
-        fetch('/user/?username=user1@email.com')
+        fetch('/user/?username=' + this.context.username)
             .then(res => res.json())
             .then(user => this.setState({user: user}));
     }
@@ -32,7 +35,6 @@ class UserInfo extends React.Component{
             <div className='userInfoContainer'>
                 <h2>User Information</h2>
                 <div className='userInfo'>Username: {this.state.user.username}</div>
-                <div className='userInfo'>Email: {this.state.user.email}</div>
                 <div className='userInfoBtn'>
                     <Button label='Change User Settings' onClick={this.showModal} />
                 </div>

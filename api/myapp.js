@@ -1,14 +1,19 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const app = express();
 const router = require('./routes/router');
 const port = 2000;
+
+config = require('dotenv').config();
 
 // support json encoded bodies
 app.use(bodyParser.json());
 // support encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); 
+
+app.use(cookieParser());
 
 app.set('js', path.join(__dirname, 'js'));
 

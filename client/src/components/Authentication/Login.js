@@ -18,6 +18,7 @@ class Login extends React.Component{
             passwordReg1: '',
             passwordReg2: '',
             userChecked: false,
+            userExists: false,
             userRegistered: false,
             btnFindDisabled: true,
             btnLoginDisabled: true,
@@ -25,8 +26,6 @@ class Login extends React.Component{
         }
         this.initializeState = this.initializeState.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handlePwdInputChange = this.handlePwdInputChange.bind(this);
-        this.handleRegPwdInputChange = this.handleRegPwdInputChange.bind(this);
         this.onFindClick = this.onFindClick.bind(this);
         this.onLoginClick = this.onLoginClick.bind(this);
         this.onRegisterClick = this.onRegisterClick.bind(this);
@@ -44,6 +43,7 @@ class Login extends React.Component{
             passwordReg1: '',
             passwordReg2: '',
             userChecked: false,
+            userExists: false,
             userRegistered: false,
             btnFindDisabled: true,
             btnLoginDisabled: true,
@@ -93,20 +93,6 @@ class Login extends React.Component{
         });
     }
 
-    handlePwdInputChange(event){
-        this.setState({[event.target.name]: event.target.value}, () => {
-            if(this.state.password.length){
-                this.setState({btnLoginDisabled: false});
-            }else{
-                this.setState({btnLoginDisabled: true});
-            }
-        });
-    }
-
-    handleRegPwdInputChange(event){
-        this.setState({[event.target.name]: event.target.value});
-    }
-
     onFindClick = event => {
         event.preventDefault();
         var api = 'user/check/?username=' + this.state.email;
@@ -115,6 +101,7 @@ class Login extends React.Component{
             .then(resData => {
                 this.setState({
                     userChecked: true,
+                    userExists: resData.exists,
                     userRegistered: resData.registered
                 });
             });
@@ -122,7 +109,7 @@ class Login extends React.Component{
 
     onLoginClick = event => {
         event.preventDefault();
-        fetch('user/login', {
+        fetch('/user/login', {
             method: 'POST',
             body: JSON.stringify({
                 user: {
@@ -137,6 +124,7 @@ class Login extends React.Component{
         .then(res => res.json())
         .then(data => {
             if(data.authenticated){
+                console.log('authenticated');
                 this.initializeState();
                 this.context.setAuthToken(data);
             }else{
@@ -147,6 +135,28 @@ class Login extends React.Component{
 
     onRegisterClick = event => {
         event.preventDefault();
+        fetch('/user/register', {
+            method: 'POST',
+            body: JSON.stringify({
+                user: {
+                    username: this.state.email,
+                    password: this.state.passwordReg1,
+                    exists: this.state.userExists
+                }
+            }),
+            headers: {
+                'Content-type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.status){
+                this.initializeState();
+                this.context.setAuthToken({authenticated: data.authenticated, username: data.username});
+            }else{
+                this.messages.show({severity: 'error', summary: 'Registration Failed', detail: 'Please try again.'});
+            }
+        });
     }
 
     loginForm(){
@@ -165,7 +175,7 @@ class Login extends React.Component{
     registerForm(){
         return(
             <React.Fragment>
-                <h4>Email not found. Please register.</h4>
+                <h4>{this.state.userExists ? 'Email is not registered. Please register.': 'Email not found. Please register.'}</h4>
                 <div>
                     <label>Password:</label>
                     <InputText className='pwdInput' type='password' name='passwordReg1' value={this.state.passwordReg1} onChange={this.handleInputChange}/>

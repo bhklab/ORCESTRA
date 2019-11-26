@@ -1,5 +1,6 @@
-let mongo = require('mongodb').MongoClient;
-let connStr = 'mongodb+srv://root:root@development-cluster-ptdz3.azure.mongodb.net/test?retryWrites=true&w=majority'
+const mongo = require('mongodb').MongoClient;
+const connStr = 'mongodb+srv://root:root@development-cluster-ptdz3.azure.mongodb.net/test?retryWrites=true&w=majority';
+const dbName = 'orcestra-dev';
 
 function connectWithClient(callback){
     mongo.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
@@ -89,7 +90,7 @@ module.exports = {
             if(err){
                 callback({status: 'error', data: err});
             }
-            const db = client.db('orcestra-dev');
+            const db = client.db(dbName);
             const collection = db.collection('pset');
             var queryFilterSet = getQueryFilterSet(query); 
             collection.find(queryFilterSet).toArray((err, data) => {
@@ -108,7 +109,7 @@ module.exports = {
             if(err){
                 callback({status: 0, data: err});
             }
-            const db = client.db('orcestra-dev');
+            const db = client.db(dbName);
             setId(db, 'pset', (error, counter) => {
                 if(error){
                     callback({status: 0, data: error});
@@ -149,7 +150,7 @@ module.exports = {
             if(err){
                 callback({status: 0, data: err});
             }
-            const db = client.db('orcestra-dev');
+            const db = client.db(dbName);
             const pset = db.collection('pset');
             pset.deleteMany({'_id': {'$in': psetID}}, (err, data) => {
                 if(err){
@@ -184,7 +185,7 @@ module.exports = {
             if(err){
                 callback({status: 0, data: err});
             }
-            const db = client.db('orcestra-dev');
+            const db = client.db(dbName);
             const user = db.collection('user');
             user.findOne({'username': username}, (err, data) => {
                 if(err){
@@ -197,12 +198,54 @@ module.exports = {
         });
     },
 
+    addUser: function(user, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db(dbName);
+            const users = db.collection('user');
+            users.insertOne(
+                {'username': user.username, 'password': user.password, 'userPSets': [], 'registered': true},
+                (err, data) => {
+                    client.close();
+                    if(err){
+                        callback({status: 0, data: err});
+                    }
+                    callback({status: 1, data: data});
+                }
+            );
+        });
+    },
+
+    registerUser: function(user, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db(dbName);
+            const users = db.collection('user');
+            users.findOneAndUpdate(
+                {'username': user.username},
+                {'$set': {'password': user.password, 'registered': true}},
+                {'upsert': true},
+                (err, data) => {
+                    client.close();
+                    if(err){
+                        callback({status: 0, data: err});
+                    }
+                    callback({status: 1, data: data});
+                }
+            );
+        });
+    },
+
     selectUserPSets: function(username, callback){
         connectWithClient((err, client) => {
             if(err){
                 callback({status: 0, data: err});
             }
-            const db = client.db('orcestra-dev');
+            const db = client.db(dbName);
             const user = db.collection('user');
             user.findOne({'username': username}, (err, user) => {
                 if(err){
@@ -227,7 +270,7 @@ module.exports = {
             if(err){
                 callback({status: 0, data: err});
             }
-            const db = client.db('orcestra-dev');
+            const db = client.db(dbName);
             const collection = db.collection('user');
             collection.findOneAndUpdate(
                 {'username': userPSet.username},
@@ -253,7 +296,7 @@ module.exports = {
             if(err){
                 callback({status: 0, data: err});
             }
-            const db = client.db('orcestra-dev');
+            const db = client.db(dbName);
             const collection = db.collection('user');
             collection.findOneAndUpdate(
                 {'username': username},

@@ -20,7 +20,13 @@ class Router extends React.Component{
             setAuthToken: (value) => {
                 this.setState({
                     authenticated: value.authenticated,
-                    user: value.user
+                    username: value.username
+                });
+            },
+            resetAuthToken: () => {
+                this.setState({
+                    authenticated: false,
+                    user: ''
                 });
             }
         }

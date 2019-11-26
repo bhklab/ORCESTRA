@@ -1,5 +1,8 @@
 const dbUtil = require('../db/dbUtil');
 const helper = require('../helper/apiHelper');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const saltRounds = 10;
 
 function getUser(req, res){
     dbUtil.selectUser(req.query.username, function(result){
@@ -16,12 +19,12 @@ function checkUser(req, res){
         if(result.status){
             if(result.data){
                 if(result.data.registered){
-                    res.send({registered: true});
+                    res.send({exists: true, registered: true});
                 }else{
-                    res.send({registered: false});
+                    res.send({exists: true, registered: false});
                 }   
             }else{
-                res.send({registered: false})
+                res.send({exists: false, registered: false});
             }
         }else{
             res.status(500).send(result.data);
@@ -29,15 +32,49 @@ function checkUser(req, res){
     });
 }
 
+function registerUser(req, res){
+    const user = req.body.user;
+    bcrypt.hash(user.password, saltRounds, function(err, hashedPwd){
+        if(err){
+            res.status(500).send(err);
+        }else{
+            user.password = hashedPwd;
+            if(user.exists){
+                dbUtil.registerUser(user, function(result){
+                    if(result.status){
+                        res.send({status: 1, authenticated: true, username: user.username});
+                    }else{
+                        res.status(500).send(result.data);
+                    }
+                });
+            }else{
+                dbUtil.addUser(user, function(result){
+                    if(result.status){
+                        res.send({status: 1, authenticated: true, username: user.username});
+                    }else{
+                        res.status(500).send(result.data);
+                    }
+                });
+            }
+        }
+    }); 
+}
+
 function loginUser(req, res){
     dbUtil.selectUser(req.body.user.username, function(result){
         if(result.status){
             if(result.data){
-                if(result.data.password === req.body.user.password){
-                    res.send({authenticated: true, user: req.body.user.username});
-                }else{
-                    res.send({authenticated: false});
-                } 
+                bcrypt.compare(req.body.user.password, result.data.password, function(err, match){
+                    if(err){
+                        res.status(500).send({authenticated: false});
+                    }
+                    if(match){
+                        const token = jwt.sign({username: req.body.user.username}, 'orcestraauthenticationtokenstring', {expiresIn: '1h'});
+                        res.cookie('token', token, {httpOnly: true}).send({authenticated: true, username: req.body.user.username});
+                    }else{
+                        res.send({authenticated: false});
+                    }
+                });
             }else{
                 res.send({authenticated: false});
             }      
@@ -50,7 +87,8 @@ function loginUser(req, res){
 function getUserPSet(req, res){
     dbUtil.selectUserPSets(req.query.username, function(result){
         if(result.status){
-            res.send(helper.restructureData(result.data));
+            const data = helper.restructureData(result.data);
+            res.send(data);
         }else{
             res.status(500).send(result.data);
         }
@@ -78,11 +116,23 @@ function removeUserPSet(req, res){
     });
 }
 
+function checkToken(req, res){
+    res.status(200).send({authenticated: true, username: req.username});
+}
+
+function logoutUser(req, res){
+    const token = jwt.sign({username: req.params.username}, 'orcestraauthenticationtokenstring', {expiresIn: '0'});
+    res.cookie('token', token, {httpOnly: true}).status(200).send();
+}
+
 module.exports = {
     getUser,
     checkUser,
+    registerUser,
     loginUser,
     getUserPSet,
     addToUserPset,
-    removeUserPSet
+    removeUserPSet,
+    checkToken,
+    logoutUser
 }

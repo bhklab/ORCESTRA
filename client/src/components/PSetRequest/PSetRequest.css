@@ -51,7 +51,7 @@
     margin-right: 20px;
 }
 
-.requestProfile {
+.requestSummary {
     height: 70%;
 }
 
@@ -78,5 +78,9 @@
 .noneSelectedMsg {
     color: #555975;
     font-weight: normal;
+}
+
+.saveBtnMessage{
+    margin-right: 10px;
 }
 

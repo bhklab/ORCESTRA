@@ -1,19 +1,19 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {Button} from 'primereact/button';
-import {Messages} from 'primereact/message';
 import {Growl} from 'primereact/growl';
 import {AuthContext} from '../../context/auth';
 import './Navigation.css';
 
 class Navigation extends React.Component {
+
+    static contextType = AuthContext;
+    
     constructor(){
         super();
         this.onLoginClick = this.onLoginClick.bind(this);
         this.onLogoutClick = this.onLogoutClick.bind(this);
     }
-
-    static contextType = AuthContext;
 
     onLoginClick(event){
         event.preventDefault();
@@ -22,9 +22,16 @@ class Navigation extends React.Component {
 
     onLogoutClick(event){
         event.preventDefault();
-        this.context.setAuthToken({authenticated: false, user: ''});
-        this.growl.show({sticky: true, severity: 'info', summary: 'Logged out', detail: 'You have logged out of ORCESTRA'});
-        this.props.routing.history.push('/');
+        fetch('/user/logout/:' + this.context.username)
+            .then(res => {
+                if(res.status === 200){
+                    this.context.resetAuthToken();
+                    console.log(this.props.routing);
+                    this.growl.show({sticky: true, severity: 'info', summary: 'Logged out', detail: 'You have logged out of ORCESTRA'});
+                }else{
+                    this.context.resetAuthToken();
+                }
+            });
     }
 
     render(){   
@@ -45,7 +52,7 @@ class Navigation extends React.Component {
                             <Button label='Logout' onClick={this.onLogoutClick}/> : <Button label='Login/Register' onClick={this.onLoginClick}/>
                         }</div>   
                     </div>
-                    <div className='loggedIn'>{this.context.authenticated ? 'Logged in as: ' + this.context.user : ''}</div> 
+                    <div className='loggedIn'>{this.context.authenticated ? 'Logged in as: ' + this.context.username : ''}</div> 
                     <div className='loginGrowl'><Growl  ref={(el) => this.growl = el}></Growl></div>
                 </header>
             </React.Fragment>

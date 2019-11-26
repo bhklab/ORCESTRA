@@ -9,6 +9,7 @@ import PSetRequestParameterSelection from './PSetRequestParameterSelection';
 import PSetParamOptions from '../Shared/PSetParamOptions/PSetParamOptions';
 import PSetRequestModal from './subcomponents/PSetRequestModal';
 import {Messages} from 'primereact/messages';
+import {AuthContext} from '../../context/auth';
 
 class PSetRequest extends React.Component{
     
@@ -52,6 +53,8 @@ class PSetRequest extends React.Component{
         this.hideModal = this.hideModal.bind(this);
         this.updatePSetSelection = this.updatePSetSelection.bind(this);
     }
+
+    static contextType = AuthContext;
 
     handleSubmitRequest = event => {
         event.preventDefault();
@@ -183,30 +186,32 @@ class PSetRequest extends React.Component{
     }
 
     saveSelectedPSets = event => {
-        if(this.state.selectedPSets.length){
-            var userPSet = { username: 'user1@email.com' };
-            event.preventDefault();
-            console.log(this.state.selectedPSets);
-            var psetId = [];
-            for(let i = 0; i < this.state.selectedPSets.length; i++){
-                psetId.push(this.state.selectedPSets[i]._id);
-            }
-            console.log(psetId);
-            userPSet.psetId = psetId;
-
-            fetch('/user/pset/add', {
-                method: 'POST',
-                body: JSON.stringify({reqData: userPSet}),
-                headers: {
-                    'Content-type': 'application/json'
+        if(this.context.authenticated){
+            if(this.state.selectedPSets.length){
+                var userPSet = { username: this.context.username };
+                event.preventDefault();
+                console.log(this.state.selectedPSets);
+                var psetId = [];
+                for(let i = 0; i < this.state.selectedPSets.length; i++){
+                    psetId.push(this.state.selectedPSets[i]._id);
                 }
-            })
-                .then(res => res.json())
-                .then(resData => this.afterSubmitRequest(1, resData))
-                .catch(err => this.afterSubmitRequest(0, err));
+                console.log(psetId);
+                userPSet.psetId = psetId;
 
-        }else{
-            console.log('nothing to save');
+                fetch('/user/pset/add', {
+                    method: 'POST',
+                    body: JSON.stringify({reqData: userPSet}),
+                    headers: {
+                        'Content-type': 'application/json'
+                    }
+                })
+                    .then(res => res.json())
+                    .then(resData => this.afterSubmitRequest(1, resData))
+                    .catch(err => this.afterSubmitRequest(0, err));
+
+            }else{
+                console.log('nothing to save');
+            }
         }
     }
 
@@ -384,7 +389,7 @@ class PSetRequest extends React.Component{
                                     <span className='pSetAvailLink'>{ this.state.queryResult.length ? availablePSetModalLink : '' }</span>
                                 </div>
                             </div>
-                            <div className='requestProfile'>
+                            <div className='requestSummary'>
                                 <h3>Your Parameter Selection</h3>
                                 <div className='parameterSelectionContainer'>
                                     <PSetRequestParameterSelection parameterName='Datatype' parameter={this.state.reqDatatype} isHidden={false} />

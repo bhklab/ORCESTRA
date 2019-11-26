@@ -6,6 +6,7 @@ import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import {Button} from 'primereact/button';
 import {Messages} from 'primereact/messages';
+import {AuthContext} from '../../context/auth';
 
 class PSetList extends React.Component{
     constructor(){
@@ -23,6 +24,8 @@ class PSetList extends React.Component{
         this.isSelected = this.isSelected.bind(this);
         this.initializeState = this.initializeState.bind(this);
     }
+
+    static contextType = AuthContext;
 
 	componentDidMount(){
 		fetch('/pset')  
@@ -55,29 +58,31 @@ class PSetList extends React.Component{
 
     saveSelectedPSets = event => {
         event.preventDefault();
-        if(this.state.selectedPSets.length){
-            var userPSet = { username: 'user1@email.com' };
-            console.log(this.state.selectedPSets);
-            var psetId = [];
-            for(let i = 0; i < this.state.selectedPSets.length; i++){
-                psetId.push(this.state.selectedPSets[i]._id);
-            }
-            console.log(psetId);
-            userPSet.psetId = psetId;
-
-            fetch('/user/pset/add', {
-                method: 'POST',
-                body: JSON.stringify({reqData: userPSet}),
-                headers: {
-                    'Content-type': 'application/json'
+        if(this.context.authenticated){
+            if(this.state.selectedPSets.length){
+                var userPSet = { username: this.context.username };
+                console.log(this.state.selectedPSets);
+                var psetId = [];
+                for(let i = 0; i < this.state.selectedPSets.length; i++){
+                    psetId.push(this.state.selectedPSets[i]._id);
                 }
-            })
-                .then(res => res.json())
-                .then(resData => this.afterSubmitRequest(1, resData))
-                .catch(err => this.afterSubmitRequest(0, err));
-
-        }else{
-            console.log('nothing to save');
+                console.log(psetId);
+                userPSet.psetId = psetId;
+    
+                fetch('/user/pset/add', {
+                    method: 'POST',
+                    body: JSON.stringify({reqData: userPSet}),
+                    headers: {
+                        'Content-type': 'application/json'
+                    }
+                })
+                    .then(res => res.json())
+                    .then(resData => this.afterSubmitRequest(1, resData))
+                    .catch(err => this.afterSubmitRequest(0, err));
+    
+            }else{
+                console.log('nothing to save');
+            }
         }
     }
 
@@ -140,10 +145,10 @@ class PSetList extends React.Component{
                                         {this.evaluateList(this.state.selectedPSets)}
                                     </div>
                                 </div>
-                                <Button label='Save' onClick={this.saveSelectedPSets} disabled={this.state.disableSaveBtn}/>
+                                {this.context.authenticated ? <Button label='Save' onClick={this.saveSelectedPSets} disabled={this.state.disableSaveBtn}/> : '*Login or register to select and save existing PSets to your profile.'}
                             </div>
                             <DataTable value={this.state.datasets.slice(0, 50)} selection={this.state.selectedPSets} onSelectionChange={this.updatePSetSelectionEvent} scrollable={true} scrollHeight="600px">
-                                <Column selectionMode="multiple" style={{width:'3.5em'}}/>
+                                {this.context.authenticated ? <Column selectionMode="multiple" style={{width:'3.5em'}}/> : <Column style={{width: '0em'}}/>}
                                 <Column className='textField' field='doi' header='DOI' style={{width:'18em'}}/>
                                 <Column className='textField' field='datasetName' header='Dataset' style={{width:'6em'}} />
                                 <Column className='textField' field='datasetVersion' header='Dataset Version' style={{width:'7em'}}/>
