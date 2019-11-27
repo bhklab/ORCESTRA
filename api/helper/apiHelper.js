@@ -1,5 +1,4 @@
-const jwt = require('jsonwebtoken');
-const code = process.env.CODE;
+const jwt = require('jsonwebtoken');;
 
 function flattenArray(arrayData){
     var str ='';
@@ -28,12 +27,12 @@ module.exports = {
         const token = req.cookies.token;
         if(!token){
             console.log('Unauthorized: No token provided');
-            res.status(401).send('Unauthorized: No token provided');
+            res.status(401).send({data: 'Unauthorized: No token provided'});
         }else{
-            jwt.verify(token, 'orcestraauthenticationtokenstring', function(err, decoded){
+            jwt.verify(token, process.env.KEY, function(err, decoded){
                 if(err){
                     console.log('Unauthorized: Invalid token');
-                    res.status(401).send('Unauthorized: Invalid token');
+                    res.status(401).send({data: 'Unauthorized: Invalid token'});
                 }else{
                     req.username = decoded.username;
                     console.log('token valid');

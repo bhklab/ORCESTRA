@@ -24,7 +24,7 @@ class PrivateRoute extends React.Component {
         return(
             <Route            
                 exact path={this.props.path} 
-                render={() => userAuth.authenticated ? this.props.component : (<Redirect to={{pathname: this.props.redirect, state: {path: this.props.path}}} />)}
+                render={(props) => userAuth.authenticated ? React.cloneElement(this.props.component, {...props}) : (<Redirect to={{pathname: this.props.redirect, state: {path: this.props.path}}} />)}
             />
         );
     }

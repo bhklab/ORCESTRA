@@ -13,6 +13,8 @@ import {AuthContext} from '../../context/auth';
 
 class PSetRequest extends React.Component{
     
+    static contextType = AuthContext;
+    
     constructor(){
         super();
         this.state = {
@@ -54,7 +56,11 @@ class PSetRequest extends React.Component{
         this.updatePSetSelection = this.updatePSetSelection.bind(this);
     }
 
-    static contextType = AuthContext;
+    componentDidMount(){
+        if(this.context.authenticated){
+            this.setState({reqEmail: this.context.username});
+        }
+    }
 
     handleSubmitRequest = event => {
         event.preventDefault();
@@ -280,10 +286,14 @@ class PSetRequest extends React.Component{
     }
 
     isValidEmail(email){
+        const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
         if(typeof email === 'undefined' || email === null){
             return(false);
         }
         if(email.length === 0){
+            return(false);
+        }
+        if(!regex.test(email)){
             return(false);
         }
         return(true);

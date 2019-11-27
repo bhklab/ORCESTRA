@@ -56,21 +56,22 @@ class Login extends React.Component{
         this.setState({[name]: event.target.value}, () => {
             switch(name){
                 case 'email':
-                    if(this.state.email.length){
+                    const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+                    if(regex.test(this.state.email)){
                         this.setState({btnFindDisabled: false});
                     }else{
                         this.setState({btnFindDisabled: true});
                     }
                     break;
                 case 'password':
-                    if(this.state.password.length){
+                    if(this.state.password.length >= 6){
                         this.setState({btnLoginDisabled: false});
                     }else{
                         this.setState({btnLoginDisabled: true});
                     }
                     break;
                 case 'passwordReg1':
-                    if(this.state.passwordReg1.length){
+                    if(this.state.passwordReg1.length >= 6){
                         if(this.state.passwordReg1 === this.state.passwordReg2){
                             this.setState({btnRegDisabled: false});
                         }
@@ -79,7 +80,7 @@ class Login extends React.Component{
                     }
                     break;
                 case 'passwordReg2':
-                    if(this.state.passwordReg2.length){
+                    if(this.state.passwordReg2.length >= 6){
                         if(this.state.passwordReg1 === this.state.passwordReg2){
                             this.setState({btnRegDisabled: false});
                         }
@@ -163,7 +164,7 @@ class Login extends React.Component{
         return(
             <React.Fragment>
                 <h4>Login with your password:</h4>
-                <label>Password:</label>
+                <div className='pwdMsg'>Password needs to be at least 6 characters in length</div>
                 <InputText className='pwdInput' type='password' name='password' value={this.state.password} onChange={this.handleInputChange}/>
                 <div>
                     <Button label='Login' onClick={this.onLoginClick} disabled={this.state.btnLoginDisabled}/>
@@ -175,9 +176,9 @@ class Login extends React.Component{
     registerForm(){
         return(
             <React.Fragment>
-                <h4>{this.state.userExists ? 'Email is not registered. Please register.': 'Email not found. Please register.'}</h4>
+                <h4>{this.state.userExists ? 'Email is not registered. ': 'Email not found. '}Please register.</h4>
                 <div>
-                    <label>Password:</label>
+                    <div className='pwdMsg'>Password needs to be at least 6 characters in length</div>
                     <InputText className='pwdInput' type='password' name='passwordReg1' value={this.state.passwordReg1} onChange={this.handleInputChange}/>
                 </div>
                 <div>
@@ -203,12 +204,14 @@ class Login extends React.Component{
     }
     
     render(){     
+        const msg = this.props.location.state.logoutMsg;
         return(
             <React.Fragment>
                 <Navigation routing={this.props} />
                 {this.context.authenticated ? <Redirect to={this.props.location.state.path}/> : 
                     <div className='mainContent'>
                         <div className="loginRegContent">
+                            <div className='logoutMsg'>{msg ? msg : ''}</div>
                             <h2>Login/Register</h2>
                             <Messages ref={(el) => this.messages = el}></Messages>
                             <h4>Enter your email:</h4>

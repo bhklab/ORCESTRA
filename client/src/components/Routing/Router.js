@@ -15,8 +15,6 @@ class Router extends React.Component{
         this.state = {
             authenticated: false,
             user: '',
-            // authenticated: true,
-            // user: 'user1@email.com',
             setAuthToken: (value) => {
                 this.setState({
                     authenticated: value.authenticated,
@@ -32,8 +30,23 @@ class Router extends React.Component{
         }
     }
 
+    componentDidMount(){
+        if(!this.state.authenticated){
+            fetch('/user/checkToken')
+            .then(res => {
+                if(res.status === 200){
+                    return(res.json());
+                }else{
+                    return({authenticated: false, username: ''});
+                }
+            })
+            .then(data => {this.state.setAuthToken(data)});
+        }
+    }
+
     render(){
         
+        console.log('router rendering');
         const profile = (
             <Profile />
         );

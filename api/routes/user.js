@@ -42,7 +42,8 @@ function registerUser(req, res){
             if(user.exists){
                 dbUtil.registerUser(user, function(result){
                     if(result.status){
-                        res.send({status: 1, authenticated: true, username: user.username});
+                        const token = jwt.sign({username: user.username}, process.env.KEY, {expiresIn: '1h'});
+                        res.cookie('token', token, {httpOnly: true}).send({status: 1, authenticated: true, username: user.username});
                     }else{
                         res.status(500).send(result.data);
                     }
@@ -50,7 +51,9 @@ function registerUser(req, res){
             }else{
                 dbUtil.addUser(user, function(result){
                     if(result.status){
-                        res.send({status: 1, authenticated: true, username: user.username});
+                        const token = jwt.sign({username: user.username}, process.env.KEY, {expiresIn: '1h'});
+                        res.cookie('token', token, {httpOnly: true}).send({status: 1, authenticated: true, username: user.username});
+                        //res.send({status: 1, authenticated: true, username: user.username});
                     }else{
                         res.status(500).send(result.data);
                     }
@@ -69,7 +72,7 @@ function loginUser(req, res){
                         res.status(500).send({authenticated: false});
                     }
                     if(match){
-                        const token = jwt.sign({username: req.body.user.username}, 'orcestraauthenticationtokenstring', {expiresIn: '1h'});
+                        const token = jwt.sign({username: req.body.user.username}, process.env.KEY, {expiresIn: '1h'});
                         res.cookie('token', token, {httpOnly: true}).send({authenticated: true, username: req.body.user.username});
                     }else{
                         res.send({authenticated: false});

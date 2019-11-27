@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {Button} from 'primereact/button';
-import {Growl} from 'primereact/growl';
 import {AuthContext} from '../../context/auth';
 import './Navigation.css';
 
@@ -22,16 +21,12 @@ class Navigation extends React.Component {
 
     onLogoutClick(event){
         event.preventDefault();
+        console.log(this.props.routing);
         fetch('/user/logout/:' + this.context.username)
             .then(res => {
-                if(res.status === 200){
-                    this.context.resetAuthToken();
-                    console.log(this.props.routing);
-                    this.growl.show({sticky: true, severity: 'info', summary: 'Logged out', detail: 'You have logged out of ORCESTRA'});
-                }else{
-                    this.context.resetAuthToken();
-                }
-            });
+                this.context.resetAuthToken();
+                this.props.routing.history.push({pathname: '/Authentication', state:{path: this.props.routing.location.pathname, logoutMsg: 'You have logged out'}});
+            });            
     }
 
     render(){   
@@ -53,7 +48,7 @@ class Navigation extends React.Component {
                         }</div>   
                     </div>
                     <div className='loggedIn'>{this.context.authenticated ? 'Logged in as: ' + this.context.username : ''}</div> 
-                    <div className='loginGrowl'><Growl  ref={(el) => this.growl = el}></Growl></div>
+                    {/* <div className='loginGrowl'><Growl  ref={(el) => this.growl = el}></Growl></div> */}
                 </header>
             </React.Fragment>
         );

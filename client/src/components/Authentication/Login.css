@@ -34,3 +34,13 @@
     width: 80%;
     margin-bottom: 20px;
 }
+
+.pwdMsg{
+    color: red;
+    font-size: 12px;
+}
+
+.logoutMsg{
+    color: red;
+    font-size: 14px;
+}
