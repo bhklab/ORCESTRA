@@ -19,7 +19,6 @@
     "express-fileupload": "^1.1.6",
     "file-api": "^0.10.4",
     "fs": "0.0.1-security",
-    "jade": "^1.11.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.1",
     "line-by-line": "^0.1.6",
