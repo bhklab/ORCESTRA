@@ -134,12 +134,11 @@ class Profile extends React.Component{
                             <Messages ref={(el) => this.messages = el} />
                             <UserPSet heading='Your Saved PSets' btnLabel='Remove from List' 
                                 pset={this.state.psetSaved} 
-                                complete={true}
                                 handleBtnClick={this.removeFromSavedList}
                             />
                             <UserPSet heading='Your PSet Requests in Process' btnLabel='Cancel Request' 
                                 pset={this.state.psetInProcess} 
-                                complete={false}
+                                pending={true}
                                 handleBtnClick={this.cancelPSetRequest}
                             />
                         </div>

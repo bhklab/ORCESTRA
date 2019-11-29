@@ -28,6 +28,7 @@ class PSetRequest extends React.Component{
             reqToolVersion: [],
             reqRNAToolRef: [],
             reqDNAToolRef: [],
+            reqName: '',
             reqEmail: '',
             toolVersionOptions: FormData.rnaToolVersionOptions.concat(FormData.dnaToolVersionOptions),
             hideRNARef: false,
@@ -43,12 +44,8 @@ class PSetRequest extends React.Component{
         
         this.updateParameterSelection = this.updateParameterSelection.bind(this);
         this.updateDatatypeSelectionEvent = this.updateDatatypeSelectionEvent.bind(this);
-        this.updateReqEmailInputEvent = this.updateReqEmailInputEvent.bind(this);
+        this.updateReqInputEvent = this.updateReqInputEvent.bind(this);
         this.setToolVersionState = this.setToolVersionState.bind(this);
-        this.isNoneSelected = this.isNoneSelected.bind(this);
-        this.isNotReadyToSubmit = this.isNotReadyToSubmit.bind(this);
-        this.isSelected = this.isSelected.bind(this);
-        this.isValidEmail = this.isValidEmail.bind(this);
         this.initializeState = this.initializeState.bind(this);
         
         this.showModal = this.showModal.bind(this);
@@ -77,6 +74,7 @@ class PSetRequest extends React.Component{
                     reqToolVersion: this.state.reqToolVersion,
                     reqRNAToolRef: this.state.reqRNAToolRef,
                     reqDNAToolRef: this.state.reqDNAToolRef,
+                    reqName: this.state.reqName,
                     reqEmail: this.state.reqEmail
                 }   
             }),
@@ -100,7 +98,7 @@ class PSetRequest extends React.Component{
 
     updateParameterSelection = event => {
         event.preventDefault();
-        this.setState({notReadyToSubmit: this.isNotReadyToSubmit()});
+        this.setState({notReadyToSubmit: APIHelper.isNotReadyToSubmit(this.state)});
         this.setState({[event.target.id]: event.value}, () => {
             var filterset = APIHelper.getFilterSet(
                 this.state.reqDatatype, 
@@ -113,7 +111,7 @@ class PSetRequest extends React.Component{
                 this.state.reqDNAToolRef
             );
             console.log(filterset);
-            if(!this.isNoneSelected(filterset)){
+            if(!APIHelper.isNoneSelected(filterset)){
                 var apiStr = APIHelper.buildAPIStr(filterset);
                 console.log(apiStr);
                 this.queryPSet(apiStr);
@@ -125,7 +123,7 @@ class PSetRequest extends React.Component{
 
     updateDatatypeSelectionEvent = event => {
         event.preventDefault();
-        this.setState({notReadyToSubmit: this.isNotReadyToSubmit()});
+        this.setState({notReadyToSubmit: APIHelper.isNotReadyToSubmit(this.state)});
         this.setState({[event.target.id]: event.value}, () => {
             this.setToolVersionState(event, () => {
                 var filterset = APIHelper.getFilterSet(
@@ -139,7 +137,7 @@ class PSetRequest extends React.Component{
                     this.state.reqDNAToolRef
                 );
                 console.log(filterset);
-                if(!this.isNoneSelected(filterset)){
+                if(!APIHelper.isNoneSelected(filterset)){
                     var apiStr = APIHelper.buildAPIStr(filterset);
                     console.log(apiStr);
                     this.queryPSet(apiStr);
@@ -150,10 +148,12 @@ class PSetRequest extends React.Component{
         });   
     }
 
-    updateReqEmailInputEvent = event => {
+    updateReqInputEvent = event => {
         event.preventDefault();
-        this.setState({notReadyToSubmit: this.isNotReadyToSubmit()});
-        this.setState({reqEmail: event.target.value});
+        this.setState({
+            notReadyToSubmit: APIHelper.isNotReadyToSubmit(this.state),
+            [event.target.id]: event.target.value
+        });
     }
 
     setToolVersionState(event, callback){
@@ -221,84 +221,6 @@ class PSetRequest extends React.Component{
         }
     }
 
-    isNoneSelected(filterset){
-        if(!filterset.datatype.length && 
-            !filterset.datasetName.length && 
-            !filterset.datasetVersion.length && 
-            !filterset.genome.length && 
-            !filterset.rnaTool.length &&
-            !filterset.exomeTool.length &&
-            !filterset.rnaRef.length &&
-            !filterset.exomeRef.length &&
-            !filterset.drugSensitivity.length){
-            return(true);
-        }
-        return(false);
-    }
-
-    isNotReadyToSubmit(){
-        if(!this.isSelected(this.state.reqDatatype)){
-            return(true);
-        }else if(this.state.reqDatatype.length === 1){
-            if(this.state.reqDatatype[0] === 'RNA' && !this.isSelected(this.state.reqRNAToolRef)){
-                return(true);
-            }else if(this.state.reqDatatype[0] === 'DNA' && !this.isSelected(this.state.reqDNAToolRef)){
-                return(true);
-            }
-        }else{
-            if(!this.isSelected(this.state.reqRNAToolRef)){
-                return(true);
-            }
-            if(!this.isSelected(this.state.reqDNAToolRef)){
-                return(true);
-            }
-        }
-
-        if(!this.isSelected(this.state.reqGenome)){
-            return(true);
-        } 
-        if(!this.isSelected(this.state.reqToolVersion)){
-            return(true);
-        } 
-        if(!this.isSelected(this.state.reqDataset)){
-            return(true);
-        }
-        if(!this.isSelected(this.state.reqDatasetVersion)){
-            return(true);
-        }
-        if(!this.isSelected(this.state.reqDrugSensitivity)){
-            return(true);
-        }
-        if(!this.isValidEmail(this.state.reqEmail)){
-            return(true);
-        }
-        return(false);
-    }
-
-    isSelected(reqParam){
-        if(typeof reqParam === 'undefined' || reqParam === null){
-            return(false);
-        }
-        if(Array.isArray(reqParam) && !reqParam.length){
-            return(false);
-        }
-        return(true);
-    }
-
-    isValidEmail(email){
-        const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-        if(typeof email === 'undefined' || email === null){
-            return(false);
-        }
-        if(email.length === 0){
-            return(false);
-        }
-        if(!regex.test(email)){
-            return(false);
-        }
-        return(true);
-    }
-
     initializeState(){
         this.setState({
             queryResult: [],
@@ -311,6 +233,7 @@ class PSetRequest extends React.Component{
             reqToolVersion: [],
             reqRNAToolRef: [],
             reqDNAToolRef: [],
+            reqName: '',
             reqEmail: '',
             toolVersionOptions: FormData.rnaToolVersionOptions.concat(FormData.dnaToolVersionOptions),
             hideRNARef: false,
@@ -335,8 +258,10 @@ class PSetRequest extends React.Component{
 
     updatePSetSelection(value){
         this.setState({selectedPSets: value}, () => {
-            if(this.isSelected(this.state.selectedPSets)){
+            if(APIHelper.isSelected(this.state.selectedPSets)){
                 this.setState({disableModalSaveBtn: false});
+            }else{
+                this.setState({disableModalSaveBtn: true});
             }
         });
     }
@@ -381,10 +306,15 @@ class PSetRequest extends React.Component{
                                     parameterOptions={FormData.rnaToolRefOptions} selectedParameter={this.state.reqRNAToolRef} handleUpdateSelection={this.updateParameterSelection} />
                                 <PSetParamOptions id='reqDNAToolRef' className='reqInputSet' isHidden={this.state.hideDNARef} parameterName='DNA Tool Reference:' 
                                     parameterOptions={FormData.dnaToolRefOptions} selectedParameter={this.state.reqDNAToolRef} handleUpdateSelection={this.updateParameterSelection} />
+                                
+                                <div className='reqInputSet'>
+                                    <label>PSet Name:</label>
+                                    <InputText id='reqName' className='paramInput' value={this.state.reqName || ''} onChange={this.updateReqInputEvent} />
+                                </div>
 
                                 <div className='reqInputSet'>
                                     <label>Email to receive DOI:</label>
-                                    <InputText id='reqEmail' className='paramInput' value={this.state.reqEmail || ''} onChange={this.updateReqEmailInputEvent} />
+                                    <InputText id='reqEmail' className='paramInput' value={this.state.reqEmail || ''} onChange={this.updateReqInputEvent} />
                                 </div>
 
                                 <Button label='Submit Request' type='submit' onClick={this.handleSubmitRequest} disabled={this.state.notReadyToSubmit}/>

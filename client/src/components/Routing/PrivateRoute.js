@@ -12,7 +12,6 @@ class PrivateRoute extends React.Component {
                 if(res.status === 200){
                     return(res.json());
                 }else{
-                    console.log('token invalid');
                     return({authenticated: false, username: ''});
                 }
             })

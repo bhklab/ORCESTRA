@@ -1,6 +1,5 @@
 import React from 'react';
-import {DataTable} from 'primereact/datatable';
-import {Column} from 'primereact/column';
+import PSetTable from '../../Shared/PSetTable';
 import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 import './UserPSet.css';
@@ -21,8 +20,8 @@ class UserPSet extends React.Component{
         this.onHide = this.onHide.bind(this);
     }
 
-    handleSelectionChange = event => {
-        this.setState({selectedPSets: event.value}, () => {
+    handleSelectionChange(selected){
+        this.setState({selectedPSets: selected}, () => {
             if(this.state.selectedPSets && this.state.selectedPSets.length > 0){
                 this.setState({btnDisabled: false});
             }else{
@@ -60,43 +59,15 @@ class UserPSet extends React.Component{
     }
     
     render(){
-        const psetDataComplete = (
-            <DataTable value={this.props.pset} selection={this.state.selectedPSets} onSelectionChange={this.handleSelectionChange} scrollable={true} scrollHeight="350px">
-                <Column selectionMode="multiple" style={{width:'3.5em'}}/>
-                <Column className='textField' field='doi' header='DOI' style={{width:'15em'}}/>
-                <Column className='textField' field='datasetName' header='Dataset' style={{width:'8em'}} />
-                <Column className='textField' field='datasetVersion' header='Dataset Version' style={{width:'7em'}}/>
-                <Column className='textField' field='drugSensitivity' header='Drug Sensitivity' style={{width:'7em'}}/>
-                <Column className='textField' field='rnaTool' header='RNA Tool' style={{width:'10em'}} />
-                <Column className='textField' field='exomeTool' header='Exome Tool' style={{width:'7em'}} />
-                <Column className='textField' field='rnaRef' header='RNA Ref' style={{width:'20em'}} />
-                <Column className='textField' field='exomeRef' header='Exome Ref' style={{width:'10em'}} />
-                <Column className='textField' field='metadata' header='Metadata' />
-            </DataTable>
-        );
-        
-        const psetDataInProcess = (
-            <DataTable value={this.props.pset} selection={this.state.selectedPSets} onSelectionChange={this.handleSelectionChange} scrollable={true} scrollHeight="350px">
-                <Column selectionMode="multiple" style={{width:'3.5em'}}/>
-                <Column className='textField' field='status' header='Status' style={{width:'10em'}}/>
-                <Column className='textField' field='datasetName' header='Dataset' style={{width:'8em'}} />
-                <Column className='textField' field='datasetVersion' header='Dataset Version' style={{width:'7em'}}/>
-                <Column className='textField' field='drugSensitivity' header='Drug Sensitivity' style={{width:'7em'}}/>
-                <Column className='textField' field='rnaTool' header='RNA Tool' style={{width:'10em'}} />
-                <Column className='textField' field='exomeTool' header='Exome Tool' style={{width:'7em'}} />
-                <Column className='textField' field='rnaRef' header='RNA Ref' style={{width:'20em'}} />
-                <Column className='textField' field='exomeRef' header='Exome Ref' style={{width:'10em'}} />
-                <Column className='textField' field='metadata' header='Metadata' />
-            </DataTable>
-        );
 
         const psetData = (
             <React.Fragment>
                 <div>
-                    {this.props.complete ? psetDataComplete : psetDataInProcess}
+                    <PSetTable allData={this.props.pset} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.handleSelectionChange} scrollHeight='350px' pending={this.props.pending}/>
                 </div>
                 <div className='footer'>
-                    <Button label={this.props.btnLabel} onClick={this.handleBtnClick} disabled={this.state.btnDisabled} />
+                { this.props.pending ? '' : <Button className='downloadBtn' label='Download' disabled={this.state.btnDisabled}/> } 
+                <Button label={this.props.btnLabel} onClick={this.handleBtnClick} disabled={this.state.btnDisabled} />
                 </div>
             </React.Fragment>
         );
@@ -119,8 +90,8 @@ class UserPSet extends React.Component{
                     {this.props.pset ? psetData : noPSetData}
                 </div>
                 <div>
-                    <Dialog header={this.props.complete? 'Removing Pset(s)' : 'Canceling PSet Request(s)'} footer={dialogFooter} visible={this.state.dialogVisible} style={{width: '300px'}} modal={true} onHide={this.onHide}>
-                        { this.props.complete ? 'Are you sure you would like to remove the selected PSet(s) from the saved list?' : 'Are you sure you would like to cancel the selected PSet request(s)?' }
+                    <Dialog header={this.props.pending? 'Canceling PSet Request(s)' : 'Removing Pset(s)' } footer={dialogFooter} visible={this.state.dialogVisible} style={{width: '300px'}} modal={true} onHide={this.onHide}>
+                        { this.props.pending ? 'Are you sure you would like to cancel the selected PSet request(s)?' : 'Are you sure you would like to remove the selected PSet(s) from the saved list?' }
                     </Dialog>
                 </div>
             </div>

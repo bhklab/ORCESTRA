@@ -1,36 +1,35 @@
 import React from 'react';
-import './PSetList.css';
+import './PSetSearch.css';
 import Navigation from '../Navigation/Navigation'
 import PSetFilter from './subcomponents/PSetFilter';
-import {DataTable} from 'primereact/datatable';
-import {Column} from 'primereact/column';
+import PSetTable from '../Shared/PSetTable';
 import {Button} from 'primereact/button';
 import {Messages} from 'primereact/messages';
 import {AuthContext} from '../../context/auth';
 
-class PSetList extends React.Component{
+class PSetSearch extends React.Component{
     constructor(){
         super();
         this.state = {
-            datasets: [],
+            allData: [],
             selectedPSets: [],
             disableSaveBtn: true
         }
+
         this.evaluateList = this.evaluateList.bind(this);
         this.filterPSet = this.filterPSet.bind(this);
         this.saveSelectedPSets = this.saveSelectedPSets.bind(this);
         this.afterSubmitRequest = this.afterSubmitRequest.bind(this);
-        this.updatePSetSelectionEvent = this.updatePSetSelectionEvent.bind(this);
+        this.updatePSetSelection = this.updatePSetSelection.bind(this);
         this.isSelected = this.isSelected.bind(this);
         this.initializeState = this.initializeState.bind(this);
     }
 
     static contextType = AuthContext;
 
-	componentDidMount(){
-		fetch('/pset')  
-            .then(res => res.json())
-            .then(resData => this.setState({datasets: resData}));
+    componentDidMount(){
+        console.log('PSetSearch');
+        this.filterPSet('/pset');
     }
 
     evaluateList(list){
@@ -53,7 +52,12 @@ class PSetList extends React.Component{
         console.log(api);
         fetch(api)  
             .then(res => res.json())
-            .then(resData => this.setState({datasets: resData}));
+            .then(resData => {
+                this.setState({
+                    allData: resData
+                });
+            }   
+        );
     }
 
     saveSelectedPSets = event => {
@@ -95,10 +99,12 @@ class PSetList extends React.Component{
         }    
     }
 
-    updatePSetSelectionEvent = event => {
-        this.setState({selectedPSets: event.value}, () => {
+    updatePSetSelection(selected){
+        this.setState({selectedPSets: selected}, () => {
             if(this.isSelected(this.state.selectedPSets)){
                 this.setState({disableSaveBtn: false});
+            }else{
+                this.setState({disableSaveBtn: true});
             }
         });
     }
@@ -135,7 +141,7 @@ class PSetList extends React.Component{
                                 <Messages ref={(el) => this.messages = el} />
                                 <div className='pSetSummaryContainer'>
                                     <div className='pSetSummaryItem'>
-                                        <span className='pSetSummaryNum'>{this.state.datasets.length}</span> {this.state.datasets.length === 1 ? ' match' : ' matches'} found.
+                                        <span className='pSetSummaryNum'>{this.state.allData.length}</span> {this.state.allData.length === 1 ? ' match' : ' matches'} found.
                                     </div>
                                     <div className='pSetSummaryItem'>
                                         <span className='pSetSummaryNum'>{this.state.selectedPSets.length}</span> selected.
@@ -145,20 +151,10 @@ class PSetList extends React.Component{
                                         {this.evaluateList(this.state.selectedPSets)}
                                     </div>
                                 </div>
-                                {this.context.authenticated ? <Button label='Save' onClick={this.saveSelectedPSets} disabled={this.state.disableSaveBtn}/> : '*Login or register to select and save existing PSets to your profile.'}
+                                <Button className='downloadBtn' label='Download' disabled={this.state.disableSaveBtn}/>
+                                {this.context.authenticated ? <Button label='Save' onClick={this.saveSelectedPSets} disabled={this.state.disableSaveBtn}/> : '*Login or register to save existing PSets to your profile.'}
                             </div>
-                            <DataTable value={this.state.datasets.slice(0, 50)} selection={this.state.selectedPSets} onSelectionChange={this.updatePSetSelectionEvent} scrollable={true} scrollHeight="600px">
-                                {this.context.authenticated ? <Column selectionMode="multiple" style={{width:'3.5em'}}/> : <Column style={{width: '0em'}}/>}
-                                <Column className='textField' field='doi' header='DOI' style={{width:'18em'}}/>
-                                <Column className='textField' field='datasetName' header='Dataset' style={{width:'6em'}} />
-                                <Column className='textField' field='datasetVersion' header='Dataset Version' style={{width:'7em'}}/>
-                                <Column className='textField' field='drugSensitivity' header='Drug Sensitivity' style={{width:'7em'}}/>
-                                <Column className='textField' field='rnaTool' header='RNA Tool' style={{width:'10em'}} />
-                                <Column className='textField' field='exomeTool' header='Exome Tool' style={{width:'10em'}} />
-                                <Column className='textField' field='rnaRef' header='RNA Ref' style={{width:'10em'}} />
-                                <Column className='textField' field='exomeRef' header='Exome Ref' style={{width:'10em'}} />
-                                <Column className='textField' field='metadata' header='Metadata' />
-                            </DataTable>
+                            <PSetTable allData={this.state.allData} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.updatePSetSelection} scrollHeight='600px'/>
                         </div>
                     </div>
                 </div>
@@ -167,4 +163,4 @@ class PSetList extends React.Component{
     }
 }
 
-export default PSetList;
+export default PSetSearch;

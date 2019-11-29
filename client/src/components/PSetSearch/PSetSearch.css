@@ -53,3 +53,11 @@
     font-size: 50px;
     font-weight: bold;
 }
+
+.metaBtn.p-button {
+    font-size: 12px;
+}
+
+.downloadBtn.p-button {
+    margin-right: 10px;
+}

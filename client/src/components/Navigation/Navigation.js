@@ -36,7 +36,7 @@ class Navigation extends React.Component {
                     <NavLink exact to='/'><img src="./images/trumpet-orcestra.png" alt='' /></NavLink>
                     <div className='navBar'>
                         <div><NavLink exact to='/' activeClassName='active-link'>Home</NavLink></div>
-                        <div><NavLink exact to="/PSetList" activeClassName='active-link'>Search</NavLink></div>
+                        <div><NavLink exact to="/PSetSearch" activeClassName='active-link'>Search</NavLink></div>
                         <div><NavLink exact to="/PSetRequest" activeClassName='active-link'>Request</NavLink></div>
                         <div><NavLink exact to="/Stats" activeClassName='active-link'>Statistics</NavLink></div>
                         <div><NavLink exact to="/Profile" activeClassName='active-link'>Profile</NavLink></div>
@@ -48,7 +48,6 @@ class Navigation extends React.Component {
                         }</div>   
                     </div>
                     <div className='loggedIn'>{this.context.authenticated ? 'Logged in as: ' + this.context.username : ''}</div> 
-                    {/* <div className='loginGrowl'><Growl  ref={(el) => this.growl = el}></Growl></div> */}
                 </header>
             </React.Fragment>
         );

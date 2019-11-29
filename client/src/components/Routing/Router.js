@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { AuthContext } from "../../context/auth";
 import PrivateRoute from './PrivateRoute';
 import App from '../App/App';
-import PSetList from '../PSetList/PSetList';
+import PSetSearch from '../PSetSearch/PSetSearch';
 import PSetRequest from '../PSetRequest/PSetRequest';
 import Stats from '../Stats/Stats'
 import Profile from '../Profile/Profile';
@@ -46,7 +46,6 @@ class Router extends React.Component{
 
     render(){
         
-        console.log('router rendering');
         const profile = (
             <Profile />
         );
@@ -56,7 +55,7 @@ class Router extends React.Component{
                 <BrowserRouter>
                     <Switch>
                         <Route exact path ='/' render={(props)=><App path='/' {...props} />} /> 
-                        <Route exact path ='/PSetList' render={(props)=><PSetList path='/PSetList' {...props} />}/>
+                        <Route exact path ='/PSetSearch' render={(props)=><PSetSearch path='/PSetSearch' {...props} />}/>
                         <Route exact path ='/PSetRequest' render={(props)=><PSetRequest path='/PSetRequest' {...props} />}/>
                         <Route exact path ='/Stats' render={(props)=><Stats path='/Stats' {...props} />}/>
                         <Route exact path='/Authentication' render={(props) => <Login {...props} />} />

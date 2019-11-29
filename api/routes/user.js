@@ -53,7 +53,6 @@ function registerUser(req, res){
                     if(result.status){
                         const token = jwt.sign({username: user.username}, process.env.KEY, {expiresIn: '1h'});
                         res.cookie('token', token, {httpOnly: true}).send({status: 1, authenticated: true, username: user.username});
-                        //res.send({status: 1, authenticated: true, username: user.username});
                     }else{
                         res.status(500).send(result.data);
                     }
@@ -90,8 +89,7 @@ function loginUser(req, res){
 function getUserPSet(req, res){
     dbUtil.selectUserPSets(req.query.username, function(result){
         if(result.status){
-            const data = helper.restructureData(result.data);
-            res.send(data);
+            res.send(result.data);
         }else{
             res.status(500).send(result.data);
         }

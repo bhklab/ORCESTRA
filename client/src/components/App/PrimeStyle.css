@@ -165,3 +165,7 @@ body .p-link:focus {
     box-shadow: 0 0 0 0.2em #555975;
 }
 
+body .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background-color: #3D405A;
+    color: #ffffff;
+}

@@ -1,5 +1,4 @@
 const dbUtil = require('../db/dbUtil');
-const helper = require('../helper/apiHelper');
 
 function buildReqArray(parameters, datatype=null){
     var paramArray = [];
@@ -20,7 +19,9 @@ function buildReqArray(parameters, datatype=null){
 function buildPSetObject(reqData){
     var pset = {};
     pset._id = null,
+    pset.name = reqData.reqName;
     pset.status = 'pending';
+    pset.download = 0;
     pset.doi = '{ doi: }';
     pset.datasetName = reqData.reqDataset.name;
     pset.datasetVersion = reqData.reqDatasetVersion.name;
@@ -38,8 +39,7 @@ function buildPSetObject(reqData){
 const getPsetList = function(req, res){
     dbUtil.selectPSets(req.query, function(result){
         if(result.status){
-            var dataset = helper.restructureData(result.data);
-            res.send(dataset);
+            res.send(result.data);
         }else{
             res.status(500).send(result.data);
         }
