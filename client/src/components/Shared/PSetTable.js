@@ -23,7 +23,6 @@ class PSetTable extends React.Component{
     }
 
     componentDidMount(){
-        console.log('PSetTable');
         this.setState({
             loading: false
         });
@@ -63,10 +62,10 @@ class PSetTable extends React.Component{
             rows={this.state.rows} totalRecords={totalRecords} lazy={true} first={this.state.first} onPage={this.onPage} loading={this.state.loading}
             scrollable={true} scrollHeight={this.props.scrollHeight}>
                 <Column selectionMode="multiple" style={{width:'3.5em'}}/>
-                {this.props.pending ? <Column className='textField' field='status' header='Status' style={{width:'10em'}}/> : <Column className='textField' field='doi' header='DOI' style={{width:'18em'}}/>}
+                <Column className='textField' field='name' header='Name' style={{width:'18em'}}/>
                 <Column className='textField' field='datasetName' header='Dataset' style={{width:'6em'}} />
-                <Column className='textField' field='datasetVersion' header='Dataset Version' style={{width:'7em'}}/>
-                <Column className='textField' field='drugSensitivity' header='Drug Sensitivity' style={{width:'7em'}}/>
+                <Column className='textField' field='datasetVersion' header='Dataset Version' style={{width:'6em'}}/>
+                <Column className='textField' field='drugSensitivity' header='Drug Sensitivity' style={{width:'6em'}}/>
                 <Column field='rnaTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='RNA Tool'/>
                 <Column field='exomeTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='Exome Tool'/>
                 <Column field='rnaRef' body={this.toolsRefTemplate} style={{width:'18em'}} header='RNA Ref'/>

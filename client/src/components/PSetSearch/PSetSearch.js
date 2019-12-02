@@ -6,6 +6,8 @@ import PSetTable from '../Shared/PSetTable';
 import {Button} from 'primereact/button';
 import {Messages} from 'primereact/messages';
 import {AuthContext} from '../../context/auth';
+import * as APIHelper from '../Shared/PSetAPIHelper';
+import * as APICalls from '../Shared/APICalls';
 
 class PSetSearch extends React.Component{
     constructor(){
@@ -16,20 +18,33 @@ class PSetSearch extends React.Component{
             disableSaveBtn: true
         }
 
+        this.updateAllData = this.updateAllData.bind(this);
         this.evaluateList = this.evaluateList.bind(this);
-        this.filterPSet = this.filterPSet.bind(this);
         this.saveSelectedPSets = this.saveSelectedPSets.bind(this);
+        this.downloadPSets = this.downloadPSets.bind(this);
         this.afterSubmitRequest = this.afterSubmitRequest.bind(this);
         this.updatePSetSelection = this.updatePSetSelection.bind(this);
-        this.isSelected = this.isSelected.bind(this);
         this.initializeState = this.initializeState.bind(this);
     }
 
     static contextType = AuthContext;
 
     componentDidMount(){
-        console.log('PSetSearch');
-        this.filterPSet('/pset');
+        APICalls.queryPSet('/pset', (resData) => {
+            this.updateAllData(resData);
+        });
+    }
+
+    saveSelectedPSets = event => {
+        event.preventDefault();
+        if(this.context.authenticated){
+            APICalls.saveOrUpdateUserPSets(this.context.username, this.state.selectedPSets, this.afterSubmitRequest);
+        }
+    }
+
+    downloadPSets = event => {
+        event.preventDefault();
+        APICalls.downloadPSets(this.state.selectedPSets, (status, data) => {console.log('download success')});
     }
 
     evaluateList(list){
@@ -48,46 +63,8 @@ class PSetSearch extends React.Component{
         }
     }
 
-    filterPSet(api){
-        console.log(api);
-        fetch(api)  
-            .then(res => res.json())
-            .then(resData => {
-                this.setState({
-                    allData: resData
-                });
-            }   
-        );
-    }
-
-    saveSelectedPSets = event => {
-        event.preventDefault();
-        if(this.context.authenticated){
-            if(this.state.selectedPSets.length){
-                var userPSet = { username: this.context.username };
-                console.log(this.state.selectedPSets);
-                var psetId = [];
-                for(let i = 0; i < this.state.selectedPSets.length; i++){
-                    psetId.push(this.state.selectedPSets[i]._id);
-                }
-                console.log(psetId);
-                userPSet.psetId = psetId;
-    
-                fetch('/user/pset/add', {
-                    method: 'POST',
-                    body: JSON.stringify({reqData: userPSet}),
-                    headers: {
-                        'Content-type': 'application/json'
-                    }
-                })
-                    .then(res => res.json())
-                    .then(resData => this.afterSubmitRequest(1, resData))
-                    .catch(err => this.afterSubmitRequest(0, err));
-    
-            }else{
-                console.log('nothing to save');
-            }
-        }
+    updateAllData(data){
+        this.setState({allData: data});
     }
 
     afterSubmitRequest(success, resData){
@@ -101,22 +78,12 @@ class PSetSearch extends React.Component{
 
     updatePSetSelection(selected){
         this.setState({selectedPSets: selected}, () => {
-            if(this.isSelected(this.state.selectedPSets)){
+            if(APIHelper.isSelected(this.state.selectedPSets)){
                 this.setState({disableSaveBtn: false});
             }else{
                 this.setState({disableSaveBtn: true});
             }
         });
-    }
-
-    isSelected(reqParam){
-        if(typeof reqParam === 'undefined' || reqParam === null){
-            return(false);
-        }
-        if(Array.isArray(reqParam) && !reqParam.length){
-            return(false);
-        }
-        return(true);
     }
 
     initializeState(){
@@ -134,7 +101,7 @@ class PSetSearch extends React.Component{
                 <div className='pageContent'>
                     <h1>Search for existing Pharmaco Datasets</h1>
                     <div className='pSetListContainer'>
-                        <PSetFilter filterPSet={this.filterPSet} />
+                        <PSetFilter updateAllData={this.updateAllData} />
                         <div className='pSetTable'>
                             <div className='pSetSelectionSummary'>
                                 <h2>Summary</h2>
@@ -151,7 +118,7 @@ class PSetSearch extends React.Component{
                                         {this.evaluateList(this.state.selectedPSets)}
                                     </div>
                                 </div>
-                                <Button className='downloadBtn' label='Download' disabled={this.state.disableSaveBtn}/>
+                                <Button className='downloadBtn' label='Download' disabled={this.state.disableSaveBtn} onClick={this.downloadPSets} />
                                 {this.context.authenticated ? <Button label='Save' onClick={this.saveSelectedPSets} disabled={this.state.disableSaveBtn}/> : '*Login or register to save existing PSets to your profile.'}
                             </div>
                             <PSetTable allData={this.state.allData} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.updatePSetSelection} scrollHeight='600px'/>

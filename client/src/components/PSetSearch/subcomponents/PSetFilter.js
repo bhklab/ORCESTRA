@@ -2,6 +2,7 @@ import React from 'react';
 import {InputSwitch} from 'primereact/inputswitch';
 import {Button} from 'primereact/button';
 import * as APIHelper from '../../Shared/PSetAPIHelper';
+import * as APICalls from '../../Shared/APICalls';
 import * as FormData from '../../Shared/FormData';
 import PSetParamOptions from '../../Shared/PSetParamOptions/PSetParamOptions';
 import './PSetFilter.css';
@@ -11,22 +12,36 @@ class PSetFilter extends React.Component {
         super();
         this.state = {
             autoUpdateChecked: false,
-            datatypeSelected: [],
-            datasetSelected: [],
-            versionSelected: [],
-            genomeSelected: [],
-            toolVersionSelected: [],
-            rnaToolRefSelected: [],
-            dnaToolRefSelected: [],
+            datatype: [],
+            dataset: [],
+            datasetVersion: [],
+            genome: [],
+            toolVersion: [],
+            rnaToolRef: [],
+            dnaToolRef: [],
             toolVersionOptions: FormData.rnaToolVersionOptions.concat(FormData.dnaToolVersionOptions),
             hideRNARef: false,
             hideDNARef: false
         }
+        this.getSearchData = this.getSearchData.bind(this);
         this.handleFilterChange= this.handleFilterChange.bind(this);
         this.handleDatatypeSelectionChange = this.handleDatatypeSelectionChange.bind(this);
         this.setToolVersionState = this.setToolVersionState.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.sendFilterPSetRequest = this.sendFilterPSetRequest.bind(this);
+    }
+
+    getSearchData(){
+        return({
+            dataset: this.state.dataset,
+            datasetVersion: this.state.datasetVersion,
+            genome: this.state.genome,
+            datatype: this.state.datatype,
+            toolVersion: this.state.toolVersion,
+            rnaToolRef: this.state.rnaToolRef,
+            dnaToolRef: this.state.dnaToolRef,
+            drugSensitivity: null
+        });
     }
 
     handleFilterChange = event => {
@@ -50,22 +65,22 @@ class PSetFilter extends React.Component {
 
     setToolVersionState(event, callback){
         if(event.value.length === 1){
-            var tools = this.state.toolVersionSelected;
-            if(this.state.datatypeSelected[0].name === 'RNA'){
+            var tools = this.state.toolVersion;
+            if(this.state.datatype[0].name === 'RNA'){
                 tools = tools.filter((tool)=>{return(tool.datatype==='RNA')});              
                 this.setState({
                     toolVersionOptions: FormData.rnaToolVersionOptions,
                     hideDNARef: true,
-                    toolVersionSelected: tools,
-                    dnaToolRefSelected: []
+                    toolVersion: tools,
+                    dnaToolRef: []
                 }, callback);
             }else{
                 tools = tools.filter((tool)=>{return(tool.datatype==='DNA')}); 
                 this.setState({
                     toolVersionOptions: FormData.dnaToolVersionOptions, 
                     hideRNARef: true,
-                    toolVersionSelected: tools,
-                    rnaToolRefSelected: []
+                    toolVersion: tools,
+                    rnaToolRef: []
                 }, callback);
             }
         }else{
@@ -83,19 +98,12 @@ class PSetFilter extends React.Component {
     }
 
     sendFilterPSetRequest(){
-        var filterset = APIHelper.getFilterSet(
-            this.state.datatypeSelected, 
-            this.state.genomeSelected, 
-            this.state.toolVersionSelected, 
-            this.state.datasetSelected, 
-            this.state.versionSelected,
-            null,
-            this.state.rnaToolRefSelected,
-            this.state.dnaToolRefSelected
-        );
+        var filterset = APIHelper.getFilterSet(this.getSearchData());
         console.log(filterset);
         var apiStr = APIHelper.buildAPIStr(filterset);
-        this.props.filterPSet(apiStr);
+        APICalls.queryPSet(apiStr, (data) => {
+            this.props.updateAllData(data);
+        });    
     }
 
     render(){
@@ -108,26 +116,26 @@ class PSetFilter extends React.Component {
                         <InputSwitch checked={this.state.autoUpdateChecked} onChange={(e) => this.setState({autoUpdateChecked: e.value})} />
                     </div>
 
-                    <PSetParamOptions id='datatypeSelected' className='filterSet' isHidden={false} parameterName='Datatype:' 
-                        parameterOptions={FormData.datatypeOptions} selectedParameter={this.state.datatypeSelected} handleUpdateSelection={this.handleDatatypeSelectionChange} />
+                    <PSetParamOptions id='datatype' className='filterSet' isHidden={false} parameterName='Datatype:' 
+                        parameterOptions={FormData.datatypeOptions} selectedParameter={this.state.datatype} handleUpdateSelection={this.handleDatatypeSelectionChange} />
 
-                    <PSetParamOptions id='datasetSelected' className='filterSet' isHidden={false} parameterName='Dataset:' 
-                        parameterOptions={FormData.datasetOptions} selectedParameter={this.state.datasetSelected} handleUpdateSelection={this.handleFilterChange} />
+                    <PSetParamOptions id='dataset' className='filterSet' isHidden={false} parameterName='Dataset:' 
+                        parameterOptions={FormData.datasetOptions} selectedParameter={this.state.dataset} handleUpdateSelection={this.handleFilterChange} />
 
-                    <PSetParamOptions id='versionSelected' className='filterSet' isHidden={false} parameterName='Dataset Version:' 
-                        parameterOptions={FormData.dataVersionOptions} selectedParameter={this.state.versionSelected} handleUpdateSelection={this.handleFilterChange} />
+                    <PSetParamOptions id='datasetVersion' className='filterSet' isHidden={false} parameterName='Dataset Version:' 
+                        parameterOptions={FormData.dataVersionOptions} selectedParameter={this.state.datasetVersion} handleUpdateSelection={this.handleFilterChange} />
                     
-                    <PSetParamOptions id='genomeSelected' className='filterSet' isHidden={false} parameterName='Genome:' 
-                        parameterOptions={FormData.genomeOptions} selectedParameter={this.state.genomeSelected} handleUpdateSelection={this.handleFilterChange} />
+                    <PSetParamOptions id='genome' className='filterSet' isHidden={false} parameterName='Genome:' 
+                        parameterOptions={FormData.genomeOptions} selectedParameter={this.state.genome} handleUpdateSelection={this.handleFilterChange} />
                     
-                    <PSetParamOptions id='toolVersionSelected' className='filterSet' isHidden={false} parameterName='Tool + Version:' 
-                        parameterOptions={this.state.toolVersionOptions} selectedParameter={this.state.toolVersionSelected} handleUpdateSelection={this.handleFilterChange} />
+                    <PSetParamOptions id='toolVersion' className='filterSet' isHidden={false} parameterName='Tool + Version:' 
+                        parameterOptions={this.state.toolVersionOptions} selectedParameter={this.state.toolVersion} handleUpdateSelection={this.handleFilterChange} />
 
-                    <PSetParamOptions id='rnaToolRefSelected' className='filterSet' isHidden={this.state.hideRNARef} parameterName='RNA Tool Ref:' 
-                        parameterOptions={FormData.rnaToolRefOptions} selectedParameter={this.state.rnaToolRefSelected} handleUpdateSelection={this.handleFilterChange} />
+                    <PSetParamOptions id='rnaToolRef' className='filterSet' isHidden={this.state.hideRNARef} parameterName='RNA Tool Ref:' 
+                        parameterOptions={FormData.rnaToolRefOptions} selectedParameter={this.state.rnaToolRef} handleUpdateSelection={this.handleFilterChange} />
                     
-                    <PSetParamOptions id='dnaToolRefSelected' className='filterSet' isHidden={this.state.hideDNARef} parameterName='DNA Tool Ref:' 
-                        parameterOptions={FormData.dnaToolRefOptions} selectedParameter={this.state.dnaToolRefSelected} handleUpdateSelection={this.handleFilterChange} />
+                    <PSetParamOptions id='dnaToolRef' className='filterSet' isHidden={this.state.hideDNARef} parameterName='DNA Tool Ref:' 
+                        parameterOptions={FormData.dnaToolRefOptions} selectedParameter={this.state.dnaToolRef} handleUpdateSelection={this.handleFilterChange} />
 
                     <Button type='submit' label='Search' onClick={this.handleClick} disabled={this.state.autoUpdateChecked}/>
                 </div>

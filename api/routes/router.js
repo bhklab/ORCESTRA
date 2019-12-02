@@ -13,6 +13,7 @@ router.get('/', home.getHome);
 // pset
 router.get('/pset', pset.getPsetList);
 router.post('/pset/request', pset.postPsetData);
+router.post('/pset/download', pset.downloadPSets);
 // prviate route
 router.post('/pset/cancel', helper.checkToken, pset.cancelPSetRequest);
 

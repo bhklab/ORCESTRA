@@ -88,7 +88,7 @@ module.exports = {
     selectPSets: function(query, callback){       
         connectWithClient((err, client) => {
             if(err){
-                callback({status: 'error', data: err});
+                callback({status: 0, data: err});
             }
             const db = client.db(dbName);
             const collection = db.collection('pset');
@@ -102,6 +102,29 @@ module.exports = {
                 callback({status: 1, data: data});
             });
         });   
+    },
+
+    updateDownloadNumber: function(psetIDs, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db(dbName);
+            const collection = db.collection('pset');
+            collection.updateMany({'_id': {'$in': psetIDs}}, {'$inc': {'download': 1}}, (err, result) => {
+                if(err){
+                    client.close();
+                    callback({status: 0, data: err});
+                }
+                client.close();
+                callback({
+                    status: 1, data: {
+                            summary: 'PSet(s) Download',
+                            message: 'The selected PSets will be downloaded.'
+                    }
+                });
+            });         
+        });
     },
 
     insertPSetRequest: function(pset, username, callback){

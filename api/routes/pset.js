@@ -1,4 +1,6 @@
 const dbUtil = require('../db/dbUtil');
+const path = require('path');
+const psetDir = path.join(__dirname, '../psets');
 
 function buildReqArray(parameters, datatype=null){
     var paramArray = [];
@@ -19,19 +21,19 @@ function buildReqArray(parameters, datatype=null){
 function buildPSetObject(reqData){
     var pset = {};
     pset._id = null,
-    pset.name = reqData.reqName;
+    pset.name = reqData.name;
     pset.status = 'pending';
     pset.download = 0;
     pset.doi = '{ doi: }';
-    pset.datasetName = reqData.reqDataset.name;
-    pset.datasetVersion = reqData.reqDatasetVersion.name;
-    pset.dataType = buildReqArray(reqData.reqDatatype);
-    pset.genome = reqData.reqGenome.name;
-    pset.drugSensitivity = reqData.reqDrugSensitivity.name;
-    pset.rnaTool = buildReqArray(reqData.reqToolVersion, 'RNA');
-    pset.rnaRef = buildReqArray(reqData.reqRNAToolRef);
-    pset.exomeTool = buildReqArray(reqData.reqToolVersion, 'DNA');
-    pset.exomeRef = buildReqArray(reqData.reqDNAToolRef);
+    pset.datasetName = reqData.dataset.name;
+    pset.datasetVersion = reqData.datasetVersion.name;
+    pset.dataType = buildReqArray(reqData.datatype);
+    pset.genome = reqData.genome.name;
+    pset.drugSensitivity = reqData.drugSensitivity.name;
+    pset.rnaTool = buildReqArray(reqData.toolVersion, 'RNA');
+    pset.rnaRef = buildReqArray(reqData.rnaToolRef);
+    pset.exomeTool = buildReqArray(reqData.toolVersion, 'DNA');
+    pset.exomeRef = buildReqArray(reqData.dnaToolRef);
     pset.metadata = '{ metadata }'
     return(pset);
 }
@@ -49,7 +51,7 @@ const getPsetList = function(req, res){
 
 const postPsetData = function(req, res){
     var pset = buildPSetObject(req.body.reqData);
-    dbUtil.insertPSetRequest(pset, req.body.reqData.reqEmail, function(result){
+    dbUtil.insertPSetRequest(pset, req.body.reqData.email, function(result){
         if(result.status){
             res.send(result.data);
         }else{
@@ -68,8 +70,19 @@ const cancelPSetRequest = function(req, res){
     });
 }
 
+const downloadPSets = function(req, res){
+    dbUtil.updateDownloadNumber(req.body.psetIDs, function(result){
+        if(result.status){
+            res.download(psetDir + '/' + 'pset1.txt');
+        }else{
+            res.status(500).send(result.data);
+        }
+    });
+}
+
 module.exports = {
     getPsetList,
     postPsetData,
-    cancelPSetRequest
+    cancelPSetRequest,
+    downloadPSets
 };

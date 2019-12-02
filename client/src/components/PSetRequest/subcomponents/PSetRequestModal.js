@@ -11,11 +11,16 @@ class PSetRequestModal extends React.Component {
     
     render(){                       
         const footer = (
+            <React.Fragment>
                 <div>
                     <Button className='downloadBtn' label='Download' disabled={this.props.disableSaveBtn}/>
                     {this.context.authenticated ? <Button label='Save' onClick={this.props.onSave} disabled={this.props.disableSaveBtn} /> : ''}
                     <Button className='modalCancelBtn' label='Cancel' onClick={this.props.hide} />
                 </div>
+                <div className='modalFooterMessage'>
+                    {this.context.authenticated ? '' : 'Login or register to select and save PSets to your profile.'}
+                </div>
+            </React.Fragment>
         );
         
         return(
