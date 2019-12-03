@@ -1,6 +1,7 @@
 const dbUtil = require('../db/dbUtil');
 const path = require('path');
 const psetDir = path.join(__dirname, '../psets');
+const zip = require('express-zip');
 
 function buildReqArray(parameters, datatype=null){
     var paramArray = [];
@@ -49,6 +50,16 @@ const getPsetList = function(req, res){
 
 }
 
+const getSortedPSets = function(req, res){
+    dbUtil.selectSortedPSets(function(result){
+        if(result.status){
+            res.send(result.data);
+        }else{
+            res.status(500).send(result.data);
+        }
+    });
+}
+
 const postPsetData = function(req, res){
     var pset = buildPSetObject(req.body.reqData);
     dbUtil.insertPSetRequest(pset, req.body.reqData.email, function(result){
@@ -73,7 +84,8 @@ const cancelPSetRequest = function(req, res){
 const downloadPSets = function(req, res){
     dbUtil.updateDownloadNumber(req.body.psetIDs, function(result){
         if(result.status){
-            res.download(psetDir + '/' + 'pset1.txt');
+            const file = path.join(psetDir, 'pset1.txt');
+            res.zip([{path: file, name: 'pset1.txt'}]);
         }else{
             res.status(500).send(result.data);
         }
@@ -82,6 +94,7 @@ const downloadPSets = function(req, res){
 
 module.exports = {
     getPsetList,
+    getSortedPSets,
     postPsetData,
     cancelPSetRequest,
     downloadPSets

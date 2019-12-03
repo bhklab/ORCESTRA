@@ -1,0 +1,25 @@
+.statContainer{
+    display: flex;
+}
+
+.container{
+    color: #3D405A;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+}
+
+.rankingTable {
+    margin-right: 20px;
+    width: 1000px;
+}
+
+.downloadHistogram{
+    width: 600px;
+}
+
+.rankingTableFooter{
+    margin-top: 20px;
+}

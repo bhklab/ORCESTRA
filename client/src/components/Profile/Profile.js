@@ -5,6 +5,7 @@ import UserInfo from './subcomponents/UserInfo';
 import UserPSet from './subcomponents/UserPSet';
 import {Messages} from 'primereact/messages';
 import {AuthContext} from '../../context/auth';
+import * as APIHelper from '../Shared/PSetAPIHelper';
 
 class Profile extends React.Component{
 
@@ -18,7 +19,6 @@ class Profile extends React.Component{
         }
         this.removeFromSavedList = this.removeFromSavedList.bind(this);
         this.cancelPSetRequest = this.cancelPSetRequest.bind(this);
-        this.afterSubmitRequest = this.afterSubmitRequest.bind(this);
         this.findPSetByID = this.findPSetByID.bind(this);
         this.removePSetByID = this.removePSetByID.bind(this);
     }
@@ -59,13 +59,13 @@ class Profile extends React.Component{
         })
             .then(res => res.json())
             .then(resData => {
-                this.afterSubmitRequest(1, resData);
+                APIHelper.messageAfterRequest(1, resData, null, this.messages);
                 var saved = this.state.psetSaved;
                 saved = this.removePSetByID(saved, psetID);
                 this.setState({psetSaved: saved}, callback(0));
             })
             .catch(err => {
-                this.afterSubmitRequest(0, err);
+                APIHelper.messageAfterRequest(0, err, null, this.messages);
                 callback(1);
             });
     }
@@ -84,23 +84,15 @@ class Profile extends React.Component{
         })
             .then(res => res.json())
             .then(resData => {
-                this.afterSubmitRequest(1, resData);
+                APIHelper.messageAfterRequest(1, resData, null, this.messages);
                 var inProcess = this.state.psetInProcess;
                 inProcess = this.removePSetByID(inProcess, psetID);
                 this.setState({psetInProcess: inProcess}, callback(0));
             })
             .catch(err => {
-                this.afterSubmitRequest(0, err);
+                APIHelper.messageAfterRequest(0, err, null, this.messages);
                 callback(1);
             });
-    }
-
-    afterSubmitRequest(success, resData){
-        if(success){
-            this.messages.show({severity: 'success', summary: resData.summary, detail: resData.message});
-        }else{
-            this.messages.show({severity: 'error', summary: 'An error occured', detail: resData.toString(), sticky: true});
-        }    
     }
 
     findPSetByID(psetArray, id){
@@ -135,6 +127,7 @@ class Profile extends React.Component{
                             <UserPSet heading='Your Saved PSets' btnLabel='Remove from List' 
                                 pset={this.state.psetSaved} 
                                 handleBtnClick={this.removeFromSavedList}
+                                messages={this.messages}
                             />
                             <UserPSet heading='Your PSet Requests in Process' btnLabel='Cancel Request' 
                                 pset={this.state.psetInProcess} 

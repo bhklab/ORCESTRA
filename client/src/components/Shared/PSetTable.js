@@ -20,6 +20,7 @@ class PSetTable extends React.Component{
         this.toolsRefTemplate = this.toolsRefTemplate.bind(this);
         this.updatePSetSelectionEvent = this.updatePSetSelectionEvent.bind(this);
         this.onPage = this.onPage.bind(this);
+        this.downloadColumn = this.downloadColumn.bind(this);
     }
 
     componentDidMount(){
@@ -54,6 +55,12 @@ class PSetTable extends React.Component{
         this.props.updatePSetSelection(event.value);
     }
 
+    downloadColumn(){
+        if(this.props.showDownload){
+            return(<Column className='textField' field='download' header='Download' style={{width: '6.5em'}}/>);
+        }
+    }
+
     render(){
         const datasets = this.props.allData.slice(this.state.start, this.state.end);
         const totalRecords = this.props.allData.length;
@@ -61,11 +68,12 @@ class PSetTable extends React.Component{
             <DataTable value={datasets} selection={this.props.selectedPSets} onSelectionChange={this.updatePSetSelectionEvent} paginator={true} 
             rows={this.state.rows} totalRecords={totalRecords} lazy={true} first={this.state.first} onPage={this.onPage} loading={this.state.loading}
             scrollable={true} scrollHeight={this.props.scrollHeight}>
-                <Column selectionMode="multiple" style={{width:'3.5em'}}/>
-                <Column className='textField' field='name' header='Name' style={{width:'18em'}}/>
+                <Column selectionMode="multiple" style={{width: '3.5em'}}/>
+                {this.downloadColumn()}
+                <Column className='textField' field='name' header='Name' style={{width:'15em'}}/>
                 <Column className='textField' field='datasetName' header='Dataset' style={{width:'6em'}} />
                 <Column className='textField' field='datasetVersion' header='Dataset Version' style={{width:'6em'}}/>
-                <Column className='textField' field='drugSensitivity' header='Drug Sensitivity' style={{width:'6em'}}/>
+                <Column className='textField' field='drugSensitivity' header='Drug Sensitivity' style={{width:'7em'}}/>
                 <Column field='rnaTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='RNA Tool'/>
                 <Column field='exomeTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='Exome Tool'/>
                 <Column field='rnaRef' body={this.toolsRefTemplate} style={{width:'18em'}} header='RNA Ref'/>

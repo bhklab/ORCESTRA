@@ -1,24 +1,19 @@
 import React from 'react';
 import {Dialog} from 'primereact/dialog';
 import {Button} from 'primereact/button';
+import SavePSetButton from '../../Shared/Buttons/SavePSetButton';
+import DownloadPSetButton from '../../Shared/Buttons/DownloadPSetButton';
 import PSetTable from '../../Shared/PSetTable';
-import {AuthContext} from '../../../context/auth';
 import '../PSetRequest.css';
 
-class PSetRequestModal extends React.Component {
-    
-    static contextType = AuthContext;
-    
+class PSetRequestModal extends React.Component {   
     render(){                       
         const footer = (
             <React.Fragment>
                 <div>
-                    <Button className='downloadBtn' label='Download' disabled={this.props.disableSaveBtn}/>
-                    {this.context.authenticated ? <Button label='Save' onClick={this.props.onSave} disabled={this.props.disableSaveBtn} /> : ''}
+                    <span style={{float: 'left'}}><SavePSetButton selectedPSets={this.props.selectedValue} disabled={this.props.disableBtn} onSaveComplete={this.props.onComplete} /></span>
+                    <DownloadPSetButton selectedPSets={this.props.selectedValue} disabled={this.props.disableBtn} onDownloadComplete={this.props.onComplete} /> 
                     <Button className='modalCancelBtn' label='Cancel' onClick={this.props.hide} />
-                </div>
-                <div className='modalFooterMessage'>
-                    {this.context.authenticated ? '' : 'Login or register to select and save PSets to your profile.'}
                 </div>
             </React.Fragment>
         );

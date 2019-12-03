@@ -102,6 +102,17 @@ export function isSelected(reqParam){
     return(true);
 }
 
+export function messageAfterRequest(status, data, initalize=null, msgComponent){
+    if(initalize){
+        initalize();
+    }
+    if(status){
+        msgComponent.show({severity: 'success', summary: data.summary, detail: data.message});
+    }else{
+        msgComponent.show({severity: 'error', summary: 'An error occured', detail: data.toString(), sticky: true});
+    } 
+}
+
 function hasName(name){
     if(typeof name === 'undefined' || name === null){
         return(false);

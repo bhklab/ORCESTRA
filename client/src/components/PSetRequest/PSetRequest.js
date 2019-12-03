@@ -36,11 +36,10 @@ class PSetRequest extends React.Component{
             hideDNARef: false,
             notReadyToSubmit: true,
             isModalVisible: false,
-            disableModalSaveBtn: true
+            disableModalBtn: true
         }
         this.handleSubmitRequest = this.handleSubmitRequest.bind(this);
-        this.saveSelectedPSets = this.saveSelectedPSets.bind(this);
-        this.afterSubmitRequest = this.afterSubmitRequest.bind(this);
+        this.showMessage = this.showMessage.bind(this);
         this.getReqData = this.getReqData.bind(this);
         
         this.updateParameterSelection = this.updateParameterSelection.bind(this);
@@ -77,16 +76,13 @@ class PSetRequest extends React.Component{
 
     handleSubmitRequest = event => {
         event.preventDefault();
-        APICalls.requestPSet(this.getReqData(), this.afterSubmitRequest);
+        APICalls.requestPSet(this.getReqData(), (status, data) => {
+            APIHelper.messageAfterRequest(status, data, this.initializeState, this.messages);
+        });
     }
 
-    afterSubmitRequest(success, resData){
-        this.initializeState();
-        if(success){
-            this.messages.show({severity: 'success', summary: resData.summary, detail: resData.message});
-        }else{
-            this.messages.show({severity: 'error', summary: 'An error occured', detail: resData.toString(), sticky: true});
-        }    
+    showMessage(status, data){
+        APIHelper.messageAfterRequest(status, data, this.hideModal, this.messages);
     }
 
     updateParameterSelection = event => {
@@ -162,13 +158,6 @@ class PSetRequest extends React.Component{
         }
     }
 
-    saveSelectedPSets = event => {
-        event.preventDefault();
-        if(this.context.authenticated){
-            APICalls.saveOrUpdateUserPSets(this.context.username, this.state.selectedPSets, this.afterSubmitRequest);
-        }
-    }
-
     initializeState(){
         this.setState({
             queryResult: [],
@@ -200,31 +189,25 @@ class PSetRequest extends React.Component{
         this.setState({
             isModalVisible: false, 
             selectedPSets: [],
-            disableModalSaveBtn: true
+            disableModalBtn: true
         });
     }
 
     updatePSetSelection(value){
         this.setState({selectedPSets: value}, () => {
             if(APIHelper.isSelected(this.state.selectedPSets)){
-                this.setState({disableModalSaveBtn: false});
+                this.setState({disableModalBtn: false});
             }else{
-                this.setState({disableModalSaveBtn: true});
+                this.setState({disableModalBtn: true});
             }
         });
     }
 
     render(){
         const availablePSetModalLink = ( 
-            <PSetRequestModal 
-                visible={this.state.isModalVisible} 
-                show={this.showModal} 
-                hide={this.hideModal} 
-                tableValue={this.state.queryResult} 
-                selectedValue={this.state.selectedPSets}
-                disableSaveBtn={this.state.disableModalSaveBtn}
-                onSelectionChange={this.updatePSetSelection}
-                onSave={this.saveSelectedPSets}
+            <PSetRequestModal visible={this.state.isModalVisible} show={this.showModal} hide={this.hideModal} 
+                tableValue={this.state.queryResult} selectedValue={this.state.selectedPSets}
+                disableBtn={this.state.disableModalBtn} onSelectionChange={this.updatePSetSelection} onComplete={this.showMessage}
             />
         );
 

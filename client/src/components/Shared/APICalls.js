@@ -48,6 +48,7 @@ export function requestPSet(data, callback){
 
 export function downloadPSets(psets, callback){
     var psetIDs = [];
+    var download = require('downloadjs');
     console.log(psets);
     for(let i = 0; i < psets.length; i++){
         psetIDs.push(psets[i]._id);
@@ -62,7 +63,10 @@ export function downloadPSets(psets, callback){
             'Content-type': 'application/json'
         }
     })
-        .then(res => res.json())
-        .then(resData => callback(1, resData))
+        .then(res => res.blob())
+        .then(blob => {
+            download(blob, 'pset-' + Date.now() + '.zip');
+            callback(1, {message: 'PSet(s) downloaded'});
+        })
         .catch(err => callback(0, err));
 }
