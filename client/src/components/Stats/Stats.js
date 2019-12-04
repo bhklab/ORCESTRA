@@ -18,24 +18,27 @@ class Stats extends React.Component{
             chartData: {},
             selectedPSets: [],
             disableBtn: true,
+            isReady: false
         }
         this.updatePSetSelection = this.updatePSetSelection.bind(this);
         this.showMessages = this.showMessages.bind(this);
+        this.initializeState = this.initializeState.bind(this);
     }
 
     static contextType = AuthContext;
 
     componentDidMount(){
         APICalls.queryPSet('/pset/sort', (resData) => {
+            var data = [];
             var name = [];
-            var download = []
             for(let i = 0; i < resData.length; i++){
+                data.push({name: resData[i].name, value: resData[i].download});
                 name.push(resData[i].name);
-                download.push(resData[i].download);
             }
             this.setState({
                 allData: resData,
-                chartData: {name: name, download: download}
+                chartData: {data: data, name: name},
+                isReady: true
             });
         });
     }
@@ -51,11 +54,18 @@ class Stats extends React.Component{
     }
 
     showMessages(status, data){
-        APIHelper.messageAfterRequest(status, data, null, this.messages);
+        APIHelper.messageAfterRequest(status, data, this.initializeState, this.messages);
         APICalls.queryPSet('/pset/sort', (resData) => {
             this.setState({
                 allData: resData
             });
+        });
+    }
+
+    initializeState(){
+        this.setState({
+            selectedPSets: [],
+            disableBtn: true
         });
     }
     
@@ -77,7 +87,7 @@ class Stats extends React.Component{
                         </div>
                         <div className='container downloadHistogram'>
                             <h3>Number of Downloads</h3>
-                            <DownloadChart />
+                            {this.state.isReady && <DownloadChart data={this.state.chartData} width={500} height={500} />}
                         </div>
                     </div>
                 </div>

@@ -8,6 +8,7 @@ import PSetRequest from '../PSetRequest/PSetRequest';
 import Stats from '../Stats/Stats'
 import Profile from '../Profile/Profile';
 import Login from '../Authentication/Login';
+import PSet from '../PSet/PSet';
 
 class Router extends React.Component{
     constructor(){
@@ -59,6 +60,7 @@ class Router extends React.Component{
                         <Route exact path ='/PSetRequest' render={(props)=><PSetRequest path='/PSetRequest' {...props} />}/>
                         <Route exact path ='/Stats' render={(props)=><Stats path='/Stats' {...props} />}/>
                         <Route exact path='/Authentication' render={(props) => <Login {...props} />} />
+                        <Route path='/PSet/:id' render={(props)=><PSet path='PSet/:id' {...props} />} />
                         <PrivateRoute path='/Profile' component={profile} redirect='/Authentication' />
                     </Switch>
                 </BrowserRouter>

@@ -85,6 +85,24 @@ function setId(db, collectionName, callback){
 
 module.exports = {
     
+    selectPSetByID: function(id, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db(dbName);
+            const collection = db.collection('pset');
+            collection.findOne({'_id': 1}, (err, data) => {
+                if(err){
+                    client.close();
+                    callback({status: 0, data: err});
+                }
+                client.close();
+                callback({status: 1, data: data});
+            });
+        });
+    },
+    
     selectPSets: function(query, callback){       
         connectWithClient((err, client) => {
             if(err){

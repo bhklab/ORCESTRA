@@ -169,3 +169,33 @@ body .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
     background-color: #3D405A;
     color: #ffffff;
 }
+
+/* Tab styling */
+body .p-tabview.p-tabview-top .p-tabview-nav li.p-highlight a{
+    background-color: #3D405A;
+    border: 1px solid #3D405A;
+}
+
+body .p-tabview.p-tabview-top .p-tabview-nav li.p-highlight:hover a{
+    background-color: #555975;
+    border: 1px solid #555975;
+}
+
+body .p-tabview.p-tabview-top .p-tabview-nav li a:not(.p-disabled):focus{
+    box-shadow: none;
+}
+
+/* Accordion styling */
+body .p-accordion .p-accordion-header:not(.p-disabled).p-highlight a{
+    background-color: #3D405A;
+    border: 1px solid #3D405A;
+}
+
+body .p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover a{
+    background-color: #555975;
+    border: 1px solid #555975;
+}
+
+body .p-accordion .p-accordion-header:not(.p-disabled) a:focus{
+    box-shadow: none;
+}

@@ -12,6 +12,7 @@ router.get('/', home.getHome);
 
 // pset
 router.get('/pset', pset.getPsetList);
+router.get('/pset/one/:id', pset.getPSetByID);
 router.get('/pset/sort', pset.getSortedPSets);
 router.post('/pset/request', pset.postPsetData);
 router.post('/pset/download', pset.downloadPSets);

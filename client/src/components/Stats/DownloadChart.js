@@ -5,42 +5,60 @@ class DownloadChart extends React.Component{
     constructor(){
         super();
         this.drawChart = this.drawChart.bind(this);
-        this.width=500;
-        this.height=500;
-        
-        this.name = ['A', 'B', 'C', 'D', 'E'];
-        this.data = [
-            {name: 'A', value: 10},
-            {name: 'B', value: 40},
-            {name: 'C', value: 30},
-            {name: 'D', value: 60},
-            {name: 'E', value: 30}
-        ];
     }
 
     componentDidMount(){
-        this.drawChart();
+        let data = this.props.data.data;
+        let name = this.props.data.name;
+        let height = this.props.height;
+        let width = this.props.width;
+        this.drawChart(name, data, width, height);
     }
 
-    drawChart(){
-        var bandScale = d3.scaleBand()
-            .domain(this.name)
-            .range([0, this.width])
-            .paddingInner(0.05);
+    drawChart(name, data, width, height){
+        let margin = {top: 20, right: 20, bottom: 30, left: 40};
+        const svg = d3.select("#chart").append("svg").attr("width", width).attr("height", height);
+        svg.attr("transform", "translate(30, 0)");
+        let w = width - margin.left - margin.right;
+        let h = height - margin.top - margin.bottom;
 
-        const svg = d3.select("#chart")
-                        .append("svg")
-                        .attr("width", this.width)
-                        .attr("height", this.height);
+        let xRange = d3.scaleBand().range([0, w]).padding(0.2);
+        let yRange = d3.scaleLinear().range([h, 5]);
+
+        xRange.domain(name);
+        yRange.domain([0, d3.max(data, function(d){return(d.value) + 5})]);
+
+        const xAxis = d3.axisBottom().scale(xRange)
+        const yAxis = d3.axisLeft().scale(yRange).tickSize(5);
+
+        svg.append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        
+        svg.append("g")
+            .attr('class', 'x axis')
+            .attr('transform', `translate(30,${h})`)
+            .attr('fill', 'none')
+            .attr('stroke', 'black')
+            .attr('stroke-width', 0.2)
+            .call(xAxis);
+        
+        svg.append("g")
+            .attr('class', 'y axis')
+            .attr('transform', `translate(20,0)`)
+            .attr('fill', 'none')
+            .attr('stroke', 'black')
+            .attr('stroke-width', 0.2)
+            .call(yAxis);
                   
-        svg.selectAll("rect")
-            .data(this.data)
-            .enter()
-            .append("rect")
-            .attr("y", function(d){return(bandScale(d.name));})
-            .attr("width", function(d){return(d.value)})
-            .attr("height", (bandScale.bandwidth()))
-            .attr("fill", "green")
+        svg.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("x", function(d){return(xRange(d.name));})
+            .attr("y", function(d){return(yRange(d.value));})
+            .attr("width", (xRange.bandwidth()))
+            .attr("height", function(d){return(h - yRange(d.value));})
+            .attr("transform", "translate(30, 0)")
+            .attr("fill", "#3D405A");
     }
     
     render(){

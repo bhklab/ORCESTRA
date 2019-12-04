@@ -102,9 +102,9 @@ export function isSelected(reqParam){
     return(true);
 }
 
-export function messageAfterRequest(status, data, initalize=null, msgComponent){
-    if(initalize){
-        initalize();
+export function messageAfterRequest(status, data, initialize=null, msgComponent){
+    if(initialize){
+        initialize();
     }
     if(status){
         msgComponent.show({severity: 'success', summary: data.summary, detail: data.message});

@@ -33,7 +33,7 @@ class Navigation extends React.Component {
         return(
             <React.Fragment>
                 <header>
-                    <NavLink exact to='/'><img src="./images/trumpet-orcestra.png" alt='' /></NavLink>
+                    <NavLink exact to='/'><img src={process.env.PUBLIC_URL + "/images/trumpet-orcestra.png"} alt='' /></NavLink>
                     <div className='navBar'>
                         <div><NavLink exact to='/' activeClassName='active-link'>Home</NavLink></div>
                         <div><NavLink exact to="/PSetSearch" activeClassName='active-link'>Search</NavLink></div>

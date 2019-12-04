@@ -13,11 +13,12 @@
 
 .rankingTable {
     margin-right: 20px;
-    width: 1000px;
+    max-height: 540px;
+    width: 60%;
 }
 
 .downloadHistogram{
-    width: 600px;
+    width: 40%;
 }
 
 .rankingTableFooter{

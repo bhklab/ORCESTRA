@@ -39,6 +39,16 @@ function buildPSetObject(reqData){
     return(pset);
 }
 
+const getPSetByID = function(req, res){
+    dbUtil.selectPSetByID(parseInt(req.params.id, 10), function(result){
+        if(result.status){
+            res.send(result.data);
+        }else{
+            res.status(500).send(result.data);
+        }
+    });
+}
+
 const getPsetList = function(req, res){
     dbUtil.selectPSets(req.query, function(result){
         if(result.status){
@@ -93,6 +103,7 @@ const downloadPSets = function(req, res){
 }
 
 module.exports = {
+    getPSetByID,
     getPsetList,
     getSortedPSets,
     postPsetData,

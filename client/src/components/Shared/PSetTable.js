@@ -2,6 +2,7 @@ import React from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import {Button} from 'primereact/button';
+import { Link } from 'react-router-dom';
 
 class PSetTable extends React.Component{
     
@@ -20,7 +21,6 @@ class PSetTable extends React.Component{
         this.toolsRefTemplate = this.toolsRefTemplate.bind(this);
         this.updatePSetSelectionEvent = this.updatePSetSelectionEvent.bind(this);
         this.onPage = this.onPage.bind(this);
-        this.downloadColumn = this.downloadColumn.bind(this);
     }
 
     componentDidMount(){
@@ -37,8 +37,9 @@ class PSetTable extends React.Component{
     }
 
     detailsColumnTemplate(rowData, column){
+        let route = '/PSet/' + rowData._id;
         return(
-            <Button className='metaBtn' label='View'/>
+            <Link to={route} >View</Link>
         );
     }
 
@@ -55,12 +56,6 @@ class PSetTable extends React.Component{
         this.props.updatePSetSelection(event.value);
     }
 
-    downloadColumn(){
-        if(this.props.showDownload){
-            return(<Column className='textField' field='download' header='Download' style={{width: '6.5em'}}/>);
-        }
-    }
-
     render(){
         const datasets = this.props.allData.slice(this.state.start, this.state.end);
         const totalRecords = this.props.allData.length;
@@ -69,7 +64,7 @@ class PSetTable extends React.Component{
             rows={this.state.rows} totalRecords={totalRecords} lazy={true} first={this.state.first} onPage={this.onPage} loading={this.state.loading}
             scrollable={true} scrollHeight={this.props.scrollHeight}>
                 <Column selectionMode="multiple" style={{width: '3.5em'}}/>
-                {this.downloadColumn()}
+                {this.props.showDownload && <Column className='textField' field='download' header='Download' style={{width: '6.5em'}}/>}
                 <Column className='textField' field='name' header='Name' style={{width:'15em'}}/>
                 <Column className='textField' field='datasetName' header='Dataset' style={{width:'6em'}} />
                 <Column className='textField' field='datasetVersion' header='Dataset Version' style={{width:'6em'}}/>

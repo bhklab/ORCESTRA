@@ -1,0 +1,26 @@
+.tabContainer {
+    width: 70%;
+}
+
+.tabMainHeader {
+    margin-left: 20px;
+}
+
+.tabContentSection {
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.tabContentSection h3{
+    font-size: 16px;
+}
+
+.tabContent {
+    margin-left: 40px;
+}
+
+.subContent {
+    margin-left: 20px;
+    font-size: 14px;
+    max-width: 90%;
+}

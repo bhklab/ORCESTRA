@@ -26,16 +26,13 @@ module.exports = {
     checkToken: function(req, res, next){
         const token = req.cookies.token;
         if(!token){
-            console.log('Unauthorized: No token provided');
             res.status(401).send({data: 'Unauthorized: No token provided'});
         }else{
             jwt.verify(token, process.env.KEY, function(err, decoded){
                 if(err){
-                    console.log('Unauthorized: Invalid token');
                     res.status(401).send({data: 'Unauthorized: Invalid token'});
                 }else{
                     req.username = decoded.username;
-                    console.log('token valid');
                     next();
                 }
             });
