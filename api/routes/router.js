@@ -6,6 +6,7 @@ const helper = require('../helper/apiHelper');
 const home = require('./index');
 const pset = require('./pset');
 const user = require('./user');
+const metadata = require('./metadata');
 
 // configuring router
 router.get('/', home.getHome);
@@ -30,6 +31,9 @@ router.get('/user/pset', helper.checkToken, user.getUserPSet);
 router.post('/user/pset/add', helper.checkToken, user.addToUserPset);
 router.post('/user/pset/remove', helper.checkToken, user.removeUserPSet);
 router.get('/user/checkToken', helper.checkToken, user.checkToken);
+
+//meadata
+router.get('/metadata', metadata.getMetadata);
 
 
 module.exports = router;

@@ -91,14 +91,22 @@ module.exports = {
                 callback({status: 0, data: err});
             }
             const db = client.db(dbName);
-            const collection = db.collection('pset');
-            collection.findOne({'_id': 1}, (err, data) => {
+            const pset = db.collection('pset');
+            const meta = db.collection('metadata');
+            meta.find().toArray((err, data) => {
                 if(err){
                     client.close();
                     callback({status: 0, data: err});
                 }
-                client.close();
-                callback({status: 1, data: data});
+                const metadata = data[0];
+                pset.findOne({'_id': id}, (err, data) => {
+                    if(err){
+                        client.close();
+                        callback({status: 0, data: err});
+                    }
+                    client.close();
+                    callback({status: 1, data: {pset: data, metadata: metadata}});
+                });
             });
         });
     },
@@ -373,6 +381,24 @@ module.exports = {
                         }});
                 }
             );
+        });
+    },
+
+    selectMetadata: function(callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db(dbName);
+            const collection = db.collection('metadata');
+            collection.find((err, data) => {
+                if(err){
+                    client.close();
+                    callback({status: 0, data: err});
+                }
+                client.close();
+                callback({status: 1, data: data});
+            });
         });
     }
 
