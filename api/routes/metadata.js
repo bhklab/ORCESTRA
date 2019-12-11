@@ -10,6 +10,17 @@ const getMetadata = function(req, res){
     });
 }
 
+const getFormData = function(req, res){
+    dbUtil.selectFormData(function(result){
+        if(result.status){
+            res.send(result.data);
+        }else{
+            res.status(500).send(result.data);
+        }
+    });
+}
+
 module.exports = {
-    getMetadata
+    getMetadata,
+    getFormData
 };

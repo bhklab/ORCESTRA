@@ -1,6 +1,6 @@
 import React from 'react';
 import './PSetParamOptions.css';
-import {dataTemplate, selectedDataTemplate} from '../FormData';
+import {dataTemplate, datasetTemplate, selectedDataTemplate, selectedDatasetTemplate} from '../FormData';
 import {MultiSelect} from 'primereact/multiselect';
 import {Dropdown} from 'primereact/dropdown';
 
@@ -16,23 +16,40 @@ class PSetRequestParamOptions extends React.Component {
             return(
                 <div className={this.props.className}>
                     <label>{this.props.parameterName}</label>
-                    <Dropdown id={this.props.id} className='paramInput' optionLabel='name' 
-                        value={this.props.selectedParameter}   
-                        options={this.props.parameterOptions} onChange={this.props.handleUpdateSelection}
-                        filter={true} itemTemplate={dataTemplate}
-                        placeholder="Select one..."
-                    />
+                    {this.props.dataset ? 
+                        <Dropdown id={this.props.id} className='paramInput' optionLabel='id' 
+                            value={this.props.selectedParameter}   
+                            options={this.props.parameterOptions} onChange={this.props.handleUpdateSelection}
+                            filter={true} itemTemplate={datasetTemplate}
+                            placeholder="Select one..."
+                        />
+                        :
+                        <Dropdown id={this.props.id} className='paramInput' optionLabel='name' 
+                            value={this.props.selectedParameter}   
+                            options={this.props.parameterOptions} onChange={this.props.handleUpdateSelection}
+                            filter={true} itemTemplate={dataTemplate}
+                            placeholder="Select one..."
+                        />
+                    }
                 </div>
             );
         }
         return(
             <div className={this.props.className}>
                 <label>{this.props.parameterName}</label>
-                <MultiSelect id={this.props.id} className='paramInput' optionLabel='name' 
-                    value={this.props.selectedParameter} 
-                    options={this.props.parameterOptions} onChange={this.props.handleUpdateSelection}
-                    filter={true} itemTemplate={dataTemplate} selectedItemTemplate={selectedDataTemplate}
-                />
+                {this.props.dataset ? 
+                    <MultiSelect id={this.props.id} className='paramInput' optionLabel='id' 
+                        value={this.props.selectedParameter} 
+                        options={this.props.parameterOptions} onChange={this.props.handleUpdateSelection}
+                        filter={true} itemTemplate={datasetTemplate} selectedItemTemplate={selectedDatasetTemplate}
+                    />
+                    :
+                    <MultiSelect id={this.props.id} className='paramInput' optionLabel='name' 
+                        value={this.props.selectedParameter} 
+                        options={this.props.parameterOptions} onChange={this.props.handleUpdateSelection}
+                        filter={true} itemTemplate={dataTemplate} selectedItemTemplate={selectedDataTemplate}
+                    />
+                }
             </div>
         );
     }

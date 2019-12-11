@@ -34,6 +34,9 @@ class Stats extends React.Component{
             for(let i = 0; i < resData.length; i++){
                 data.push({name: resData[i].name, value: resData[i].download});
                 name.push(resData[i].name);
+                if(i >= 9){
+                    break;
+                }
             }
             this.setState({
                 allData: resData,
@@ -79,7 +82,7 @@ class Stats extends React.Component{
                         <div className='container rankingTable'>
                             <h3>Download Ranking</h3>
                             <Messages ref={(el) => this.messages = el} />
-                            <PSetTable allData={this.state.allData} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.updatePSetSelection} showDownload={true} scrollHeight='800px'/>
+                            <PSetTable allData={this.state.allData} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.updatePSetSelection} showDownload={true} scrollHeight='340px'/>
                             <div className='rankingTableFooter'>
                                 <DownloadPSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableBtn} onDownloadComplete={this.showMessages}/>
                                 <SavePSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableBtn} onSaveComplete={this.showMessages} />

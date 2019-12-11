@@ -400,6 +400,23 @@ module.exports = {
                 callback({status: 1, data: data});
             });
         });
-    }
+    },
 
+    selectFormData: function(callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db(dbName);
+            const collection = db.collection('formdata');
+            collection.find().toArray((err, data) => {
+                if(err){
+                    client.close();
+                    callback({status: 0, data: err});
+                }
+                client.close();
+                callback({status: 1, data: data});
+            });
+        });
+    }
 }

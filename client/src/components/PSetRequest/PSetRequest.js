@@ -1,7 +1,6 @@
 import React from 'react';
 import './PSetRequest.css';
 import Navigation from '../Navigation/Navigation';
-import * as FormData from '../Shared/FormData';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import * as APIHelper from '../Shared/PSetAPIHelper';
@@ -22,7 +21,6 @@ class PSetRequest extends React.Component{
             queryResult: [],
             selectedPSets: [],
             dataset: {},
-            datasetVersion: {},
             genome: {},
             drugSensitivity: {},
             datatype: [],
@@ -31,7 +29,10 @@ class PSetRequest extends React.Component{
             dnaToolRef: [],
             name: '',
             email: '',
-            toolVersionOptions: FormData.rnaToolVersionOptions.concat(FormData.dnaToolVersionOptions),
+            formData: {},
+            toolVersionOptions: [],
+            rnaRefOptions: [],
+            dnaRefOptions: [],
             hideRNARef: false,
             hideDNARef: false,
             notReadyToSubmit: true,
@@ -43,9 +44,10 @@ class PSetRequest extends React.Component{
         this.getReqData = this.getReqData.bind(this);
         
         this.updateParameterSelection = this.updateParameterSelection.bind(this);
-        this.updateDatatypeSelectionEvent = this.updateDatatypeSelectionEvent.bind(this);
         this.updateReqInputEvent = this.updateReqInputEvent.bind(this);
         this.setToolVersionState = this.setToolVersionState.bind(this);
+        this.setToolRefState = this.setToolRefState.bind(this);
+        this.processAPIRequest = this.processAPIRequest.bind(this);
         this.initializeState = this.initializeState.bind(this);
         
         this.showModal = this.showModal.bind(this);
@@ -57,12 +59,22 @@ class PSetRequest extends React.Component{
         if(this.context.authenticated){
             this.setState({email: this.context.username});
         }
+        fetch('/formdata')  
+            .then(res => res.json())
+            .then(resData => {
+                this.setState({
+                    formData: resData[0],
+                    toolVersionOptions: resData[0].rnaToolVersionOptions.concat(resData[0].dnaToolVersionOptions),
+                    rnaRefOptions: resData[0].rnaToolRefOptions,
+                    dnaRefOptions: resData[0].dnaToolRefOptions
+                });
+            }   
+    );
     }
 
     getReqData(){
         return({
             dataset: this.state.dataset,
-            datasetVersion: this.state.datasetVersion,
             genome: this.state.genome,
             drugSensitivity: this.state.drugSensitivity,
             datatype: this.state.datatype,
@@ -87,38 +99,23 @@ class PSetRequest extends React.Component{
 
     updateParameterSelection = event => {
         event.preventDefault();
-        this.setState({notReadyToSubmit: APIHelper.isNotReadyToSubmit(this.getReqData())});
-        this.setState({[event.target.id]: event.value}, () => {
-            var filterset = APIHelper.getFilterSet(this.getReqData());
-            if(!APIHelper.isNoneSelected(filterset)){
-                var apiStr = APIHelper.buildAPIStr(filterset);
-                console.log(apiStr);
-                APICalls.queryPSet(apiStr, (resData) => {
-                    this.setState({queryResult: resData});
+        console.log(event.value);
+        this.setState({
+            notReadyToSubmit: APIHelper.isNotReadyToSubmit(this.getReqData()),
+            [event.target.id]: event.value
+        }, () => {
+            if(event.target.id === 'datatype'){
+                this.setToolVersionState(event, () => {
+                    this.processAPIRequest();
+                });
+            }else if(event.target.id ==='genome'){
+                this.setToolRefState(() => {
+                    this.processAPIRequest();
                 });
             }else{
-                this.setState({queryResult: []});
-            } 
+                this.processAPIRequest();
+            }
         });
-    }
-
-    updateDatatypeSelectionEvent = event => {
-        event.preventDefault();
-        this.setState({notReadyToSubmit: APIHelper.isNotReadyToSubmit(this.getReqData())});
-        this.setState({[event.target.id]: event.value}, () => {
-            this.setToolVersionState(event, () => {
-                var filterset = APIHelper.getFilterSet(this.getReqData());
-                if(!APIHelper.isNoneSelected(filterset)){
-                    var apiStr = APIHelper.buildAPIStr(filterset);
-                    console.log(apiStr);
-                    APICalls.queryPSet(apiStr, (resData) => {
-                        this.setState({queryResult: resData});
-                    });
-                }else{
-                    this.setState({queryResult: []});
-                }
-            });
-        });   
     }
 
     updateReqInputEvent = event => {
@@ -135,7 +132,7 @@ class PSetRequest extends React.Component{
             if(this.state.datatype[0].name === 'RNA'){
                 tools = tools.filter((tool)=>{return(tool.datatype==='RNA')});              
                 this.setState({
-                    toolVersionOptions: FormData.rnaToolVersionOptions,
+                    toolVersionOptions: this.state.formData.rnaToolVersionOptions,
                     hideDNARef: true,
                     toolVersion: tools,
                     dnaToolRef: []
@@ -143,7 +140,7 @@ class PSetRequest extends React.Component{
             }else{
                 tools = tools.filter((tool)=>{return(tool.datatype==='DNA')}); 
                 this.setState({
-                    toolVersionOptions: FormData.dnaToolVersionOptions, 
+                    toolVersionOptions: this.state.formData.dnaToolVersionOptions, 
                     hideRNARef: true,
                     toolVersion: tools,
                     rnaToolRef: []
@@ -151,10 +148,36 @@ class PSetRequest extends React.Component{
             }
         }else{
             this.setState({
-                toolVersionOptions: FormData.rnaToolVersionOptions.concat(FormData.dnaToolVersionOptions),
+                toolVersionOptions: this.state.formData.rnaToolVersionOptions.concat(this.state.formData.dnaToolVersionOptions),
                 hideDNARef: false,
                 hideRNARef: false
             }, callback);
+        }
+    }
+
+    setToolRefState(callback){
+        let dnaRef = this.state.dnaToolRef;
+        let rnaRef = this.state.rnaToolRef;
+        dnaRef = dnaRef.filter((ref) => {return(ref.genome === this.state.genome.name)});
+        rnaRef = rnaRef.filter((ref) => {return(ref.genome === this.state.genome.name)});
+        this.setState({
+            dnaToolRef: dnaRef,
+            rnaToolRef: rnaRef,
+            dnaRefOptions: this.state.formData.dnaToolRefOptions.filter((ref) => {return(ref.genome === this.state.genome.name)}),
+            rnaRefOptions: this.state.formData.rnaToolRefOptions.filter((ref) => {return(ref.genome === this.state.genome.name)})
+        }, callback);
+    }
+
+    processAPIRequest(){
+        var filterset = APIHelper.getFilterSet(this.getReqData());
+        if(!APIHelper.isNoneSelected(filterset)){
+            var apiStr = APIHelper.buildAPIStr(filterset);
+            console.log(apiStr);
+            APICalls.queryPSet(apiStr, (resData) => {
+                this.setState({queryResult: resData});
+            });
+        }else{
+            this.setState({queryResult: []});
         }
     }
 
@@ -163,16 +186,15 @@ class PSetRequest extends React.Component{
             queryResult: [],
             selectedPSets: [],
             dataset: {},
-            datasetVersion: {},
             genome: {},
             grugSensitivity: {},
-            gatatype: [],
+            datatype: [],
             toolVersion: [],
             rnaToolRef: [],
             dnaToolRef: [],
             name: '',
             email: '',
-            toolVersionOptions: FormData.rnaToolVersionOptions.concat(FormData.dnaToolVersionOptions),
+            toolVersionOptions: this.state.formData.rnaToolVersionOptions.concat(this.state.formData.dnaToolVersionOptions),
             hideRNARef: false,
             hideDNARef: false,
             notReadyToSubmit: true,
@@ -211,7 +233,9 @@ class PSetRequest extends React.Component{
             />
         );
 
-        return(
+        const formData = this.state.formData;
+
+        return(   
             <React.Fragment>
                 <Navigation routing={this.props}/>
                 <div className='pageContent'>
@@ -222,21 +246,19 @@ class PSetRequest extends React.Component{
                             <h3>Pipeline Analysis Request Form</h3>
                             <form>
                                 <PSetParamOptions id='datatype' className='reqInputSet' isHidden={false} parameterName='Datatype:' 
-                                    parameterOptions={FormData.datatypeOptions} selectedParameter={this.state.datatype} handleUpdateSelection={this.updateDatatypeSelectionEvent} />
+                                    parameterOptions={formData.datatypeOptions} selectedParameter={this.state.datatype} handleUpdateSelection={this.updateParameterSelection} />
                                 <PSetParamOptions id='dataset' className='reqInputSet' isHidden={false} selectOne={true} parameterName='Dataset:' 
-                                    parameterOptions={FormData.datasetOptions} selectedParameter={this.state.dataset} handleUpdateSelection={this.updateParameterSelection} />
-                                <PSetParamOptions id='datasetVersion' className='reqInputSet' isHidden={false} selectOne={true} parameterName='Dataset Version:' 
-                                    parameterOptions={FormData.dataVersionOptions} selectedParameter={this.state.datasetVersion} handleUpdateSelection={this.updateParameterSelection} />
+                                    parameterOptions={formData.datasetOptions} selectedParameter={this.state.dataset} handleUpdateSelection={this.updateParameterSelection} dataset={true}/>
                                 <PSetParamOptions id='genome' className='reqInputSet' isHidden={false} selectOne={true} parameterName='Genome:' 
-                                    parameterOptions={FormData.genomeOptions} selectedParameter={this.state.genome} handleUpdateSelection={this.updateParameterSelection} />
+                                    parameterOptions={formData.genomeOptions} selectedParameter={this.state.genome} handleUpdateSelection={this.updateParameterSelection} />
                                 <PSetParamOptions id='drugSensitivity' className='reqInputSet' isHidden={false} selectOne={true} parameterName='Drug Sensitivity:' 
-                                    parameterOptions={FormData.drugSensitivityOptions} selectedParameter={this.state.drugSensitivity} handleUpdateSelection={this.updateParameterSelection} />
+                                    parameterOptions={formData.drugSensitivityOptions} selectedParameter={this.state.drugSensitivity} handleUpdateSelection={this.updateParameterSelection} />
                                 <PSetParamOptions id='toolVersion' className='reqInputSet' isHidden={false} parameterName='Tool + Version:' 
                                     parameterOptions={this.state.toolVersionOptions} selectedParameter={this.state.toolVersion} handleUpdateSelection={this.updateParameterSelection} />
                                 <PSetParamOptions id='rnaToolRef' className='reqInputSet' isHidden={this.state.hideRNARef} parameterName='RNA Tool Reference:' 
-                                    parameterOptions={FormData.rnaToolRefOptions} selectedParameter={this.state.rnaToolRef} handleUpdateSelection={this.updateParameterSelection} />
+                                    parameterOptions={this.state.rnaRefOptions} selectedParameter={this.state.rnaToolRef} handleUpdateSelection={this.updateParameterSelection} />
                                 <PSetParamOptions id='dnaToolRef' className='reqInputSet' isHidden={this.state.hideDNARef} parameterName='DNA Tool Reference:' 
-                                    parameterOptions={FormData.dnaToolRefOptions} selectedParameter={this.state.dnaToolRef} handleUpdateSelection={this.updateParameterSelection} />
+                                    parameterOptions={this.state.dnaRefOptions} selectedParameter={this.state.dnaToolRef} handleUpdateSelection={this.updateParameterSelection} />
                                 
                                 <div className='reqInputSet'>
                                     <label>PSet Name:</label>
@@ -265,7 +287,6 @@ class PSetRequest extends React.Component{
                                 <div className='parameterSelectionContainer'>
                                     <PSetRequestParameterSelection parameterName='Datatype' parameter={this.state.datatype} isHidden={false} />
                                     <PSetRequestParameterSelection parameterName='Dataset' parameter={this.state.dataset} isHidden={false} />
-                                    <PSetRequestParameterSelection parameterName='Dataset Version' parameter={this.state.datasetVersion} isHidden={false} />
                                     <PSetRequestParameterSelection parameterName='Genome' parameter={this.state.genome} /> 
                                     <PSetRequestParameterSelection parameterName='Drug Sensitivity' parameter={this.state.drugSensitivity} isHidden={false} />
                                     <PSetRequestParameterSelection parameterName='Tool + Version' parameter={this.state.toolVersion} isHidden={false} />

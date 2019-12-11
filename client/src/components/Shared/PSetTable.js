@@ -1,7 +1,6 @@
 import React from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
-import {Button} from 'primereact/button';
 import { Link } from 'react-router-dom';
 
 class PSetTable extends React.Component{
@@ -17,7 +16,7 @@ class PSetTable extends React.Component{
             totalRecords: 0,
             loading: true
         }
-        this.detailsColumnTemplate = this.detailsColumnTemplate.bind(this);
+        this.nameColumnTemplate = this.nameColumnTemplate.bind(this);
         this.toolsRefTemplate = this.toolsRefTemplate.bind(this);
         this.updatePSetSelectionEvent = this.updatePSetSelectionEvent.bind(this);
         this.onPage = this.onPage.bind(this);
@@ -36,10 +35,10 @@ class PSetTable extends React.Component{
         );
     }
 
-    detailsColumnTemplate(rowData, column){
+    nameColumnTemplate(rowData, column){
         let route = '/PSet/' + rowData._id;
         return(
-            <Link to={route} >View</Link>
+            <Link to={route} >{rowData.name}</Link>
         );
     }
 
@@ -65,15 +64,14 @@ class PSetTable extends React.Component{
             scrollable={true} scrollHeight={this.props.scrollHeight}>
                 <Column selectionMode="multiple" style={{width: '3.5em'}}/>
                 {this.props.showDownload && <Column className='textField' field='download' header='Download' style={{width: '6.5em'}}/>}
-                <Column className='textField' field='name' header='Name' style={{width:'15em'}}/>
+                <Column className='textField' field='name' header='Name' style={{width:'10em'}} body={this.nameColumnTemplate}/>
                 <Column className='textField' field='datasetName' header='Dataset' style={{width:'6em'}} />
                 <Column className='textField' field='datasetVersion' header='Dataset Version' style={{width:'6em'}}/>
                 <Column className='textField' field='drugSensitivity' header='Drug Sensitivity' style={{width:'7em'}}/>
                 <Column field='rnaTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='RNA Tool'/>
                 <Column field='exomeTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='Exome Tool'/>
                 <Column field='rnaRef' body={this.toolsRefTemplate} style={{width:'18em'}} header='RNA Ref'/>
-                <Column field='exomeRef' body={this.toolsRefTemplate} style={{width:'6em'}} header='Exome Ref'/>
-                <Column field='metadata' body={this.detailsColumnTemplate} style={{textAlign:'center', width:'6em'}} header='Details'/>
+                <Column field='exomeRef' body={this.toolsRefTemplate} style={{width:'15em'}} header='Exome Ref'/>
             </DataTable>
         );
     }

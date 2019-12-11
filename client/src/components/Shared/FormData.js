@@ -3,12 +3,14 @@ import React from 'react';
 export const datasetOptions = [
     {name: 'Leuk AML'},
     {name: 'Leuk Cell line'},
-    {name: 'GRAY'}
+    {name: 'GRAY'},
+    {name: 'CCLE'}
 ];
 
 export const dataVersionOptions = [
     {name: '2017'},
-    {name: '2019'}
+    {name: '2019'},
+    {name: '2013'}
 ];
 
 export const drugSensitivityOptions = [
@@ -26,14 +28,6 @@ export const datatypeOptions = [
     {name: 'DNA'}
 ];
 
-export const toolVersionOptions = [
-    {name: 'exome_tool_1'},
-    {name: 'BWA/0.6.2'},
-    {name: 'SNPEff/4.0'},
-    {name: 'VarScan/2.3.2'},
-    {name: 'MuTect1'}
-];
-
 export const rnaToolVersionOptions = [
     {name: 'Kallisto/0.44.0', datatype: 'RNA'},
     {name: 'Kallisto/0.43.1', datatype: 'RNA'},
@@ -49,14 +43,15 @@ export const dnaToolVersionOptions = [
 ];
 
 export const rnaToolRefOptions = [
-    {name: 'Ensembl GRCh38 v89 Transcriptome'},
-    {name: 'Gencode v23lift37 Transcriptome'},
-    {name: 'Ensembl GRCh37 v67 Transcriptome'},
+    {name: 'Ensembl GRCh38 v89 Transcriptome', genome: 'GRCh38'},
+    {name: 'Gencode v23lift37 Transcriptome', genome: 'GRCh37'},
+    {name: 'Ensembl GRCh37 v67 Transcriptome', genome: 'GRCh37'},
 ];
 
 export const dnaToolRefOptions = [
-    {name: 'GRCh37'},
-    {name: 'GRCh38'}
+    {name: 'dbSNP_137.hg19.vcf', genome: 'GRCh37'},
+    {name: 'dbSNP_138.hg19.vcf', genome: 'GRCh37'},
+    {name: 'GRCh38 dbSNP', genome: 'GRCh38'},
 ];
 
 // template for the dropdown options
@@ -68,12 +63,33 @@ export function dataTemplate(option) {
     );
 }
 
+export function datasetTemplate(option) {
+    return (
+        <div className="">
+            <span style={{fontSize:'1em',margin:'1em .5em 0 0'}}>{option.name} - { option.version}</span>
+        </div>
+    );
+}
+
 // template for the selected options
 export function selectedDataTemplate(item) {
     if (item) {
         return (
             <div className="my-multiselected-item-token">
                 <span>{item.name}</span>
+            </div>
+        );
+    }
+    else {
+        return <span>Select...</span>
+    }
+}
+
+export function selectedDatasetTemplate(item) {
+    if (item) {
+        return (
+            <div className="my-multiselected-item-token">
+                <span>{item.name} - {item.version}</span>
             </div>
         );
     }

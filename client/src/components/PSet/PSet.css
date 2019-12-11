@@ -24,3 +24,11 @@
     font-size: 14px;
     max-width: 90%;
 }
+
+.indented-1 {
+    margin-left: 20px;
+}
+
+.exomeRef {
+    margin-bottom: 20px;
+}

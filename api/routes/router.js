@@ -34,6 +34,6 @@ router.get('/user/checkToken', helper.checkToken, user.checkToken);
 
 //meadata
 router.get('/metadata', metadata.getMetadata);
-
+router.get('/formdata', metadata.getFormData);
 
 module.exports = router;

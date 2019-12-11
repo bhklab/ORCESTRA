@@ -27,7 +27,7 @@ function buildPSetObject(reqData){
     pset.download = 0;
     pset.doi = '{ doi: }';
     pset.datasetName = reqData.dataset.name;
-    pset.datasetVersion = reqData.datasetVersion.name;
+    pset.datasetVersion = reqData.dataset.version;
     pset.dataType = buildReqArray(reqData.datatype);
     pset.genome = reqData.genome.name;
     pset.drugSensitivity = reqData.drugSensitivity.name;

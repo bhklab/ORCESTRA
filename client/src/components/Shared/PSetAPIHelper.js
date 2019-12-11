@@ -4,7 +4,7 @@ export function getFilterSet(data){
     var filterset = {}
     filterset.datatype = toFilterArray(data.datatype);
     filterset.datasetName = toFilterArray(data.dataset);
-    filterset.datasetVersion = toFilterArray(data.datasetVersion);
+    filterset.datasetVersion = toFilterArray(data.dataset, true);
     filterset.genome = toFilterArray(data.genome);
     filterset.rnaTool = toToolVersionFilterArray(data.toolVersion, 'RNA');
     filterset.exomeTool = toToolVersionFilterArray(data.toolVersion, 'DNA');
@@ -38,7 +38,6 @@ export function buildAPIStr(filterSet){
 export function isNoneSelected(filterset){
     if(!filterset.datatype.length && 
         !filterset.datasetName.length && 
-        !filterset.datasetVersion.length && 
         !filterset.genome.length && 
         !filterset.rnaTool.length &&
         !filterset.exomeTool.length &&
@@ -75,9 +74,7 @@ export function isNotReadyToSubmit(request){
         return(true);
     } 
     if(!isSelected(request.dataset)){
-        return(true);
-    }
-    if(!isSelected(request.datasetVersion)){
+        console.log('dataset not selected');
         return(true);
     }
     if(!isSelected(request.drugSensitivity)){
@@ -137,7 +134,7 @@ function isValidEmail(email){
     return(true);
 }
 
-function toFilterArray(selectedValues){
+function toFilterArray(selectedValues, isDatasetVersion = false){
     var filterArray = [];
     if(typeof selectedValues === 'undefined' || selectedValues === null){
         return(filterArray);
@@ -146,12 +143,22 @@ function toFilterArray(selectedValues){
         return(filterArray);
     }
     if(Array.isArray(selectedValues)){
-        for(let i = 0; i < selectedValues.length; i++){   
-            filterArray.push(selectedValues[i].name);
+        if(isDatasetVersion){
+            for(let i = 0; i < selectedValues.length; i++){   
+                filterArray.push(selectedValues[i].version);
+            }
+        }else{
+            for(let i = 0; i < selectedValues.length; i++){   
+                filterArray.push(selectedValues[i].name);
+            }
         }
         return(filterArray);
-    }  
-    filterArray.push(selectedValues.name);
+    } 
+    if(isDatasetVersion){
+        filterArray.push(selectedValues.version);
+    }else{
+        filterArray.push(selectedValues.name);
+    }
     return(filterArray);
 }
 

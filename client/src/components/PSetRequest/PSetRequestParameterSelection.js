@@ -19,6 +19,8 @@ class PSetRequestParameterSelection extends React.Component{
                     str += ', ';
                 }
             }
+        }else if(this.props.parameterName === 'Dataset' && typeof parameters.name != 'undefined'){
+            str = parameters.name + ' - ' + parameters.version;
         }else{
             str = parameters.name;
         }
