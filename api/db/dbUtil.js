@@ -99,7 +99,7 @@ module.exports = {
                     callback({status: 0, data: err});
                 }
                 const metadata = data[0];
-                pset.findOne({'_id': id}, (err, data) => {
+                pset.findOne({'_id': id, 'status' : 'complete'}, (err, data) => {
                     if(err){
                         client.close();
                         callback({status: 0, data: err});
@@ -171,6 +171,24 @@ module.exports = {
         });
     },
 
+    updatePSetStatus: function(id, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db(dbName);
+            const collection = db.collection('pset');
+            collection.updateOne({'_id': id}, {'$set': {'status': 'complete'}}, (err, result) => {
+                if(err){
+                    client.close();
+                    callback({status: 0, data: err});
+                }
+                client.close();
+                callback({status: 1, data: 'success'});
+            });         
+        });
+    },
+
     insertPSetRequest: function(pset, username, callback){
         connectWithClient((err, client) => {
             if(err){
@@ -182,6 +200,8 @@ module.exports = {
                     callback({status: 0, data: error});
                 }
                 pset._id = counter.count;
+                const psetId = counter.count;
+                console.log('pset._id: ' + pset._id + '  psetId: ' + psetId);  
                 const collection = db.collection('pset');
                 collection.insertOne(pset, (err, result) => {
                     if(err){
@@ -200,7 +220,8 @@ module.exports = {
                             }
                             client.close();
                             callback({
-                                status: 1, 
+                                status: 1,
+                                id: psetId, 
                                 data: {
                                     summary: 'Request Submitted',
                                     message: 'Your request has been successfully submitted'

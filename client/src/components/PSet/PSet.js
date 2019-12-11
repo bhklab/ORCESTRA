@@ -14,7 +14,8 @@ class PSet extends React.Component{
             pset: '',
             metadata: '',
             dataset: '',
-            isReady: false
+            isReady: false,
+            message: ''
         }
         this.setMetadata = this.setMetadata.bind(this);
     }
@@ -23,17 +24,21 @@ class PSet extends React.Component{
         let apiStr = '/pset/one/' + this.props.match.params.id;
         console.log(apiStr);
         APICalls.queryPSet(apiStr, (resData) => {
-            this.setMetadata(resData, (metadata, pset, dataset) => {
-                this.pset = pset;
-                this.metadata = metadata;
-                this.dataset = dataset;
-                this.setState({
-                    pset: this.pset,
-                    metadata: this.metadata,
-                    dataset: this.dataset,
-                    isReady: true
-                });
-            });   
+            if(resData.pset){
+                this.setMetadata(resData, (metadata, pset, dataset) => {
+                    this.pset = pset;
+                    this.metadata = metadata;
+                    this.dataset = dataset;
+                    this.setState({
+                        pset: this.pset,
+                        metadata: this.metadata,
+                        dataset: this.dataset,
+                        isReady: true
+                    });
+                }); 
+            }else{
+                this.setState({message: 'We could not find a PSet with the ID.'})
+            }
         });
     }
 
@@ -71,7 +76,8 @@ class PSet extends React.Component{
                                     </TabPanel>)
                                 }
                             </TabView>
-                            : ''
+                            : 
+                            <h3>{this.state.message}</h3>
                         }
                     </div>
                 </div> 

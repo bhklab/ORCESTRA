@@ -17,6 +17,7 @@ router.get('/pset/one/:id', pset.getPSetByID);
 router.get('/pset/sort', pset.getSortedPSets);
 router.post('/pset/request', pset.postPsetData);
 router.post('/pset/download', pset.downloadPSets);
+router.get('/pset/complete', pset.updatePSetStatus);
 // prviate route
 router.post('/pset/cancel', helper.checkToken, pset.cancelPSetRequest);
 
@@ -35,5 +36,7 @@ router.get('/user/checkToken', helper.checkToken, user.checkToken);
 //meadata
 router.get('/metadata', metadata.getMetadata);
 router.get('/formdata', metadata.getFormData);
+router.get('/test', metadata.testRequest);
+router.get('/receive', metadata.receiveRequest);
 
 module.exports = router;

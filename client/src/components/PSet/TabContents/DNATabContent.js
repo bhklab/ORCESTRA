@@ -1,5 +1,5 @@
 import React from 'react';
-import PSetAccordion from '../PSetAccordion';
+import {PSetToolAccordion, DNARefAccordion} from '../PSetAccordion';
 
 class DNATabContent extends React.Component{
     
@@ -22,23 +22,6 @@ class DNATabContent extends React.Component{
             </div>
         );
 
-        const dataList = (list) => {
-            return(list.map((item) => 
-                <div key={item.dbSNP} className='exomeRef'>
-                    <div className='subContent'>{item.dbSNP.length ? item.dbSNP: 'Currently not available'}</div>
-                    <div className='subContent'>{item.link.length ? <a href={item.link}>{item.link}</a> : 'Currently not available'}</div>
-                    <div className='indented-1'>
-                        <div className='subContent'>
-                            {item.cosmic.name} - <a href={item.cosmic.link}>{item.cosmic.link}</a> 
-                        </div>
-                        <div className='subContent'>
-                            {item.exonTarget.name} - <a href={item.exonTarget.link}>{item.exonTarget.link}</a> 
-                        </div>
-                    </div>    
-                </div>
-            ));
-        }
-
         return(
             <React.Fragment>
                 <h1 className='tabMainHeader'>Analysis Details - DNA(Exome) Data</h1>
@@ -51,13 +34,11 @@ class DNATabContent extends React.Component{
                     </div>
                     <div className='tabContentSection'>
                         <h3>Exome Reference</h3>
-                        {dataList(dbSNP)}
+                        <DNARefAccordion items={dbSNP} />
                     </div>
                     <div className='tabContentSection'>
                         <h3>Tools and Commands Used</h3>
-                        <div className='subContent'>
-                            <PSetAccordion items={this.props.pset.exomeTool} />
-                        </div>
+                        <PSetToolAccordion items={this.props.pset.exomeTool} />
                     </div>
                 </div>
             </React.Fragment>

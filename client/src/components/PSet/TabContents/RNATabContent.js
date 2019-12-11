@@ -1,5 +1,5 @@
 import React from 'react';
-import PSetAccordion from '../PSetAccordion';
+import {PSetToolAccordion, RNARefAccordion} from '../PSetAccordion';
 
 class RNATabContent extends React.Component{
     
@@ -7,7 +7,7 @@ class RNATabContent extends React.Component{
         const dataset = this.props.dataset;
         const rna = this.props.metadata;
         const pset = this.props.pset;
-        console.log(dataset);
+
         const genomeRawData = (   
             <div>
                 { dataset.rawSeqDataRNA ? <a href={dataset.rawSeqDataRNA}>{dataset.rawSeqDataRNA}</a> : 'Not Available' }
@@ -22,16 +22,6 @@ class RNATabContent extends React.Component{
             }
         }
 
-        const transcriptome = (
-            refList.map((ref) => 
-                <div key={ref.name}>
-                    <div className='subContent'>{ref.name}</div>
-                    <div className='subContent'><a href={ref.link}>{ref.link}</a></div>
-                    <br />
-                </div>
-            )
-        );
-
         return(
             <React.Fragment>
                 <h1 className='tabMainHeader'>Analysis Details - RNA Data</h1>
@@ -44,13 +34,11 @@ class RNATabContent extends React.Component{
                     </div>
                     <div className='tabContentSection'>
                         <h3>RNA Transcriptome</h3>
-                        {transcriptome}   
+                        <RNARefAccordion items={refList} />
                     </div>
                     <div className='tabContentSection'>
                         <h3>Tools and Commands Used</h3>
-                        <div className='subContent'>
-                            <PSetAccordion items={pset.rnaTool} />
-                        </div>
+                        <PSetToolAccordion items={pset.rnaTool} />
                     </div>
                 </div>
             </React.Fragment>
