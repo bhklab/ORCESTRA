@@ -4,17 +4,17 @@ const execute = function(id){
     setTimeout(function(){
         request('http://localhost:2000/pset/complete', {
             body: {
-                message: 'sent after 5 seconds', 
+                message: 'pipeline complete after 5 seconds', 
                 id: id
             }, json: true}, 
             function (error, response, body) {
                 if(error){
                     console.log(error);
                 }
-                console.log('mock api statusCode:', response && response.statusCode); 
+                console.log('process comlete');
             }
         );
-    }, 10000);  
+    }, 5000);  
 }
 
 module.exports = {

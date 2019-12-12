@@ -69,21 +69,32 @@ function getQueryFilter(keyName, filterValue){
     return(filterObj);
 }
 
-function setId(db, collectionName, callback){
-    const collection = db.collection('counters');
-    collection.findOneAndUpdate(
-        { '_id': collectionName },
-        { '$inc': {'count': 1} },
-        { upsert: true, returnOriginal: false }, 
-        (err, result) => {
-            if(err){
-                callback(err, result);
-            }
-            callback(err, result.value);
-    });
+function getResult(err, data){
+    if(err){
+        return({status: 0, data: err});
+    }
+    return({status: 1, data: data});
 }
 
 module.exports = {
+
+    getId: function(collectionName, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db(dbName);
+            const collection = db.collection('counters');
+            collection.findOneAndUpdate(
+                { '_id': collectionName },
+                { '$inc': {'count': 1} },
+                { upsert: true, returnOriginal: false }, 
+                (err, data) => {
+                    client.close();
+                    callback(getResult(err, data.value.count));
+            });
+        }); 
+    },
     
     selectPSetByID: function(id, callback){
         connectWithClient((err, client) => {
@@ -100,12 +111,8 @@ module.exports = {
                 }
                 const metadata = data[0];
                 pset.findOne({'_id': id, 'status' : 'complete'}, (err, data) => {
-                    if(err){
-                        client.close();
-                        callback({status: 0, data: err});
-                    }
                     client.close();
-                    callback({status: 1, data: {pset: data, metadata: metadata}});
+                    callback(getResult(err, {pset: data, metadata: metadata}));
                 });
             });
         });
@@ -120,12 +127,8 @@ module.exports = {
             const collection = db.collection('pset');
             var queryFilterSet = getQueryFilterSet(query); 
             collection.find(queryFilterSet).toArray((err, data) => {
-                if(err){
-                    client.close();
-                    callback({status: 0, data: err});
-                }
                 client.close();
-                callback({status: 1, data: data});
+                callback(getResult(err, data));
             });
         });   
     },
@@ -138,12 +141,8 @@ module.exports = {
             const db = client.db(dbName);
             const collection = db.collection('pset');
             collection.find().sort({'download': -1}).toArray((err, data) => {
-                if(err){
-                    client.close();
-                    callback({status: 0, data: err});
-                }
                 client.close();
-                callback({status: 1, data: data});
+                callback(getResult(err, data));
             });
         });
     },
@@ -178,14 +177,15 @@ module.exports = {
             }
             const db = client.db(dbName);
             const collection = db.collection('pset');
-            collection.updateOne({'_id': id}, {'$set': {'status': 'complete'}}, (err, result) => {
-                if(err){
+            collection.findOneAndUpdate(
+                {'_id': id}, 
+                {'$set': {'status': 'complete', 'request.timeComplete': Date.now()}}, 
+                {returnOriginal: false, upsert: true}, 
+                (err, data) => {
                     client.close();
-                    callback({status: 0, data: err});
+                    callback(getResult(err, data));
                 }
-                client.close();
-                callback({status: 1, data: 'success'});
-            });         
+            );         
         });
     },
 
@@ -195,41 +195,23 @@ module.exports = {
                 callback({status: 0, data: err});
             }
             const db = client.db(dbName);
-            setId(db, 'pset', (error, counter) => {
-                if(error){
-                    callback({status: 0, data: error});
+            const collection = db.collection('pset');
+            collection.insertOne(pset, (err, result) => {
+                if(err){
+                    client.close();
+                    callback({status: 0, data: err});
                 }
-                pset._id = counter.count;
-                const psetId = counter.count;
-                console.log('pset._id: ' + pset._id + '  psetId: ' + psetId);  
-                const collection = db.collection('pset');
-                collection.insertOne(pset, (err, result) => {
-                    if(err){
+                const user = db.collection('user');
+                user.findOneAndUpdate(
+                    {'username': username},
+                    {'$addToSet': {'userPSets': pset._id}},
+                    {'upsert': true},
+                    (err, data) => {
                         client.close();
-                        callback({status: 0, data: err});
+                        callback(getResult(err, data));
                     }
-                    const user = db.collection('user');
-                    user.findOneAndUpdate(
-                        {'username': username},
-                        {'$addToSet': {'userPSets': pset._id}},
-                        {'upsert': true},
-                        (err, result) => {
-                            if(err){
-                                client.close();
-                                callback({status: 0, data: err});
-                            }
-                            client.close();
-                            callback({
-                                status: 1,
-                                id: psetId, 
-                                data: {
-                                    summary: 'Request Submitted',
-                                    message: 'Your request has been successfully submitted'
-                                }
-                            });
-                    });
-                });      
-            });   
+                );
+            });       
         });
     },
 
@@ -276,12 +258,8 @@ module.exports = {
             const db = client.db(dbName);
             const user = db.collection('user');
             user.findOne({'username': username}, (err, data) => {
-                if(err){
-                    client.close();
-                    callback({status: 0, data: err});
-                }
                 client.close();
-                callback({status: 1, data: data});
+                callback(getResult(err, data));
             });
         });
     },
@@ -297,10 +275,7 @@ module.exports = {
                 {'username': user.username, 'password': user.password, 'userPSets': [], 'registered': true},
                 (err, data) => {
                     client.close();
-                    if(err){
-                        callback({status: 0, data: err});
-                    }
-                    callback({status: 1, data: data});
+                    callback(getResult(err, data));
                 }
             );
         });
@@ -319,10 +294,7 @@ module.exports = {
                 {'upsert': true},
                 (err, data) => {
                     client.close();
-                    if(err){
-                        callback({status: 0, data: err});
-                    }
-                    callback({status: 1, data: data});
+                    callback(getResult(err, data));
                 }
             );
         });
@@ -342,12 +314,8 @@ module.exports = {
                 }
                 const pset = db.collection('pset');
                 pset.find({'_id': {'$in': user.userPSets}}).toArray((err, data) => {
-                    if(err){
-                        client.close();
-                        callback({status: 0, data: err});
-                    }
                     client.close();
-                    callback({status: 1, data: data});
+                    callback(getResult(err, data));
                 });
             });
         });
@@ -413,12 +381,8 @@ module.exports = {
             const db = client.db(dbName);
             const collection = db.collection('metadata');
             collection.find((err, data) => {
-                if(err){
-                    client.close();
-                    callback({status: 0, data: err});
-                }
                 client.close();
-                callback({status: 1, data: data});
+                callback(getResult(err, data));
             });
         });
     },
@@ -431,12 +395,8 @@ module.exports = {
             const db = client.db(dbName);
             const collection = db.collection('formdata');
             collection.find().toArray((err, data) => {
-                if(err){
-                    client.close();
-                    callback({status: 0, data: err});
-                }
                 client.close();
-                callback({status: 1, data: data});
+                callback(getResult(err, data));
             });
         });
     }

@@ -11,9 +11,10 @@ const transport = nodemailer.createTransport({
 
 const sendMail = function(url, email, callback){
     
-    const heading = '<h1>Your PSet has been processed and ready</h1>'
-    const body = '<p>Please access and view your PSet via the following URL: ' + '<a href=' + url + '>' + url + '</p>'
-    const html = heading + body;
+    const style = '<style>h2{font-family: arial, san-serif} .content{font-family: arial, san-serif}</style>'
+    const heading = '<h2>Your PSet has been processed</h2>'
+    const body = '<p class="content">Please access and view your PSet via the following URL: ' + '<a href=' + url + '>' + url + '</p>'
+    const html = style + heading + body;
     
     const message = {
         from: 'minoru.nakano@uhnresearch.ca',

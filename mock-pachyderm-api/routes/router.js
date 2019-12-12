@@ -3,7 +3,6 @@ const router = express.Router();
 
 const process = require('./process');
 
-router.get('/process/pipeline/:id', process.startPipeline);
-//router.get('/request', process.sendRequest);
+router.get('/pipeline/start', process.startPipeline);
 
 module.exports = router;

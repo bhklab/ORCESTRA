@@ -1,11 +1,10 @@
-const dbUtil = require('../db/dbUtil');
-const helper = require('../helper/apiHelper');
+const mongo = require('../db/mongo');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const saltRounds = 10;
 
 function getUser(req, res){
-    dbUtil.selectUser(req.query.username, function(result){
+    mongo.selectUser(req.query.username, function(result){
         if(result.status){
             res.send(result.data);
         }else{
@@ -15,7 +14,7 @@ function getUser(req, res){
 }
 
 function checkUser(req, res){
-    dbUtil.selectUser(req.query.username, function(result){
+    mongo.selectUser(req.query.username, function(result){
         if(result.status){
             if(result.data){
                 if(result.data.registered){
@@ -40,7 +39,7 @@ function registerUser(req, res){
         }else{
             user.password = hashedPwd;
             if(user.exists){
-                dbUtil.registerUser(user, function(result){
+                mongo.registerUser(user, function(result){
                     if(result.status){
                         const token = jwt.sign({username: user.username}, process.env.KEY, {expiresIn: '1h'});
                         res.cookie('token', token, {httpOnly: true}).send({status: 1, authenticated: true, username: user.username});
@@ -49,7 +48,7 @@ function registerUser(req, res){
                     }
                 });
             }else{
-                dbUtil.addUser(user, function(result){
+                mongo.addUser(user, function(result){
                     if(result.status){
                         const token = jwt.sign({username: user.username}, process.env.KEY, {expiresIn: '1h'});
                         res.cookie('token', token, {httpOnly: true}).send({status: 1, authenticated: true, username: user.username});
@@ -63,7 +62,7 @@ function registerUser(req, res){
 }
 
 function loginUser(req, res){
-    dbUtil.selectUser(req.body.user.username, function(result){
+    mongo.selectUser(req.body.user.username, function(result){
         if(result.status){
             if(result.data){
                 bcrypt.compare(req.body.user.password, result.data.password, function(err, match){
@@ -87,7 +86,7 @@ function loginUser(req, res){
 }
 
 function getUserPSet(req, res){
-    dbUtil.selectUserPSets(req.query.username, function(result){
+    mongo.selectUserPSets(req.query.username, function(result){
         if(result.status){
             res.send(result.data);
         }else{
@@ -108,7 +107,7 @@ function addToUserPset(req, res){
 }
 
 function removeUserPSet(req, res){
-    dbUtil.removeUserPSets(req.body.username, req.body.psetID, function(result){
+    mongo.removeUserPSets(req.body.username, req.body.psetID, function(result){
         if(result.status){
             res.send(result.data);
         }else{

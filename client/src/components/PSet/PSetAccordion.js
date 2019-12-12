@@ -1,6 +1,5 @@
 import React from 'react';
 import {Accordion,AccordionTab} from 'primereact/accordion';
-import { resetWarningCache } from 'prop-types';
 
 class PSetToolAccordion extends React.Component {
 

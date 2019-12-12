@@ -35,7 +35,7 @@ class PSetRequest extends React.Component{
             dnaRefOptions: [],
             hideRNARef: false,
             hideDNARef: false,
-            notReadyToSubmit: true,
+            notReadyToSubmit: false,
             isModalVisible: false,
             disableModalBtn: true
         }
@@ -73,6 +73,17 @@ class PSetRequest extends React.Component{
     }
 
     getReqData(){
+        // return({
+        //     dataset: {name: 'test', version: '2017', id: 'test-2017'},
+        //     genome: {name: 'test'},
+        //     drugSensitivity: {name: 'test'},
+        //     datatype: [{name: 'test'}],
+        //     toolVersion: [{name: 'test', datatype: 'RNA'}],
+        //     rnaToolRef: [{name: 'test', genome: 'test'}],
+        //     dnaToolRef: [{name: 'test', genome: 'test'}],
+        //     name: 'test pset',
+        //     email: 'user2@email.com'
+        // });
         return({
             dataset: this.state.dataset,
             genome: this.state.genome,
@@ -187,7 +198,7 @@ class PSetRequest extends React.Component{
             selectedPSets: [],
             dataset: {},
             genome: {},
-            grugSensitivity: {},
+            drugSensitivity: {},
             datatype: [],
             toolVersion: [],
             rnaToolRef: [],

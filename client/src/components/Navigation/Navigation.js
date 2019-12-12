@@ -32,7 +32,13 @@ class Navigation extends React.Component {
 
     onTestClick(event){
         event.preventDefault();
-        fetch('/test')
+        fetch('/pset/request', {
+                method: 'POST',
+                body: JSON.stringify({test: 'test'}),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
             .then(res => res.json())
             .then(resData => {
                 console.log(resData);

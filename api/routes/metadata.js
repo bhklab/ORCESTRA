@@ -1,9 +1,9 @@
-const dbUtil = require('../db/dbUtil');
+const mongo = require('../db/mongo');
 const request = require('request');
 const mailer = require('../mailer/mailer');
 
 const getMetadata = function(req, res){
-    dbUtil.selectMetadata(function(result){
+    mongo.selectMetadata(function(result){
         if(result.status){
             res.send(result.data);
         }else{
@@ -13,7 +13,7 @@ const getMetadata = function(req, res){
 }
 
 const getFormData = function(req, res){
-    dbUtil.selectFormData(function(result){
+    mongo.selectFormData(function(result){
         if(result.status){
             res.send(result.data);
         }else{
