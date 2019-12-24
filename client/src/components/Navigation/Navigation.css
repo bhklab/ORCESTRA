@@ -37,7 +37,7 @@ header a:hover {
 .navBar {
     margin-right: 100px;
     width: 40%;
-    min-width: 890px;
+    width: 890px;
     height: 100%;
     float: right;
     display: flex;
@@ -67,4 +67,37 @@ header a:hover {
 .loginGrowl .p-growl.p-growl-topright {
     top: 90px;
     right: 100px;
+}
+
+@media only screen and (max-width: 965px) {
+
+    header {
+        top: 0%;
+        width:100%;
+        background-color:rgb(255,255,255, 0.7);
+        height:40px;
+    }
+    
+    header img {
+        margin-left: 10px;
+    }
+
+    .navBar {
+        clear: both;
+        width: 250px;
+        display: block;
+    }
+
+    header a {
+        color:rgb(61, 64, 90);
+        font-size:14px;
+        padding-bottom:30px;
+        transition: .2s ease-out;
+    }
+
+    .active-link{
+        text-decoration:none;
+        color: rgb(241, 144, 33);
+        border-bottom:none;
+    }
 }

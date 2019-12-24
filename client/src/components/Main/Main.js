@@ -10,8 +10,8 @@ class OrcestraMain extends React.Component {
                     <h1>ORCESTRA</h1>   
                     <h2>Orchestration platform for reproducing pharmacogenomic analyses</h2>
                     <div className="links">
-                        <a className='button' href="/Stats">Overall Stats</a>
-                        <a className='button' href="/PSetList">Existing PSets</a>
+                        <a className='button' href="/Stats">View Statistics</a>
+                        <a className='button' href="/PSetSearch">Search PSets</a>
                         <a className='button' href="/PSetRequest">Request PSets</a>
                     </div>
                 </div>

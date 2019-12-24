@@ -29,18 +29,20 @@ class Stats extends React.Component{
 
     componentDidMount(){
         APICalls.queryPSet('/pset/sort', (resData) => {
-            var data = [];
-            var name = [];
+            const data = [];
+            const name = [];
+            const value = [];
             for(let i = 0; i < resData.length; i++){
                 data.push({name: resData[i].name, value: resData[i].download});
                 name.push(resData[i].name);
+                value.push(resData[i].download);
                 if(i >= 9){
                     break;
                 }
             }
             this.setState({
                 allData: resData,
-                chartData: {data: data, name: name},
+                chartData: {data: data, name: name, value: value},
                 isReady: true
             });
         });
@@ -89,8 +91,7 @@ class Stats extends React.Component{
                             </div>
                         </div>
                         <div className='container downloadHistogram'>
-                            <h3>Number of Downloads</h3>
-                            {this.state.isReady && <DownloadChart data={this.state.chartData} width={500} height={500} />}
+                            {this.state.isReady && <DownloadChart data={this.state.chartData} title='Number of Downloads' width={500} height={500} />}
                         </div>
                     </div>
                 </div>

@@ -6,6 +6,9 @@ import * as APICalls from '../Shared/APICalls';
 import DatasetTabContent from './TabContents/DatasetTabContent';
 import RNATabContent from './TabContents/RNATabContent';
 import DNATabContent from './TabContents/DNATabContent';
+import * as APIHelper from '../Shared/PSetAPIHelper';
+import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
+import {Messages} from 'primereact/messages';
 
 class PSet extends React.Component{
     constructor(){
@@ -18,6 +21,7 @@ class PSet extends React.Component{
             message: ''
         }
         this.setMetadata = this.setMetadata.bind(this);
+        this.showMessage = this.showMessage.bind(this);
     }
 
     componentDidMount(){
@@ -54,12 +58,20 @@ class PSet extends React.Component{
         callback(metadata, pset, dataset);
     }
 
+    showMessage(status, data){
+        APIHelper.messageAfterRequest(status, data, this.initializeState, this.messages);
+    }
+
     render(){
         return(
             <React.Fragment>
                 <Navigation routing={this.props} />
                 <div className='pageContent'>
-                    <h1>Explore PSet - {this.state.pset.name}</h1>
+                    <div className='psetTitle'>
+                        <h1>Explore PSet - {this.state.pset.name}</h1>
+                        <DownloadPSetButton disabled={false} selectedPSets={[this.state.pset]} onDownloadComplete={this.showMessage}/>
+                    </div>
+                    <Messages ref={(el) => this.messages = el} />
                     <div className='tabContainer'>
                         {this.state.isReady ? 
                             <TabView renderActiveOnly={false}>

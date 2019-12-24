@@ -12,7 +12,6 @@ class Navigation extends React.Component {
         super();
         this.onLoginClick = this.onLoginClick.bind(this);
         this.onLogoutClick = this.onLogoutClick.bind(this);
-        this.onTestClick = this.onTestClick.bind(this);
     }
 
     onLoginClick(event){
@@ -28,21 +27,6 @@ class Navigation extends React.Component {
                 this.context.resetAuthToken();
                 this.props.routing.history.push({pathname: '/Authentication', state:{path: this.props.routing.location.pathname, logoutMsg: 'You have logged out'}});
             });            
-    }
-
-    onTestClick(event){
-        event.preventDefault();
-        fetch('/pset/request', {
-                method: 'POST',
-                body: JSON.stringify({test: 'test'}),
-                headers: {
-                    'Content-type': 'application/json'
-                }
-            })
-            .then(res => res.json())
-            .then(resData => {
-                console.log(resData);
-            });
     }
 
     render(){   
@@ -63,8 +47,7 @@ class Navigation extends React.Component {
                                 this.context.authenticated ? 
                                 <Button label='Logout' onClick={this.onLogoutClick}/> : <Button label='Login/Register' onClick={this.onLoginClick}/>
                             }
-                        </div> 
-                        <div><Button label='Test' onClick={this.onTestClick}/></div>      
+                        </div>     
                     </div>
                     <div className='loggedIn'>{this.context.authenticated ? 'Logged in as: ' + this.context.username : ''}</div> 
                 </header>

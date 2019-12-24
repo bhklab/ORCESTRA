@@ -2,6 +2,7 @@ const mongo = require('../db/mongo');
 const path = require('path');
 const psetDir = path.join(__dirname, '../psets');
 const mailer = require('../mailer/mailer');
+const zip = require('express-zip');
 
 const getPSetByID = function(req, res){
     mongo.selectPSetByID(parseInt(req.params.id, 10), function(result){
