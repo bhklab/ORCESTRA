@@ -9,7 +9,7 @@ const user = require('./user');
 const metadata = require('./metadata');
 
 // configuring router
-router.get('/', home.getHome);
+// router.get('/', home.getHome);
 
 // pset
 router.get('/pset', pset.getPsetList);
