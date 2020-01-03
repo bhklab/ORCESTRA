@@ -91,7 +91,7 @@ class Stats extends React.Component{
                             </div>
                         </div>
                         <div className='container downloadHistogram'>
-                            {this.state.isReady && <DownloadChart data={this.state.chartData} title='Number of Downloads' width={500} height={500} />}
+                            {this.state.isReady && <DownloadChart data={this.state.chartData} title='Number of Downloads' />}
                         </div>
                     </div>
                 </div>

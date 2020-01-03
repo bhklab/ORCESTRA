@@ -25,3 +25,24 @@
 .rankingTableFooter{
     margin-top: 20px;
 }
+
+@media only screen and (max-width: 1200px) {
+    .statContainer{
+        flex-direction: column;
+    }
+
+    .rankingTable {
+        width: 100%;
+        margin-bottom: 30px; 
+    }
+
+    .downloadHistogram{
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .statContainer{
+        flex-direction: row;
+    }
+}

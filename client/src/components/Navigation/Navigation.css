@@ -1,9 +1,9 @@
 header {
     top: 0%;
-    /* position:fixed; */
     width:100%;
     background-color:rgb(255,255,255, 0.7);
     height:90px;
+    position: fixed;
 }
 
 header img {
@@ -34,12 +34,16 @@ header a:hover {
     border-bottom:3px solid rgb(241, 144, 33);
 }
 
-.navBar {
-    margin-right: 100px;
-    width: 40%;
-    width: 890px;
+.navBarContainer {
     height: 100%;
     float: right;
+    display: flex;
+}
+
+.navBar {
+    margin-right: 100px;
+    width: 890px;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -69,35 +73,93 @@ header a:hover {
     right: 100px;
 }
 
-@media only screen and (max-width: 965px) {
 
-    header {
-        top: 0%;
-        width:100%;
-        background-color:rgb(255,255,255, 0.7);
-        height:40px;
-    }
-    
-    header img {
-        margin-left: 10px;
-    }
+/*react-burger-nav style*/
 
-    .navBar {
-        clear: both;
-        width: 250px;
-        display: block;
-    }
+/* Position and sizing of burger button */
+.bm-burger-button {
+    position: fixed;
+    width: 36px;
+    height: 30px;
+    right: 36px;
+    top: 30px;
+  }
+  
+  /* Color/shape of burger icon bars */
+  .bm-burger-bars {
+    background: #3D405A;
+  }
+  
+  /* Color/shape of burger icon bars on hover*/
+  .bm-burger-bars-hover {
+    background: #555975;
+  }
+  
+  /* Position and sizing of clickable cross button */
+  .bm-cross-button {
+    height: 24px;
+    width: 24px;
+  }
+  
+  /* Color/shape of close button cross */
+  .bm-cross {
+    background: #3D405A;
+  }
+  
+  /*
+  Sidebar wrapper styles
+  Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+  */
+  .bm-menu-wrap {
+    position: fixed;
+    height: 100%;
+  }
+  
+  /* General sidebar styles */
+  .bm-menu {
+    background: rgba(255, 255, 255, 0.7);
+    padding: 2.5em 1.5em 0;
+    font-size: 1.15em;
+  }
+  
+  /* Morph shape necessary with bubble or elastic */
+  .bm-morph-shape {
+    fill: #373a47;
+  }
+  
+  /* Wrapper for item list */
+  .bm-item-list {
+    /* color: #b8b7ad; */
+    padding: 0.8em;
+  }
+  
+  /* Individual item */
+  .bm-item {
+    display: inline-block;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  /* Styling of overlay */
+  .bm-overlay {
+    background: rgba(61, 64, 90, 0.5);
+  }
 
-    header a {
-        color:rgb(61, 64, 90);
-        font-size:14px;
-        padding-bottom:30px;
-        transition: .2s ease-out;
-    }
+@media only screen and (max-width: 1200px) {
+  .navBar {
+      display: none;
+  }
 
-    .active-link{
-        text-decoration:none;
-        color: rgb(241, 144, 33);
-        border-bottom:none;
+  header img {
+      margin-top: 10px;
+      margin-left: 30px;
+      max-width: 60px;
+      max-height: 60px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .burgerNav {
+        display: none;
     }
 }

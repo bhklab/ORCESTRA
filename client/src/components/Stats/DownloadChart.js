@@ -21,14 +21,14 @@ class DownloadChart extends React.Component{
                 },
             ]}
             layout={ {
-                autosize: false, 
-                width: 520, 
-                height: 450, 
+                autosize: true,
                 title: this.props.title, 
                 yaxis: {autorange: 'reversed'}, 
                 titlefont: {size: 18, color: '#3D405A'}, 
                 font:{color: '#3D405A'}
             } }
+            style = {{width: "100%"}}
+            useResizeHandler = {true}
           />
         );
     }
