@@ -2,3 +2,5 @@ api/package-lock.json
 mock-pachyderm-api/bin/www
 mock-pachyderm-api/node_modules
 mock-pachyderm-api/package-lock.json
+
+/node_modules
