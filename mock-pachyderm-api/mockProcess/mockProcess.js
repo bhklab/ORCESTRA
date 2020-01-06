@@ -14,7 +14,7 @@ const execute = function(id){
                 console.log('process comlete');
             }
         );
-    }, 30000);  
+    }, 5000);  
 }
 
 module.exports = {

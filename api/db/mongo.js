@@ -1,9 +1,11 @@
-const mongo = require('mongodb').MongoClient;
+const mongo  = require('mongodb');
+const mongoClient = mongo.MongoClient;
 const connStr = 'mongodb+srv://root:root@development-cluster-ptdz3.azure.mongodb.net/test?retryWrites=true&w=majority';
 const dbName = 'orcestra-dev';
+const ObjectID = mongo.ObjectID;
 
 function connectWithClient(callback){
-    mongo.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
+    mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
         callback(err, client);
     });
 }
@@ -78,25 +80,11 @@ function getResult(err, data){
 
 module.exports = {
 
-    getId: function(collectionName, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const collection = db.collection('counters');
-            collection.findOneAndUpdate(
-                { '_id': collectionName },
-                { '$inc': {'count': 1} },
-                { upsert: true, returnOriginal: false }, 
-                (err, data) => {
-                    client.close();
-                    callback(getResult(err, data.value.count));
-            });
-        }); 
+    getObjectID: function(){
+        return(new ObjectID());
     },
     
-    selectPSetByID: function(id, callback){
+    selectPSetByDOI: function(doi, callback){
         connectWithClient((err, client) => {
             if(err){
                 callback({status: 0, data: err});
@@ -110,7 +98,7 @@ module.exports = {
                     callback({status: 0, data: err});
                 }
                 const metadata = data[0];
-                pset.findOne({'_id': id, 'status' : 'complete'}, (err, data) => {
+                pset.findOne({'doi': doi, 'status' : 'complete'}, (err, data) => {
                     client.close();
                     callback(getResult(err, {pset: data, metadata: metadata}));
                 });
@@ -154,7 +142,8 @@ module.exports = {
             }
             const db = client.db(dbName);
             const collection = db.collection('pset');
-            collection.updateMany({'_id': {'$in': psetIDs}}, {'$inc': {'download': 1}}, (err, result) => {
+            const objectIDArray = psetIDs.map(str => ObjectID(str));
+            collection.updateMany({'_id': {'$in': objectIDArray}}, {'$inc': {'download': 1}}, (err, result) => {
                 if(err){
                     client.close();
                     callback({status: 0, data: err});
@@ -178,9 +167,9 @@ module.exports = {
             const db = client.db(dbName);
             const collection = db.collection('pset');
             collection.findOneAndUpdate(
-                {'_id': id}, 
-                {'$set': {'status': 'complete', 'request.timeComplete': Date.now()}}, 
-                {returnOriginal: false, upsert: true}, 
+                {'_id': ObjectID(id)}, 
+                {'$set': {'status': 'complete', 'doi': '10.5281/zenodo.3598680', 'request.timeComplete': Date.now()}}, 
+                {returnOriginal: false, upsert: false}, 
                 (err, data) => {
                     client.close();
                     callback(getResult(err, data));
@@ -328,9 +317,10 @@ module.exports = {
             }
             const db = client.db(dbName);
             const collection = db.collection('user');
+            const objectIDArray = userPSet.psetId.map(str => ObjectID(str));
             collection.findOneAndUpdate(
                 {'username': userPSet.username},
-                {'$addToSet': {'userPSets': {'$each': userPSet.psetId}}},
+                {'$addToSet': {'userPSets': {'$each': objectIDArray}}},
                 (err, result) => {
                     if(err){
                         client.close();

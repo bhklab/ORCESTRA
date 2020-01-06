@@ -19,12 +19,12 @@ app.set('js', path.join(__dirname, 'js'));
 app.use('/', router);
 
 app.set('port', process.env.port || port); // set express to use this port
-app.use(express.static(path.join(__dirname, '../client/build'))); // configure express to use public folder
+// app.use(express.static(path.join(__dirname, '../client/build'))); // configure express to use public folder
 
 
-app.get('/*', (req, res) => {
-  res.sendFile('index.html', { root: '../client/build' });
-});
+// app.get('/*', (req, res) => {
+//   res.sendFile('index.html', { root: '../client/build' });
+// });
 
 app.listen(port, () => {
   console.log(`Server running on port: 2000`);

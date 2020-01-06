@@ -97,7 +97,7 @@ function getUserPSet(req, res){
 
 function addToUserPset(req, res){
     var userPSet = req.body.reqData;
-    dbUtil.addToUserPset(userPSet, function(result){
+    mongo.addToUserPset(userPSet, function(result){
         if(result.status){
             res.send(result.data);
         }else{

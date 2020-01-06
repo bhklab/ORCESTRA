@@ -20,7 +20,7 @@ function buildReqArray(parameters, datatype=null){
 
 function buildPSetObject(reqData){
     let pset = {};
-    pset._id = null,
+    pset._id = mongo.getObjectID(),
     pset.name = reqData.name;
     pset.download = 0;
     pset.doi = '{ doi: }';
@@ -54,23 +54,11 @@ module.exports = {
         }
     },
 
-    getPSetId: function(req, res, next){
-        mongo.getId('pset', (result) => {
-            if(result.status){
-                req.psetId = result.data;
-                console.log('pset id: ' + result.data);
-                next();
-            }else{
-                res.status(500).send(result.data);
-            }
-        });
-    },
-
     sendPSetRequest: function(req, res, next){
         const pset = buildPSetObject(req.body.reqData);
-        pset._id =req.psetId;
+        //pset._id =req.psetId;
         pset.status = 'pending';
-        request('http://localhost:5000/pipeline/start', {body: {id: req.psetId}, json: true}, function (error, response, body) {
+        request('http://localhost:5000/pipeline/start', {body: {id: pset._id}, json: true}, function (error, response, body) {
             if(error){
                 res.status(500).send(error);
             }
@@ -85,7 +73,8 @@ module.exports = {
     }, 
 
     updatePSetStatus: function(req, res, next){
-        mongo.updatePSetStatus(parseInt(req.body.id, 10), function(result){
+        console.log(req.body.id);
+        mongo.updatePSetStatus(req.body.id, function(result){
             if(result.status){
                 req.email = result.data.value.request.email;
                 req.id = result.data.value._id;

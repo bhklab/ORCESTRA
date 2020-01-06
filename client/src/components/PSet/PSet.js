@@ -25,7 +25,8 @@ class PSet extends React.Component{
     }
 
     componentDidMount(){
-        let apiStr = '/pset/one/' + this.props.match.params.id;
+        console.log(this.props.match.params.id1 + '/' + this.props.match.params.id2);
+        let apiStr = '/pset/one/' + this.props.match.params.id1 + '/' + this.props.match.params.id2;
         console.log(apiStr);
         APICalls.queryPSet(apiStr, (resData) => {
             if(resData.pset){

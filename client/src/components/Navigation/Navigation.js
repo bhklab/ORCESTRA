@@ -42,8 +42,7 @@ class Navigation extends React.Component {
                             <div><NavLink exact to="/PSetRequest" activeClassName='active-link'>Request</NavLink></div>
                             <div><NavLink exact to="/Stats" activeClassName='active-link'>Statistics</NavLink></div>
                             <div><NavLink exact to="/Profile" activeClassName='active-link'>Profile</NavLink></div>
-                            <div><a href="https://pharmacodb.pmgenomics.ca" target="_blank">PharmacoDB</a></div>
-                            <div><a href="https://www.pmgenomics.ca/bhklab/" target="_blank">Contact</a></div>
+                            <div><NavLink exact to="/Contact" activeClassName='active-link'>Contact</NavLink></div>
                             <div>
                                 {
                                     this.context.authenticated ? 
@@ -58,8 +57,7 @@ class Navigation extends React.Component {
                                 <div className='menu-item'><NavLink exact to="/PSetRequest" activeClassName='active-link'>Request</NavLink></div>
                                 <div className='menu-item'><NavLink exact to="/Stats" activeClassName='active-link'>Statistics</NavLink></div>
                                 <div className='menu-item'><NavLink exact to="/Profile" activeClassName='active-link'>Profile</NavLink></div>
-                                <div className='menu-item'><a href="https://pharmacodb.pmgenomics.ca" target="_blank">PharmacoDB</a></div>
-                                <div className='menu-item'><a href="https://www.pmgenomics.ca/bhklab/" target="_blank">Contact</a></div>
+                                <div><NavLink exact to="/Contact" activeClassName='active-link'>Contact</NavLink></div>
                                 <div className='menu-item'>
                                     {
                                         this.context.authenticated ? 

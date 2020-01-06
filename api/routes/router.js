@@ -8,18 +8,24 @@ const pset = require('./pset');
 const user = require('./user');
 const metadata = require('./metadata');
 
+const script = require('./insert-script');
+
 // configuring router
 // router.get('/', home.getHome);
 
 // pset
 router.get('/pset', pset.getPsetList);
-router.get('/pset/one/:id', pset.getPSetByID);
+router.get('/pset/one/:id1/:id2', pset.getPSetByDOI);
 router.get('/pset/sort', pset.getSortedPSets);
-router.post('/pset/request', middleware.getPSetId, middleware.sendPSetRequest, pset.postPsetData);
+router.post('/pset/request', middleware.sendPSetRequest, pset.postPsetData);
 router.post('/pset/download', pset.downloadPSets);
 router.get('/pset/complete', middleware.updatePSetStatus, pset.sendPSetEmail);
 // prviate route
 router.post('/pset/cancel', middleware.checkToken, pset.cancelPSetRequest);
+
+// insert script
+router.get('/script/bulk', script.insert);
+
 
 // user
 router.get('/user', user.getUser);

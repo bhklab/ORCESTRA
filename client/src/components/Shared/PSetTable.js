@@ -36,7 +36,7 @@ class PSetTable extends React.Component{
     }
 
     nameColumnTemplate(rowData, column){
-        let route = '/PSet/' + rowData._id;
+        let route = '/' + rowData.doi;
         return(
             <Link to={route} >{rowData.name}</Link>
         );

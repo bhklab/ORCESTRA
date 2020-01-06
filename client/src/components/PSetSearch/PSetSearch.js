@@ -1,6 +1,6 @@
 import React from 'react';
 import './PSetSearch.css';
-import Navigation from '../Navigation/Navigation'
+import Navigation from '../Navigation/Navigation';
 import PSetFilter from './subcomponents/PSetFilter';
 import PSetTable from '../Shared/PSetTable';
 import SavePSetButton from '../Shared/Buttons/SavePSetButton';

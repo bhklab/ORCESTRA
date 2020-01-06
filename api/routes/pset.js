@@ -4,8 +4,9 @@ const psetDir = path.join(__dirname, '../psets');
 const mailer = require('../mailer/mailer');
 const zip = require('express-zip');
 
-const getPSetByID = function(req, res){
-    mongo.selectPSetByID(parseInt(req.params.id, 10), function(result){
+const getPSetByDOI = function(req, res){
+    const doi = req.params.id1 + '/' + req.params.id2;
+    mongo.selectPSetByDOI(doi, function(result){
         if(result.status){
             res.send(result.data);
         }else{
@@ -85,7 +86,7 @@ const sendPSetEmail = function(req, res){
 }
 
 module.exports = {
-    getPSetByID,
+    getPSetByDOI,
     getPsetList,
     getSortedPSets,
     postPsetData,
