@@ -32,6 +32,7 @@ export function saveOrUpdateUserPSets(username, selectedPSets, callback){
 }
 
 export function requestPSet(data, callback){
+    console.log(data);
     fetch('/pset/request', {
         method: 'POST',
         body: JSON.stringify({

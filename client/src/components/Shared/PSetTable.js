@@ -8,7 +8,7 @@ class PSetTable extends React.Component{
     constructor(){
         super();
         this.state = {
-            datasets: [],
+            //datasets: [],
             rows: 10,
             first: 0,
             start: 0,
@@ -29,7 +29,10 @@ class PSetTable extends React.Component{
     }
 
     toolsRefTemplate(rowData, column){
-        const output = rowData[column.field].map(item => <div key={item}>{item}</div>);
+        let output ='';
+        if(rowData[column.field]){
+            output = rowData[column.field].map(item => <div key={item.name}>{item.name}</div>);
+        }
         return(
             <div>{output}</div>
         );
@@ -65,9 +68,9 @@ class PSetTable extends React.Component{
                 <Column selectionMode="multiple" style={{width: '3.5em'}}/>
                 {this.props.showDownload && <Column className='textField' field='download' header='Download' style={{width: '6.5em'}}/>}
                 <Column className='textField' field='name' header='Name' style={{width:'10em'}} body={this.nameColumnTemplate}/>
-                <Column className='textField' field='datasetName' header='Dataset' style={{width:'6em'}} />
-                <Column className='textField' field='datasetVersion' header='Dataset Version' style={{width:'6em'}}/>
-                <Column className='textField' field='drugSensitivity' header='Drug Sensitivity' style={{width:'7em'}}/>
+                <Column className='textField' field='dataset.name' header='Dataset' style={{width:'6em'}} />
+                <Column className='textField' field='dataset.version' header='Dataset Version' style={{width:'6em'}}/>
+                <Column className='textField' field='drugSensitivity.version' header='Drug Sensitivity' style={{width:'7em'}}/>
                 <Column field='rnaTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='RNA Tool'/>
                 <Column field='exomeTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='Exome Tool'/>
                 <Column field='rnaRef' body={this.toolsRefTemplate} style={{width:'18em'}} header='RNA Ref'/>

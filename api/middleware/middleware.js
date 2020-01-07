@@ -22,6 +22,7 @@ function buildPSetObject(reqData){
     let pset = {};
     pset._id = mongo.getObjectID(),
     pset.name = reqData.name;
+    pset.status = 'pending';
     pset.download = 0;
     pset.doi = '{ doi: }';
     pset.datasetName = reqData.dataset.name;
@@ -57,19 +58,21 @@ module.exports = {
     sendPSetRequest: function(req, res, next){
         const pset = buildPSetObject(req.body.reqData);
         //pset._id =req.psetId;
-        pset.status = 'pending';
-        request('http://localhost:5000/pipeline/start', {body: {id: pset._id}, json: true}, function (error, response, body) {
-            if(error){
-                res.status(500).send(error);
-            }
-            pset.request = {
-                timeSubmitted: Date.now(),
-                email: req.body.reqData.email
-            };
-            req.pset = pset;
-            console.log('pset request submitted: ' + pset);
-            next();
-        });
+        // request('http://localhost:5000/pipeline/start', {body: {id: pset._id}, json: true}, function (error, response, body) {
+        //     if(error){
+        //         res.status(500).send(error);
+        //     }
+        //     pset.request = {
+        //         timeSubmitted: Date.now(),
+        //         email: req.body.reqData.email
+        //     };
+        //     req.pset = pset;
+        //     console.log('pset request submitted: ' + pset);
+        //     next();
+        // });
+        req.pset = pset;
+        console.log('pset request submitted: ' + pset);
+        next();
     }, 
 
     updatePSetStatus: function(req, res, next){

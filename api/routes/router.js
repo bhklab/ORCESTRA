@@ -25,6 +25,7 @@ router.post('/pset/cancel', middleware.checkToken, pset.cancelPSetRequest);
 
 // insert script
 router.get('/script/bulk', script.insert);
+router.get('/script/formdata', script.insertFormdata);
 
 
 // user

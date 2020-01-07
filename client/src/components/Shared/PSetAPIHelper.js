@@ -2,14 +2,14 @@
 
 export function getFilterSet(data){
     var filterset = {}
-    filterset.datatype = toFilterArray(data.datatype);
+    filterset.datatype = toFilterArray(data.dataType);
     filterset.datasetName = toFilterArray(data.dataset);
     filterset.datasetVersion = toFilterArray(data.dataset, true);
     filterset.genome = toFilterArray(data.genome);
-    filterset.rnaTool = toToolVersionFilterArray(data.toolVersion, 'RNA');
-    filterset.exomeTool = toToolVersionFilterArray(data.toolVersion, 'DNA');
+    filterset.rnaTool = toFilterArray(data.rnaTool);
+    filterset.dnaTool = toFilterArray(data.dnaTool);
     filterset.rnaRef = toFilterArray(data.rnaRef);
-    filterset.exomeRef = toFilterArray(data.dnaRef);
+    filterset.dnaRef = toFilterArray(data.dnaRef);
     filterset.drugSensitivity = toFilterArray(data.drugSensitivity);
     return(filterset);
 }
@@ -22,9 +22,9 @@ export function buildAPIStr(filterSet){
     apiFragments.push(buildAPIStrFragment('dsn', filterSet.datasetName));
     apiFragments.push(buildAPIStrFragment('gnm', filterSet.genome));
     apiFragments.push(buildAPIStrFragment('rnat', filterSet.rnaTool));
-    apiFragments.push(buildAPIStrFragment('exot', filterSet.exomeTool));
+    apiFragments.push(buildAPIStrFragment('dnat', filterSet.dnaTool));
     apiFragments.push(buildAPIStrFragment('rnar', filterSet.rnaRef));
-    apiFragments.push(buildAPIStrFragment('exor', filterSet.exomeRef));
+    apiFragments.push(buildAPIStrFragment('dnar', filterSet.dnaRef));
     apiFragments.push(buildAPIStrFragment('dst', filterSet.drugSensitivity));
     for(let i = 0; i < apiFragments.length; i++){
         if(apiFragments[i].length > 0){
@@ -40,9 +40,9 @@ export function isNoneSelected(filterset){
         !filterset.datasetName.length && 
         !filterset.genome.length && 
         !filterset.rnaTool.length &&
-        !filterset.exomeTool.length &&
+        !filterset.dnaTool.length &&
         !filterset.rnaRef.length &&
-        !filterset.exomeRef.length &&
+        !filterset.dnaRef.length &&
         !filterset.drugSensitivity.length){
         return(true);
     }
@@ -160,15 +160,6 @@ function toFilterArray(selectedValues, isDatasetVersion = false){
         filterArray.push(selectedValues.name);
     }
     return(filterArray);
-}
-
-function toToolVersionFilterArray(selectedValues, datatype){
-    var filterArray = [];
-    for(let i = 0; i < selectedValues.length; i++){   
-        if(selectedValues[i].datatype === datatype)
-        filterArray.push(selectedValues[i].name);
-    }
-    return filterArray;
 }
 
 function buildAPIStrFragment(keyName, filterArray){
