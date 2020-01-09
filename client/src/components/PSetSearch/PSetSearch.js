@@ -15,6 +15,7 @@ class PSetSearch extends React.Component{
         super();
         this.state = {
             allData: [],
+            searchAll: true,
             selectedPSets: [],
             disableSaveBtn: true
         }
@@ -42,7 +43,7 @@ class PSetSearch extends React.Component{
         if(list.length > 0){
             return(
                 <ul>
-                    {list.map((pset) => <li key={pset._id}>{pset.doi}</li>)}
+                    {list.map((pset) => <li key={pset._id}>{pset.name}</li>)}
                 </ul>
             );
         } else {
@@ -50,8 +51,11 @@ class PSetSearch extends React.Component{
         }
     }
 
-    updateAllData(data){
-        this.setState({allData: data});
+    updateAllData(data, searchAll = true){
+        this.setState({
+            allData: data,
+            searchAll: searchAll
+        });
     }
 
     updatePSetSelection(selected){
@@ -85,7 +89,12 @@ class PSetSearch extends React.Component{
                                 <Messages ref={(el) => this.messages = el} />
                                 <div className='pSetSummaryContainer'>
                                     <div className='pSetSummaryItem'>
-                                        <span className='pSetSummaryNum'>{this.state.allData.length}</span> {this.state.allData.length === 1 ? ' match' : ' matches'} found.
+                                        {
+                                            this.state.searchAll ? 
+                                            <span><span className='pSetSummaryNum'>{this.state.allData.length}</span> <span>dataset(s) available.</span></span>
+                                            :
+                                            <span><span className='pSetSummaryNum'>{this.state.allData.length}</span> <span>{this.state.allData.length === 1 ? ' match' : ' matches'}</span> found.</span>
+                                        }
                                     </div>
                                     <div className='pSetSummaryItem'>
                                         <span className='pSetSummaryNum'>{this.state.selectedPSets.length}</span> selected.

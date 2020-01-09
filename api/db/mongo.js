@@ -22,11 +22,11 @@ function getQueryFilterSet(query){
     }
     
     if(query.dsv){
-        queryArray.push(getQueryFilter('datasetVersion', query.dsv));
+        queryArray.push(getQueryFilter('dataset.version', query.dsv));
     }
 
     if(query.dsn){
-        queryArray.push(getQueryFilter('datasetName', query.dsn));
+        queryArray.push(getQueryFilter('dataset.name', query.dsn));
     }
 
     if(query.gnm){
@@ -34,19 +34,19 @@ function getQueryFilterSet(query){
     }
 
     if(query.rnat){
-        queryArray.push(getQueryFilter('rnaTool', query.rnat));
+        queryArray.push(getQueryFilter('rnaTool.name', query.rnat));
     }
 
-    if(query.exot){
-        queryArray.push(getQueryFilter('exomeTool', query.exot));
+    if(query.dnat){
+        queryArray.push(getQueryFilter('dnaTool.name', query.dnat));
     }
 
     if(query.rnar){
-        queryArray.push(getQueryFilter('rnaRef', query.rnar));
+        queryArray.push(getQueryFilter('rnaRef.name', query.rnar));
     }
 
-    if(query.exor){
-        queryArray.push(getQueryFilter('exomeRef', query.exor));
+    if(query.dnar){
+        queryArray.push(getQueryFilter('dnaRef.name', query.dnar));
     }
 
     if(query.dst){

@@ -17,6 +17,14 @@ const dataset = [
         rawSeqDataDNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f'
     },
     {
+        label: 'FIMM - 2016', name: 'FIMM', version: '2016', 
+        publication: [
+            {citation: 'Mpindi, J., Yadav, B., Östling, P. et al. Consistency in drug response profiling. Nature 540, E5–E6 (2016) doi:10.1038/nature20171', link: 'https://www.nature.com/articles/nature20171'}
+        ], 
+        rawSeqDataRNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f', 
+        rawSeqDataDNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f'
+    },
+    {
         label: 'GRAY - 2013', name: 'GRAY', version: '2013', 
         publication: [
             {citation: 'Daemen, Anneleen et al. “Modeling precision treatment of breast cancer.” Genome biology vol. 14,10 (2013): R110. doi:10.1186/gb-2013-14-10-r110', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3937590/'}
@@ -106,7 +114,7 @@ function buildPSetObject(row){
     pset.status = 'complete',
     pset.name = row.PSet;
     pset.download = 0;
-    pset.doi = '10.5281/zenodo.3598680';
+    pset.doi = row['Zenodo DOI'];
     
     pset.dataset = dataset.find(data => {
         return(data.name === row.Dataset && data.version === row.Version)
@@ -172,7 +180,7 @@ const insert = function(req, res){
                 }
                 const db = client.db(dbName);
                 const collection = db.collection('pset');
-                collection.insertMany(data.slice(0,2), (err, result) => {
+                collection.insertMany(data, (err, result) => {
                     client.close();
                     if(err){
                         console.log(err);
@@ -210,8 +218,9 @@ const insertFormdata = function(req, res){
         ],
         rnaRef: [
             {label: 'Ensembl GRCh38 v89 Transcriptome', name: 'Ensembl GRCh38 v89 Transcriptome', genome: 'GRCh38', source: 'ftp://ftp.ensembl.org/pub/release-89/gtf/homo_sapiens/Homo_sapiens.GRCh38.89.gtf.gz'},
-            {label: 'Gencode v23lift37 Transcriptome', name: 'Gencode v23lift37 Transcriptome', genome: 'GRCh37', source: 'ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_23/GRCh37_mapping/gencode.v23lift37.annotation.gtf.gz'},
-            {label: 'Ensembl GRCh37 v67 Transcriptome', name: 'Ensembl GRCh37 v67 Transcriptome', genome: 'GRCh37', source: 'ftp://ftp.ensembl.org/pub/release-67/gtf/homo_sapiens/Homo_sapiens.GRCh37.67.gtf.gz'}
+            {label: 'Ensembl GRCh37 v67 Transcriptome', name: 'Ensembl GRCh37 v67 Transcriptome', genome: 'GRCh37', source: 'ftp://ftp.ensembl.org/pub/release-67/gtf/homo_sapiens/Homo_sapiens.GRCh37.67.gtf.gz'},
+            {label: 'Gencode v23 Transcriptome', name: 'Gencode v23 Transcriptome', genome: 'GRCh38', source: 'ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_23/gencode.v23.transcripts.fa.gz'},
+            {label: 'Gencode v23lift37 Transcriptome', name: 'Gencode v23lift37 Transcriptome', genome: 'GRCh37', source: 'ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_23/GRCh37_mapping/gencode.v23lift37.annotation.gtf.gz'}
         ],
         dnaTool: [
             {label: 'MuTect1', name: 'MuTect1', commands: []},

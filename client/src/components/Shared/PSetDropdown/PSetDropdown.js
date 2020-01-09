@@ -1,11 +1,11 @@
 import React from 'react';
-import './PSetParamOptions.css';
+import './PSetDropdown.css';
 import {MultiSelect} from 'primereact/multiselect';
 import {Dropdown} from 'primereact/dropdown';
 
 // props: id, className, isHidden, selectOne, parameterName, parameterOptions[], selecedParameter[], handleUpdateSelection()
 
-class PSetRequestParamOptions extends React.Component {
+class PSetDropdown extends React.Component {
     
     render(){
         const dataTemplate =  (option) => {
@@ -70,4 +70,4 @@ class PSetRequestParamOptions extends React.Component {
     
 }
 
-export default PSetRequestParamOptions;
+export default PSetDropdown;

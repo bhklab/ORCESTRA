@@ -14,15 +14,13 @@ class PSetRequestParameterSelection extends React.Component{
         var str = '';
         if(Array.isArray(parameters)){
             for(let i = 0; i < parameters.length; i++){
-                str += parameters[i].name;
+                str += parameters[i].label;
                 if(i !== parameters.length -1 ){
                     str += ', ';
                 }
             }
-        }else if(this.props.parameterName === 'Dataset' && typeof parameters.name != 'undefined'){
-            str = parameters.name + ' - ' + parameters.version;
         }else{
-            str = parameters.name;
+            str = parameters.label;
         }
         if(str){
             return(str);

@@ -50,19 +50,25 @@ export function isNoneSelected(filterset){
 }
 
 export function isNotReadyToSubmit(request){
-    if(!isSelected(request.datatype)){
+    if(!isSelected(request.dataType)){
         return(true);
-    }else if(request.datatype.length === 1){
-        if(request.datatype[0] === 'RNA' && !isSelected(request.rnaToolRef)){
+    }else if(request.dataType.length === 1){
+        if(request.dataType[0] === 'RNA' && (!isSelected(request.rnaRef) || !isSelected(request.rnaTool))){
             return(true);
-        }else if(request.datatype[0] === 'DNA' && !isSelected(request.dnaToolRef)){
+        }else if(request.dataType[0] === 'DNA' && (!isSelected(request.dnaRef) || !isSelected(request.dnaTool))){
             return(true);
         }
     }else{
-        if(!isSelected(request.rnaToolRef)){
+        if(!isSelected(request.rnaRef)){
             return(true);
         }
-        if(!isSelected(request.dnaToolRef)){
+        if(!isSelected(request.dnaRef)){
+            return(true);
+        }
+        if(!isSelected(request.rnaTool)){
+            return(true);
+        }
+        if(!isSelected(request.dnaTool)){
             return(true);
         }
     }
@@ -70,16 +76,12 @@ export function isNotReadyToSubmit(request){
     if(!isSelected(request.genome)){
         return(true);
     } 
-    if(!isSelected(request.toolVersion)){
-        return(true);
-    } 
     if(!isSelected(request.dataset)){
-        console.log('dataset not selected');
         return(true);
     }
-    if(!isSelected(request.drugSensitivity)){
-        return(true);
-    }
+    // if(!isSelected(request.drugSensitivity)){
+    //     return(true);
+    // }
     if(!hasName(request.name)){
         return(true);
     }
