@@ -5,15 +5,29 @@ class PSetToolAccordion extends React.Component {
 
     render(){
         const toolAccordionTabs = this.props.items.map((item) => 
-            <AccordionTab key={item} header={item}>
-                {item}
+            <AccordionTab key={item.name} header={item.name}>
+                {item.commands.length ? 
+                    <ul>
+                        {item.commands.map((command) => 
+                            <li key={command}>
+                                {command}
+                            </li>    
+                        )}
+                    </ul>
+                    :
+                    "Not Available"
+                }
+                   
             </AccordionTab>
         );
         
         return(
-            <Accordion multiple={true}>
-                {toolAccordionTabs}
-            </Accordion>
+            this.props.items.length ? 
+                <Accordion multiple={true}>
+                    {toolAccordionTabs}
+                </Accordion>
+                :
+                <div className='subContent'>Not Available</div>
         );
     }
 
@@ -27,7 +41,7 @@ class RNARefAccordion extends React.Component {
                 <ul>
                     <li className='listItem-1'>
                         <div>{item.name.length ? item.name : 'Currently not available'}</div>
-                        <div>{item.link.length ? <a href={item.link}>{item.link}</a> : 'Currently not available'}</div>
+                        <div>{item.source.length ? <a href={item.source}>{item.source}</a> : 'Currently not available'}</div>
                     </li>                    
                 </ul> 
             </AccordionTab>
@@ -49,19 +63,19 @@ class DNARefAccordion extends React.Component {
 
     render(){
         const exomeRefAccordionTabs = this.props.items.map((item) => 
-            <AccordionTab key={item.dbSNP} header={item.dbSNP}>
+            <AccordionTab key={item.name} header={item.name}>
                 <ul>
                     <li className='listItem-1'>
-                        <div>{item.dbSNP.length ? item.dbSNP: 'Currently not available'}</div>
-                        <div>{item.link.length ? <a href={item.link}>{item.link}</a> : 'Currently not available'}</div>
+                        <div>{item.name.length ? item.name: 'Currently not available'}</div>
+                        <div>{item.source.length ? <a href={item.source}>{item.source}</a> : 'Currently not available'}</div>
                     </li>
                     <li className='listItem-1'>
                         <div>{item.cosmic.name}</div>
-                        <div><a href={item.cosmic.link}>{item.cosmic.link}</a> </div>
+                        <div><a href={item.cosmic.source}>{item.cosmic.source}</a> </div>
                     </li>
                     <li className='listItem-1'>
                         <div>{item.exonTarget.name}</div>
-                        <div><a href={item.exonTarget.link}>{item.exonTarget.link}</a></div>
+                        <div><a href={item.exonTarget.source}>{item.exonTarget.source}</a></div>
                     </li>                       
                 </ul> 
             </AccordionTab>
@@ -79,8 +93,23 @@ class DNARefAccordion extends React.Component {
 
 }
 
+class GeneralInfoAccordion extends React.Component {
+    render(){   
+        return(
+            <Accordion className='generalInfoAccordion'>
+                <AccordionTab header="General Information">
+                    <h4 className='subContent'>PSet Name: {this.props.data.name}</h4>
+                    <h4 className='subContent'>Date Created: {this.props.data.dateCreated}</h4>
+                    {this.props.data.createdBy && <h4 className='subContent'>Created By {this.props.data.createdBy}</h4>}
+                </AccordionTab>    
+            </Accordion>    
+        );
+    }
+}
+
 export {
     PSetToolAccordion,
     RNARefAccordion,
-    DNARefAccordion
+    DNARefAccordion,
+    GeneralInfoAccordion
 }

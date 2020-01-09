@@ -53,23 +53,25 @@ class PSetFilter extends React.Component {
     render(){
         return(
             <React.Fragment>
-                <div className='pSetFilter'>
-                    <h2>PSet Filter</h2>
-                    <div className='filterSet'>
-                        <label>Enable Automatic Table Update: </label>
-                        <InputSwitch checked={this.state.autoUpdateChecked} onChange={(e) => this.setState({autoUpdateChecked: e.value})} />
+                <div className='pSetFilterContainer'>
+                    <div className='pSetFilter'>
+                        <h2>PSet Filter</h2>
+                        <div className='filterSet'>
+                            <label>Enable Automatic Table Update: </label>
+                            <InputSwitch checked={this.state.autoUpdateChecked} onChange={(e) => this.setState({autoUpdateChecked: e.value})} />
+                        </div>
+
+                        <PSetParameterOptions 
+                            autoUpdate={this.state.autoUpdateChecked}
+                            setParentState={this.setStateOnParamSelection}
+                            requestUpdate={this.sendFilterPSetRequest}
+                            parameters={this.state.parameters}
+                            dropdownClassName='filterSet'
+                            selectOne={false}
+                        />
+
+                        <Button type='submit' label='Search' onClick={this.handleClick} disabled={this.state.autoUpdateChecked}/>
                     </div>
-
-                    <PSetParameterOptions 
-                        autoUpdate={this.state.autoUpdateChecked}
-                        setParentState={this.setStateOnParamSelection}
-                        requestUpdate={this.sendFilterPSetRequest}
-                        parameters={this.state.parameters}
-                        dropdownClassName='filterSet'
-                        selectOne={false}
-                    />
-
-                    <Button type='submit' label='Search' onClick={this.handleClick} disabled={this.state.autoUpdateChecked}/>
                 </div>
             </React.Fragment>
         );

@@ -5,12 +5,14 @@ class DatasetTabContent extends React.Component{
     render(){          
         const publication = (
             <div>    
-            {this.props.metadata.publication ? 
-                <div>
-                    <div className='subContent'>{this.props.metadata.publication.citation}</div>
-                    <br />
-                    <div className='subContent'><a href={this.props.metadata.publicationLink}>{this.props.metadata.publicationLink}</a></div>
-                </div>
+            {this.props.metadata.dataset.publication.length ? 
+                this.props.metadata.dataset.publication.map((item) => 
+                    <li key={item.link} className='pubList'>
+                        <div className='subContent'>{item.citation}</div>
+                        <br />
+                        <div className='subContent'><a href={item.link}>{item.link}</a></div>
+                    </li>
+                )
                 :
                 <div className="subContent">
                     Not available.
@@ -21,20 +23,22 @@ class DatasetTabContent extends React.Component{
         
         return(
             <React.Fragment>
-                <h1 className='tabMainHeader'>Dataset: {this.props.pset.datasetName} - {this.props.pset.datasetVersion}</h1>
+                <h1 className='tabMainHeader'>Dataset: {this.props.metadata.dataset.label}</h1>
                 <div className='tabContent'>
                     <div className='tabContentSection'>
                         <h3>Publication: </h3>
-                        {publication}
+                        <ul>
+                            {publication}
+                        </ul> 
                     </div>
                     <div className='tabContentSection'>
                         <h3>Drug Sensitivity</h3>
-                        <h4 className='subContent'>Source: {this.props.metadata.drugSensitivity ? <a href={this.props.metadata.drugSensitivity}>{this.props.metadata.drugSensitivity}</a> : 'Not available'}</h4>
-                        <h4 className='subContent'>Version: {this.props.pset.drugSensitivity}</h4>
+                        <h4 className='subContent'>Source: {this.props.metadata.drugSensitivity.source ? <a href={this.props.metadata.drugSensitivity.source}>{this.props.metadata.drugSensitivity.source}</a> : 'Not available'}</h4>
+                        <h4 className='subContent'>Version: {this.props.metadata.drugSensitivity.version}</h4>
                     </div>
                     <div className='tabContentSection'>
                         <h3>Genome Version</h3>
-                        <div className='subContent'>{this.props.pset.genome}</div>
+                        <div className='subContent'>{this.props.metadata.genome.name ? this.props.metadata.genome.name : "Not Available"}</div>
                     </div>
                 </div> 
             </React.Fragment>

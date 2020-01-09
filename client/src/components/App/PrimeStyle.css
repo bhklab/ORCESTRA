@@ -21,6 +21,15 @@ body .p-datatable .p-datatable-tbody > tr:nth-child(even).p-highlight  {
     font-weight: bold;
 }
 
+body .p-datatable .p-sortable-column.p-highlight {
+    background-color: #3D405A;
+    color: #ffffff;
+}
+
+body .p-datatable .p-sortable-column:focus {
+    box-shadow: none;
+}
+
 .textField{
     word-wrap: break-word;
 }

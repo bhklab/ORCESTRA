@@ -14,7 +14,8 @@ const dataset = [
             {citation: 'Barretina, Jordi et al. “The Cancer Cell Line Encyclopedia enables predictive modelling of anticancer drug sensitivity.” Nature vol. 483,7391 603-7. 28 Mar. 2012, doi:10.1038/nature11003', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3320027/'}
         ], 
         rawSeqDataRNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f', 
-        rawSeqDataDNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f'
+        rawSeqDataDNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f',
+        drugSensitivity: {label: '2015', version: '2015', source: 'https://data.broadinstitute.org/ccle_legacy_data/pharmacological_profiling/CCLE_NP24.2009_Drug_data_2015.02.24.csv'}
     },
     {
         label: 'FIMM - 2016', name: 'FIMM', version: '2016', 
@@ -22,7 +23,8 @@ const dataset = [
             {citation: 'Mpindi, J., Yadav, B., Östling, P. et al. Consistency in drug response profiling. Nature 540, E5–E6 (2016) doi:10.1038/nature20171', link: 'https://www.nature.com/articles/nature20171'}
         ], 
         rawSeqDataRNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f', 
-        rawSeqDataDNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f'
+        rawSeqDataDNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f',
+        drugSensitivity: {label: '2016', version: '2016', source: ''}
     },
     {
         label: 'GRAY - 2013', name: 'GRAY', version: '2013', 
@@ -30,7 +32,8 @@ const dataset = [
             {citation: 'Daemen, Anneleen et al. “Modeling precision treatment of breast cancer.” Genome biology vol. 14,10 (2013): R110. doi:10.1186/gb-2013-14-10-r110', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3937590/'}
         ], 
         rawSeqDataRNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f', 
-        rawSeqDataDNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f'
+        rawSeqDataDNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f',
+        drugSensitivity: {label: '2013', version: '2013', source: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3937590/bin/gb-2013-14-10-r110-S9.txt'}
     },
     {
         label: 'GRAY - 2017', name: 'GRAY', version: '2017', 
@@ -39,6 +42,7 @@ const dataset = [
         ], 
         rawSeqDataRNA: 'http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE48213', 
         rawSeqDataDNA: 'http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE48215',
+        drugSensitivity: {label: '2017', version: '2017', source: 'https://www.synapse.org/#!Synapse:syn8094063'}
     },
     {
         label: 'CTRPv2 - 2015', name: 'CTRPv2', version: '2015', 
@@ -49,6 +53,7 @@ const dataset = [
         ], 
         rawSeqDataRNA: '', 
         rawSeqDataDNA: '',
+        drugSensitivity: {label: '2015', version: '2015', source: 'ftp://anonymous:guest@caftpd.nci.nih.gov/pub/OCG-DCC/CTD2/Broad/CTRPv2.0_2015_ctd2_ExpandedDataset/CTRPv2.0_2015_ctd2_ExpandedDataset.zip'}
     },
     {
         label: 'gCSI - 2018', name: 'gCSI', version: '2018', 
@@ -57,6 +62,7 @@ const dataset = [
         ], 
         rawSeqDataRNA: 'https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-2706/', 
         rawSeqDataDNA: '',
+        drugSensitivity: {label: '2018', version: '2018', source: ''}
     },
     {
         label: 'GDSC - 2012', name: 'GDSC', version: '2012', 
@@ -64,7 +70,8 @@ const dataset = [
             {citation: 'Yang, Wanjuan et al. “Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells.” Nucleic acids research vol. 41,Database issue (2013): D955-61. doi:10.1093/nar/gks1111', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3531057/'}
         ], 
         rawSeqDataRNA: 'https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-3983/', 
-        rawSeqDataDNA: ''
+        rawSeqDataDNA: '',
+        drugSensitivity: {label: '2012', version: '2012', source: 'ftp://ftp.sanger.ac.uk/pub/project/cancerrxgene/releases/release-8.0/GDSC1_public_raw_data_17Jul19.csv'}
     },
     {
         label: 'GDSC - 2019', name: 'GDSC', version: '2019', 
@@ -72,7 +79,8 @@ const dataset = [
             {citation: 'Yang, Wanjuan et al. “Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells.” Nucleic acids research vol. 41,Database issue (2013): D955-61. doi:10.1093/nar/gks1111', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3531057/'}
         ], 
         rawSeqDataRNA: 'https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-3983/', 
-        rawSeqDataDNA: ''
+        rawSeqDataDNA: '',
+        drugSensitivity: {label: '2019', version: '2019', source: 'ftp://ftp.sanger.ac.uk/pub/project/cancerrxgene/releases/release-8.0/GDSC2_public_raw_data_17Jul19.csv'}
     },
     {
         label: 'UHN Breast - 2019', name: 'UHN Breast', version: '2019', 
@@ -80,31 +88,36 @@ const dataset = [
             {citation: 'Mammoliti, Anthony et al. “Creating reproducible pharmacogenomic analysis pipelines.” Scientific data vol. 6,1 166. 3 Sep. 2019, doi:10.1038/s41597-019-0174-7', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6722117/'}
         ], 
         rawSeqDataRNA: 'https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE73526', 
-        rawSeqDataDNA: ''
+        rawSeqDataDNA: '',
+        drugSensitivity: {label: '2019', version: '2019', source: 'https://codeocean.com/capsule/6718332/'}
     },
     {
         label: 'Leuk AML - 2017', name: 'Leuk AML', version: '2017', 
         publication: [], 
         rawSeqDataRNA: '', 
-        rawSeqDataDNA: ''
+        rawSeqDataDNA: '',
+        drugSensitivity: {label: '2017', version: '2017', source: ''}
     },
     {
         label: 'Leuk AML - 2019', name: 'Leuk AML', version: '2019', 
         publication: [], 
         rawSeqDataRNA: '', 
-        rawSeqDataDNA: ''
+        rawSeqDataDNA: '',
+        drugSensitivity: {label: '2017', version: '2017', source: ''}
     },
     {
         label: 'Leuk Cell Line - 2017', name: 'Leuk Cell Line', version: '2017', 
         publication: [], 
         rawSeqDataRNA: '', 
-        rawSeqDataDNA: ''
+        rawSeqDataDNA: '',
+        drugSensitivity: {label: '2017', version: '2017', source: ''}
     },
     {
         label: 'Leuk Cell Line - 2019', name: 'Leuk Cell Line', version: '2019', 
         publication: [], 
         rawSeqDataRNA: '', 
-        rawSeqDataDNA: ''
+        rawSeqDataDNA: '',
+        drugSensitivity: {label: '2019', version: '2019', source: ''}
     },
 ]
 
@@ -121,10 +134,10 @@ function buildPSetObject(row){
     });
     
     pset.drugSensitivity = {version: row['Drug Sensitivity'], source: row['Drug Raw Data Source']};
-    pset.dataType = ['RNA'];
-    pset.genome = row.Genome;
+    pset.dataType = [{name: 'RNA'}];
+    pset.genome = {name: row.Genome};
     pset.createdBy = 'BHK Lab';
-    pset.dateCreated = row['Date Generated'];
+    pset.dateCreated = getDate(row['Date Generated']);
     pset.rnaTool = getToolArray(row['RNA Tool(s)']);
     pset.rnaRef = getRefArray(row['RNA Reference'], row['RNA Reference Source']);
     pset.dnaTool = getToolArray(row['DNA Tool(s)']);
@@ -170,6 +183,11 @@ function readFromCSV(callback){
         });
 }
 
+function getDate(dateStr){
+    const [month, day, year] = dateStr.split('/');
+    return new Date(year, month - 1, day);
+}
+
 const insert = function(req, res){
     console.log("bulk insert");
     readFromCSV((data) => {
@@ -189,7 +207,8 @@ const insert = function(req, res){
                     res.send(result);
                 });
             });
-            //res.send(data.slice(0, 1));
+            // console.log(data.slice(0, 1));
+            // res.send(data.slice(0, 1).dateCreated);
     });
 }
 

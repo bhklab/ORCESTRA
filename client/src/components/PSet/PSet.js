@@ -3,6 +3,7 @@ import './PSet.css';
 import Navigation from '../Navigation/Navigation';
 import {TabView,TabPanel} from 'primereact/tabview';
 import * as APICalls from '../Shared/APICalls';
+import {GeneralInfoAccordion} from './PSetAccordion';
 import DatasetTabContent from './TabContents/DatasetTabContent';
 import RNATabContent from './TabContents/RNATabContent';
 import DNATabContent from './TabContents/DNATabContent';
@@ -14,13 +15,14 @@ class PSet extends React.Component{
     constructor(){
         super();
         this.state = {
-            pset: '',
-            metadata: '',
-            dataset: '',
+            pset: {},
+            general: {},
+            dataset: {},
+            rna: {},
+            dna: {},
             isReady: false,
             message: ''
         }
-        this.setMetadata = this.setMetadata.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
 
@@ -28,35 +30,21 @@ class PSet extends React.Component{
         console.log(this.props.match.params.id1 + '/' + this.props.match.params.id2);
         let apiStr = '/pset/one/' + this.props.match.params.id1 + '/' + this.props.match.params.id2;
         console.log(apiStr);
-        APICalls.queryPSet(apiStr, (resData) => {
-            if(resData.pset){
-                this.setMetadata(resData, (metadata, pset, dataset) => {
-                    this.pset = pset;
-                    this.metadata = metadata;
-                    this.dataset = dataset;
-                    this.setState({
-                        pset: this.pset,
-                        metadata: this.metadata,
-                        dataset: this.dataset,
-                        isReady: true
-                    });
-                }); 
+        APICalls.queryPSet(apiStr, (pset) => {
+            console.log(pset);
+            if(pset){
+                this.setState({
+                    pset: pset,
+                    general: {name: pset.name, createdBy: pset.createdBy, dateCreated: pset.dateCreated},
+                    dataset: {dataset: pset.dataset, genome: pset.genome, drugSensitivity: pset.drugSensitivity},
+                    rna: {rnaTool: pset.rnaTool, rnaRef: pset.rnaRef, rawSeqDataRNA: pset.dataset.rawSeqDataRNA},
+                    dna: {dnaTool: pset.dnaTool, dnaRef: pset.dnaRef, rawSeqDataDNA: pset.dataset.rawSeqDataDNA},
+                    isReady: true
+                });
             }else{
                 this.setState({message: 'We could not find a PSet with the ID.'})
             }
         });
-    }
-
-    setMetadata(data, callback){
-        let metadata = data.metadata;
-        let pset = data.pset;
-        let dataset = {};
-        for(let i = 0; i < metadata.dataset.length; i++){
-            if(metadata.dataset[i].name === pset.datasetName && metadata.dataset[i].version === pset.datasetVersion){
-                dataset = metadata.dataset[i];
-            }
-        }
-        callback(metadata, pset, dataset);
     }
 
     showMessage(status, data){
@@ -68,23 +56,24 @@ class PSet extends React.Component{
             <React.Fragment>
                 <Navigation routing={this.props} />
                 <div className='pageContent'>
+                    <Messages ref={(el) => this.messages = el} />
                     <div className='psetTitle'>
                         <h1>Explore PSet - {this.state.pset.name}</h1>
                         <DownloadPSetButton disabled={false} selectedPSets={[this.state.pset]} onDownloadComplete={this.showMessage}/>
                     </div>
-                    <Messages ref={(el) => this.messages = el} />
+                    <GeneralInfoAccordion data={this.state.general}/>
                     <div className='tabContainer'>
                         {this.state.isReady ? 
                             <TabView renderActiveOnly={false}>
                                 <TabPanel header="Dataset">
-                                    <DatasetTabContent pset={this.state.pset} metadata={this.state.dataset} />   
+                                    <DatasetTabContent metadata={this.state.dataset} />   
                                 </TabPanel>
                                 {this.state.pset.dataType.map((type) => 
-                                    <TabPanel key={type} header={type}>
-                                        {type === 'RNA' ? 
-                                            <RNATabContent pset={this.state.pset} metadata={this.state.metadata.rna} dataset={this.state.dataset}/> 
+                                    <TabPanel key={type.name} header={type.name}>
+                                        {type.name === 'RNA' ? 
+                                            <RNATabContent metadata={this.state.rna}/> 
                                             : 
-                                            <DNATabContent pset={this.state.pset} metadata={this.state.metadata.dna} dataset={this.state.dataset}/>
+                                            <DNATabContent metadata={this.state.dna}/>
                                         }
                                     </TabPanel>)
                                 }

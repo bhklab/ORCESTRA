@@ -7,6 +7,7 @@ class PSetParameterOptions extends React.Component{
         super();
         this.state = {
             formData: {},
+            drugSensitivityOptions: [],
             rnaRefOptions: [],
             dnaRefOptions: [],
             hideRNAToolRef: false,
@@ -36,18 +37,17 @@ class PSetParameterOptions extends React.Component{
         await this.props.setParentState([{name: event.target.id, value: event.value}]);
         if(event.target.id === 'dataType'){
             this.setToolState(event);
-            if(this.props.autoUpdate){
-                this.props.requestUpdate(); 
-            }
+            
         }else if(event.target.id === 'genome'){
             this.setRefState(event)
-            if(this.props.autoUpdate){
-                this.props.requestUpdate();
-            }
-        }else{
-            if(this.props.autoUpdate){
-                this.props.requestUpdate();
-            }
+        }else if(event.target.id === 'dataset'){
+            this.setState({
+                drugSensitivityOptions: [event.value.drugSensitivity]
+            });
+            await this.props.setParentState([{name: 'drugSensitivity', value: event.value.drugSensitivity}]);
+        }
+        if(this.props.autoUpdate){
+            this.props.requestUpdate(); 
         } 
     }
 
@@ -122,7 +122,12 @@ class PSetParameterOptions extends React.Component{
                         <PSetDropdown id='dataset' className={this.props.dropdownClassName} isHidden={false} parameterName='Dataset:' selectOne={this.props.selectOne} 
                             parameterOptions={this.state.formData.dataset} selectedParameter={this.props.parameters.dataset} handleUpdateSelection={this.handleFilterChange} />
                         
-                        <PSetDropdown id='genome' className={this.props.dropdownClassName} isHidden={false} parameterName='Genome:' selectOne={this.props.selectOne}
+                        {this.props.requestView && 
+                            <PSetDropdown id='drugSensitivity' className={this.props.dropdownClassName} isHidden={false} parameterName='Drug Sensitivity:' selectOne={this.props.selectOne} disabled={true}
+                            parameterOptions={this.state.drugSensitivityOptions} selectedParameter={this.props.parameters.drugSensitivity} handleUpdateSelection={this.handleFilterChange} />
+                        }
+                        
+                        <PSetDropdown id='genome' className={this.props.dropdownClassName} isHidden={false} parameterName='Genome:' selectOne={this.props.selectOne} 
                             parameterOptions={this.state.formData.genome} selectedParameter={this.props.parameters.genome} handleUpdateSelection={this.handleFilterChange} />
                         
                         <PSetDropdown id='rnaTool' className={this.props.dropdownClassName} isHidden={this.state.hideRNAToolRef} parameterName='RNA Tool:' 

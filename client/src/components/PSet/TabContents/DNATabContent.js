@@ -4,21 +4,9 @@ import {PSetToolAccordion, DNARefAccordion} from '../PSetAccordion';
 class DNATabContent extends React.Component{
     
     render(){  
-        const dataset = this.props.dataset;
-        const dna = this.props.metadata;
-        const pset = this.props.pset;
-
-        const dbSNP = [];
-        const genome = dna.genome
-        for(let i = 0; i < genome.length; i++){
-            if(pset.exomeRef.includes(genome[i].dbSNP)){
-                dbSNP.push(genome[i]);
-            }
-        }
-
         const genomeRawData = (
             <div>
-                { dataset.rawSeqDataDNA ? <a href={dataset.rawSeqDataDNA}>{dataset.rawSeqDataDNA}</a> : 'Not Available' }
+                { this.props.metadata.rawSeqDataDNA ? <a href={this.props.metadata.rawSeqDataDNA}>{this.props.metadata.rawSeqDataDNA}</a> : 'Not Available' }
             </div>
         );
 
@@ -34,11 +22,11 @@ class DNATabContent extends React.Component{
                     </div>
                     <div className='tabContentSection'>
                         <h3>Exome Reference</h3>
-                        <DNARefAccordion items={dbSNP} />
+                        <DNARefAccordion items={this.props.metadata.dnaRef} />
                     </div>
                     <div className='tabContentSection'>
                         <h3>Tools and Commands Used</h3>
-                        <PSetToolAccordion items={this.props.pset.exomeTool} />
+                        <PSetToolAccordion items={this.props.metadata.dnaTool} />
                     </div>
                 </div>
             </React.Fragment>

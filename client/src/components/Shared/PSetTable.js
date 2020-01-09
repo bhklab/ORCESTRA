@@ -8,7 +8,6 @@ class PSetTable extends React.Component{
     constructor(){
         super();
         this.state = {
-            //datasets: [],
             rows: 10,
             first: 0,
             start: 0,
@@ -62,19 +61,22 @@ class PSetTable extends React.Component{
         const datasets = this.props.allData.slice(this.state.start, this.state.end);
         const totalRecords = this.props.allData.length;
         return(
-            <DataTable value={datasets} selection={this.props.selectedPSets} onSelectionChange={this.updatePSetSelectionEvent} paginator={true} 
-            rows={this.state.rows} totalRecords={totalRecords} lazy={true} first={this.state.first} onPage={this.onPage} loading={this.state.loading}
-            scrollable={true} scrollHeight={this.props.scrollHeight}>
-                <Column selectionMode="multiple" style={{width: '3.5em'}}/>
-                {this.props.showDownload && <Column className='textField' field='download' header='Download' style={{width: '6.5em'}}/>}
-                <Column className='textField' field='name' header='Name' style={{width:'10em'}} body={this.nameColumnTemplate}/>
-                <Column className='textField' field='dataset.name' header='Dataset' style={{width:'6em'}} />
-                <Column className='textField' field='dataset.version' header='Dataset Version' style={{width:'6em'}}/>
-                <Column className='textField' field='drugSensitivity.version' header='Drug Sensitivity' style={{width:'7em'}}/>
-                <Column field='rnaTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='RNA Tool'/>
-                <Column field='exomeTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='Exome Tool'/>
-                <Column field='rnaRef' body={this.toolsRefTemplate} style={{width:'18em'}} header='RNA Ref'/>
-                <Column field='exomeRef' body={this.toolsRefTemplate} style={{width:'15em'}} header='Exome Ref'/>
+            <DataTable 
+                value={datasets} 
+                selection={this.props.selectedPSets} onSelectionChange={this.updatePSetSelectionEvent} 
+                scrollable={true} scrollHeight={this.props.scrollHeight}
+                paginator={true} onPage={this.onPage}
+                rows={this.state.rows} totalRecords={totalRecords} lazy={false} first={this.state.first}
+            >
+                <Column selectionMode="multiple" style={{width: '3.5em'}} />
+                <Column className='textField' field='name' header='Name' style={{width:'10em'}} body={this.nameColumnTemplate} sortable={true}/>
+                <Column className='textField' field='dataset.name' header='Dataset' style={{width:'6.5em'}}  sortable={true}/>
+                <Column className='textField' field='dataset.version' header='Version' style={{width:'6.5em'}}  sortable={true} />
+                <Column className='textField' field='drugSensitivity.version' header='Drug Sensitivity' style={{width:'10.5em'}} sortable={true} />
+                <Column field='rnaTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='RNA Tool'  sortable={true} />
+                <Column field='dnaTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='DNA Tool' sortable={true}  />
+                <Column field='rnaRef' body={this.toolsRefTemplate} style={{width:'15em'}} header='RNA Ref' sortable={true}  />
+                <Column field='dnaRef' body={this.toolsRefTemplate} style={{width:'15em'}} header='DNA Ref' sortable={true} />
             </DataTable>
         );
     }

@@ -8,6 +8,8 @@ const getPSetByDOI = function(req, res){
     const doi = req.params.id1 + '/' + req.params.id2;
     mongo.selectPSetByDOI(doi, function(result){
         if(result.status){
+            let date = result.data.dateCreated.toISOString();
+            result.data.dateCreated = date.split('T')[0];
             res.send(result.data);
         }else{
             res.status(500).send(result.data);
@@ -72,7 +74,7 @@ const downloadPSets = function(req, res){
 const sendPSetEmail = function(req, res){
     console.log('request received from mock pachyderm api');
     
-    const url = 'http://localhost:3000/PSet/' + req.id;
+    const url = 'http://localhost:3000/' + req.doi;
     const email = req.email;
 
     mailer.sendMail(url, email, (err, info) => {

@@ -18,7 +18,7 @@ function getQueryFilterSet(query){
     } 
 
     if(query.dtp){
-        queryArray.push(getQueryFilter('dataType', query.dtp));
+        queryArray.push(getQueryFilter('dataType.name', query.dtp));
     }
     
     if(query.dsv){
@@ -30,7 +30,7 @@ function getQueryFilterSet(query){
     }
 
     if(query.gnm){
-        queryArray.push(getQueryFilter('genome', query.gnm));
+        queryArray.push(getQueryFilter('genome.name', query.gnm));
     }
 
     if(query.rnat){
@@ -50,7 +50,7 @@ function getQueryFilterSet(query){
     }
 
     if(query.dst){
-        queryArray.push(getQueryFilter('drugSensitivity', query.dst));
+        queryArray.push(getQueryFilter('drugSensitivity.version', query.dst));
     }
 
     queryArray.push({'status': 'complete'});
@@ -91,17 +91,9 @@ module.exports = {
             }
             const db = client.db(dbName);
             const pset = db.collection('pset');
-            const meta = db.collection('metadata');
-            meta.find().toArray((err, data) => {
-                if(err){
-                    client.close();
-                    callback({status: 0, data: err});
-                }
-                const metadata = data[0];
-                pset.findOne({'doi': doi, 'status' : 'complete'}, (err, data) => {
-                    client.close();
-                    callback(getResult(err, {pset: data, metadata: metadata}));
-                });
+            pset.findOne({'doi': doi, 'status' : 'complete'}, (err, data) => {
+                client.close();
+                callback(getResult(err, data));
             });
         });
     },
@@ -159,7 +151,7 @@ module.exports = {
         });
     },
 
-    updatePSetStatus: function(id, callback){
+    updatePSetStatus: function(update, callback){
         connectWithClient((err, client) => {
             if(err){
                 callback({status: 0, data: err});
@@ -167,8 +159,8 @@ module.exports = {
             const db = client.db(dbName);
             const collection = db.collection('pset');
             collection.findOneAndUpdate(
-                {'_id': ObjectID(id)}, 
-                {'$set': {'status': 'complete', 'doi': '10.5281/zenodo.3598680', 'request.timeComplete': Date.now()}}, 
+                {'_id': ObjectID(update.id)}, 
+                {'$set': {'status': 'complete', 'doi': update.doi, 'dateCreated': new Date(Date.now())}}, 
                 {returnOriginal: false, upsert: false}, 
                 (err, data) => {
                     client.close();

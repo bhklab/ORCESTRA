@@ -10,7 +10,7 @@ export function getFilterSet(data){
     filterset.dnaTool = toFilterArray(data.dnaTool);
     filterset.rnaRef = toFilterArray(data.rnaRef);
     filterset.dnaRef = toFilterArray(data.dnaRef);
-    filterset.drugSensitivity = toFilterArray(data.drugSensitivity);
+    filterset.drugSensitivity = toFilterArray(data.drugSensitivity, true);
     return(filterset);
 }
 

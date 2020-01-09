@@ -17,6 +17,7 @@
 
 .tabContent {
     margin-left: 40px;
+    margin-right: 20px;
 }
 
 .subContent {
@@ -46,4 +47,13 @@
     height: 30px;
     margin-left: 20px;
     margin-top: 25px;
+}
+
+.pubList{
+    margin-bottom: 30px;
+}
+
+.generalInfoAccordion{
+    width: 70%;
+    margin-bottom: 30px;
 }

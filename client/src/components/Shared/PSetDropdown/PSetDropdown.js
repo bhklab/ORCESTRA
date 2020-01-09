@@ -46,6 +46,7 @@ class PSetDropdown extends React.Component {
                         filter={true} 
                         itemTemplate={dataTemplate}
                         placeholder="Select one..."
+                        disabled={this.props.disabled}
                     />
                 </div>
             );
@@ -63,6 +64,7 @@ class PSetDropdown extends React.Component {
                     filter={true} 
                     itemTemplate={dataTemplate} 
                     selectedItemTemplate={selectedDataTemplate}
+                    disabled={this.props.disabled}
                 />
             </div>
         );

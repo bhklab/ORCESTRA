@@ -174,6 +174,7 @@ class PSetRequest extends React.Component{
                                     parameters={this.state.reqData}
                                     dropdownClassName='reqInputSet'
                                     selectOne={true}
+                                    requestView={true}
                                 />
                                 
                                 <div className='reqInputSet'>
@@ -203,6 +204,7 @@ class PSetRequest extends React.Component{
                                 <div className='parameterSelectionContainer'>
                                     <PSetRequestParameterSelection parameterName='Datatype' parameter={this.state.reqData.dataType} isHidden={false} />
                                     <PSetRequestParameterSelection parameterName='Dataset' parameter={this.state.reqData.dataset} isHidden={false} />
+                                    <PSetRequestParameterSelection parameterName='Drug Sensitivity' parameter={this.state.reqData.drugSensitivity} isHidden={false} />
                                     <PSetRequestParameterSelection parameterName='Genome' parameter={this.state.reqData.genome} /> 
                                     <PSetRequestParameterSelection parameterName='RNA Tool.' parameter={this.state.reqData.rnaTool} isHidden={this.state.hideRNAToolRef} /> 
                                     <PSetRequestParameterSelection parameterName='RNA Ref.' parameter={this.state.reqData.rnaRef} isHidden={this.state.hideRNAToolRef} />  
