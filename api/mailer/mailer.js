@@ -13,7 +13,7 @@ const sendMail = function(url, email, callback){
     
     const style = '<style>h2{font-family: arial, san-serif} .content{font-family: arial, san-serif}</style>'
     const heading = '<h2>Your PSet has been processed</h2>'
-    const body = '<p class="content">Please access and view your PSet via the following URL: ' + '<a href=' + url + '>' + url + '</p>'
+    const body = '<p class="content">Please access and view your PSet here: ' + '<a href=' + url + '>' + url + '</p>'
     const html = style + heading + body;
     
     const message = {
