@@ -63,8 +63,9 @@ const cancelPSetRequest = function(req, res){
 const downloadPSets = function(req, res){
     mongo.updateDownloadNumber(req.body.psetIDs, function(result){
         if(result.status){
-            const file = path.join(psetDir, 'pset1.txt');
-            res.zip([{path: file, name: 'pset1.txt'}]);
+            // const file = path.join(psetDir, 'pset1.txt');
+            // res.zip([{path: file, name: 'pset1.txt'}]);
+            res.send(result);
         }else{
             res.status(500).send(result.data);
         }

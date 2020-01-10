@@ -65,60 +65,32 @@ const dataset = [
         drugSensitivity: {label: '2018', version: '2018', source: ''}
     },
     {
-        label: 'GDSC - 2012', name: 'GDSC', version: '2012', 
+        label: 'GDSC1 - v1(2019)', name: 'GDSC1', version: '2019', 
         publication: [
             {citation: 'Yang, Wanjuan et al. “Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells.” Nucleic acids research vol. 41,Database issue (2013): D955-61. doi:10.1093/nar/gks1111', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3531057/'}
         ], 
         rawSeqDataRNA: 'https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-3983/', 
         rawSeqDataDNA: '',
-        drugSensitivity: {label: '2012', version: '2012', source: 'ftp://ftp.sanger.ac.uk/pub/project/cancerrxgene/releases/release-8.0/GDSC1_public_raw_data_17Jul19.csv'}
+        drugSensitivity: {label: 'v1(2019)', version: 'v1(2019)', source: 'ftp://ftp.sanger.ac.uk/pub/project/cancerrxgene/releases/release-8.0/GDSC1_public_raw_data_17Jul19.csv'}
     },
     {
-        label: 'GDSC - 2019', name: 'GDSC', version: '2019', 
+        label: 'GDSC2 - v2(2019)', name: 'GDSC2', version: '2019', 
         publication: [
             {citation: 'Yang, Wanjuan et al. “Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells.” Nucleic acids research vol. 41,Database issue (2013): D955-61. doi:10.1093/nar/gks1111', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3531057/'}
         ], 
         rawSeqDataRNA: 'https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-3983/', 
         rawSeqDataDNA: '',
-        drugSensitivity: {label: '2019', version: '2019', source: 'ftp://ftp.sanger.ac.uk/pub/project/cancerrxgene/releases/release-8.0/GDSC2_public_raw_data_17Jul19.csv'}
+        drugSensitivity: {label: 'v2(2019)', version: 'v2(2019)', source: 'ftp://ftp.sanger.ac.uk/pub/project/cancerrxgene/releases/release-8.0/GDSC2_public_raw_data_17Jul19.csv'}
     },
     {
-        label: 'UHN Breast - 2019', name: 'UHN Breast', version: '2019', 
+        label: 'UHNBreast - 2019', name: 'UHNBreast', version: '2019', 
         publication: [
             {citation: 'Mammoliti, Anthony et al. “Creating reproducible pharmacogenomic analysis pipelines.” Scientific data vol. 6,1 166. 3 Sep. 2019, doi:10.1038/s41597-019-0174-7', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6722117/'}
         ], 
         rawSeqDataRNA: 'https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE73526', 
         rawSeqDataDNA: '',
         drugSensitivity: {label: '2019', version: '2019', source: 'https://codeocean.com/capsule/6718332/'}
-    },
-    {
-        label: 'Leuk AML - 2017', name: 'Leuk AML', version: '2017', 
-        publication: [], 
-        rawSeqDataRNA: '', 
-        rawSeqDataDNA: '',
-        drugSensitivity: {label: '2017', version: '2017', source: ''}
-    },
-    {
-        label: 'Leuk AML - 2019', name: 'Leuk AML', version: '2019', 
-        publication: [], 
-        rawSeqDataRNA: '', 
-        rawSeqDataDNA: '',
-        drugSensitivity: {label: '2017', version: '2017', source: ''}
-    },
-    {
-        label: 'Leuk Cell Line - 2017', name: 'Leuk Cell Line', version: '2017', 
-        publication: [], 
-        rawSeqDataRNA: '', 
-        rawSeqDataDNA: '',
-        drugSensitivity: {label: '2017', version: '2017', source: ''}
-    },
-    {
-        label: 'Leuk Cell Line - 2019', name: 'Leuk Cell Line', version: '2019', 
-        publication: [], 
-        rawSeqDataRNA: '', 
-        rawSeqDataDNA: '',
-        drugSensitivity: {label: '2019', version: '2019', source: ''}
-    },
+    }
 ]
 
 function buildPSetObject(row){

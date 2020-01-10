@@ -71,7 +71,6 @@ class PSetTable extends React.Component{
                 <Column selectionMode="multiple" style={{width: '3.5em'}} />
                 <Column className='textField' field='name' header='Name' style={{width:'10em'}} body={this.nameColumnTemplate} sortable={true}/>
                 <Column className='textField' field='dataset.name' header='Dataset' style={{width:'6.5em'}}  sortable={true}/>
-                <Column className='textField' field='dataset.version' header='Version' style={{width:'6.5em'}}  sortable={true} />
                 <Column className='textField' field='drugSensitivity.version' header='Drug Sensitivity' style={{width:'10.5em'}} sortable={true} />
                 <Column field='rnaTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='RNA Tool'  sortable={true} />
                 <Column field='dnaTool' body={this.toolsRefTemplate} style={{width:'8em'}} header='DNA Tool' sortable={true}  />
