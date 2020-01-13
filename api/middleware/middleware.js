@@ -23,18 +23,23 @@ module.exports = {
     sendPSetRequest: function(req, res, next){
         let pset = req.body.reqData;
         pset._id = mongo.getObjectID();
-        pset.status = 'pending';
+        pset.status = 'complete';
         pset.download = 0;
         pset.doi = '';
-        request('http://localhost:5000/pipeline/start', {body: {name: pset.name, id: pset._id}, json: true}, function (error, response, body) {
-            if(error){
-                res.status(500).send(error);
-            }
-            pset.dateSubmitted = new Date(Date.now()),
-            req.pset = pset;
-            console.log('pset request submitted: ' + pset);
-            next();
-        });
+        // request('http://localhost:5000/pipeline/start', {body: {name: pset.name, id: pset._id}, json: true}, function (error, response, body) {
+        //     if(error){
+        //         res.status(500).send(error);
+        //     }
+        //     pset.dateSubmitted = new Date(Date.now()),
+        //     req.pset = pset;
+        //     console.log('pset request submitted: ' + pset);
+        //     next();
+        // });
+
+        pset.dateSubmitted = new Date(Date.now()),
+        req.pset = pset;
+        console.log('pset request submitted: ' + pset);
+        next();
     }, 
 
     updatePSetStatus: function(req, res, next){

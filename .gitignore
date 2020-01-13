@@ -1,3 +1,5 @@
 api/package-lock.json
+api/node_modules
+client/node_modules
 mock-pachyderm-api/node_modules
 mock-pachyderm-api/package-lock.json
