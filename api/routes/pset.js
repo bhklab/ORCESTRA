@@ -39,15 +39,17 @@ const getSortedPSets = function(req, res){
 }
 
 const postPsetData = function(req, res){
-    mongo.insertPSetRequest(req.pset, req.body.reqData.email, function(result){
-        if(result.status){
-            console.log('pset inserted to db'); 
-            const resData = {summary: 'Request Submitted', message: 'PSet resuest has been submitted successfully.'};  
-            res.send(resData);
-        }else{
-            res.status(500).send(result.data);
-        }
-    });
+    // mongo.insertPSetRequest(req.pset, req.body.reqData.email, function(result){
+    //     if(result.status){
+    //         console.log('pset inserted to db'); 
+    //         const resData = {summary: 'Request Submitted', message: 'PSet resuest has been submitted successfully.'};  
+    //         res.send(resData);
+    //     }else{
+    //         res.status(500).send(result.data);
+    //     }
+    // });
+    const resData = {summary: 'Request Submitted', message: 'PSet resuest has been submitted successfully.'};  
+    res.send(resData);
 }
 
 const cancelPSetRequest = function(req, res){

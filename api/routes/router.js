@@ -17,7 +17,8 @@ const script = require('./insert-script');
 router.get('/pset', pset.getPsetList);
 router.get('/pset/one/:id1/:id2', pset.getPSetByDOI);
 router.get('/pset/sort', pset.getSortedPSets);
-router.post('/pset/request', middleware.sendPSetRequest, pset.postPsetData);
+//router.post('/pset/request', middleware.sendPSetRequest, middleware.buildPachydermReqJson, middleware.pushPachydermReqJson, pset.postPsetData);
+router.get('/pset/request', middleware.sendPSetRequest, middleware.buildPachydermReqJson, middleware.pushPachydermReqJson, pset.postPsetData);
 router.post('/pset/download', pset.downloadPSets);
 router.get('/pset/complete', middleware.updatePSetStatus, pset.sendPSetEmail);
 // prviate route
