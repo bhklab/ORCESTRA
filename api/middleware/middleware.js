@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const mongo = require('../db/mongo');
 const request = require('request');
 const simpleGit = require('simple-git')('./pachyderm-config/pachyderm-config');
-const simpleGitPromise = require('simple-git/promise')('./pachyderm-config/pachyderm-config');
 const fs = require('fs');
 const path = require('path');
 const configDir = path.join(__dirname, '../pachyderm-config/pachyderm-config');
@@ -68,7 +67,7 @@ module.exports = {
     pushPachydermReqJson: function(req, res, next){
         console.log("file name: " + req.fileName);
         simpleGit   
-            .pull((err, data) => {console.log(data)})    
+            //.pull((err, data) => {console.log(data)})    
             .add([req.fileName], (err, data) => {console.log(data)})
             .commit('PSet Request: ' + req.pset._id, (err, data) => {console.log(data)})
             //.addRemote('pachyderm', 'https://github.com/mnakano/pachyderm-config.git')

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+import "empty.proto";
+
+package pfs;
+option go_package = "github.com/pachyderm/pachyderm/src/client/pfs";
+
+message Repo {
+  string name = 1;
+}
+
+message CreateRepoRequest {
+  reserved 2;
+  Repo repo = 1;
+  string description = 3;
+  bool update = 4;
+}
+
+service API {
+  rpc CreateRepo(CreateRepoRequest) returns (google.protobuf.Empty) {}
+}
