@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "empty.proto";
+import "../empty.proto";
 
 package pfs;
 option go_package = "github.com/pachyderm/pachyderm/src/client/pfs";

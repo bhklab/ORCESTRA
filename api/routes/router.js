@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const middleware = require('../middleware/middleware');
+const pachyderm = require('../middleware/pachyderm');
 
 // routes
 const home = require('./index');
@@ -19,6 +20,7 @@ router.get('/pset/one/:id1/:id2', pset.getPSetByDOI);
 router.get('/pset/sort', pset.getSortedPSets);
 router.post('/pset/request', middleware.sendPSetRequest, middleware.buildPachydermReqJson, middleware.pushPachydermReqJson, pset.postPsetData);
 //router.get('/pset/request', middleware.sendPSetRequest, middleware.buildPachydermReqJson, middleware.pushPachydermReqJson, pset.postPsetData);
+router.get('/pset/pachyderm', pachyderm.createPipeline, pachyderm.listJob);
 router.post('/pset/download', pset.downloadPSets);
 router.get('/pset/complete', middleware.updatePSetStatus, pset.sendPSetEmail);
 // prviate route

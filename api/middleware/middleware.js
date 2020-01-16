@@ -4,7 +4,6 @@ const request = require('request');
 const simpleGit = require('simple-git')('./pachyderm-config/pachyderm-config');
 const fs = require('fs');
 const path = require('path');
-const configDir = path.join(__dirname, '../pachyderm-config/pachyderm-config');
 
 module.exports = {
     
