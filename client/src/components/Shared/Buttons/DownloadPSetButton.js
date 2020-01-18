@@ -10,8 +10,22 @@ class DownloadPSetButton extends React.Component{
 
     downloadPSets = event => {
         event.preventDefault();
+        const psets = this.props.selectedPSets;
+        
+        const link = document.createElement('a');
+        link.setAttribute('download', null);
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        for(let i = 0; i < psets.length; i++){
+            if(psets[i].downloadLink){
+                link.setAttribute('href', psets[i].downloadLink)
+                link.click();
+            } 
+        }
+        document.body.removeChild(link);
+
         APICalls.downloadPSets(this.props.selectedPSets, (status, data) => {
-            this.props.onDownloadComplete(status, data);
+            //this.props.onDownloadComplete(status, data);
         });
     }
 

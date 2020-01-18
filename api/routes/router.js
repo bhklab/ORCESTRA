@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const middleware = require('../middleware/middleware');
 const pachyderm = require('../middleware/pachyderm');
+const zenodo = require('../middleware/zenodo');
 
 // routes
 const home = require('./index');
@@ -21,6 +22,12 @@ router.get('/pset/sort', pset.getSortedPSets);
 router.post('/pset/request', middleware.sendPSetRequest, middleware.buildPachydermReqJson, middleware.pushPachydermReqJson, pset.postPsetData);
 //router.get('/pset/request', middleware.sendPSetRequest, middleware.buildPachydermReqJson, middleware.pushPachydermReqJson, pset.postPsetData);
 router.get('/pset/pachyderm', pachyderm.createPipeline, pachyderm.listJob);
+router.get('/zenodo/upload', 
+    //zenodo.getDepositInfo, 
+    //zenodo.uploadFile,
+    //zenodo.addMetadata,
+    zenodo.publish
+);
 router.post('/pset/download', pset.downloadPSets);
 router.get('/pset/complete', middleware.updatePSetStatus, pset.sendPSetEmail);
 // prviate route

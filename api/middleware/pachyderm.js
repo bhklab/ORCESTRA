@@ -22,7 +22,7 @@ module.exports = {
         
         client.createPipeline(request, (result) => {
             if(result.status){
-                setTimeout(function(){next()}, 10000);
+                setTimeout(function(){next()}, 5000);
             }else{
                 res.send({status: 0, message: 'error in pipeline creation'});
             }

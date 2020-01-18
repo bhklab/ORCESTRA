@@ -10,7 +10,6 @@ class Contact extends React.Component{
                 <Navigation routing={this.props} />
                 <div className='pageContent'>
                     <h1>Contact Us</h1>
-                    
                 </div>
             </React.Fragment>
         );

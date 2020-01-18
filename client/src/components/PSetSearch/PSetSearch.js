@@ -104,7 +104,7 @@ class PSetSearch extends React.Component{
                                         {this.evaluateList(this.state.selectedPSets)}
                                     </div>
                                 </div>
-                                <DownloadPSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableSaveBtn} onDownloadComplete={this.showMessage} />
+                                {/* <DownloadPSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableSaveBtn} onDownloadComplete={this.showMessage} /> */}
                                 <SavePSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableSaveBtn} onSaveComplete={this.showMessage} />
                             </div>
                             <PSetTable allData={this.state.allData} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.updatePSetSelection} scrollHeight='600px'/>

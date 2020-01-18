@@ -50,7 +50,6 @@ export function requestPSet(data, callback){
 
 export function downloadPSets(psets, callback){
     var psetIDs = [];
-    var download = require('downloadjs');
     console.log(psets);
     for(let i = 0; i < psets.length; i++){
         psetIDs.push(psets[i]._id);
@@ -65,10 +64,25 @@ export function downloadPSets(psets, callback){
             'Content-type': 'application/json'
         }
     })
-        .then(res => res.blob())
-        .then(blob => {
-            download(blob, 'pset-' + Date.now() + '.zip');
-            callback(1, {message: 'PSet(s) downloaded'});
+        .then(res => res.json())
+        .then(resData => {
+            callback(1, resData);
         })
         .catch(err => callback(0, err));
+}
+
+export function downloadOnePSet(psetID){
+    console.log('downloadOnePSet: ' + psetID);
+    var psetIDs = [psetID];
+    fetch('/pset/download', {
+        method: 'POST',
+        body: JSON.stringify({
+            psetIDs: psetIDs
+        }),
+        headers: {
+            'Content-type': 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .catch(err => console.log(err));
 }

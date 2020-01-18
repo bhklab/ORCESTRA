@@ -86,7 +86,7 @@ class Stats extends React.Component{
                             <Messages ref={(el) => this.messages = el} />
                             <PSetTable allData={this.state.allData} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.updatePSetSelection} showDownload={true} scrollHeight='340px'/>
                             <div className='rankingTableFooter'>
-                                <DownloadPSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableBtn} onDownloadComplete={this.showMessages}/>
+                                {/* <DownloadPSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableBtn} onDownloadComplete={this.showMessages}/> */}
                                 <SavePSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableBtn} onSaveComplete={this.showMessages} />
                             </div>
                         </div>

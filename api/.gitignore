@@ -4,3 +4,4 @@
 *.env
 ./package-lock.json
 ./pachyderm-config
+/zenodo-files

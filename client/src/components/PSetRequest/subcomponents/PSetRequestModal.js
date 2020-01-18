@@ -12,7 +12,7 @@ class PSetRequestModal extends React.Component {
             <React.Fragment>
                 <div>
                     <span style={{float: 'left'}}><SavePSetButton selectedPSets={this.props.selectedValue} disabled={this.props.disableBtn} onSaveComplete={this.props.onComplete} /></span>
-                    <DownloadPSetButton selectedPSets={this.props.selectedValue} disabled={this.props.disableBtn} onDownloadComplete={this.props.onComplete} /> 
+                    {/* <DownloadPSetButton selectedPSets={this.props.selectedValue} disabled={this.props.disableBtn} onDownloadComplete={this.props.onComplete} />  */}
                     <Button className='modalCancelBtn' label='Cancel' onClick={this.props.hide} />
                 </div>
             </React.Fragment>
