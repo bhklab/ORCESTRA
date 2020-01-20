@@ -10,39 +10,32 @@ class PSetFilter extends React.Component {
     constructor(){
         super();
         this.state = {
-            autoUpdateChecked: false,
-            parameters: {
-                dataType: [],
-                dataset: [],
-                genome: [],
-                rnaTool: [],
-                rnaRef: [],
-                dnaTool: [],
-                dnaRef: [],
-                drugSensitivity: null
-            }
+            psetRequestMode: false,
+            // parameters: {
+            //     dataType: [],
+            //     dataset: [],
+            //     drugSensitivity: [],
+            //     genome: [],
+            //     rnaTool: [],
+            //     rnaRef: [],
+            //     dnaTool: [],
+            //     dnaRef: [],
+            //     drugSensitivity: null
+            // }
         }
-        this.setStateOnParamSelection = this.setStateOnParamSelection.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+
+        // this.handleClick = this.handleClick.bind(this);
         this.sendFilterPSetRequest = this.sendFilterPSetRequest.bind(this);
+        this.setRequestView = this.setRequestView.bind(this);
     }
 
-    setStateOnParamSelection(states){
-        let parameters = this.state.parameters;
-        for(let i = 0; i < states.length; i++){
-            parameters[states[i].name] = states[i].value;
-        }
-        console.log(parameters);
-        this.setState({parameters: parameters});
-    }
-
-    handleClick = event => {
-        event.preventDefault();
-        this.sendFilterPSetRequest();
-    }
+    // handleClick = event => {
+    //     event.preventDefault();
+    //     this.sendFilterPSetRequest();
+    // }
 
     sendFilterPSetRequest(){
-        let filterset = APIHelper.getFilterSet(this.state.parameters);
+        let filterset = APIHelper.getFilterSet(this.props.parameters);
         let apiStr = APIHelper.buildAPIStr(filterset);
         let searchAll = apiStr === '/pset' ||  apiStr === '/pset?' ? true : false;
         APICalls.queryPSet(apiStr, (data) => {
@@ -50,22 +43,26 @@ class PSetFilter extends React.Component {
         });    
     }
 
+    setRequestView = event => {
+        this.props.setRequestView(event.value);
+    }
+
     render(){
         return(
             <React.Fragment>
                 <div className='pSetFilterContainer'>
                     <div className='pSetFilter'>
-                        <h2>PSet Filter</h2>
+                        <h2>PSet Parameters</h2>
                         <div className='filterSet'>
-                            {/* <label>Enable Automatic Table Update: </label> */}
-                            {/* <InputSwitch checked={this.state.autoUpdateChecked} onChange={(e) => this.setState({autoUpdateChecked: e.value})} /> */}
+                            <label>Request PSet: </label> 
+                            <InputSwitch checked={this.props.isRequest} tooltip="Turn this on to request a PSet." onChange={this.setRequestView} />
                         </div>
 
                         <PSetParameterOptions 
                             autoUpdate={true}
-                            setParentState={this.setStateOnParamSelection}
+                            setParentState={this.props.setParentState}
                             requestUpdate={this.sendFilterPSetRequest}
-                            parameters={this.state.parameters}
+                            parameters={this.props.parameters}
                             dropdownClassName='filterSet'
                             selectOne={false}
                         />

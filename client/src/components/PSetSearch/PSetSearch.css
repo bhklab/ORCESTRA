@@ -20,6 +20,15 @@
     padding-bottom: 30px;
     color: #3D405A;
     background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+}
+
+.summaryPanel {
+    margin-right: 70px;
+}
+
+.requestFormPanel {
+    width: 400px;
 }
 
 .pSetSelectionSummary h2 {
@@ -31,6 +40,7 @@
     display: flex;
     padding-top: 5px;
     font-size: 20px;
+    margin-bottom: 45px;
 }
 
 .pSetSummaryItem {
@@ -50,7 +60,7 @@
 }
 
 .pSetSummaryNum {
-    font-size: 50px;
+    font-size: 100px;
     font-weight: bold;
 }
 
@@ -60,4 +70,10 @@
 
 .downloadBtn.p-button {
     margin-right: 10px;
+}
+
+.reqFormInput {
+    display: flex;
+    align-items: center;
+    margin-top: 35px;
 }

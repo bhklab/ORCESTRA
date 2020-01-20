@@ -41,6 +41,7 @@ class PSetParameterOptions extends React.Component{
         }else if(event.target.id === 'genome'){
             this.setRefState(event)
         }else if(event.target.id === 'dataset'){
+            console.log(event.value);
             this.setState({
                 drugSensitivityOptions: [event.value.drugSensitivity]
             });
@@ -122,10 +123,8 @@ class PSetParameterOptions extends React.Component{
                         <PSetDropdown id='dataset' className={this.props.dropdownClassName} isHidden={false} parameterName='Dataset:' selectOne={this.props.selectOne} 
                             parameterOptions={this.state.formData.dataset} selectedParameter={this.props.parameters.dataset} handleUpdateSelection={this.handleFilterChange} />
                         
-                        {this.props.requestView && 
-                            <PSetDropdown id='drugSensitivity' className={this.props.dropdownClassName} isHidden={false} parameterName='Drug Sensitivity:' selectOne={this.props.selectOne} disabled={true}
-                            parameterOptions={this.state.drugSensitivityOptions} selectedParameter={this.props.parameters.drugSensitivity} handleUpdateSelection={this.handleFilterChange} />
-                        }
+                        {/* <PSetDropdown id='drugSensitivity' className={this.props.dropdownClassName} isHidden={false} parameterName='Drug Sensitivity:' selectOne={true} disabled={true} 
+                            parameterOptions={this.state.drugSensitivityOptions} selectedParameter={this.props.parameters.drugSensitivity} handleUpdateSelection={this.handleFilterChange} /> */}
                         
                         <PSetDropdown id='genome' className={this.props.dropdownClassName} isHidden={false} parameterName='Genome:' selectOne={this.props.selectOne} 
                             parameterOptions={this.state.formData.genome} selectedParameter={this.props.parameters.genome} handleUpdateSelection={this.handleFilterChange} />
