@@ -26,6 +26,11 @@ label {
     margin-right: 10px;
 }
 
+.bold {
+    font-weight: bold;
+    font-size: 16px;
+}
+
 /* Input filter styling */
 .inputSelect {
     flex-grow: 1;

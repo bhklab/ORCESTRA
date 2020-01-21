@@ -1,6 +1,6 @@
 
 export function queryPSet(api, callback){
-    console.log(api);
+    //console.log(api);
     fetch(api)  
         .then(res => res.json())
         .then(resData => {

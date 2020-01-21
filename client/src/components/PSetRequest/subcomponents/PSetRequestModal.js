@@ -2,7 +2,7 @@ import React from 'react';
 import {Dialog} from 'primereact/dialog';
 import {Button} from 'primereact/button';
 import SavePSetButton from '../../Shared/Buttons/SavePSetButton';
-import DownloadPSetButton from '../../Shared/Buttons/DownloadPSetButton';
+//import DownloadPSetButton from '../../Shared/Buttons/DownloadPSetButton';
 import PSetTable from '../../Shared/PSetTable';
 import '../PSetRequest.css';
 

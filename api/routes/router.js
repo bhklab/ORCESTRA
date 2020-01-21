@@ -19,7 +19,7 @@ const script = require('./insert-script');
 router.get('/pset', pset.getPsetList);
 router.get('/pset/one/:id1/:id2', pset.getPSetByDOI);
 router.get('/pset/sort', pset.getSortedPSets);
-router.post('/pset/request', middleware.sendPSetRequest, middleware.buildPachydermReqJson, middleware.pushPachydermReqJson, pset.postPsetData);
+router.post('/pset/request', middleware.sendPSetRequest, pset.postPsetData);
 //router.get('/pset/request', middleware.sendPSetRequest, middleware.buildPachydermReqJson, middleware.pushPachydermReqJson, pset.postPsetData);
 router.get('/pset/pachyderm', pachyderm.createPipeline, pachyderm.listJob);
 router.get('/zenodo/upload', 

@@ -4,7 +4,7 @@ import Navigation from '../Navigation/Navigation';
 import PSetFilter from './subcomponents/PSetFilter';
 import PSetTable from '../Shared/PSetTable';
 import SavePSetButton from '../Shared/Buttons/SavePSetButton';
-import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
+//import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
@@ -17,12 +17,14 @@ class PSetSearch extends React.Component{
         super();
         this.state = {
             allData: [],
+            formDataOriginal: {},
+            formData: {},
             searchAll: true,
             selectedPSets: [],
             disableSaveBtn: true,
             isRequest: false,
 
-            searchData: {
+            parameters: {
                 dataType: [],
                 dataset: [],
                 drugSensitivity: [],
@@ -30,18 +32,6 @@ class PSetSearch extends React.Component{
                 rnaTool: [],
                 rnaRef: [],
                 dnaTool: [],
-                dnaRef: [],
-                drugSensitivity: null
-            },
-
-            reqData: {
-                dataType: [],
-                dataset: {},
-                genome: {},
-                drugSensitivity: {},
-                rnaTool: [],
-                dnaTool: [],
-                rnaRef: [],
                 dnaRef: [],
                 name: '',
                 email: ''
@@ -69,6 +59,14 @@ class PSetSearch extends React.Component{
         APICalls.queryPSet('/pset', (resData) => {
             this.updateAllData(resData);
         });
+        fetch('/formdata')  
+            .then(res => res.json())
+            .then(resData => {
+                this.setState({
+                    formData: resData[0],
+                    formDataOriginal: JSON.parse(JSON.stringify(resData[0]))
+                });
+            });
     }
 
     showMessage(status, data){
@@ -88,15 +86,14 @@ class PSetSearch extends React.Component{
     // }
 
     setStateOnParamSelection(states){
-        let searchData = this.state.searchData;
+        let parameters = this.state.parameters;
         for(let i = 0; i < states.length; i++){
-            searchData[states[i].name] = states[i].value;
+            parameters[states[i].name] = states[i].value;
         }
-        console.log(searchData);
+        console.log(parameters);
         this.setState({
-            searchData: searchData,
-            reqData: searchData,
-            notReadyToSubmit: APIHelper.isNotReadyToSubmit(searchData)
+            parameters: parameters,
+            notReadyToSubmit: APIHelper.isNotReadyToSubmit(parameters)
         });
     }
 
@@ -118,7 +115,39 @@ class PSetSearch extends React.Component{
     }
 
     setRequestView(visible){
+        const parameters = this.state.parameters;
+        let formData = this.state.formData;
+        if(visible){
+            if(parameters.dataset.length){
+                formData.dataset = parameters.dataset;
+                parameters.dataset = parameters.dataset[0];
+            }
+            if(parameters.genome.length){
+                formData.genome = parameters.genome;
+                parameters.genome = parameters.genome[0];
+            }
+        }else{
+            console.log(parameters)
+            if(formData.dataset.length < this.state.formDataOriginal.dataset.length){
+                parameters.dataset = formData.dataset;
+            }else if(!Array.isArray(parameters.dataset)){
+                let datasetVal = JSON.parse(JSON.stringify(parameters.dataset));
+                parameters.dataset = [];
+                parameters.dataset.push(datasetVal);
+            }
+            if(formData.genome.length < this.state.formDataOriginal.genome.length){
+                parameters.genome = formData.genome
+            }else if(!Array.isArray(parameters.genome)){
+                let genomeVal = JSON.parse(JSON.stringify(parameters.genome));
+                parameters.genome = [];
+                parameters.genome.push(genomeVal);
+            }
+            formData = this.state.formDataOriginal;
+        }
         this.setState({
+            parameters: parameters,
+            formData: JSON.parse(JSON.stringify(formData)),
+            notReadyToSubmit: APIHelper.isNotReadyToSubmit(parameters),
             isRequest: visible
         });
     }
@@ -132,18 +161,18 @@ class PSetSearch extends React.Component{
 
     handleSubmitRequest = event => {
         event.preventDefault();
-        APICalls.requestPSet(this.state.reqData, (status, data) => {
+        APICalls.requestPSet(this.state.parameters, (status, data) => {
             APIHelper.messageAfterRequest(status, data, this.initializeState, this.messages);
         });
     }
 
     updateReqInputEvent = event => {
         event.preventDefault();
-        let reqData = this.state.reqData;
-        reqData[event.target.id] = event.target.value;
+        let parameters= this.state.parameters;
+        parameters[event.target.id] = event.target.value;
         this.setState({
-            reqData: reqData,
-            notReadyToSubmit: APIHelper.isNotReadyToSubmit(reqData)
+            parameters: parameters,
+            notReadyToSubmit: APIHelper.isNotReadyToSubmit(parameters)
         });
     }
 
@@ -169,14 +198,15 @@ class PSetSearch extends React.Component{
                             updateAllData={this.updateAllData} 
                             setRequestView={this.setRequestView} 
                             setParentState={this.setStateOnParamSelection}
-                            isRequest={this.state.isRequest} 
-                            parameters={this.state.searchData}
+                            isRequest={this.state.isRequest}
+                            formData={this.state.formData} 
+                            parameters={this.state.parameters}
                         />
                         <div className='pSetTable'>
+                            <Messages ref={(el) => this.messages = el} />
                             <div className='pSetSelectionSummary'>
                                 <div className='summaryPanel'>
                                     <h2>Summary</h2>
-                                    <Messages ref={(el) => this.messages = el} />
                                     <div className='pSetSummaryContainer'>
                                         <div className='pSetSummaryItem'>
                                             {
@@ -198,14 +228,14 @@ class PSetSearch extends React.Component{
                                         <h2>Request PSet</h2>
                                         <div className='reqFormInput'>
                                             <label>PSet Name:</label>
-                                            <InputText id='name' className='paramInput' value={this.state.reqData.name || ''} onChange={this.updateReqInputEvent} />
+                                            <InputText id='name' className='paramInput' value={this.state.parameters.name || ''} onChange={this.updateReqInputEvent} />
                                         </div>
                                         <div className='reqFormInput'>
                                             <label>Email to receive DOI:</label>
-                                            <InputText id='email' className='paramInput' value={this.state.reqData.email || ''} onChange={this.updateReqInputEvent} />
+                                            <InputText id='email' className='paramInput' value={this.state.parameters.email || ''} onChange={this.updateReqInputEvent} />
                                         </div>
                                         <div className='reqFormInput'>
-                                            <Button label='Submit Request' type='submit' disabled={this.state.notReadyToSubmit} />
+                                            <Button label='Submit Request' type='submit' disabled={this.state.notReadyToSubmit} onClick={this.handleSubmitRequest}/>
                                         </div>
                                     </div>
                                 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import {InputSwitch} from 'primereact/inputswitch';
-import {Button} from 'primereact/button';
+//import {Button} from 'primereact/button';
 import * as APIHelper from '../../Shared/PSetAPIHelper';
 import * as APICalls from '../../Shared/APICalls';
 import PSetParameterOptions from '../../Shared/PSetParameterOptions';
@@ -54,19 +54,18 @@ class PSetFilter extends React.Component {
                     <div className='pSetFilter'>
                         <h2>PSet Parameters</h2>
                         <div className='filterSet'>
-                            <label>Request PSet: </label> 
+                            <label className='bold'>Request PSet: </label> 
                             <InputSwitch checked={this.props.isRequest} tooltip="Turn this on to request a PSet." onChange={this.setRequestView} />
                         </div>
-
                         <PSetParameterOptions 
                             autoUpdate={true}
                             setParentState={this.props.setParentState}
                             requestUpdate={this.sendFilterPSetRequest}
                             parameters={this.props.parameters}
+                            formData={this.props.formData}
                             dropdownClassName='filterSet'
-                            selectOne={false}
+                            selectOne={this.props.isRequest}
                         />
-
                         {/* <Button type='submit' label='Search' onClick={this.handleClick} disabled={this.state.autoUpdateChecked}/> */}
                     </div>
                 </div>
