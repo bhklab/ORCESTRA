@@ -2,9 +2,8 @@
   "name": "myLocalProj",
   "version": "1.0.0",
   "description": "",
-  "main": "myapp.js",
   "scripts": {
-    "start": "npx nodemon myapp.js --ignore 'pachyderm-config/pachyderm-config/*'"
+    "start": "npx nodemon ./bin/www --ignore 'pachyderm-config/pachyderm-config/*'"
   },
   "author": "",
   "license": "ISC",
