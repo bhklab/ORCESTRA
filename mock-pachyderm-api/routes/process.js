@@ -6,6 +6,17 @@ const startPipeline = function(req, res){
   res.json({status: 1, message: 'pipeline request received'});
 }
 
+const completeProcess = function(req, res){
+  mock.complete((result) => {
+    if(result.status){
+      res.send(result);
+    }else{
+      res.status(500).send();
+    }
+  });
+}
+
 module.exports = {
   startPipeline,
+  completeProcess
 }

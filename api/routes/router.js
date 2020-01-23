@@ -3,6 +3,7 @@ const router = express.Router();
 const middleware = require('../middleware/middleware');
 const pachyderm = require('../middleware/pachyderm');
 const zenodo = require('../middleware/zenodo');
+const google = require('../middleware/google');
 
 // routes
 const home = require('./index');
@@ -20,16 +21,21 @@ router.get('/pset', pset.getPsetList);
 router.get('/pset/one/:id1/:id2', pset.getPSetByDOI);
 router.get('/pset/sort', pset.getSortedPSets);
 router.post('/pset/request', middleware.sendPSetRequest, pset.postPsetData);
+
 //router.get('/pset/request', middleware.sendPSetRequest, middleware.buildPachydermReqJson, middleware.pushPachydermReqJson, pset.postPsetData);
 router.get('/pset/pachyderm', pachyderm.createPipeline, pachyderm.listJob);
-router.get('/zenodo/upload', 
-    //zenodo.getDepositInfo, 
-    //zenodo.uploadFile,
-    //zenodo.addMetadata,
+router.get('/zenodo/upload/:name', 
+    zenodo.getDepositInfo, 
+    zenodo.uploadFile,
+    zenodo.addMetadata,
     zenodo.publish
 );
+router.get('/googleapi/test', google.testAPI);
+
+
 router.post('/pset/download', pset.downloadPSets);
-router.get('/pset/complete', middleware.updatePSetStatus, pset.sendPSetEmail);
+//router.get('/pset/complete', middleware.updatePSetStatus, pset.sendPSetEmail);
+router.post('/pset/complete', middleware.updatePSetStatus);
 // prviate route
 router.post('/pset/cancel', middleware.checkToken, pset.cancelPSetRequest);
 

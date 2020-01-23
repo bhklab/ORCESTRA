@@ -22,6 +22,7 @@
     "express-zip": "^2.0.1",
     "file-api": "^0.10.4",
     "fs": "0.0.1-security",
+    "googleapis": "^39.2.0",
     "grpc": "^1.24.2",
     "jsonwebtoken": "^8.5.1",
     "line-by-line": "^0.1.6",

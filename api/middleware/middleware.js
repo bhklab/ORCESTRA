@@ -24,8 +24,8 @@ module.exports = {
     },
 
     sendPSetRequest: function(req, res, next){
-        //let pset = req.body.reqData;
-        let pset = {};
+        let pset = req.body.reqData;
+        //let pset = {};
         pset._id = mongo.getObjectID();
         pset.status = 'pending';
         pset.download = 0;
@@ -79,15 +79,16 @@ module.exports = {
     },
 
     updatePSetStatus: function(req, res, next){
-        console.log(req.body.update);
-        mongo.updatePSetStatus(req.body.update, function(result){
-            if(result.status){
-                req.email = result.data.value.email;
-                req.doi = result.data.value.doi;
-                next();
-            }else{
-                res.status(500).send(result.data);
-            }
-        });
+        // console.log(req.body.update);
+        // mongo.updatePSetStatus(req.body.update, function(result){
+        //     if(result.status){
+        //         req.email = result.data.value.email;
+        //         req.doi = result.data.value.doi;
+        //         next();
+        //     }else{
+        //         res.status(500).send(result.data);
+        //     }
+        // });
+        res.send({status: 1, data: req.body});
     }
 }

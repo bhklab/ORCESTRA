@@ -2,64 +2,78 @@ const request = require('request');
 const fs = require("fs");
 const path = require('path');
 const zenodoDir = path.join(__dirname, '../zenodo-files');
-const zenodoToken = '';
+const zenodoToken = 'ICMDE5AK6M9BJryIrATkfSjvqYL9v5Af2vFmXg7Bh7yKoQ4gFw4nYzftCpGa';
+const zenodoBaseURL = 'https://sandbox.zenodo.org/api/deposit/depositions'
 
 module.exports = {
     getDepositInfo: function(req, res, next){
-        request.get('https://sandbox.zenodo.org/api/deposit/depositions', {headers:{'Content-Type': 'application/json'}, body:{}, json: true}, function (error, response, body) {
+        request.post(zenodoBaseURL, {headers:{'Content-Type': 'application/json'}, body:{}, json: true}, function (error, response, body) {
             if(error){
                 res.status(500).send(error);
             }else{
-                console.log(response.statusCode);
-                // console.log(body[0].id);
-                // console.log(body[0].links.files);
-                // req.data = {id: body[0].id, links: body[0].links};
-                res.send(response);
-                //next();
+                console.log('depository created');
+                console.log(body);
+                req.data = {id: body.id, download: '', doi: ''};
+                //res.send(response);
+                next();
             }
         }).auth(null, null, true, zenodoToken);
     },
 
     uploadFile: function(req, res, next){
-        const url = 'https://sandbox.zenodo.org/api/deposit/depositions/467464/files';
+        const url = zenodoBaseURL + '/' + req.data.id + '/files'; // req.data.links.files
         const uploadRequest = request.post(url, {json: true}, function(error, response, body){
             if(error){
                 res.status(500).send(error);
             }else{
-                res.send(response);
+                console.log('file uploaded');
+                console.log(body);
+                req.data.download = body.links.download;
+                //res.send(response);
+                next();
             }
         }).auth(null, null, true, zenodoToken);
         const form = uploadRequest.form();
-        form.append('file', fs.createReadStream(path.join(zenodoDir, 'data.txt')));
+        form.append('file', fs.createReadStream(path.join(zenodoDir, '1GB.zip')));
     },
 
     addMetadata: function(req, res, next){
         const data = {
             "metadata": {
-                "title": "My first upload",
+                "title": "PSet " + req.params.name,
                 "upload_type": "dataset",
-                "description": "This is my first upload",
+                "description": "The details can be viewed at: orcestra.ca", 
                 "creators": [
-                    {"name": "Minoru Nakano", "affiliation": "UHN"}
+                    {"name": "ORCESTRA", "affiliation": "UHN"}
                 ]
             }
         }
-        
-        request({url: 'https://sandbox.zenodo.org/api/deposit/depositions/467464', method: 'PUT', json: data}, function(error, response, body){
+
+        const url = zenodoBaseURL + '/' + req.data.id; // req.data.links.self
+
+        request({url: url, method: 'PUT', json: data}, function(error, response, body){
             if(error){
                 res.status(500).send(error);
             }else{
-                res.send(response);
+                console.log('metadata added');
+                console.log(body);
+                //res.send(response);
+                next();
             }
         }).auth(null, null, true, zenodoToken);
     },
 
     publish: function(req, res, next){
-        request.post('https://sandbox.zenodo.org/api/deposit/depositions/467464/actions/publish', function(error, response, body){
+        request.post(zenodoBaseURL + '/' + req.data.id + '/actions/publish', function(error, response, body){
             if(error){
                 res.status(500).send(error);
             }else{
-                res.send(response);
+                const bodyData = JSON.parse(body);
+                console.log('file published');
+                console.log(bodyData);
+                req.data.doi = bodyData.doi
+                console.log(req.data);
+                res.send({status: 1, message: 'upload success', data: req.data});
             }
         }).auth(null, null, true, zenodoToken);
     }

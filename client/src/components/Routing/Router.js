@@ -58,7 +58,7 @@ class Router extends React.Component{
                     <Switch>
                         <Route exact path ='/' render={(props)=><App path='/' {...props} />} /> 
                         <Route exact path ='/PSetSearch' render={(props)=><PSetSearch path='/PSetSearch' {...props} />}/>
-                        <Route exact path ='/PSetRequest' render={(props)=><PSetRequest path='/PSetRequest' {...props} />}/>
+                        {/* <Route exact path ='/PSetRequest' render={(props)=><PSetRequest path='/PSetRequest' {...props} />}/> */}
                         <Route exact path ='/Stats' render={(props)=><Stats path='/Stats' {...props} />}/>
                         <Route exact path ='/Contact' render={(props)=><Contact path='/Contact' {...props} />}/>
                         <Route exact path='/Authentication' render={(props) => <Login {...props} />} />

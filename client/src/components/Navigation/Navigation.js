@@ -38,8 +38,8 @@ class Navigation extends React.Component {
                     <div className='navBarContainer'>
                         <div className='navBar'>
                             <div><NavLink exact to='/' activeClassName='active-link'>Home</NavLink></div>
-                            <div><NavLink exact to="/PSetSearch" activeClassName='active-link'>Search</NavLink></div>
-                            <div><NavLink exact to="/PSetRequest" activeClassName='active-link'>Request</NavLink></div>
+                            <div><NavLink exact to="/PSetSearch" activeClassName='active-link'>Search and Request</NavLink></div>
+                            {/* <div><NavLink exact to="/PSetRequest" activeClassName='active-link'>Request</NavLink></div> */}
                             <div><NavLink exact to="/Stats" activeClassName='active-link'>Statistics</NavLink></div>
                             <div><NavLink exact to="/Profile" activeClassName='active-link'>Profile</NavLink></div>
                             <div><NavLink exact to="/Contact" activeClassName='active-link'>Contact</NavLink></div>
@@ -53,8 +53,8 @@ class Navigation extends React.Component {
                         <div className='burgerNav'>
                             <Menu width={ 200 } isOpen={ false } > 
                                 <div className='menu-item'><NavLink exact to='/' activeClassName='active-link'>Home</NavLink></div>
-                                <div className='menu-item'><NavLink exact to="/PSetSearch" activeClassName='active-link'>Search</NavLink></div>
-                                <div className='menu-item'><NavLink exact to="/PSetRequest" activeClassName='active-link'>Request</NavLink></div>
+                                <div className='menu-item'><NavLink exact to="/PSetSearch" activeClassName='active-link'>Search and Request</NavLink></div>
+                                {/* <div className='menu-item'><NavLink exact to="/PSetRequest" activeClassName='active-link'>Request</NavLink></div> */}
                                 <div className='menu-item'><NavLink exact to="/Stats" activeClassName='active-link'>Statistics</NavLink></div>
                                 <div className='menu-item'><NavLink exact to="/Profile" activeClassName='active-link'>Profile</NavLink></div>
                                 <div><NavLink exact to="/Contact" activeClassName='active-link'>Contact</NavLink></div>

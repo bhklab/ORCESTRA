@@ -18,6 +18,26 @@ const execute = function(id, name){
     }, 10000);  
 }
 
+const complete = function(callback){
+    request.post('http://localhost:2000/pset/complete', {
+            body: {
+                doi: 'doi',
+                downloadLink: 'downloadlink',
+                commitID: 'commitID'
+            },
+            json: true
+        },
+        function(error, response, body){
+            if(error){
+                callback({status: 0, data: error});
+            }else{
+                callback({status: 1, data: response.body});
+            }
+        }
+    );
+}
+
 module.exports = {
-    execute
+    execute,
+    complete
 }
