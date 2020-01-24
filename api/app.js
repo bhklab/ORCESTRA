@@ -6,7 +6,7 @@ const app = express();
 const router = require('./routes/router');
 //const port = 80;
 //const port = process.env.PORT || 3000
-//require('dotenv').config();
+require('dotenv').config();
 
 // support json encoded bodies
 app.use(bodyParser.json());
@@ -18,15 +18,10 @@ app.set('js', path.join(__dirname, 'js'));
 
 app.use('/', router);
 
-//app.set('port', port); // set express to use this port
 app.use(express.static(path.join(__dirname, 'build'))); // configure express to use public folder
 
 app.get('/*', (req, res) => {
   res.sendFile('index.html', { root: './build' });
 });
-
-// app.listen(port, () => {
-//   console.log(`Server running on port: 3000`);
-// });
 
 module.exports = app;
