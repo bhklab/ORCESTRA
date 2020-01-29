@@ -39,7 +39,7 @@ const getSortedPSets = function(req, res){
 }
 
 const postPsetData = function(req, res){
-    mongo.insertPSetRequest(req.pset, req.body.reqData.email, function(result){
+    mongo.insertPSetRequest(req.pset, req.pset.email, function(result){
         if(result.status){
             console.log('pset inserted to db'); 
             const resData = {summary: 'Request Submitted', message: 'PSet resuest has been submitted successfully.'};  

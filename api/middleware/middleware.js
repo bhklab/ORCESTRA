@@ -1,9 +1,11 @@
+const path = require('path');
+//const configDir = path.join(__dirname, '../../../../pachyderm-config');
 const jwt = require('jsonwebtoken');
 const mongo = require('../db/mongo');
 const request = require('request');
-const simpleGit = require('simple-git')('./pachyderm-config/pachyderm-config');
+const simpleGit = require('simple-git')(configDir);
 const fs = require('fs');
-const path = require('path');
+
 
 module.exports = {
     
@@ -24,12 +26,13 @@ module.exports = {
     },
 
     sendPSetRequest: function(req, res, next){
-        let pset = req.body.reqData;
-        //let pset = {};
+        //let pset = req.body.reqData;
+        let pset = {};
         pset._id = mongo.getObjectID();
         pset.status = 'pending';
         pset.download = 0;
         pset.doi = '';
+        pset.email = 'user1@email.com';
         // request('http://localhost:5000/pipeline/start', {body: {name: pset.name, id: pset._id}, json: true}, function (error, response, body) {
         //     if(error){
         //         res.status(500).send(error);
@@ -66,12 +69,20 @@ module.exports = {
     pushPachydermReqJson: function(req, res, next){
         console.log("file name: " + req.fileName);
         simpleGit   
-            //.pull((err, data) => {console.log(data)})    
+            .pull((err, data) => {console.log(data)})    
             .add([req.fileName], (err, data) => {console.log(data)})
-            .commit('PSet Request: ' + req.pset._id, (err, data) => {console.log(data)})
+            .commit('PSet Request: ' + req.pset._id, (err, data) => {
+                console.log(data);
+                console.log(data.commit);
+            })
             //.addRemote('pachyderm', 'https://github.com/mnakano/pachyderm-config.git')
-            .push('pachyderm', 'master', (err, data) => {console.log(data)})
-            .exec(next());
+            .push('pachyderm', 'master', (err, data) => {
+                //console.log(data);
+                //console.log(data.commit);
+                console.log('pushed');
+                //next();
+            })
+            .exec(next);
     },
 
     notifyPachyderm: function(req, res, next){
@@ -89,6 +100,15 @@ module.exports = {
         //         res.status(500).send(result.data);
         //     }
         // });
-        res.send({status: 1, data: req.body});
+
+        // for development only
+        mongo.insertCompleteRequest(req.body, function(result){
+            if(result.status){
+                res.send({status: 1, data: req.body});
+            }else{
+                res.status(500).send({status: 0, data: 'an error occured'});
+            }
+        });
+        
     }
 }

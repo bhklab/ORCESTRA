@@ -34,7 +34,7 @@ module.exports = {
             }
         }).auth(null, null, true, zenodoToken);
         const form = uploadRequest.form();
-        form.append('file', fs.createReadStream(path.join(zenodoDir, '1GB.zip')));
+        form.append('file', fs.createReadStream(path.join(zenodoDir, req.params.name)));
     },
 
     addMetadata: function(req, res, next){

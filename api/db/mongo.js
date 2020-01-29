@@ -2,6 +2,7 @@ const mongo  = require('mongodb');
 const mongoClient = mongo.MongoClient;
 const connStr = 'mongodb+srv://root:root@development-cluster-ptdz3.azure.mongodb.net/test?retryWrites=true&w=majority';
 const dbName = 'orcestra-dev';
+const testDB = 'orcestra-test';
 const ObjectID = mongo.ObjectID;
 
 function connectWithClient(callback){
@@ -156,7 +157,8 @@ module.exports = {
             if(err){
                 callback({status: 0, data: err});
             }
-            const db = client.db(dbName);
+            //const db = client.db(dbName);
+            const db = client.db(testDB);
             const collection = db.collection('pset');
             collection.findOneAndUpdate(
                 {'_id': ObjectID(update.id)}, 
@@ -175,23 +177,26 @@ module.exports = {
             if(err){
                 callback({status: 0, data: err});
             }
-            const db = client.db(dbName);
+            //const db = client.db(dbName);
+            const db = client.db(testDB);
             const collection = db.collection('pset');
             collection.insertOne(pset, (err, result) => {
                 if(err){
                     client.close();
                     callback({status: 0, data: err});
+                }else{
+                    callback({status: 1, data: result});
                 }
-                const user = db.collection('user');
-                user.findOneAndUpdate(
-                    {'username': username},
-                    {'$addToSet': {'userPSets': pset._id}},
-                    {'upsert': true},
-                    (err, data) => {
-                        client.close();
-                        callback(getResult(err, data));
-                    }
-                );
+                // const user = db.collection('user');
+                // user.findOneAndUpdate(
+                //     {'username': username},
+                //     {'$addToSet': {'userPSets': pset._id}},
+                //     {'upsert': true},
+                //     (err, data) => {
+                //         client.close();
+                //         callback(getResult(err, data));
+                //     }
+                // );
             });       
         });
     },
@@ -381,5 +386,24 @@ module.exports = {
                 callback(getResult(err, data));
             });
         });
+    },
+
+    // For development use only
+    insertCompleteRequest: function(data, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db(testDB);
+            const collection = db.collection('complete-requests');
+            collection.insertOne(data, (err, result) => {
+                client.close();
+                if(err){
+                    callback({status: 0, data: err});
+                }else{
+                    callback({status: 1, data: result});
+                }
+            })
+        })
     }
 }
