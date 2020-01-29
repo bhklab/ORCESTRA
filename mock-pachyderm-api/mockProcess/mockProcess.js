@@ -20,7 +20,7 @@ const execute = function(id, name){
 
 const complete = function(callback){
     
-    request.post('https://orcestra-beta.azurewebsites.net/pset/complete', {
+    request.post('https://orcestra.azurewebsites.net/pset/complete', {
             body: {
                 doi: 'doi',
                 downloadLink: 'downloadlink',

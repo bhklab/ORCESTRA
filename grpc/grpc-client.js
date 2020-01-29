@@ -36,7 +36,8 @@ module.exports = {
         const packageDefinition = protoLoader.loadSync(createPipelineProto);
         const proto = grpc.loadPackageDefinition(packageDefinition);
 
-        const client = new proto.pps.API('0.0.0.0:30650', grpc.credentials.createInsecure());
+        // 52.228.28.251
+        const client = new proto.pps.API('52.233.32.47:30650', grpc.credentials.createInsecure());
 
         client.CreatePipeline(request, (error, response) => {
             if(error) { 

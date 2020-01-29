@@ -77,3 +77,11 @@
     align-items: center;
     margin-top: 35px;
 }
+
+.loaderContainer {
+    height: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}

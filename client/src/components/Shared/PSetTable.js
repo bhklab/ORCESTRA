@@ -71,6 +71,7 @@ const PSetTable = (props) => {
             value={props.allData} 
             selection={props.selectedPSets} onSelectionChange={updatePSetSelectionEvent} 
             paginator={true} rows={state.rows} 
+            scrollable={true}
         >
             {auth.authenticated && <Column selectionMode="multiple" style={{width: '2.5em'}} />}
             <Column className='textField' field='name' header='Name' style={{width:'10em'}} body={nameColumnTemplate} sortable={true} />

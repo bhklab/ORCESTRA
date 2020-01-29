@@ -5,6 +5,9 @@ import PSetFilter from './subcomponents/PSetFilter';
 import PSetTable from '../Shared/PSetTable';
 import SavePSetButton from '../Shared/Buttons/SavePSetButton';
 //import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
+import {usePromiseTracker} from "react-promise-tracker";
+import {trackPromise} from 'react-promise-tracker';
+import Loader from 'react-loader-spinner';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
@@ -161,11 +164,26 @@ class PSetSearch extends React.Component{
 
     handleSubmitRequest = event => {
         event.preventDefault();
-        let reqData = this.state.parameters;
-        reqData.drugSensitivity = reqData.dataset.drugSensitivity;
-        APICalls.requestPSet(reqData, (status, data) => {
-            APIHelper.messageAfterRequest(status, data, this.initializeState, this.messages);
-        });
+        // let reqData = this.state.parameters;
+        // reqData.drugSensitivity = reqData.dataset.drugSensitivity;
+        let reqData = {};
+        // APICalls.requestPSet(reqData, (status, data) => {
+        //     APIHelper.messageAfterRequest(status, data, this.initializeState, this.messages);
+        // })
+        trackPromise(
+            fetch('/pset/request', {
+                method: 'POST',
+                body: JSON.stringify({
+                    reqData: reqData
+                }),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+                .then(res => res.json())
+                .then(resData => APIHelper.messageAfterRequest(1, resData, this.initializeState, this.messages))
+                .catch(err => APIHelper.messageAfterRequest(0, err, this.initializeState, this.messages))
+        )
     }
 
     updateReqInputEvent = event => {
@@ -190,11 +208,23 @@ class PSetSearch extends React.Component{
     // }
     
     render(){  
+        const SubmitRequestButton = props => {
+            const {promiseInProgress} = usePromiseTracker();
+            return(
+                promiseInProgress ? 
+                    <div className='loaderContainer'>
+                        <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                    </div>
+                    :
+                    <Button label='Submit Request' type='submit' disabled={false} onClick={this.handleSubmitRequest}/>
+            );
+        }
+        
         return(
             <React.Fragment>
                 <Navigation routing={this.props} />
                 <div className='pageContent'>
-                    <h1>Search or Request Pharmaco Datasets</h1>
+                    <h1>Search or Request Pharmacogenomic Datasets</h1>
                     <div className='pSetListContainer'>
                         <PSetFilter 
                             updateAllData={this.updateAllData} 
@@ -237,7 +267,8 @@ class PSetSearch extends React.Component{
                                             <InputText id='email' className='paramInput' value={this.state.parameters.email || ''} onChange={this.updateReqInputEvent} />
                                         </div>
                                         <div className='reqFormInput'>
-                                            <Button label='Submit Request' type='submit' disabled={this.state.notReadyToSubmit} onClick={this.handleSubmitRequest}/>
+                                            {/* <Button label='Submit Request' type='submit' disabled={this.state.notReadyToSubmit} onClick={this.handleSubmitRequest}/> */}
+                                            <SubmitRequestButton />
                                         </div>
                                     </div>
                                 }

@@ -16,6 +16,12 @@ message Transform {
   repeated string cmd = 2;
 }
 
+message GitInput {
+  string name = 1;
+  string url = 2 [(gogoproto.customname) = "URL"];
+  string branch = 3;
+}
+
 
 message Input {
   PFSInput pfs = 6;

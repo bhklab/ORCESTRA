@@ -1,5 +1,6 @@
 const path = require('path');
 const configDir = path.join(__dirname, '../../../pachyderm-config');
+//const configDir = path.join(__dirname, '../../../gray2013pipelines');
 const jwt = require('jsonwebtoken');
 const mongo = require('../db/mongo');
 const request = require('request');
@@ -44,43 +45,49 @@ module.exports = {
         // });
         pset.dateSubmitted = new Date(Date.now());
         req.pset = pset;
-        console.log('pset request submitted: ' + pset);
+        //console.log('pset request submitted: ' + pset);
         next();
     }, 
 
     buildPachydermReqJson: function(req, res, next){
-        let pset= req.pset;
-        pset.dataset = {label:"GRAY - 2017", name:"GRAY", version:"2017"}
-        pset.drugSensitivity = {version:"2017", source:"https://www.synapse.org/#!Synapse:syn8094063"}
-        pset.genome = {name:"GRCh38"}
-        pset.rnaTool = [{name:"Kallisto/0.43.1", commands:["kallisto index gencode.v23.transcripts.fa.gz -i kallisto_hg38_v23.idx", "kallisto quant  -i kallisto_hg38_v23.idx -o output sample_1.fastq.gz sample_2.fastq.gz"]}];
-        pset.rnaRef = [{name:"Gencode v23 Transcriptome", source:"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_23/gencode.v23.transcripts.fa.gz"}];
+        console.log("buildPachydermReqJson");
+        const reqID = mongo.getObjectID();
+        const grayPath = path.join(configDir, 'getGRAYP_2013.json');
+        const gray2013Raw = fs.readFileSync(grayPath);
+        const gray2013 = JSON.parse(gray2013Raw);
+        gray2013.transform.cmd.splice(3);
+        gray2013.transform.cmd.push(reqID);
+        gray2013.update = true;
+        gray2013.reprocess = true;
+        delete gray2013.resource_requests;
 
-        let json = JSON.stringify(pset);
-        let fileName = pset._id + '.json';
-        //let fileName = 'test.json';
-        fs.writeFile(path.join(configDir, fileName), json, 'utf8', ()=> {
-            req.pset = pset;
-            req.fileName = fileName;
+        let json = JSON.stringify(gray2013, null, 2);
+        fs.writeFile(path.join(grayPath), json, ()=> {
+            //gray2013._id = reqID;
+            req.request = gray2013;
+            req.reqID = reqID;
+            //res.send(gray2013);
             next();
         });
     },
 
     pushPachydermReqJson: function(req, res, next){
-        console.log("file name: " + req.fileName);
+        console.log("pushPachydermReqJson");
         simpleGit   
-            .pull((err, data) => {console.log(data)})    
-            .add([req.fileName], (err, data) => {console.log(data)})
-            .commit('PSet Request: ' + req.pset._id, (err, data) => {
-                console.log(data);
-                console.log(data.commit);
+            .add('./*')    
+            .commit('PSet Request: ' + req.reqID, (err, data) => {
+                if(err){
+                    console.log(err)
+                }else{
+                    console.log(data);
+                }
             })
-            //.addRemote('pachyderm', 'https://github.com/mnakano/pachyderm-config.git')
             .push('pachyderm', 'master', (err, data) => {
-                //console.log(data);
-                //console.log(data.commit);
-                console.log('pushed');
-                //next();
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log('pushPachydermReqJson: pushed');
+                }
             })
             .exec(next);
     },
