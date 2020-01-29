@@ -1,8 +1,0 @@
-/node_modules
-/psets
-.log
-./*.env
-./package-lock.json
-./pachyderm-config
-/googleAPI
-/zenodo-files

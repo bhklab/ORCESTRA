@@ -1,5 +1,5 @@
 const path = require('path');
-//const configDir = path.join(__dirname, '../../../../pachyderm-config');
+const configDir = path.join(__dirname, '../../../pachyderm-config');
 const jwt = require('jsonwebtoken');
 const mongo = require('../db/mongo');
 const request = require('request');
