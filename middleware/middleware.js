@@ -1,10 +1,10 @@
 const path = require('path');
 //const configDir = path.join(__dirname, '../../../pachyderm-config');
-//const configDir = path.join(__dirname, '../../../gray2013pipelines');
+const configDir = path.join(__dirname, '../../../gray2013pipelines');
 const jwt = require('jsonwebtoken');
 const mongo = require('../db/mongo');
 const request = require('request');
-//const simpleGit = require('simple-git')(configDir);
+const simpleGit = require('simple-git')(configDir);
 const fs = require('fs');
 
 
@@ -39,52 +39,52 @@ module.exports = {
         next();
     }, 
 
-    // buildPachydermReqJson: function(req, res, next){
-    //     console.log("buildPachydermReqJson");
-    //     const grayPath = path.join(configDir, 'getGRAYP_2013.json');
-    //     const gray2013Raw = fs.readFileSync(grayPath);
-    //     const gray2013 = JSON.parse(gray2013Raw);
-    //     gray2013.transform.cmd.splice(3);
-    //     gray2013.transform.cmd.push(req.pset._id);
-    //     gray2013.update = true;
-    //     gray2013.reprocess = true;
+    buildPachydermReqJson: function(req, res, next){
+        console.log("buildPachydermReqJson");
+        const grayPath = path.join(configDir, 'getGRAYP_2013.json');
+        const gray2013Raw = fs.readFileSync(grayPath);
+        const gray2013 = JSON.parse(gray2013Raw);
+        gray2013.transform.cmd.splice(3);
+        gray2013.transform.cmd.push(req.pset._id);
+        gray2013.update = true;
+        gray2013.reprocess = true;
 
-    //     let json = JSON.stringify(gray2013, null, 2);
-    //     fs.writeFile(path.join(grayPath), json, ()=> {
-    //         req.request = gray2013;
+        let json = JSON.stringify(gray2013, null, 2);
+        fs.writeFile(path.join(grayPath), json, ()=> {
+            req.request = gray2013;
             
-    //         //works
-    //         // let filePath = path.join(__dirname, '../test/getGRAYP_2013.json')
-    //         // let requestRaw = fs.readFileSync(filePath);
-    //         // const request = JSON.parse(requestRaw);
-    //         // request.update = true;
-    //         // request.reprocess = true;
-    //         // req.request = request;
+            //works
+            // let filePath = path.join(__dirname, '../test/getGRAYP_2013.json')
+            // let requestRaw = fs.readFileSync(filePath);
+            // const request = JSON.parse(requestRaw);
+            // request.update = true;
+            // request.reprocess = true;
+            // req.request = request;
 
-    //         next();
-    //     });
-    // },
+            next();
+        });
+    },
 
-    // pushPachydermReqJson: function(req, res, next){
-    //     console.log("pushPachydermReqJson");
-    //     simpleGit   
-    //         .add('./*')    
-    //         .commit('PSet Request: ' + req.pset._id, (err, data) => {
-    //             if(err){
-    //                 console.log(err)
-    //             }else{
-    //                 console.log(data);
-    //             }
-    //         })
-    //         .push('gray2013', 'master', (err, data) => {
-    //             if(err){
-    //                 console.log(err);
-    //             }else{
-    //                 console.log('pushPachydermReqJson: pushed');
-    //             }
-    //         })
-    //         .exec(next);
-    // },
+    pushPachydermReqJson: function(req, res, next){
+        console.log("pushPachydermReqJson");
+        simpleGit   
+            .add('./*')    
+            .commit('PSet Request: ' + req.pset._id, (err, data) => {
+                if(err){
+                    console.log(err)
+                }else{
+                    console.log(data);
+                }
+            })
+            .push('gray2013', 'master', (err, data) => {
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log('pushPachydermReqJson: pushed');
+                }
+            })
+            .exec(next);
+    },
 
     notifyPachyderm: function(req, res, next){
 
