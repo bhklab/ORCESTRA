@@ -164,12 +164,8 @@ class PSetSearch extends React.Component{
 
     handleSubmitRequest = event => {
         event.preventDefault();
-        // let reqData = this.state.parameters;
-        // reqData.drugSensitivity = reqData.dataset.drugSensitivity;
-        let reqData = {};
-        // APICalls.requestPSet(reqData, (status, data) => {
-        //     APIHelper.messageAfterRequest(status, data, this.initializeState, this.messages);
-        // })
+        let reqData = this.state.parameters;
+        reqData.drugSensitivity = reqData.dataset.drugSensitivity;
         trackPromise(
             fetch('/pset/request', {
                 method: 'POST',

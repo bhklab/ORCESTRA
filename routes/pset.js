@@ -53,7 +53,7 @@ const postPsetData = function(req, res){
     console.log("postPSetData");
     mongo.insertPSetRequest(req.pset, req.pset.email, function(result){
         if(result.status){
-            console.log('pset inserted to db'); 
+            console.log('pset inserted to db: ' + req.pset._id); 
             const resData = {summary: 'Request Submitted', message: 'PSet request has been submitted successfully.'};  
             res.send(resData);
         }else{

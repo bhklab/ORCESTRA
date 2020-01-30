@@ -157,8 +157,8 @@ module.exports = {
             if(err){
                 callback({status: 0, data: err});
             }
-            //const db = client.db(dbName);
-            const db = client.db(testDB);
+            const db = client.db(dbName);
+            //const db = client.db(testDB);
             const collection = db.collection('pset');
             collection.findOneAndUpdate(
                 {'_id': ObjectID(update.ORCESTRA_ID)}, 
@@ -177,8 +177,8 @@ module.exports = {
             if(err){
                 callback({status: 0, data: err});
             }
-            //const db = client.db(dbName);
-            const db = client.db(testDB);
+            const db = client.db(dbName);
+            //const db = client.db(testDB);
             const collection = db.collection('pset');
             collection.insertOne(pset, (err, result) => {
                 if(err){

@@ -23,7 +23,7 @@ router.get('/pset/sort', pset.getSortedPSets);
 //router.post('/pset/request', middleware.sendPSetRequest, pset.postPsetData);
 
 router.post('/pset/request', 
-    //middleware.sendPSetRequest, 
+    middleware.receivePSetRequest, 
     middleware.buildPachydermReqJson, 
     middleware.pushPachydermReqJson, 
     pachyderm.createPipeline,
