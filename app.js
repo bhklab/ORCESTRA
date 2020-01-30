@@ -6,7 +6,7 @@ const app = express();
 const router = require('./routes/router');
 //const port = 80;
 //const port = process.env.PORT || 3000
-require('dotenv').config();
+//require('dotenv').config();
 
 // support json encoded bodies
 app.use(bodyParser.json());
