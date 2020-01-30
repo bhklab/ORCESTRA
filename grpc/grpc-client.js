@@ -2,6 +2,7 @@ const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 const protoDir = path.join(__dirname, 'proto-files');
+const pachydermIP = process.env.PACHYDERM_IP;
 
 module.exports = {
 
@@ -37,7 +38,7 @@ module.exports = {
         const proto = grpc.loadPackageDefinition(packageDefinition);
 
         // 52.228.28.251
-        const client = new proto.pps.API('52.233.32.47:30650', grpc.credentials.createInsecure());
+        const client = new proto.pps.API(pachydermIP, grpc.credentials.createInsecure());
 
         client.CreatePipeline(request, (error, response) => {
             if(error) { 

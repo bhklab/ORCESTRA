@@ -394,9 +394,10 @@ module.exports = {
             if(err){
                 callback({status: 0, data: err});
             }
+            const obj = JSON.parse(data);
             const db = client.db(testDB);
             const collection = db.collection('complete-requests');
-            collection.insertOne(data, (err, result) => {
+            collection.insertOne(obj, (err, result) => {
                 client.close();
                 if(err){
                     callback({status: 0, data: err});

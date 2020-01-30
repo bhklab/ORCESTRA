@@ -20,7 +20,7 @@ module.exports = {
         //     }
         // }
 
-        console.log("createPipeline");
+        console.log("createPipeline: " + process.env.PACHYDERM_IP);
         const request = JSON.stringify(req.request);
         
         // client.createPipeline(request, (result) => {

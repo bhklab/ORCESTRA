@@ -65,7 +65,7 @@ router.get('/user/checkToken', middleware.checkToken, user.checkToken);
 //meadata
 router.get('/metadata', metadata.getMetadata);
 router.get('/formdata', metadata.getFormData);
-router.get('/test', metadata.testRequest);
-router.get('/receive', metadata.receiveRequest);
+//router.get('/test', metadata.testRequest);
+//router.get('/receive', metadata.receiveRequest);
 
 module.exports = router;
