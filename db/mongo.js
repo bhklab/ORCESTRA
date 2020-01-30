@@ -172,6 +172,25 @@ module.exports = {
         });
     },
 
+    updatePSetStatusDev: function(update, callback){
+        connectWithClient((err, client) => {
+            if(err){
+                callback({status: 0, data: err});
+            }
+            const db = client.db(dbName);
+            const collection = db.collection('pset');
+            collection.findOneAndUpdate(
+                {'tempID': update.ORCESTRA_ID}, 
+                {'$set': {'status': 'complete', 'downloadLink': update.download_link, 'dateCreated': new Date(Date.now())}}, 
+                {returnOriginal: false, upsert: false}, 
+                (err, data) => {
+                    client.close();
+                    callback(getResult(err, data));
+                }
+            );         
+        });
+    },
+
     insertPSetRequest: function(pset, username, callback){
         connectWithClient((err, client) => {
             if(err){
