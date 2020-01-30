@@ -41,7 +41,7 @@ router.get('/googleapi/test', google.testAPI);
 
 router.post('/pset/download', pset.downloadPSets);
 //router.get('/pset/complete', middleware.updatePSetStatus, pset.sendPSetEmail);
-router.post('/pset/complete', middleware.updatePSetStatus);
+router.post('/pset/complete', middleware.updatePSetStatus, pset.sendPSetEmail);
 // prviate route
 router.post('/pset/cancel', middleware.checkToken, pset.cancelPSetRequest);
 

@@ -1,6 +1,6 @@
 const path = require('path');
-const configDir = path.join(__dirname, '../../../pachyderm-config');
-//const configDir = path.join(__dirname, '../../../gray2013pipelines');
+//const configDir = path.join(__dirname, '../../../pachyderm-config');
+const configDir = path.join(__dirname, '../../../gray2013pipelines');
 const jwt = require('jsonwebtoken');
 const mongo = require('../db/mongo');
 const request = require('request');
@@ -27,46 +27,42 @@ module.exports = {
     },
 
     sendPSetRequest: function(req, res, next){
-        //let pset = req.body.reqData;
-        let pset = {};
+        let pset = req.body.reqData;
         pset._id = mongo.getObjectID();
         pset.status = 'pending';
         pset.download = 0;
         pset.doi = '';
         pset.email = 'user1@email.com';
-        // request('http://localhost:5000/pipeline/start', {body: {name: pset.name, id: pset._id}, json: true}, function (error, response, body) {
-        //     if(error){
-        //         res.status(500).send(error);
-        //     }
-        //     pset.dateSubmitted = new Date(Date.now()),
-        //     req.pset = pset;
-        //     console.log('pset request submitted: ' + pset);
-        //     next();
-        // });
+        pset.downloadLink = '';
         pset.dateSubmitted = new Date(Date.now());
         req.pset = pset;
-        //console.log('pset request submitted: ' + pset);
         next();
     }, 
 
     buildPachydermReqJson: function(req, res, next){
         console.log("buildPachydermReqJson");
-        const reqID = mongo.getObjectID();
+        //const reqID = mongo.getObjectID();
         const grayPath = path.join(configDir, 'getGRAYP_2013.json');
         const gray2013Raw = fs.readFileSync(grayPath);
         const gray2013 = JSON.parse(gray2013Raw);
         gray2013.transform.cmd.splice(3);
-        gray2013.transform.cmd.push(reqID);
+        gray2013.transform.cmd.push(req.pset._id);
         gray2013.update = true;
         gray2013.reprocess = true;
-        delete gray2013.resource_requests;
 
         let json = JSON.stringify(gray2013, null, 2);
         fs.writeFile(path.join(grayPath), json, ()=> {
-            //gray2013._id = reqID;
             req.request = gray2013;
-            req.reqID = reqID;
-            //res.send(gray2013);
+            //req.reqID = reqID;
+            
+            //works
+            // let filePath = path.join(__dirname, '../test/getGRAYP_2013.json')
+            // let requestRaw = fs.readFileSync(filePath);
+            // const request = JSON.parse(requestRaw);
+            // request.update = true;
+            // request.reprocess = true;
+            // req.request = request;
+
             next();
         });
     },
@@ -75,14 +71,14 @@ module.exports = {
         console.log("pushPachydermReqJson");
         simpleGit   
             .add('./*')    
-            .commit('PSet Request: ' + req.reqID, (err, data) => {
+            .commit('PSet Request: ' + req.pset._id, (err, data) => {
                 if(err){
                     console.log(err)
                 }else{
                     console.log(data);
                 }
             })
-            .push('pachyderm', 'master', (err, data) => {
+            .push('gray2013', 'master', (err, data) => {
                 if(err){
                     console.log(err);
                 }else{
@@ -98,24 +94,23 @@ module.exports = {
 
     updatePSetStatus: function(req, res, next){
         // console.log(req.body.update);
-        // mongo.updatePSetStatus(req.body.update, function(result){
-        //     if(result.status){
-        //         req.email = result.data.value.email;
-        //         req.doi = result.data.value.doi;
-        //         next();
-        //     }else{
-        //         res.status(500).send(result.data);
-        //     }
-        // });
-
-        // for development only
-        mongo.insertCompleteRequest(req.body, function(result){
+        mongo.updatePSetStatus(req.body.update, function(result){
             if(result.status){
-                res.send({status: 1, data: req.body});
+                req.email = result.data.value.email;
+                req.doi = result.data.value.doi;
+                next();
             }else{
-                res.status(500).send({status: 0, data: 'an error occured'});
+                res.status(500).send(result.data);
             }
         });
-        
+
+        //for development only
+        // mongo.insertCompleteRequest(req.body, function(result){
+        //     if(result.status){
+        //         res.send({status: 1, data: req.body});
+        //     }else{
+        //         res.status(500).send({status: 0, data: 'an error occured'});
+        //     }
+        // });
     }
 }

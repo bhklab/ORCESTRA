@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "../empty.proto";
+import "empty.proto";
 
 package pps;
 option go_package = "github.com/pachyderm/pachyderm/src/client/pps";
@@ -22,10 +22,10 @@ message GitInput {
   string branch = 3;
 }
 
-
 message Input {
   PFSInput pfs = 6;
   repeated Input cross = 2;
+  GitInput git = 5;
 
 }
 

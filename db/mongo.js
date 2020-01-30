@@ -161,8 +161,8 @@ module.exports = {
             const db = client.db(testDB);
             const collection = db.collection('pset');
             collection.findOneAndUpdate(
-                {'_id': ObjectID(update.id)}, 
-                {'$set': {'status': 'complete', 'doi': update.doi, 'dateCreated': new Date(Date.now())}}, 
+                {'_id': ObjectID(update.ORCESTRA_ID)}, 
+                {'$set': {'status': 'complete', 'doi': update.ZENODO_DOI, 'downloadLink': update.download_link, 'dateCreated': new Date(Date.now())}}, 
                 {returnOriginal: false, upsert: false}, 
                 (err, data) => {
                     client.close();
@@ -394,10 +394,10 @@ module.exports = {
             if(err){
                 callback({status: 0, data: err});
             }
-            const obj = JSON.parse(data);
+            //const obj = JSON.parse(data);
             const db = client.db(testDB);
             const collection = db.collection('complete-requests');
-            collection.insertOne(obj, (err, result) => {
+            collection.insertOne(data, (err, result) => {
                 client.close();
                 if(err){
                     callback({status: 0, data: err});

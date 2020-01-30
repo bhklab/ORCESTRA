@@ -48,10 +48,10 @@ const postPsetData = function(req, res){
     //         res.status(500).send(result.data);
     //     }
     // });
-    let request = req.request;
-    request._id = req.reqID;
+    // let request = req.request;
+    // request._id = req.reqID;
     console.log("postPSetData");
-    mongo.insertPSetRequest(request, "user1@email.com", function(result){
+    mongo.insertPSetRequest(req.pset, req.pset.email, function(result){
         if(result.status){
             console.log('pset inserted to db'); 
             const resData = {summary: 'Request Submitted', message: 'PSet request has been submitted successfully.'};  
@@ -85,7 +85,7 @@ const downloadPSets = function(req, res){
 }
 
 const sendPSetEmail = function(req, res){
-    console.log('request received from mock pachyderm api');
+    console.log('sendPSetEmail');
     
     const url = 'http://localhost:3000/' + req.doi;
     const email = req.email;

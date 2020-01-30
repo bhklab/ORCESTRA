@@ -36,9 +36,9 @@ module.exports = {
         const createPipelineProto = path.join(protoDir, 'createPipeline', 'pps.proto');
         const packageDefinition = protoLoader.loadSync(createPipelineProto);
         const proto = grpc.loadPackageDefinition(packageDefinition);
-
-        // 52.228.28.251
-        const client = new proto.pps.API(pachydermIP, grpc.credentials.createInsecure());
+        
+        // 52.233.32.47:30650
+        const client = new proto.pps.API('52.233.32.47:30650', grpc.credentials.createInsecure());
 
         client.CreatePipeline(request, (error, response) => {
             if(error) { 
