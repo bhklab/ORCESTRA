@@ -2,7 +2,7 @@ const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 const protoDir = path.join(__dirname, 'proto-files');
-const pachydermIP = process.env.PACHYDERM_IP;
+//const pachydermIP = process.env.PACHYDERM_IP;
 
 module.exports = {
 

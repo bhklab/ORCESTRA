@@ -35,3 +35,8 @@ label {
 .inputSelect {
     flex-grow: 1;
 }
+
+form .p-inputtext {
+    font-size: 12px;
+    width: 100%;
+}

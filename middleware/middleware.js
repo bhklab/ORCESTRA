@@ -52,7 +52,6 @@ module.exports = {
         let json = JSON.stringify(gray2013, null, 2);
         fs.writeFile(path.join(grayPath), json, ()=> {
             req.request = gray2013;
-
             next();
         });
     },
@@ -63,12 +62,12 @@ module.exports = {
             .add('./*')    
             .commit('PSet Request: ' + req.pset._id, (err, data) => {
                 if(err){
-                    console.log(err)
+                    console.log(err);
                 }else{
                     console.log(data);
                 }
             })
-            .push('gray2013', 'master', (err, data) => {
+            .push('origin', 'master', (err, data) => {
                 if(err){
                     console.log(err);
                 }else{

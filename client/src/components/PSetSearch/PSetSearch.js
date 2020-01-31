@@ -166,6 +166,7 @@ class PSetSearch extends React.Component{
         event.preventDefault();
         let reqData = this.state.parameters;
         reqData.drugSensitivity = reqData.dataset.drugSensitivity;
+        console.log(reqData);
         trackPromise(
             fetch('/pset/request', {
                 method: 'POST',
@@ -256,11 +257,11 @@ class PSetSearch extends React.Component{
                                         <h2>Request PSet</h2>
                                         <div className='reqFormInput'>
                                             <label>PSet Name:</label>
-                                            <InputText id='name' className='paramInput' value={this.state.parameters.name || ''} onChange={this.updateReqInputEvent} />
+                                                <InputText id='name' className='paramInput' value={this.state.parameters.name || ''} onChange={this.updateReqInputEvent} />
                                         </div>
                                         <div className='reqFormInput'>
                                             <label>Email to receive DOI:</label>
-                                            <InputText id='email' className='paramInput' value={this.state.parameters.email || ''} onChange={this.updateReqInputEvent} />
+                                                <InputText id='email' className='paramInput' value={this.state.parameters.email || ''} onChange={this.updateReqInputEvent} />
                                         </div>
                                         <div className='reqFormInput'>
                                             {/* <Button label='Submit Request' type='submit' disabled={this.state.notReadyToSubmit} onClick={this.handleSubmitRequest}/> */}
