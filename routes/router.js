@@ -24,9 +24,9 @@ router.get('/pset/sort', pset.getSortedPSets);
 
 router.post('/pset/request', 
     middleware.receivePSetRequest, 
-    // middleware.buildPachydermReqJson, 
-    // middleware.pushPachydermReqJson, 
-    // pachyderm.createPipeline,
+    middleware.buildPachydermReqJson, 
+    middleware.pushPachydermReqJson, 
+    pachyderm.createPipeline,
     pset.postPsetData
 );
 router.get('/pset/pachyderm', pachyderm.createPipeline, pachyderm.listJob);
