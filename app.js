@@ -24,4 +24,9 @@ app.get('/*', (req, res) => {
   res.sendFile('index.html', { root: './client/build' });
 });
 
-module.exports = app;
+var port = process.env.PORT || '2000';
+app.set('port', port);
+
+app.listen(port, ()=>{
+  console.log('Server running on port: ' + port);
+});
