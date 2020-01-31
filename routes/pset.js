@@ -87,7 +87,7 @@ const downloadPSets = function(req, res){
 const sendPSetEmail = function(req, res){
     console.log('sendPSetEmail');
     
-    const url = 'http://localhost:3000/' + req.doi;
+    const url = 'http://www.orcestra.ca/' + req.doi;
     const email = req.email;
 
     mailer.sendMail(url, email, (err, info) => {
