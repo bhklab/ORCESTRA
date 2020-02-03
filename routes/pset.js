@@ -88,9 +88,8 @@ const sendPSetEmail = function(req, res){
     console.log('sendPSetEmail');
     
     const url = 'http://www.orcestra.ca/' + req.doi;
-    const email = req.email;
 
-    mailer.sendMail(url, email, (err, info) => {
+    mailer.sendMail(url, req.doi, req.email, req.download, (err, info) => {
         if(err){
             console.log(err);
             res.status(500).send(err);

@@ -31,9 +31,9 @@ module.exports = {
         pset._id = mongo.getObjectID();
         pset.status = 'pending';
         pset.download = 0;
-        pset.doi = 'sample/' + pset._id;
-        pset.tempID = '6hdhs8283'; // for development only
+        pset.doi = '';
         pset.downloadLink = '';
+        pset.commitID = '';
         pset.dateSubmitted = new Date(Date.now());
         req.pset = pset;
         next();
@@ -77,29 +77,17 @@ module.exports = {
             .exec(next);
     },
 
-    notifyPachyderm: function(req, res, next){
-
-    },
-
     updatePSetStatus: function(req, res, next){
         console.log(req.body);
         mongo.updatePSetStatusDev(req.body, function(result){
             if(result.status){
                 req.email = result.data.value.email;
                 req.doi = result.data.value.doi;
+                req.download = req.body.download_link;
                 next();
             }else{
                 res.status(500).send(result.data);
             }
         });
-
-        //for development only
-        // mongo.insertCompleteRequest(req.body, function(result){
-        //     if(result.status){
-        //         res.send({status: 1, data: req.body});
-        //     }else{
-        //         res.status(500).send({status: 0, data: 'an error occured'});
-        //     }
-        // });
     }
 }

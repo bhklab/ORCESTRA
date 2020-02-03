@@ -180,8 +180,8 @@ module.exports = {
             const db = client.db(dbName);
             const collection = db.collection('pset');
             collection.findOneAndUpdate(
-                {'tempID': update.ORCESTRA_ID}, 
-                {'$set': {'status': 'complete', 'downloadLink': update.download_link, 'dateCreated': new Date(Date.now())}}, 
+                {'_id': ObjectID(update.ORCESTRA_ID)}, 
+                {'$set': {'status': 'complete', 'doi': update.ZENODO_DOI, 'downloadLink': update.download_link, 'commitID': update.COMMIT, 'dateCreated': new Date(Date.now())}}, 
                 {returnOriginal: false, upsert: false}, 
                 (err, data) => {
                     client.close();
