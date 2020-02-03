@@ -204,18 +204,17 @@ module.exports = {
                     client.close();
                     callback({status: 0, data: err});
                 }else{
-                    callback({status: 1, data: result});
+                    const user = db.collection('user');
+                    user.findOneAndUpdate(
+                        {'username': username},
+                        {'$addToSet': {'userPSets': pset._id}},
+                        {'upsert': true},
+                        (err, data) => {
+                            client.close();
+                            callback(getResult(err, data));
+                        }
+                    );
                 }
-                // const user = db.collection('user');
-                // user.findOneAndUpdate(
-                //     {'username': username},
-                //     {'$addToSet': {'userPSets': pset._id}},
-                //     {'upsert': true},
-                //     (err, data) => {
-                //         client.close();
-                //         callback(getResult(err, data));
-                //     }
-                // );
             });       
         });
     },
