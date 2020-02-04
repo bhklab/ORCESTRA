@@ -4,6 +4,7 @@ import './PrimeStyle.css';
 
 import Navigation from '../Navigation/Navigation';
 import Main from '../Main/Main';
+import Footer from '../Footer/Footer';
 
 class App extends React.Component {
 	render(){
@@ -11,6 +12,7 @@ class App extends React.Component {
 			<div className="App">
 				<Navigation routing={this.props} />
 				<Main />
+				<Footer />
 			</div>
 		);
 	}

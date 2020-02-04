@@ -6,6 +6,7 @@ import UserPSet from './subcomponents/UserPSet';
 import {Messages} from 'primereact/messages';
 import {AuthContext} from '../../context/auth';
 import * as APIHelper from '../Shared/PSetAPIHelper';
+import Footer from '../Footer/Footer';
 
 class Profile extends React.Component{
 
@@ -137,6 +138,7 @@ class Profile extends React.Component{
                         </div>
                     </div>
                 </div>
+                <Footer />
             </React.Fragment>
         );
     }

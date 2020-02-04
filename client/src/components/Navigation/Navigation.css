@@ -159,7 +159,15 @@ header a:hover {
 }
 
 @media only screen and (min-width: 1200px) {
-  .burgerNav {
-        display: none;
-    }
+  .bm-burger-button {
+    display: none;
+  }
+
+  .bm-menu {
+    display: none;
+  }
+
+  .bm-cross {
+    display: none;
+  }
 }

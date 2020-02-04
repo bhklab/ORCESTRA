@@ -5,6 +5,9 @@
   "scripts": {
     "start": "node app.js"
   },
+  "nodemonConfig": {
+    "ignore": ["client/*"]
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {

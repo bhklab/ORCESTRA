@@ -1,0 +1,54 @@
+.appFooter {
+    bottom: 0%;
+    width:100%;
+    background-color:rgb(255,255,255, 0.7);
+    height: 150px;
+    margin-bottom: -100px;
+    font-size: calc(0.7em + 0.2vw);
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.footerContainer {
+    width: 70%;
+    display:flex;
+    align-items:flex-start;
+    align-content: flex-end;
+}
+
+.footerLinks {
+    width:200px;
+}
+
+.footerLinks a{
+    display: block;
+    margin-bottom: 10px;
+    color: #3D405A;
+}
+
+.footerLinks a:hover{
+    color: #555975;
+}
+
+.footerMenu {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.footerSupport{
+    flex-grow: 1;
+    text-align: left;
+}
+
+.footerContact {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.contactInfo{
+    font-size: calc(0.7em + 0.2vw);
+    line-height: 25px;
+    margin-top: -5px;
+}

@@ -10,6 +10,7 @@ import DNATabContent from './TabContents/DNATabContent';
 import * as APIHelper from '../Shared/PSetAPIHelper';
 import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
 import {Messages} from 'primereact/messages';
+import Footer from '../Footer/Footer';
 
 class PSet extends React.Component{
     constructor(){
@@ -82,7 +83,8 @@ class PSet extends React.Component{
                             <h3>{this.state.message}</h3>
                         }
                     </div>
-                </div> 
+                </div>
+                <Footer /> 
             </React.Fragment>
         );
     }

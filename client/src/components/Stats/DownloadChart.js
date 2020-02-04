@@ -23,7 +23,12 @@ class DownloadChart extends React.Component{
             layout={ {
                 autosize: true,
                 title: this.props.title, 
-                yaxis: {autorange: 'reversed'}, 
+                xaxis: {
+                    title: {text: 'Number of Downloads', font: {size: 14, color: '#3D405A'}}
+                },
+                yaxis: {
+                    autorange: 'reversed',
+                }, 
                 titlefont: {size: 18, color: '#3D405A'}, 
                 font:{color: '#3D405A'}
             } }

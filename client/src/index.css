@@ -11,7 +11,7 @@ body{
 #root {
   min-height: 100vh;
   margin: 0;
-  padding-bottom: 100px;
+  /* padding-bottom: 100px; */
   padding-top: 90px;
   font-family: "Raleway", "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -42,4 +42,5 @@ h1, h2, h3, h4, h5{
   margin-left: auto;
   margin-right: auto;
   padding-top: 5px;
+  height: 95vh;
 }

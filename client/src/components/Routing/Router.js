@@ -6,7 +6,7 @@ import App from '../App/App';
 import PSetSearch from '../PSetSearch/PSetSearch';
 import PSetRequest from '../PSetRequest/PSetRequest';
 import Stats from '../Stats/Stats';
-import Contact from '../Contact/Contact';
+import Documentation from '../Documentation/Documentation';
 import Profile from '../Profile/Profile';
 import Login from '../Authentication/Login';
 import PSet from '../PSet/PSet';
@@ -60,7 +60,7 @@ class Router extends React.Component{
                         <Route exact path ='/PSetSearch' render={(props)=><PSetSearch path='/PSetSearch' {...props} />}/>
                         {/* <Route exact path ='/PSetRequest' render={(props)=><PSetRequest path='/PSetRequest' {...props} />}/> */}
                         <Route exact path ='/Stats' render={(props)=><Stats path='/Stats' {...props} />}/>
-                        <Route exact path ='/Contact' render={(props)=><Contact path='/Contact' {...props} />}/>
+                        <Route exact path ='/Documentation' render={(props)=><Documentation path='/Documentation' {...props} />}/>
                         <Route exact path='/Authentication' render={(props) => <Login {...props} />} />
                         <Route path='/:id1/:id2' render={(props)=><PSet path='/:id1/:id2' {...props} />} />
                         <PrivateRoute path='/Profile' component={profile} redirect='/Authentication' />

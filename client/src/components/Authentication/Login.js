@@ -6,7 +6,7 @@ import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
 import {AuthContext} from '../../context/auth';
 import './Login.css';
-
+import Footer from '../Footer/Footer';
 
 class Login extends React.Component{
     
@@ -223,6 +223,7 @@ class Login extends React.Component{
                         </div>   
                     </div>
                 }
+                <Footer />
             </React.Fragment>
         );
     }

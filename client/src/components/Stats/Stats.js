@@ -9,6 +9,7 @@ import * as APICalls from '../Shared/APICalls';
 import * as APIHelper from '../Shared/PSetAPIHelper';
 import {AuthContext} from '../../context/auth';
 import DownloadChart from './DownloadChart';
+import Footer from '../Footer/Footer';
 
 class Stats extends React.Component{
     constructor(){
@@ -91,10 +92,11 @@ class Stats extends React.Component{
                             </div>
                         </div>
                         <div className='container downloadHistogram'>
-                            {this.state.isReady && <DownloadChart data={this.state.chartData} title='Number of Downloads' />}
+                            {this.state.isReady && <DownloadChart data={this.state.chartData} title='Top 10 Most Popular PSets' />}
                         </div>
                     </div>
                 </div>
+                <Footer />
             </React.Fragment>
         );
     }

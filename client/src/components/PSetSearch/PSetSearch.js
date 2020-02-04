@@ -14,6 +14,7 @@ import {Messages} from 'primereact/messages';
 import {AuthContext} from '../../context/auth';
 import * as APIHelper from '../Shared/PSetAPIHelper';
 import * as APICalls from '../Shared/APICalls';
+import Footer from '../Footer/Footer';
 
 class PSetSearch extends React.Component{
     constructor(){
@@ -276,6 +277,7 @@ class PSetSearch extends React.Component{
                         </div>
                     </div>
                 </div>
+                <Footer />
             </React.Fragment>
         );
     }

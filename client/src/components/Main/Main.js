@@ -15,7 +15,6 @@ class OrcestraMain extends React.Component {
                         <a className='button' href="/Profile">View Your Profile</a>
                     </div>
                 </div>
-                
 			</div>
 		);
 	}
