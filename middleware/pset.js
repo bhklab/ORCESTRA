@@ -1,7 +1,6 @@
 const mongo = require('../db/mongo');
 const path = require('path');
 const psetDir = path.join(__dirname, '../psets');
-const mailer = require('../mailer/mailer');
 const zip = require('express-zip');
 
 const getPSetByDOI = function(req, res){
@@ -38,28 +37,35 @@ const getSortedPSets = function(req, res){
     });
 }
 
-const postPsetData = function(req, res){
-    // mongo.insertPSetRequest(req.pset, req.pset.email, function(result){
-    //     if(result.status){
-    //         console.log('pset inserted to db'); 
-    //         const resData = {summary: 'Request Submitted', message: 'PSet resuest has been submitted successfully.'};  
-    //         res.send(resData);
-    //     }else{
-    //         res.status(500).send(result.data);
-    //     }
-    // });
-    // let request = req.request;
-    // request._id = req.reqID;
+const postPSetData = async function(req, res, next){
     console.log("postPSetData");
-    mongo.insertPSetRequest(req.pset, req.pset.email, function(result){
+    const result = await mongo.insertPSetRequest(req.pset, req.pset.email, req.config);
+    if(result.status){
+        console.log('pset inserted to db: ' + req.pset._id); 
+        next();
+    }else{
+        res.status(500).send(result.error);
+    }
+    next();
+}
+
+const completePSetReqProcess = async function(req, res){
+    console.log("completePSetReqProcess");
+    if(req.isOnline){
+        const update = {'dateProcessed': req.pset.dateProcessed, 'status': 'in-process'};
+        const result = await mongo.updatePSetStatus(req.pset._id, update);
         if(result.status){
-            console.log('pset inserted to db: ' + req.pset._id); 
             const resData = {summary: 'Request Submitted', message: 'PSet request has been submitted successfully.'};  
             res.send(resData);
         }else{
-            res.status(500).send(result.data);
+            res.status(500).send(result.error);
         }
-    });
+    }else{
+        const resData = {summary: 'Request Submitted', message: 'PSet request has been submitted successfully.'};  
+        res.send(resData);
+    }
+    // const resData = {summary: 'Request Submitted', message: 'PSet request has been submitted successfully.'};  
+    // res.send(resData);
 }
 
 const cancelPSetRequest = function(req, res){
@@ -84,27 +90,45 @@ const downloadPSets = function(req, res){
     });
 }
 
-const sendPSetEmail = function(req, res){
-    console.log('sendPSetEmail');
-    
-    const url = 'http://www.orcestra.ca/' + req.doi;
+const updatePSetStatus = async function(req, res, next){
+    console.log(req.body);
+    const data = req.body;
+    const update = {
+        'status': 'complete', 
+        'doi': data.ZENODO_DOI, 
+        'downloadLink': data.download_link, 
+        'commitID': data.COMMIT, 
+        'dateCreated': new Date(Date.now())
+    }
+    const result = await mongo.updatePSetStatus(data.ORCESTRA_ID, update);
+    if(result.status){
+        req.email = result.data.value.email;
+        req.doi = result.data.value.doi;
+        req.download = req.body.download_link;
+        next();
+    }else{
+        res.status(500).send(result.error);
+    }
 
-    mailer.sendMail(url, req.doi, req.email, req.download, (err, info) => {
-        if(err){
-            console.log(err);
-            res.status(500).send(err);
-        }
-        console.log('email sent');
-        res.send({status: 1, message: 'ok'});
-    });
+    // mongo.updatePSetStatus(req.body, function(result){
+    //     if(result.status){
+    //         req.email = result.data.value.email;
+    //         req.doi = result.data.value.doi;
+    //         req.download = req.body.download_link;
+    //         next();
+    //     }else{
+    //         res.status(500).send(result.data);
+    //     }
+    // });
 }
 
 module.exports = {
     getPSetByDOI,
     getPsetList,
     getSortedPSets,
-    postPsetData,
+    postPSetData,
+    completePSetReqProcess,
     cancelPSetRequest,
     downloadPSets,
-    sendPSetEmail
+    updatePSetStatus
 };

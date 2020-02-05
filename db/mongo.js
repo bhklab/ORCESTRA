@@ -2,8 +2,22 @@ const mongo  = require('mongodb');
 const mongoClient = mongo.MongoClient;
 const connStr = 'mongodb+srv://root:root@development-cluster-ptdz3.azure.mongodb.net/test?retryWrites=true&w=majority';
 const dbName = 'orcestra-dev';
-const testDB = 'orcestra-test';
+const testDB = 'orcestra-test'
 const ObjectID = mongo.ObjectID;
+
+let db = null;
+const getDB = async () => {
+    if(db){
+        return db;
+    }
+    try{
+        const client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true});
+        db = client.db(dbName);
+    }catch(err){
+        console.log('DB Unavailable');
+    }
+    return db;
+}
 
 function connectWithClient(callback){
     mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
@@ -152,72 +166,79 @@ module.exports = {
         });
     },
 
-    updatePSetStatus: function(update, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            //const db = client.db(testDB);
+    updatePSetStatus: async function(id, update, callback){
+        const db = await getDB();
+        const res = {status: 0, error: null, data: {}};
+        try{
             const collection = db.collection('pset');
-            collection.findOneAndUpdate(
-                {'_id': ObjectID(update.ORCESTRA_ID)}, 
-                {'$set': {'status': 'complete', 'doi': update.ZENODO_DOI, 'downloadLink': update.download_link, 'dateCreated': new Date(Date.now())}}, 
-                {returnOriginal: false, upsert: false}, 
-                (err, data) => {
-                    client.close();
-                    callback(getResult(err, data));
-                }
-            );         
-        });
+            res.data = await collection.findOneAndUpdate(
+                { '_id': ObjectID(id) }, 
+                { '$set': update} , 
+                {returnOriginal: false, upsert: false}
+            );
+            res.status = 1
+        }catch(err){
+            res.error = err;
+            res.status = 0;
+        }finally{
+            return(res);
+        }           
     },
 
-    updatePSetStatusDev: function(update, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const collection = db.collection('pset');
-            collection.findOneAndUpdate(
-                {'_id': ObjectID(update.ORCESTRA_ID)}, 
-                {'$set': {'status': 'complete', 'doi': update.ZENODO_DOI, 'downloadLink': update.download_link, 'commitID': update.COMMIT, 'dateCreated': new Date(Date.now())}}, 
-                {returnOriginal: false, upsert: false}, 
-                (err, data) => {
-                    client.close();
-                    callback(getResult(err, data));
-                }
-            );         
-        });
-    },
+    // updatePSetStatus: function(update, callback){
+    //     connectWithClient((err, client) => {
+    //         if(err){
+    //             callback({status: 0, data: err});
+    //         }
+    //         const db = client.db(dbName);
+    //         const collection = db.collection('pset');
+    //         collection.findOneAndUpdate(
+    //             {'_id': ObjectID(update.ORCESTRA_ID)}, 
+    //             {'$set': {
+    //                     'status': 'complete', 
+    //                     'doi': update.ZENODO_DOI, 
+    //                     'downloadLink': update.download_link, 
+    //                     'commitID': update.COMMIT, 
+    //                     'dateCreated': new Date(Date.now())
+    //                 }
+    //             }, 
+    //             {returnOriginal: false, upsert: false}, 
+    //             (err, data) => {
+    //                 client.close();
+    //                 callback(getResult(err, data));
+    //             }
+    //         );         
+    //     });
+    // },
 
-    insertPSetRequest: function(pset, username, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
+    insertPSetRequest: async function(pset, username, config){
+        const db = await getDB();
+        const res = {status: 0, error: null, result: {}};
+        if(db){   
+            try{
+                const psets = db.collection('pset');
+                const user = db.collection('user');
+                const reqConfig = db.collection('req-config');
+                config._id = pset._id;
+                res.result.config = await reqConfig.insertOne(config);
+                res.result.pset = await psets.insertOne(pset);
+                res.result.user = await user.findOneAndUpdate(
+                    {'username': username},
+                    {'$addToSet': {'userPSets': pset._id}},
+                    {'upsert': true}
+                );
+                res.status = 1;
+            }catch(err){
+                res.error = err;
+                res.status = 0;
+            }finally{
+                return(res);
             }
-            const db = client.db(dbName);
-            //const db = client.db(testDB);
-            const collection = db.collection('pset');
-            collection.insertOne(pset, (err, result) => {
-                if(err){
-                    client.close();
-                    callback({status: 0, data: err});
-                }else{
-                    callback({status: 1, data: result});
-                }
-                // const user = db.collection('user');
-                // user.findOneAndUpdate(
-                //     {'username': username},
-                //     {'$addToSet': {'userPSets': pset._id}},
-                //     {'upsert': true},
-                //     (err, data) => {
-                //         client.close();
-                //         callback(getResult(err, data));
-                //     }
-                // );
-            });       
-        });
+        }else{
+            res.error = true;
+            res.result = 'DB Unavailable';
+            return(res);
+        }
     },
 
     cancelPSetRequest: function(psetID, username=null, callback){
@@ -379,51 +400,17 @@ module.exports = {
         });
     },
 
-    selectMetadata: function(callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const collection = db.collection('metadata');
-            collection.find((err, data) => {
-                client.close();
-                callback(getResult(err, data));
-            });
-        });
-    },
-
-    selectFormData: function(callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const collection = db.collection('formdata');
-            collection.find().toArray((err, data) => {
-                client.close();
-                callback(getResult(err, data));
-            });
-        });
-    },
-
-    // For development use only
-    insertCompleteRequest: function(data, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            //const obj = JSON.parse(data);
-            const db = client.db(testDB);
-            const collection = db.collection('complete-requests');
-            collection.insertOne(data, (err, result) => {
-                client.close();
-                if(err){
-                    callback({status: 0, data: err});
-                }else{
-                    callback({status: 1, data: result});
-                }
-            })
-        })
+    selectFormData: async function(){
+        const db = await getDB();
+        const collection = db.collection('formdata');
+        const res = {status: 0, data: {}};
+        try{
+            res.data = await collection.find().toArray();
+            res.status = 1;
+        }catch(err){
+            res.data = err
+        }finally{
+            return res;
+        }
     }
 }

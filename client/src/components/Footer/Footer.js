@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Footer.css';
 
@@ -9,12 +9,10 @@ const Footer = (props) => {
                 <div className="footerMenu footerLinks">
                     <h3>Menu</h3>
                     <NavLink exact to="/PSetSearch" >Search and Request</NavLink>
-                    <NavLink exact to="/Stats" >Statistics</NavLink>
-                    <NavLink exact to="/Profile" >Profile</NavLink>
+                    <NavLink exact to="/Documentation" >Documentation</NavLink>
                 </div>
                 <div className="footerSupport footerLinks">
                     <h3>Support</h3>
-                    <NavLink exact to="/Documentation" >Documentation</NavLink>
                     <a href="https://github.com/bhklab">GitHub</a>
                     <a href="https://bhklab.ca/">BHKLab</a>
                 </div>
