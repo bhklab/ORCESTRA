@@ -1,5 +1,3 @@
-const simpleGit = require('simple-git');
-
 module.exports = {
     pushPachydermConfigJson: function(req, res, next){
         if(req.isOnline){

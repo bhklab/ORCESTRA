@@ -60,7 +60,7 @@ class PSetSearch extends React.Component{
     static contextType = AuthContext;
 
     componentDidMount(){
-        APICalls.queryPSet('/pset', (resData) => {
+        APICalls.queryPSet('/pset?status=complete', (resData) => {
             this.updateAllData(resData);
         });
         fetch('/formdata')  
@@ -76,18 +76,6 @@ class PSetSearch extends React.Component{
     showMessage(status, data){
         APIHelper.messageAfterRequest(status, data, this.initializeState, this.messages);
     }
-
-    // evaluateList(list){
-    //     if(list.length > 0){
-    //         return(
-    //             <ul>
-    //                 {list.map((pset) => <li key={pset._id}>{pset.name}</li>)}
-    //             </ul>
-    //         );
-    //     } else {
-    //         return(<ul><li>None</li></ul>);
-    //     }
-    // }
 
     setStateOnParamSelection(states){
         let parameters = this.state.parameters;

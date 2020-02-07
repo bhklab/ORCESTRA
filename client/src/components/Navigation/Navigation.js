@@ -39,8 +39,7 @@ class Navigation extends React.Component {
                         <div className='navBar'>
                             <div><NavLink exact to='/' activeClassName='active-link'>Home</NavLink></div>
                             <div><NavLink exact to="/PSetSearch" activeClassName='active-link'>Search and Request</NavLink></div>
-                            {/* <div><NavLink exact to="/PSetRequest" activeClassName='active-link'>Request</NavLink></div> */}
-                            {/* <div><NavLink exact to="/Stats" activeClassName='active-link'>Statistics</NavLink></div> */}
+                            <div><NavLink exact to="/Dashboard" activeClassName='active-link'>Dashboard</NavLink></div>
                             <div><NavLink exact to="/Documentation" activeClassName='active-link'>Documentation</NavLink></div>
                             { this.context.authenticated && <div className='menu-item'><NavLink exact to="/Profile" activeClassName='active-link'>Profile</NavLink></div> }
                             <div>
@@ -54,8 +53,7 @@ class Navigation extends React.Component {
                             <Menu width={ 200 } isOpen={true} > 
                                 <div className='menu-item'><NavLink exact to='/' activeClassName='active-link'>Home</NavLink></div>
                                 <div className='menu-item'><NavLink exact to="/PSetSearch" activeClassName='active-link'>Search and Request</NavLink></div>
-                                {/* <div className='menu-item'><NavLink exact to="/PSetRequest" activeClassName='active-link'>Request</NavLink></div> */}
-                                {/* <div className='menu-item'><NavLink exact to="/Stats" activeClassName='active-link'>Statistics</NavLink></div> */}
+                                <div><NavLink exact to="/Dashboard" activeClassName='active-link'>Dashboard</NavLink></div>
                                 <div><NavLink exact to="/Documentation" activeClassName='active-link'>Documentation</NavLink></div>
                                 { this.context.authenticated && <div className='menu-item'><NavLink exact to="/Profile" activeClassName='active-link'>Profile</NavLink></div> }
                                 <div className='menu-item'>

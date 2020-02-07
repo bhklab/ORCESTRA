@@ -15,7 +15,7 @@ export function getFilterSet(data){
 }
 
 export function buildAPIStr(filterSet){
-    let apiStr = '/pset?';
+    let apiStr = '/pset?status=complete&';
     let apiFragments = [];
     apiFragments.push(buildAPIStrFragment('dtp', filterSet.datatype));
     apiFragments.push(buildAPIStrFragment('dsv', filterSet.datasetVersion));

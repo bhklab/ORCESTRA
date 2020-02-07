@@ -17,6 +17,7 @@ module.exports = {
         pset.dateProcessed = '';
         pset.dateCreated = '';
         req.pset = pset;
+        req.id = pset._id;
         next();
     }, 
 
@@ -52,6 +53,27 @@ module.exports = {
                     next();
                 }   
             });
+        }else{
+            next();
+        }
+    },
+
+    getPachydermConfigJson: async function(req, res, next){
+        if(req.isOnline){
+            console.log("getPachydermConfigJson");
+            const pipelineDir = 'gray2013pipelines';
+            const configFile = 'getGRAYP_2013.json';
+            req.configPath = path.join(configDir, pipelineDir, configFile);
+            req.configDir = path.join(configDir, pipelineDir);
+            const result = await mongo.getRequestConfig(req.body.id);
+            if(result.status){
+                console.log('config fetched from db: ' + result.data._id); 
+                req.config = result.data;
+                req.id = result.data._id;
+                next();
+            }else{
+                res.status(500).send(result.error);
+            }
         }else{
             next();
         }

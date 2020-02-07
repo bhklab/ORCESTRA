@@ -26,8 +26,8 @@ function connectWithClient(callback){
 }
 
 function getQueryFilterSet(query){
-    var querySet = {};
-    var queryArray = [];
+    let querySet = {}
+    let queryArray = [];
     if(!query){
         return(querySet);
     } 
@@ -68,11 +68,14 @@ function getQueryFilterSet(query){
         queryArray.push(getQueryFilter('drugSensitivity.version', query.dst));
     }
 
-    queryArray.push({'status': 'complete'});
+    if(query.status){
+        queryArray.push(getQueryFilter('status', query.status));
+    }
 
     if(queryArray.length){
         querySet = {$and: queryArray};
     }
+
     return(querySet);
 }
 
@@ -120,8 +123,8 @@ module.exports = {
             }
             const db = client.db(dbName);
             const collection = db.collection('pset');
-            var queryFilterSet = getQueryFilterSet(query); 
-            collection.find(queryFilterSet).toArray((err, data) => {
+            let queryFilter = getQueryFilterSet(query);
+            collection.find(queryFilter).toArray((err, data) => {
                 client.close();
                 callback(getResult(err, data));
             });
@@ -166,7 +169,7 @@ module.exports = {
         });
     },
 
-    updatePSetStatus: async function(id, update, callback){
+    updatePSetStatus: async function(id, update){
         const db = await getDB();
         const res = {status: 0, error: null, data: {}};
         try{
@@ -184,32 +187,6 @@ module.exports = {
             return(res);
         }           
     },
-
-    // updatePSetStatus: function(update, callback){
-    //     connectWithClient((err, client) => {
-    //         if(err){
-    //             callback({status: 0, data: err});
-    //         }
-    //         const db = client.db(dbName);
-    //         const collection = db.collection('pset');
-    //         collection.findOneAndUpdate(
-    //             {'_id': ObjectID(update.ORCESTRA_ID)}, 
-    //             {'$set': {
-    //                     'status': 'complete', 
-    //                     'doi': update.ZENODO_DOI, 
-    //                     'downloadLink': update.download_link, 
-    //                     'commitID': update.COMMIT, 
-    //                     'dateCreated': new Date(Date.now())
-    //                 }
-    //             }, 
-    //             {returnOriginal: false, upsert: false}, 
-    //             (err, data) => {
-    //                 client.close();
-    //                 callback(getResult(err, data));
-    //             }
-    //         );         
-    //     });
-    // },
 
     insertPSetRequest: async function(pset, username, config){
         const db = await getDB();
@@ -237,6 +214,20 @@ module.exports = {
         }else{
             res.error = true;
             res.result = 'DB Unavailable';
+            return(res);
+        }
+    },
+
+    getRequestConfig: async function(id){
+        const db = await getDB();
+        const res = {status: 0, error: null, data: {}};
+        try{
+            const collection = db.collection('req-config');
+            res.data = await collection.findOne({'_id': ObjectID(id)});
+            res.status = 1;
+        }catch(err){
+            res.error = err;
+        }finally{
             return(res);
         }
     },

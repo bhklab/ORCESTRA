@@ -37,6 +37,7 @@ class PSetFilter extends React.Component {
     sendFilterPSetRequest(){
         let filterset = APIHelper.getFilterSet(this.props.parameters);
         let apiStr = APIHelper.buildAPIStr(filterset);
+        console.log(apiStr);
         let searchAll = apiStr === '/pset' ||  apiStr === '/pset?' ? true : false;
         APICalls.queryPSet(apiStr, (data) => {
             this.props.updateAllData(data, searchAll);

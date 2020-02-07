@@ -1,7 +1,4 @@
 const mongo = require('../db/mongo');
-const path = require('path');
-const psetDir = path.join(__dirname, '../psets');
-const zip = require('express-zip');
 
 const getPSetByDOI = function(req, res){
     const doi = req.params.id1 + '/' + req.params.id2;
@@ -52,8 +49,8 @@ const postPSetData = async function(req, res, next){
 const completePSetReqProcess = async function(req, res){
     console.log("completePSetReqProcess");
     if(req.isOnline){
-        const update = {'dateProcessed': req.pset.dateProcessed, 'status': 'in-process'};
-        const result = await mongo.updatePSetStatus(req.pset._id, update);
+        const update = {'dateProcessed': req.dateProcessed, 'status': 'in-process'};
+        const result = await mongo.updatePSetStatus(req.id, update);
         if(result.status){
             const resData = {summary: 'Request Submitted', message: 'PSet request has been submitted successfully.'};  
             res.send(resData);
@@ -109,17 +106,6 @@ const updatePSetStatus = async function(req, res, next){
     }else{
         res.status(500).send(result.error);
     }
-
-    // mongo.updatePSetStatus(req.body, function(result){
-    //     if(result.status){
-    //         req.email = result.data.value.email;
-    //         req.doi = result.data.value.doi;
-    //         req.download = req.body.download_link;
-    //         next();
-    //     }else{
-    //         res.status(500).send(result.data);
-    //     }
-    // });
 }
 
 module.exports = {

@@ -55,7 +55,7 @@ const PSetTable = (props) => {
     const downloadTemplate = (rowData, column) => {
         let link = 'Not Available';
         if(rowData.downloadLink){
-            link = <a id={rowData._id} href='' onClick={downloadOnePSet(rowData._id, rowData.downloadLink)}>Download</a>
+            link = <a id={rowData._id} href='#' onClick={downloadOnePSet(rowData._id, rowData.downloadLink)}>Download</a>
         }
         return(
             link

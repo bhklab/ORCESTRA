@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-//const zenodo = require('../middleware/zenodo');
-//const google = require('../middleware/google');
-
 //middleware
 const pset = require('./middleware/pset');
 const user = require('./middleware/user');
@@ -14,23 +11,13 @@ const db = require('./middleware/db');
 const pachyderm = require('./middleware/pachyderm');
 const email = require('./middleware/email');
 
-//for development only
-const script = require('./middleware/insert-script');
-
 
 // pset
 router.get('/pset', pset.getPsetList);
 router.get('/pset/one/:id1/:id2', pset.getPSetByDOI);
 router.get('/pset/sort', pset.getSortedPSets);
-//router.post('/pset/request', middleware.sendPSetRequest, pset.postPsetData);
 
-// router.post('/pset/request', 
-//     middleware.receivePSetRequest, 
-//     // middleware.buildPachydermReqJson, 
-//     // middleware.pushPachydermReqJson, 
-//     // pachyderm.createPipeline,
-//     pset.postPsetData
-// );
+router.get('/pachyderm/status', pachyderm.checkOnline, pachyderm.returnStatus);
 
 router.post('/pset/request', 
     request.receivePSetRequest, 
@@ -43,26 +30,21 @@ router.post('/pset/request',
     pset.completePSetReqProcess
 );
 
-//router.get('/pset/pachyderm', pachyderm.createPipeline, pachyderm.listJob);
-
-// router.get('/zenodo/upload/:name', 
-//     zenodo.getDepositInfo, 
-//     zenodo.uploadFile,
-//     zenodo.addMetadata,
-//     zenodo.publish
-// );
-// router.get('/googleapi/test', google.testAPI);
-
+// 1. check online, 2. get config json, 3. save config json file, 4. git push, 5. create pipeline, 6. complete process
+router.post('/pset/process', 
+    pachyderm.checkOnline,
+    pachyderm.handleOffline,
+    request.getPachydermConfigJson,
+    // git push,
+    pachyderm.createPipeline,
+    pset.completePSetReqProcess
+);
 
 router.post('/pset/download', pset.downloadPSets);
 router.post('/pset/complete', pset.updatePSetStatus, email.sendPSetEmail);
+
 // prviate route
 router.post('/pset/cancel', auth.checkToken, pset.cancelPSetRequest);
-
-// insert script
-router.get('/script/bulk', script.insert);
-router.get('/script/formdata', script.insertFormdata);
-
 
 // user
 router.get('/user', user.getUser);
