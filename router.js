@@ -35,7 +35,7 @@ router.post('/pset/process',
     pachyderm.checkOnline,
     pachyderm.handleOffline,
     request.getPachydermConfigJson,
-    // git push,
+    git.pushPachydermConfigJson,
     pachyderm.createPipeline,
     pset.completePSetReqProcess
 );

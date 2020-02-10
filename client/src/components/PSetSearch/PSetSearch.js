@@ -27,6 +27,7 @@ class PSetSearch extends React.Component{
             selectedPSets: [],
             disableSaveBtn: true,
             isRequest: false,
+            isLoaded: false,
 
             parameters: {
                 dataType: [],
@@ -68,7 +69,8 @@ class PSetSearch extends React.Component{
             .then(resData => {
                 this.setState({
                     formData: resData[0],
-                    formDataOriginal: JSON.parse(JSON.stringify(resData[0]))
+                    formDataOriginal: JSON.parse(JSON.stringify(resData[0])),
+                    isLoaded: true
                 });
             });
     }
@@ -212,6 +214,8 @@ class PSetSearch extends React.Component{
                 <div className='pageContent'>
                     <h1>Search or Request Pharmacogenomic Datasets</h1>
                     <div className='pSetListContainer'>
+                    {
+                        this.state.isLoaded ?
                         <PSetFilter 
                             updateAllData={this.updateAllData} 
                             setRequestView={this.setRequestView} 
@@ -220,6 +224,10 @@ class PSetSearch extends React.Component{
                             formData={this.state.formData} 
                             parameters={this.state.parameters}
                         />
+                        :
+                        <div></div>
+                    }
+                        
                         <div className='pSetTable'>
                             <Messages ref={(el) => this.messages = el} />
                             <div className='pSetSelectionSummary'>

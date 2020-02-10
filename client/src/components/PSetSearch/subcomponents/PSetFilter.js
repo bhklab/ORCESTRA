@@ -11,28 +11,10 @@ class PSetFilter extends React.Component {
         super();
         this.state = {
             psetRequestMode: false,
-            // parameters: {
-            //     dataType: [],
-            //     dataset: [],
-            //     drugSensitivity: [],
-            //     genome: [],
-            //     rnaTool: [],
-            //     rnaRef: [],
-            //     dnaTool: [],
-            //     dnaRef: [],
-            //     drugSensitivity: null
-            // }
         }
-
-        // this.handleClick = this.handleClick.bind(this);
         this.sendFilterPSetRequest = this.sendFilterPSetRequest.bind(this);
         this.setRequestView = this.setRequestView.bind(this);
     }
-
-    // handleClick = event => {
-    //     event.preventDefault();
-    //     this.sendFilterPSetRequest();
-    // }
 
     sendFilterPSetRequest(){
         let filterset = APIHelper.getFilterSet(this.props.parameters);
@@ -67,7 +49,6 @@ class PSetFilter extends React.Component {
                             dropdownClassName='filterSet'
                             selectOne={this.props.isRequest}
                         />
-                        {/* <Button type='submit' label='Search' onClick={this.handleClick} disabled={this.state.autoUpdateChecked}/> */}
                     </div>
                 </div>
             </React.Fragment>
