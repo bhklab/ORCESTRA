@@ -71,7 +71,7 @@ function loginUser(req, res){
                     }
                     if(match){
                         const token = jwt.sign({username: req.body.user.username}, process.env.KEY, {expiresIn: '1h'});
-                        res.cookie('token', token, {httpOnly: true}).send({authenticated: true, username: req.body.user.username});
+                        res.cookie('token', token, {httpOnly: true}).send({authenticated: true, username: req.body.user.username, isAdmin: result.data.admin});
                     }else{
                         res.send({authenticated: false});
                     }
@@ -117,7 +117,7 @@ function removeUserPSet(req, res){
 }
 
 function checkToken(req, res){
-    res.status(200).send({authenticated: true, username: req.username});
+    res.status(200).send({authenticated: true, username: req.username, isAdmin: req.isAdmin});
 }
 
 function logoutUser(req, res){

@@ -16,16 +16,19 @@ class Router extends React.Component{
         super();
         this.state = {
             authenticated: false,
+            isAdmin: false,
             user: '',
             setAuthToken: (value) => {
                 this.setState({
                     authenticated: value.authenticated,
-                    username: value.username
+                    username: value.username,
+                    isAdmin: value.isAdmin
                 });
             },
             resetAuthToken: () => {
                 this.setState({
                     authenticated: false,
+                    isAdmin: false,
                     user: ''
                 });
             }
@@ -39,7 +42,7 @@ class Router extends React.Component{
                 if(res.status === 200){
                     return(res.json());
                 }else{
-                    return({authenticated: false, username: ''});
+                    return({authenticated: false, isAdmin: false, username: ''});
                 }
             })
             .then(data => {this.state.setAuthToken(data)});

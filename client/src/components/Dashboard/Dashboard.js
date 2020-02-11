@@ -15,8 +15,6 @@ const Dashboard = (props) => {
     const auth = useContext(AuthContext);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [pachydermOnline, setPachydermOnline] = useState(false);
-    //const [submitInProgress, setSubmitInProgress] = useState(false);
 
     const { promiseInProgress } = usePromiseTracker();
 
@@ -32,7 +30,6 @@ const Dashboard = (props) => {
     }
 
     const submitRequest = async (id) => {
-        //setSubmitInProgress(true);
         const result = await trackPromise(fetch(
             '/pset/process', 
             { 
@@ -42,19 +39,11 @@ const Dashboard = (props) => {
             }
         ));
         const json = await result.json();
-        //setSubmitInProgress(false);
         return({ok: result.ok, data: json});
-    }
-
-    const checkPachydermStatus = async () => {
-        const status = await fetch('/pachyderm/status');
-        const json = await status.json();
-        setPachydermOnline(json.isOnline);
     }
 
     useEffect(() => {
         fetchData('/pset?status=pending&status=in-process');
-        checkPachydermStatus();
     }, []);
     
     const onSubmit = async (event) => {
@@ -100,14 +89,6 @@ const Dashboard = (props) => {
                             </div>
                             <div className='dashboardSummarySection'>
                                 <span className='number'>{ data.filter(d => d.status === 'in-process').length }</span> request(s) in process.
-                            </div>  
-                            <div className='dashboardSummarySection'>
-                                {
-                                    pachydermOnline ? 
-                                    <div>Online</div>
-                                    :
-                                    <div>Offline</div>
-                                }
                             </div>    
                         </div>    
                     </div>
@@ -119,7 +100,7 @@ const Dashboard = (props) => {
                                 <Column className='textField' field='name' header='Name' style={{width:'5em'}} sortable={true} />
                                 <Column className='textField' field='dateSubmitted' header='Submitted Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
                                 <Column className='textField' field='dateProcessed' header='Process Start Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
-                                <Column body={buttonTemplate} style={{width:'1.5em'}}/>
+                                { auth.isAdmin && <Column body={buttonTemplate} style={{width:'1.5em'}}/> }
                             </DataTable>
                         } 
                         {

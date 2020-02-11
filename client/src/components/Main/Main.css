@@ -1,12 +1,13 @@
 .mainContent{
     width: 100%;
     padding-top: 50px;
-    height: 95vh;
     color:rgb(61, 64, 90);
+    height: 100%;
+    margin-bottom: 250px;
 }
 
 .home {
-    width: 80%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -28,22 +29,6 @@
     font-weight:bold;
     color:rgb(61, 64, 90);
 }
-
-.links {
-    max-width: 750px;
-    margin-top: 50px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 50px; 
-    padding-right: 50px;
-    background-color:rgb(255, 255, 255,0.5);
-    border-radius: 10px;
-    min-height:300px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .button {
     background-color: rgb(61, 64, 90);
     border-radius: 5px;
@@ -69,7 +54,13 @@
 
 .mainMenuRow{
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+}
+
+.mainMenuColumn{
+    flex: 25%;
+    max-width: 25%;
 }
 
 .mainMenuItem{
@@ -103,25 +94,9 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-@media only screen and (max-width: 965px) {
-    /* For mobile phones: */
-    .links {
-        flex-direction: column;
-        min-height:100px;
-    }
-
-    .home h1 {
-        font-size: 40px;
-    }
-
-    .home h2 {
-        font-size: 12px;
-    }
-
-    .button {
-        padding: 25px 20px;
-        margin: 10px 0px;
-        font-size: 14px;
-        width: 200px;
-    }
+@media only screen and (max-width: 1000px) {
+    .mainMenuColumn {
+        flex: 50%;
+        max-width: 100%;
+      }
 }

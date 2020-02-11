@@ -11,6 +11,7 @@ module.exports = {
                     res.status(401).send({data: 'Unauthorized: Invalid token'});
                 }else{
                     req.username = decoded.username;
+                    req.isAdmin = decoded.isAdmin;
                     next();
                 }
             });

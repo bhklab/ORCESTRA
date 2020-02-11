@@ -10,10 +10,11 @@ const Footer = (props) => {
                     <h3>Menu</h3>
                     <NavLink exact to="/PSetSearch" >Search and Request</NavLink>
                     <NavLink exact to="/Dashboard" >Dashboard</NavLink>
-                    <NavLink exact to="/Documentation" >Documentation</NavLink>
+                    <NavLink exact to="/Stats" >Statistics</NavLink>
                 </div>
                 <div className="footerSupport footerLinks">
                     <h3>Support</h3>
+                    <NavLink exact to="/Documentation" >Documentation</NavLink>
                     <a href="https://github.com/bhklab">GitHub</a>
                     <a href="https://bhklab.ca/">BHKLab</a>
                 </div>

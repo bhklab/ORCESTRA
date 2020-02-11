@@ -73,6 +73,27 @@ header a:hover {
     right: 100px;
 }
 
+.pachydermStatus {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.pachydermStatus > .icon {
+  font-size: 25px;
+}
+
+.pachydermStatus > .text {
+  font-size: 12px;
+}
+
+.isOnline {
+  color: #0ea353;
+}
+
+.isOffline {
+  color: #bb2003;
+}
 
 /*react-burger-nav style*/
 

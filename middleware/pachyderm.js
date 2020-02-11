@@ -21,7 +21,7 @@ module.exports = {
     },
 
     checkOnline: function(req, res, next){
-        const online = true;
+        const online = false;
         req.isOnline = online;
         next();
     },

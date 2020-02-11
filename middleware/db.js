@@ -8,5 +8,14 @@ module.exports = {
         }else{
             res.status(500).send(result.data);
         }
+    },
+
+    getLandingData: async function(req, res){
+        const result = await mongo.getLandingData();
+        if(result.status){
+            res.send(result);
+        }else{
+            res.status(500).send(result);
+        }
     }
 }

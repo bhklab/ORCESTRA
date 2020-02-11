@@ -61,4 +61,7 @@ router.get('/user/checkToken', auth.checkToken, user.checkToken);
 //formdata
 router.get('/formdata', db.getFormData);
 
+//landing data
+router.get('/landing/data', db.getLandingData)
+
 module.exports = router;

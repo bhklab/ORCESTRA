@@ -403,5 +403,32 @@ module.exports = {
         }finally{
             return res;
         }
+    },
+
+    getLandingData: async function(){
+        const db = await getDB();
+        const res = {status: 0, err: {}, form: {}, user: {}, pset: {}, dashboard: {}};
+        try{
+            const form = db.collection('formdata');
+            const user = db.collection('user');
+            const pset = db.collection('pset');
+            res.form = await form.find().toArray();
+            res.user = await user.find({'registered': true}).count();
+            const array = await pset.find().sort({'download': -1}).toArray();
+            res.pset = array.splice(0,5);
+            const pending = await array.filter(pset => {
+                return pset.status === 'pending'
+            });
+            const inProcess = await array.filter(pset => {
+                return pset.status === 'in-process'
+            })
+            res.dashboard.pending = pending ? pending.length : 0;
+            res.dashboard.inProcess = inProcess? inProcess.length: 0;
+            res.status = 1;
+        }catch(err){
+            res.err = err
+        }finally{
+            return res;
+        }
     }
 }
