@@ -1,59 +1,47 @@
 import React from 'react';
 import {InputSwitch} from 'primereact/inputswitch';
-//import {Button} from 'primereact/button';
 import * as APIHelper from '../../Shared/PSetAPIHelper';
 import * as APICalls from '../../Shared/APICalls';
 import PSetParameterOptions from '../../Shared/PSetParameterOptions';
 import './PSetFilter.css';
 
-class PSetFilter extends React.Component {
-    constructor(){
-        super();
-        this.state = {
-            psetRequestMode: false,
-        }
-        this.sendFilterPSetRequest = this.sendFilterPSetRequest.bind(this);
-        this.setRequestView = this.setRequestView.bind(this);
-    }
+const PSetFilter = (props) => {
 
-    sendFilterPSetRequest(){
-        let filterset = APIHelper.getFilterSet(this.props.parameters);
+    const sendFilterPSetRequest = () => {
+        let filterset = APIHelper.getFilterSet(props.parameters);
         let apiStr = APIHelper.buildAPIStr(filterset);
         console.log(apiStr);
         let searchAll = apiStr === '/pset' ||  apiStr === '/pset?' ? true : false;
         APICalls.queryPSet(apiStr, (data) => {
-            this.props.updateAllData(data, searchAll);
+            props.updateAllData(data, searchAll);
         });    
     }
 
-    setRequestView = event => {
-        this.props.setRequestView(event.value);
+    const setRequestView = event => {
+        props.setRequestView(event.value);
     }
 
-    render(){
-        return(
-            <React.Fragment>
-                <div className='pSetFilterContainer'>
-                    <div className='pSetFilter'>
-                        <h2>PSet Parameters</h2>
-                        <div className='filterSet'>
-                            <label className='bold'>Request PSet: </label> 
-                            <InputSwitch checked={this.props.isRequest} tooltip="Turn this on to request a PSet." onChange={this.setRequestView} />
-                        </div>
-                        <PSetParameterOptions 
-                            autoUpdate={true}
-                            setParentState={this.props.setParentState}
-                            requestUpdate={this.sendFilterPSetRequest}
-                            parameters={this.props.parameters}
-                            formData={this.props.formData}
-                            dropdownClassName='filterSet'
-                            selectOne={this.props.isRequest}
-                        />
+    return(
+        <React.Fragment>
+            <div className='pSetFilterContainer'>
+                <div className='pSetFilter'>
+                    <h2>PSet Parameters</h2>
+                    <div className='filterSet'>
+                        <label className='bold'>Request PSet: </label> 
+                        <InputSwitch checked={props.isRequest} tooltip="Turn this on to request a PSet." onChange={setRequestView} />
                     </div>
+                    <PSetParameterOptions 
+                        setParentState={props.setParentState}
+                        requestUpdate={sendFilterPSetRequest}
+                        parameters={props.parameters}
+                        formData={props.formData}
+                        dropdownClassName='filterSet'
+                        selectOne={props.isRequest}
+                    />
                 </div>
-            </React.Fragment>
-        );
-    }
+            </div>
+        </React.Fragment>
+    );
 }
 
 export default PSetFilter;

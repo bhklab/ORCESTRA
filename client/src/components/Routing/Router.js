@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { AuthContext } from "../../context/auth";
 import PrivateRoute from './PrivateRoute';
 import App from '../App/App';
-import PSetSearch from '../PSetSearch/PSetSearch';
+//import PSetSearch from '../PSetSearch/PSetSearch';
+import PSetSearchBeta from '../PSetSearch/PSetSearchBeta';
 import Dashboard from '../Dashboard/Dashboard';
 import Stats from '../Stats/Stats';
 import Documentation from '../Documentation/Documentation';
@@ -60,7 +61,7 @@ class Router extends React.Component{
                 <BrowserRouter>
                     <Switch>
                         <Route exact path ='/' render={(props)=><App path='/' {...props} />} /> 
-                        <Route exact path ='/PSetSearch' render={(props)=><PSetSearch path='/PSetSearch' {...props} />}/>
+                        <Route exact path ='/PSetSearch' render={(props)=><PSetSearchBeta path='/PSetSearch' {...props} />}/>
                         <Route exact path ='/Dashboard' render={(props)=><Dashboard path='/Dashboard' {...props} />}/>
                         <Route exact path ='/Stats' render={(props)=><Stats path='/Stats' {...props} />}/>
                         <Route exact path ='/Documentation' render={(props)=><Documentation path='/Documentation' {...props} />}/>

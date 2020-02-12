@@ -4,7 +4,6 @@ import Navigation from '../Navigation/Navigation';
 import PSetFilter from './subcomponents/PSetFilter';
 import PSetTable from '../Shared/PSetTable';
 import SavePSetButton from '../Shared/Buttons/SavePSetButton';
-//import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
 import {usePromiseTracker} from "react-promise-tracker";
 import {trackPromise} from 'react-promise-tracker';
 import Loader from 'react-loader-spinner';
@@ -47,7 +46,6 @@ class PSetSearch extends React.Component{
 
         this.updateAllData = this.updateAllData.bind(this);
         this.setStateOnParamSelection = this.setStateOnParamSelection.bind(this);
-        // this.evaluateList = this.evaluateList.bind(this);
         this.updatePSetSelection = this.updatePSetSelection.bind(this);
         this.initializeState = this.initializeState.bind(this);
         this.showMessage = this.showMessage.bind(this);
@@ -153,13 +151,12 @@ class PSetSearch extends React.Component{
         });
     }
 
-    handleSubmitRequest = event => {
+    handleSubmitRequest = async event => {
         event.preventDefault();
         let reqData = this.state.parameters;
         reqData.drugSensitivity = reqData.dataset.drugSensitivity;
         console.log(reqData);
-        trackPromise(
-            fetch('/pset/request', {
+        const res = await trackPromise(fetch('/pset/request', {
                 method: 'POST',
                 body: JSON.stringify({
                     reqData: reqData
@@ -167,11 +164,14 @@ class PSetSearch extends React.Component{
                 headers: {
                     'Content-type': 'application/json'
                 }
-            })
-                .then(res => res.json())
-                .then(resData => APIHelper.messageAfterRequest(1, resData, this.initializeState, this.messages))
-                .catch(err => APIHelper.messageAfterRequest(0, err, this.initializeState, this.messages))
-        )
+            }));
+        const resData = await res.json();
+        let severity = 'error'
+        if(res.ok){
+            severity = 'success';
+        }
+        this.messages.show({severity: severity, summary: resData.summary, detail: resData.message, sticky: true});
+        this.initializeState();
     }
 
     updateReqInputEvent = event => {
@@ -242,9 +242,6 @@ class PSetSearch extends React.Component{
                                                 <span><span className='pSetSummaryNum'>{this.state.allData.length}</span> <span>{this.state.allData.length === 1 ? ' match' : ' matches'}</span> found.</span>
                                             }
                                         </div>
-                                        {/* <div className='pSetSummaryItem'>
-                                            <span className='pSetSummaryNum'>{this.state.selectedPSets.length}</span> selected.
-                                        </div> */}
                                     </div>
                                     <SavePSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableSaveBtn} onSaveComplete={this.showMessage} />
                                 </div>
@@ -261,13 +258,10 @@ class PSetSearch extends React.Component{
                                                 <InputText id='email' className='paramInput' value={this.state.parameters.email || ''} onChange={this.updateReqInputEvent} />
                                         </div>
                                         <div className='reqFormInput'>
-                                            {/* <Button label='Submit Request' type='submit' disabled={this.state.notReadyToSubmit} onClick={this.handleSubmitRequest}/> */}
                                             <SubmitRequestButton />
                                         </div>
                                     </div>
                                 }
-                                
-                                {/* <DownloadPSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableSaveBtn} onDownloadComplete={this.showMessage} /> */}
                             </div>
                             <PSetTable allData={this.state.allData} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.updatePSetSelection} scrollHeight='600px'/>    
                         </div>

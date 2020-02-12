@@ -4,9 +4,9 @@ const mongo = require('../db/mongo');
 const fs = require('fs');
 
 module.exports = {
-    receivePSetRequest: function(req, res, next){
+    receivePSetRequest: async function(reqPset){
         console.log('receivePSetRequest');
-        let pset = req.body.reqData;
+        let pset = reqPset;
         pset._id = mongo.getObjectID();
         pset.status = 'pending';
         pset.download = 0;
@@ -16,12 +16,10 @@ module.exports = {
         pset.dateSubmitted = new Date(Date.now());
         pset.dateProcessed = '';
         pset.dateCreated = '';
-        req.pset = pset;
-        req.id = pset._id;
-        next();
+        return pset;
     }, 
 
-    buildPachydermConfigJson: function(req, res, next){
+    buildPachydermConfigJson: async function(pset){
         console.log("buildPachydermReqJson");
         
         const pipelineDir = 'gray2013pipelines';
@@ -32,50 +30,36 @@ module.exports = {
         
         const config = JSON.parse(configRaw);
         config.transform.cmd.splice(3);
-        config.transform.cmd.push(req.pset._id);
+        config.transform.cmd.push(pset._id);
         config.update = true;
         config.reprocess = true;
 
-        req.config = config;
-        req.configDir = path.join(configDir, pipelineDir);
-        req.configPath = configPath;
-        next();
+        const dir = path.join(configDir, pipelineDir);
+        return({config: config, configDir: dir, configPath: configPath});
     },
     
-    savePachydermConfigJson: function(req, res, next){
-        if(req.isOnline){
-            console.log("savePachydermJson");
-            let json = JSON.stringify(req.config, null, 2);
-            fs.writeFile(req.configPath, json, (err)=> {
-                if(err){
-                    res.status(500).send(err);
-                }else{
-                    next();
-                }   
-            });
-        }else{
-            next();
-        }
+    savePachydermConfigJson: async function(config, configPath){
+        console.log("savePachydermJson");
+        let json = JSON.stringify(config, null, 2);
+        fs.writeFile(configPath, json, (err)=> {
+            if(err){
+                throw err
+            }
+        });
     },
 
-    getPachydermConfigJson: async function(req, res, next){
-        if(req.isOnline){
-            console.log("getPachydermConfigJson");
-            const pipelineDir = 'gray2013pipelines';
-            const configFile = 'getGRAYP_2013.json';
-            req.configPath = path.join(configDir, pipelineDir, configFile);
-            req.configDir = path.join(configDir, pipelineDir);
-            const result = await mongo.getRequestConfig(req.body.id);
-            if(result.status){
-                console.log('config fetched from db: ' + result.data._id); 
-                req.config = result.data;
-                req.id = result.data._id;
-                next();
-            }else{
-                res.status(500).send(result.error);
-            }
+    getPachydermConfigJson: async function(id){
+        console.log("getPachydermConfigJson");
+        const pipelineDir = 'gray2013pipelines';
+        const configFile = 'getGRAYP_2013.json';
+        const configPath = path.join(configDir, pipelineDir, configFile);
+        const dir = path.join(configDir, pipelineDir);
+        const result = await mongo.getRequestConfig(id);
+        if(result.status){
+            console.log('config fetched from db: ' + result.data._id); 
+            return({config: result.data, configDir: dir, configPath: configPath});
         }else{
-            next();
+            throw error;
         }
     }
 }

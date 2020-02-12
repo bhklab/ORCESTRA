@@ -1,5 +1,10 @@
 const mongo = require('../db/mongo');
 
+//middleware
+const request = require('./request');
+const git = require('./git');
+const pachyderm = require('./pachyderm');
+
 const getPSetByDOI = function(req, res){
     const doi = req.params.id1 + '/' + req.params.id2;
     mongo.selectPSetByDOI(doi, function(result){
@@ -34,35 +39,85 @@ const getSortedPSets = function(req, res){
     });
 }
 
-const postPSetData = async function(req, res, next){
+const postPSetData = async function(pset, email, config){
     console.log("postPSetData");
-    const result = await mongo.insertPSetRequest(req.pset, req.pset.email, req.config);
+    const result = await mongo.insertPSetRequest(pset, email, config);
     if(result.status){
-        console.log('pset inserted to db: ' + req.pset._id); 
-        next();
+        console.log('pset inserted to db: ' + pset._id); 
     }else{
-        res.status(500).send(result.error);
+        throw result.error;
     }
-    next();
 }
 
-const completePSetReqProcess = async function(req, res){
-    console.log("completePSetReqProcess");
-    if(req.isOnline){
-        const update = {'dateProcessed': req.dateProcessed, 'status': 'in-process'};
-        const result = await mongo.updatePSetStatus(req.id, update);
-        if(result.status){
-            const resData = {summary: 'Request Submitted', message: 'PSet request has been submitted successfully.'};  
-            res.send(resData);
+const completeRequest = async function(req, res){
+    console.log("completeRequest");
+    let resData = {}; 
+    try{
+        const reqPset = await request.receivePSetRequest(req.body.reqData);
+        const config = await request.buildPachydermConfigJson(reqPset);
+        await postPSetData(reqPset, reqPset.email, config);
+        const online = await pachyderm.checkOnline();
+        if(online){
+            console.log('online process');
+            await request.savePachydermConfigJson(config.config, config.configPath);
+            await git.pushPachydermConfigJson(reqPset._id, config.configDir);
+            await pachyderm.createPipeline(config.config);
+            const update = {'dateProcessed': new Date(Date.now()), 'status': 'in-process'};
+            const result = await mongo.updatePSetStatus(reqPset._id, update);
+            if(result.status){
+                resData = {
+                    summary: 'Request Submitted', 
+                    message: 'PSet request has been submitted successfully. You will receive an email when ORCESTRA completes your request.'
+                };
+            }
         }else{
-            res.status(500).send(result.error);
+            console.log('offline process')
+            resData = {
+                summary: 'Request Submitted', 
+                message: 'PSet request has been submitted. Your request will be processed when Pachyderm is online. You will receive an email when ORCESTRA completes your request.'
+            }
         }
-    }else{
-        const resData = {summary: 'Request Submitted', message: 'PSet request has been submitted successfully.'};  
+    }catch(error){
+        res.status(500)
+        resData = {summary: 'Error in Request Process', message: error.message};
+    }finally{
         res.send(resData);
     }
-    // const resData = {summary: 'Request Submitted', message: 'PSet request has been submitted successfully.'};  
-    // res.send(resData);
+}
+
+const processRequest = async function(req, res){
+    console.log("processRequest");
+    let resData = {};
+    try{
+        const online = await pachyderm.checkOnline();
+        if(online){
+            console.log('online process');
+            const config = await request.getPachydermConfigJson(req.body.id);
+            await request.savePachydermConfigJson(config.config, config.configPath);
+            await git.pushPachydermConfigJson(req.body.id, config.configDir);
+            await pachyderm.createPipeline(config.config);
+            const update = {'dateProcessed': new Date(Date.now()), 'status': 'in-process'};
+            const result = await mongo.updatePSetStatus(req.body.id, update);
+            if(result.status){
+                resData = {
+                    summary: 'Request Submitted', 
+                    message: 'PSet request has been submitted successfully. You will receive an email when ORCESTRA completes your request.'
+                };
+            }
+        }else{
+            console.log('offline process')
+            resData = {
+                summary: 'Pachyderm is Offline', 
+                message: 'Request could not be submitted. Please try again when Pachyderm is online.'
+            }
+            res.status(500);
+        }
+    }catch{
+        res.status(500)
+        resData = {summary: 'Error in Request Process', message: error.message};
+    }finally{
+        res.send(resData)
+    }
 }
 
 const cancelPSetRequest = function(req, res){
@@ -113,7 +168,8 @@ module.exports = {
     getPsetList,
     getSortedPSets,
     postPSetData,
-    completePSetReqProcess,
+    completeRequest,
+    processRequest,
     cancelPSetRequest,
     downloadPSets,
     updatePSetStatus

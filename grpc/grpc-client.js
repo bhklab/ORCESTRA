@@ -4,33 +4,24 @@ const path = require('path');
 const protoDir = path.join(__dirname, 'proto-files');
 //const pachydermIP = process.env.PACHYDERM_IP;
 
+function grpcGetVersion(request, errorCallback, successCallback){
+    const getVersionProto = path.join(protoDir, 'getVersion', 'version.proto');
+    const packageDefinition = protoLoader.loadSync(getVersionProto);
+    const proto = grpc.loadPackageDefinition(packageDefinition);
+    const client = new proto.versionpb.API('52.233.32.47:30650', grpc.credentials.createInsecure());
+
+    client.GetVersion(request, (error, response) => {
+        if(error){
+            //console.error(error);
+            errorCallback({status: 0, response: error})
+        }else{
+            //console.log(response);
+            successCallback({status: 1, response: response});
+        }
+    })
+}
+
 module.exports = {
-
-    // createRepo: function(callback){
-    //     const createRepoProto = path.join(protoDir, 'createRepo', 'pfs.proto');
-    //     const packageDefinition = protoLoader.loadSync(createRepoProto);
-    //     const proto = grpc.loadPackageDefinition(packageDefinition);
-
-    //     const client = new proto.pfs.API('0.0.0.0:30650', grpc.credentials.createInsecure());
-
-    //     let request = {
-    //         'repo': {
-    //             'name': 'test'
-    //         },
-    //         'description': "Some repository description",
-    //         'update': false
-    //     }
-
-    //     client.CreateRepo(request, (error, response) => {
-    //         if(error) { 
-    //             console.error(error);
-    //             callback({status: 0});
-    //         }else{
-    //             console.log(response);
-    //             callback({status: 1});
-    //         } 
-    //     });
-    // },
 
     createPipeline: function(request, callback){
         const createPipelineProto = path.join(protoDir, 'createPipeline', 'pps.proto');
@@ -43,29 +34,25 @@ module.exports = {
         client.CreatePipeline(request, (error, response) => {
             if(error) { 
                 console.error(error);
-                callback({status: 0});
-            }else{
-                console.log(response);
-                callback({status: 1});
-            }
-        });
-    },
-
-    listJobs: function(request, callback){
-        const listJobsProto = path.join(protoDir, 'listJobs', 'pps.proto');
-        const packageDefinition = protoLoader.loadSync(listJobsProto);
-        const proto = grpc.loadPackageDefinition(packageDefinition);
-
-        const client = new proto.pps.API('0.0.0.0:30650', grpc.credentials.createInsecure())
-
-        client.ListJob(request, (error, response) => {
-            if(error) { 
-                console.error(error);
-                callback({status: 0});
+                callback({status: 0, response: error});
             }else{
                 console.log(response);
                 callback({status: 1, response: response});
             }
+        });
+    },
+
+    getVersion: function(request){
+        return new Promise((resolve, reject) => {
+            grpcGetVersion(
+                request, 
+                (errorCallback) => {
+                    reject(errorCallback)
+                },
+                (successCallback) => {
+                    resolve(successCallback)
+                }
+            );
         })
     }
 }

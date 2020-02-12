@@ -77,6 +77,17 @@ const Navigation = (props) => {
                                     <Button label='Logout' onClick={onLogoutClick}/> : <Button label='Login/Register' onClick={onLoginClick}/>
                                 }
                             </div>
+                            <div>
+                                {isOnline ? 
+                                    <div className='pachydermStatus isOnline'>
+                                        <div className='icon'><i className='pi pi-check'></i></div><div className='text'>Pachyderm is <br />online</div>
+                                    </div> 
+                                    : 
+                                    <span className='pachydermStatus isOffline'>
+                                        <div className='icon'><i className='pi pi-ban'></i></div><div className='text'>Pachyderm is <br />offline</div>
+                                    </span>
+                                }
+                            </div>
                         </Menu>
                     </div>   
                 </div>

@@ -106,7 +106,7 @@ export function messageAfterRequest(status, data, initialize=null, msgComponent)
         initialize();
     }
     if(status){
-        msgComponent.show({severity: 'success', summary: data.summary, detail: data.message});
+        msgComponent.show({severity: 'success', summary: data.summary, detail: data.message, sticky: true});
     }else{
         msgComponent.show({severity: 'error', summary: 'An error occured', detail: data.toString(), sticky: true});
     } 

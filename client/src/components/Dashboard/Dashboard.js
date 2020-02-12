@@ -51,7 +51,7 @@ const Dashboard = (props) => {
         console.log(event.target.id);
         const result = await submitRequest(event.target.id);
         if(result.ok){
-            show({severity: 'success', summary: result.data.summary, detail: result.data.message});
+            show({severity: 'success', summary: result.data.summary, detail: result.data.message, sticky: true});
         }else{
             show({severity: 'error', summary: result.data.summary, detail: result.data.message, sticky: true});
         }
