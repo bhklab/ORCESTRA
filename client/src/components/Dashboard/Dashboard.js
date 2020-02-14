@@ -79,10 +79,10 @@ const Dashboard = (props) => {
             <Navigation routing={props} />
             <div className='pageContent'>
                 <div className='dashboardWrapper'>
-                    <h1>PSet Request Dashboard</h1>
+                    <h1>PSet Request Status Board</h1>
                     <Messages ref={(el) => Dashboard.messages = el }></Messages>
                     <div className='dashboardSummary'>
-                        <h2>Dashboard Summary</h2>
+                        <h2>Request Status Summary</h2>
                         <div className='dashboardSummaryContainer'>
                             <div className='dashboardSummarySection'>
                                 <span className='number'>{ data.filter(d => d.status === 'pending').length }</span> pending request(s).
@@ -94,7 +94,7 @@ const Dashboard = (props) => {
                     </div>
                     <div className='dashboardTable'>
                         {
-                            !loading &&
+                            (!loading && data.length > 0) ?
                             <DataTable value={data} paginator={true}  scrollable={true} rows={10} >
                                 <Column className='textField' field='status' header='Status' style={{width:'2em'}} sortable={true} />
                                 <Column className='textField' field='name' header='Name' style={{width:'5em'}} sortable={true} />
@@ -102,6 +102,8 @@ const Dashboard = (props) => {
                                 <Column className='textField' field='dateProcessed' header='Process Start Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
                                 { auth.isAdmin && <Column body={buttonTemplate} style={{width:'1.5em'}}/> }
                             </DataTable>
+                            :
+                            <h3>There currently are no pending or in-process requests.</h3>
                         } 
                         {
                             promiseInProgress && 

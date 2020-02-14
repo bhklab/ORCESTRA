@@ -18,15 +18,21 @@ module.exports = {
             const result = await grpc.getVersion({});
             console.log(result);
             online = result.response.major ? true : false;
-            return(online);
         }catch(error){
-            console.error(error);
-            throw error;
+            console.log(error);
+        }finally{
+            return(online);
         }
     },
 
     returnStatus: async function(req, res){
-        const online = await module.exports.checkOnline();
-        res.send({isOnline: online});
+        let online = false;
+        try{
+            online = await module.exports.checkOnline();
+        }catch(error){
+            
+        }finally{
+            res.send({isOnline: online});
+        }
     }
 }

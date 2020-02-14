@@ -9,7 +9,7 @@ const Footer = (props) => {
                 <div className="footerMenu footerLinks">
                     <h3>Menu</h3>
                     <NavLink exact to="/PSetSearch" >Search and Request</NavLink>
-                    <NavLink exact to="/Dashboard" >Dashboard</NavLink>
+                    <NavLink exact to="/Dashboard" >request Status</NavLink>
                     <NavLink exact to="/Stats" >Statistics</NavLink>
                 </div>
                 <div className="footerSupport footerLinks">

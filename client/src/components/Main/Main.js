@@ -51,8 +51,8 @@ const OrcestraMain = (props) => {
                                 <div className='mainMenuItemContent'>
                                     <div>Design your own PSet using:</div>
                                     <div className='mainMenuItemLine'><span className='largeNum'>{formData.dataset.length}</span> <span>Datasets.</span></div>
-                                    <div className='mainMenuItemLine'><span className='largeNum'>{formData.rnaTool.length}</span> <span>RNA tools.</span></div>
-                                    <div className='mainMenuItemLine'><span className='largeNum'>{formData.dnaTool.length}</span> <span>DNA tools.</span></div>
+                                    <div className='mainMenuItemLine'><span className='largeNum'>{formData.rnaTool.length}</span> <span>RNA pipelines.</span></div>
+                                    <div className='mainMenuItemLine'><span className='largeNum'>{formData.dnaTool.length}</span> <span>DNA sequence alignment tools.</span></div>
                                     <div className='mainMenuLink'><a className='button' href="/PSetSearch">Search and Request</a></div>
                                 </div>
                             </div>

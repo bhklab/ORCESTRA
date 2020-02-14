@@ -53,6 +53,7 @@ module.exports = {
                     resolve(successCallback)
                 }
             );
+            setTimeout(() => {reject({status: 0, response: new Error('timeout')})}, 3000);
         })
     }
 }
