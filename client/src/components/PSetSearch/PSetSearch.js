@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './PSetSearch.css';
 import Navigation from '../Navigation/Navigation';
 import PSetFilter from './subcomponents/PSetFilter';
@@ -10,267 +10,176 @@ import Loader from 'react-loader-spinner';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
-import {AuthContext} from '../../context/auth';
 import * as APIHelper from '../Shared/PSetAPIHelper';
-import * as APICalls from '../Shared/APICalls';
 import Footer from '../Footer/Footer';
 
-class PSetSearch extends React.Component{
-    constructor(){
-        super();
-        this.state = {
-            allData: [],
-            formDataOriginal: {},
-            formData: {},
-            searchAll: true,
-            selectedPSets: [],
-            disableSaveBtn: true,
-            isRequest: false,
-            isLoaded: false,
+export const SearchReqContext = React.createContext();
 
-            parameters: {
-                dataType: [],
-                dataset: [],
-                drugSensitivity: [],
-                genome: [],
-                rnaTool: [],
-                rnaRef: [],
-                dnaTool: [],
-                dnaRef: [],
-                name: '',
-                email: ''
-            },
+async function fetchData(url) {
+    const response = await fetch(url);
+    const json = await response.json();
+    return(json);
+}
 
-            notReadyToSubmit: true
+const PSetSearch = (props) => {
+    const [allData, setAllData] = useState([]);
+    const [searchAll, setSearchAll] = useState(true);
+    const [selectedPSets, setSelectedPSets] = useState([]);
+    const [disableSaveBtn, setDisableSaveBtn] = useState(true);
+    const [isRequest, setIsRequest] = useState(false);
+    const [notReadyToSubmit, setNotReadyToSubmit] = useState(true);
+    const [parameters, setParameters] = useState({});
+    
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+
+    useEffect(() => {
+        const initializeView = async () => {
+            const psets = await fetchData('/pset?status=complete');
+            setAllData(psets);
+            setSearchAll(true);
         }
+        initializeView();
+    }, []);
 
-        this.updateAllData = this.updateAllData.bind(this);
-        this.setStateOnParamSelection = this.setStateOnParamSelection.bind(this);
-        this.updatePSetSelection = this.updatePSetSelection.bind(this);
-        this.initializeState = this.initializeState.bind(this);
-        this.showMessage = this.showMessage.bind(this);
-        
-        this.setRequestView = this.setRequestView.bind(this);
-        this.handleSubmitRequest = this.handleSubmitRequest.bind(this);
-        this.updateReqInputEvent = this.updateReqInputEvent.bind(this);
-        //this.setStateOnParamSelection = this.setStateOnParamSelection.bind(this);
-    }
+    useEffect(() => {
+        setDisableSaveBtn(APIHelper.isSelected(selectedPSets) ? false : true)
+    }, [selectedPSets]);
 
-    static contextType = AuthContext;
-
-    componentDidMount(){
-        APICalls.queryPSet('/pset?status=complete', (resData) => {
-            this.updateAllData(resData);
-        });
-        fetch('/formdata')  
-            .then(res => res.json())
-            .then(resData => {
-                this.setState({
-                    formData: resData[0],
-                    formDataOriginal: JSON.parse(JSON.stringify(resData[0])),
-                    isLoaded: true
-                });
-            });
-    }
-
-    showMessage(status, data){
-        APIHelper.messageAfterRequest(status, data, this.initializeState, this.messages);
-    }
-
-    setStateOnParamSelection(states){
-        let parameters = this.state.parameters;
-        for(let i = 0; i < states.length; i++){
-            parameters[states[i].name] = states[i].value;
+    useEffect(() => {
+        async function update() {
+            let filterset = APIHelper.getFilterSet(parameters);
+            let apiStr = APIHelper.buildAPIStr(filterset);
+            console.log(apiStr);
+            let searchAll = apiStr === '/pset' ||  apiStr === '/pset?' ? true : false;
+            const psets = await fetchData(apiStr);
+            setAllData(psets);
+            setSearchAll(searchAll);
         }
-        console.log(parameters);
-        this.setState({
-            parameters: parameters,
-            notReadyToSubmit: APIHelper.isNotReadyToSubmit(parameters)
-        });
+        update();
+        let params = parameters;
+        params.name = name;
+        params.email = email;
+        setNotReadyToSubmit(APIHelper.isNotReadyToSubmit(params));
+    }, [parameters])
+
+    const updatePSets = async () => {
+        let filterset = APIHelper.getFilterSet(parameters);
+        let apiStr = APIHelper.buildAPIStr(filterset);
+        console.log(apiStr);
+        let searchAll = apiStr === '/pset' ||  apiStr === '/pset?' ? true : false;
+        const psets = await fetchData(apiStr);
+        setAllData(psets);
+        setSearchAll(searchAll);
     }
 
-    updateAllData(data, searchAll = true){
-        this.setState({
-            allData: data,
-            searchAll: searchAll
-        });
+    const showMessage = (status, data) => {
+        let severity = status ? 'success' : 'error';
+        PSetSearch.messages.show({severity: severity, summary: data.summary, detail: data.message, sticky: true});
+        initializeState();
     }
 
-    updatePSetSelection(selected){
-        this.setState({selectedPSets: selected}, () => {
-            if(APIHelper.isSelected(this.state.selectedPSets)){
-                this.setState({disableSaveBtn: false});
-            }else{
-                this.setState({disableSaveBtn: true});
-            }
-        });
+    const updatePSetSelection = (selected) => {
+        setSelectedPSets(selected);
     }
 
-    setRequestView(visible){
-        const parameters = this.state.parameters;
-        let formData = this.state.formData;
-        if(visible){
-            if(parameters.dataset.length){
-                formData.dataset = parameters.dataset;
-                parameters.dataset = parameters.dataset[0];
-            }
-            if(parameters.genome.length){
-                formData.genome = parameters.genome;
-                parameters.genome = parameters.genome[0];
-            }
-        }else{
-            console.log(parameters)
-            if(formData.dataset.length < this.state.formDataOriginal.dataset.length){
-                parameters.dataset = formData.dataset;
-            }else if(!Array.isArray(parameters.dataset)){
-                let datasetVal = JSON.parse(JSON.stringify(parameters.dataset));
-                parameters.dataset = [];
-                parameters.dataset.push(datasetVal);
-            }
-            if(formData.genome.length < this.state.formDataOriginal.genome.length){
-                parameters.genome = formData.genome
-            }else if(!Array.isArray(parameters.genome)){
-                let genomeVal = JSON.parse(JSON.stringify(parameters.genome));
-                parameters.genome = [];
-                parameters.genome.push(genomeVal);
-            }
-            formData = this.state.formDataOriginal;
-        }
-        this.setState({
-            parameters: parameters,
-            formData: JSON.parse(JSON.stringify(formData)),
-            notReadyToSubmit: APIHelper.isNotReadyToSubmit(parameters),
-            isRequest: visible
-        });
+    const initializeState = () => {
+        setSelectedPSets([]);
+        setDisableSaveBtn(true);
     }
 
-    initializeState(){
-        this.setState({
-            selectedPSets: [],
-            disableSaveBtn: true
-        });
-    }
-
-    handleSubmitRequest = async event => {
+    const handleSubmitRequest = async event => {
         event.preventDefault();
-        let reqData = this.state.parameters;
+        let reqData = parameters;
         reqData.drugSensitivity = reqData.dataset.drugSensitivity;
+        reqData.name = name;
+        reqData.email = email;
         console.log(reqData);
         const res = await trackPromise(fetch('/pset/request', {
                 method: 'POST',
-                body: JSON.stringify({
-                    reqData: reqData
-                }),
-                headers: {
-                    'Content-type': 'application/json'
-                }
+                body: JSON.stringify({reqData: reqData}),
+                headers: {'Content-type': 'application/json'}
             }));
         const resData = await res.json();
-        let severity = 'error'
-        if(res.ok){
-            severity = 'success';
-        }
-        this.messages.show({severity: severity, summary: resData.summary, detail: resData.message, sticky: true});
-        this.initializeState();
+        showMessage(res.ok, resData);
+        initializeState();
     }
 
-    updateReqInputEvent = event => {
-        event.preventDefault();
-        let parameters= this.state.parameters;
-        parameters[event.target.id] = event.target.value;
-        this.setState({
-            parameters: parameters,
-            notReadyToSubmit: APIHelper.isNotReadyToSubmit(parameters)
-        });
-    }
-
-    // setStateOnParamSelection(states){
-    //     let parameters = this.state.reqData;
-    //     for(let i = 0; i < states.length; i++){
-    //         parameters[states[i].name] = states[i].value;
-    //     }
-    //     this.setState({
-    //         reqData: parameters,
-    //         notReadyToSubmit: APIHelper.isNotReadyToSubmit(parameters)
-    //     });
-    // }
+    useEffect(() => {
+        let params = parameters;
+        params.name = name;
+        params.email = email;
+        setNotReadyToSubmit(APIHelper.isNotReadyToSubmit(params));
+    }, [name, email])
     
-    render(){  
-        const SubmitRequestButton = props => {
-            const {promiseInProgress} = usePromiseTracker();
-            return(
-                promiseInProgress ? 
-                    <div className='loaderContainer'>
-                        <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
-                    </div>
-                    :
-                    <Button label='Submit Request' type='submit' disabled={false} onClick={this.handleSubmitRequest}/>
-            );
-        }
-        
+    const SubmitRequestButton = () => {
+        const {promiseInProgress} = usePromiseTracker();
         return(
-            <React.Fragment>
-                <Navigation routing={this.props} />
-                <div className='pageContent'>
-                    <h1>Search or Request Pharmacogenomic Datasets</h1>
-                    <div className='pSetListContainer'>
-                    {
-                        this.state.isLoaded ?
-                        <PSetFilter 
-                            updateAllData={this.updateAllData} 
-                            setRequestView={this.setRequestView} 
-                            setParentState={this.setStateOnParamSelection}
-                            isRequest={this.state.isRequest}
-                            formData={this.state.formData} 
-                            parameters={this.state.parameters}
-                        />
-                        :
-                        <div></div>
-                    }
-                        
-                        <div className='pSetTable'>
-                            <Messages ref={(el) => this.messages = el} />
-                            <div className='pSetSelectionSummary'>
-                                <div className='summaryPanel'>
-                                    <h2>Summary</h2>
-                                    <div className='pSetSummaryContainer'>
-                                        <div className='pSetSummaryItem'>
-                                            {
-                                                this.state.searchAll ? 
-                                                <span><span className='pSetSummaryNum'>{this.state.allData.length}</span> <span>dataset(s) available.</span></span>
-                                                :
-                                                <span><span className='pSetSummaryNum'>{this.state.allData.length}</span> <span>{this.state.allData.length === 1 ? ' match' : ' matches'}</span> found.</span>
-                                            }
-                                        </div>
-                                    </div>
-                                    <SavePSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableSaveBtn} onSaveComplete={this.showMessage} />
-                                </div>
-                                {
-                                    this.state.isRequest &&
-                                    <div className='requestFormPanel'>
-                                        <h2>Request PSet</h2>
-                                        <div className='reqFormInput'>
-                                            <label>PSet Name:</label>
-                                                <InputText id='name' className='paramInput' value={this.state.parameters.name || ''} onChange={this.updateReqInputEvent} />
-                                        </div>
-                                        <div className='reqFormInput'>
-                                            <label>Email to receive DOI:</label>
-                                                <InputText id='email' className='paramInput' value={this.state.parameters.email || ''} onChange={this.updateReqInputEvent} />
-                                        </div>
-                                        <div className='reqFormInput'>
-                                            <SubmitRequestButton />
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                            <PSetTable allData={this.state.allData} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.updatePSetSelection} scrollHeight='600px'/>    
-                        </div>
-                    </div>
+            promiseInProgress ? 
+                <div className='loaderContainer'>
+                    <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
                 </div>
-                <Footer />
-            </React.Fragment>
+                :
+                <Button label='Submit Request' type='submit' disabled={notReadyToSubmit} onClick={handleSubmitRequest}/>
         );
     }
+        
+    return(
+        <SearchReqContext.Provider value={{ 
+                parameters: parameters, 
+                setParameters: setParameters, 
+                updatePSets: updatePSets, 
+                isRequest: isRequest, 
+                setIsRequest: setIsRequest
+            }}
+        >
+            <Navigation routing={props} />
+            <div className='pageContent'>
+                <h1>Search or Request Pharmacogenomic Datasets</h1>
+                <div className='pSetListContainer'>
+                    <PSetFilter /> 
+                    <div className='pSetTable'>
+                        <Messages ref={(el) => PSetSearch.messages = el} />
+                        <div className='pSetSelectionSummary'>
+                            <div className='summaryPanel'>
+                                <h2>Summary</h2>
+                                <div className='pSetSummaryContainer'>
+                                    <div className='pSetSummaryItem'>
+                                        {
+                                            searchAll ? 
+                                            <span><span className='pSetSummaryNum'>{allData.length}</span> <span>dataset(s) available.</span></span>
+                                            :
+                                            <span><span className='pSetSummaryNum'>{allData.length}</span> <span>{allData.length === 1 ? ' match' : ' matches'}</span> found.</span>
+                                        }
+                                    </div>
+                                </div>
+                                <SavePSetButton selectedPSets={selectedPSets} disabled={disableSaveBtn} onSaveComplete={showMessage} />
+                            </div>
+                            {
+                                isRequest &&
+                                <div className='requestFormPanel'>
+                                    <h2>Request PSet</h2>
+                                    <div className='reqFormInput'>
+                                        <label>PSet Name:</label>
+                                            <InputText id='name' className='paramInput' value={name || ''} onChange={(e) => {setName(e.target.value)}} />
+                                    </div>
+                                    <div className='reqFormInput'>
+                                        <label>Email to receive DOI:</label>
+                                            <InputText id='email' className='paramInput' value={email || ''} onChange={(e) => {setEmail(e.target.value)}} />
+                                    </div>
+                                    <div className='reqFormInput'>
+                                        <SubmitRequestButton />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <PSetTable allData={allData} selectedPSets={selectedPSets} updatePSetSelection={updatePSetSelection} scrollHeight='600px'/>    
+                    </div>
+                </div>
+            </div>
+            <Footer />
+        </SearchReqContext.Provider>
+    );
 }
 
 export default PSetSearch;

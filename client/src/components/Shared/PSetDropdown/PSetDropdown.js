@@ -34,7 +34,7 @@ class PSetDropdown extends React.Component {
         }
         if(this.props.selectOne){
             return(
-                <div className={this.props.className}>
+                <div className='filterSet'>
                     <label>{this.props.parameterName}</label>
                     <Dropdown 
                         id={this.props.id} 
@@ -52,7 +52,7 @@ class PSetDropdown extends React.Component {
             );
         }
         return(
-            <div className={this.props.className}>
+            <div className='filterSet'>
                 <label>{this.props.parameterName}</label>
                 <MultiSelect 
                     id={this.props.id}
