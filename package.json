@@ -6,25 +6,24 @@
     "start": "node app.js"
   },
   "nodemonConfig": {
-    "ignore": ["client/*"]
+    "ignore": [
+      "client/*"
+    ]
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@grpc/proto-loader": "^0.5.3",
-    "bcrypt": "^3.0.7",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.4",
-    "csv-parser": "^2.3.2",
     "doasync": "^2.0.1",
     "dotenv": "^8.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-fileupload": "^1.1.6",
-    "express-zip": "^2.0.1",
     "file-api": "^0.10.4",
     "fs": "0.0.1-security",
-    "googleapis": "^39.2.0",
     "grpc": "^1.24.2",
     "jsonwebtoken": "^8.5.1",
     "line-by-line": "^0.1.6",
