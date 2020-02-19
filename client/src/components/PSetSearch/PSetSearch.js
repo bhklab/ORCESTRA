@@ -35,7 +35,7 @@ const PSetSearch = (props) => {
 
     useEffect(() => {
         const initializeView = async () => {
-            const psets = await fetchData('/pset?status=complete');
+            const psets = fetchData('/pset?status=complete');
             setAllData(psets);
             setSearchAll(true);
         }
@@ -173,7 +173,14 @@ const PSetSearch = (props) => {
                                 </div>
                             }
                         </div>
-                        <PSetTable allData={allData} selectedPSets={selectedPSets} updatePSetSelection={updatePSetSelection} scrollHeight='600px'/>    
+                        {
+                            allData.length ?
+                            <PSetTable allData={allData} selectedPSets={selectedPSets} updatePSetSelection={updatePSetSelection} scrollHeight='600px'/> 
+                            :
+                            <div className='tableLoaderContainer'>
+                                <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                            </div>
+                        }  
                     </div>
                 </div>
             </div>

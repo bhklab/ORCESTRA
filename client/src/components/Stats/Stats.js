@@ -10,6 +10,7 @@ import * as APIHelper from '../Shared/PSetAPIHelper';
 import {AuthContext} from '../../context/auth';
 import DownloadChart from './DownloadChart';
 import Footer from '../Footer/Footer';
+import Loader from 'react-loader-spinner';
 
 class Stats extends React.Component{
     constructor(){
@@ -82,18 +83,27 @@ class Stats extends React.Component{
                 <div className='pageContent'>
                     <h1>PSet Usage and Downloads</h1>
                     <div className='statContainer'>
-                        <div className='container rankingTable'>
-                            <h3>Download Ranking</h3>
-                            <Messages ref={(el) => this.messages = el} />
-                            <PSetTable allData={this.state.allData} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.updatePSetSelection} showDownload={true} scrollHeight='340px'/>
-                            <div className='rankingTableFooter'>
-                                {/* <DownloadPSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableBtn} onDownloadComplete={this.showMessages}/> */}
-                                <SavePSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableBtn} onSaveComplete={this.showMessages} />
+                        {
+                            this.state.isReady ?
+                            <React.Fragment>
+                                <div className='container rankingTable'>
+                                    <h3>Download Ranking</h3>
+                                    <Messages ref={(el) => this.messages = el} />
+                                    <PSetTable allData={this.state.allData} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.updatePSetSelection} showDownload={true} scrollHeight='340px'/>
+                                    <div className='rankingTableFooter'>
+                                        {/* <DownloadPSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableBtn} onDownloadComplete={this.showMessages}/> */}
+                                        <SavePSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableBtn} onSaveComplete={this.showMessages} />
+                                    </div>
+                                </div>
+                                <div className='container downloadHistogram'>
+                                    {this.state.isReady && <DownloadChart data={this.state.chartData} title='Top 10 Most Popular PSets' />}
+                                </div>
+                            </React.Fragment>
+                            :
+                            <div className='componentLoaderContainer'>
+                                <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
                             </div>
-                        </div>
-                        <div className='container downloadHistogram'>
-                            {this.state.isReady && <DownloadChart data={this.state.chartData} title='Top 10 Most Popular PSets' />}
-                        </div>
+                        }
                     </div>
                 </div>
                 <Footer />

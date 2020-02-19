@@ -26,6 +26,10 @@
     margin-top: 20px;
 }
 
+.componentloaderContainer {
+    width: 100%;
+}
+
 @media only screen and (max-width: 1200px) {
     .statContainer{
         flex-direction: column;

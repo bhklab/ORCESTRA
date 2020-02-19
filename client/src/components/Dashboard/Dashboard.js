@@ -94,25 +94,30 @@ const Dashboard = (props) => {
                     </div>
                     <div className='dashboardTable'>
                         {
-                            (!loading && data.length > 0) ?
-                            <DataTable value={data} paginator={true}  scrollable={true} rows={10} >
-                                <Column className='textField' field='status' header='Status' style={{width:'2em'}} sortable={true} />
-                                <Column className='textField' field='name' header='Name' style={{width:'5em'}} sortable={true} />
-                                <Column className='textField' field='dateSubmitted' header='Submitted Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
-                                <Column className='textField' field='dateProcessed' header='Process Start Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
-                                { auth.isAdmin && <Column body={buttonTemplate} style={{width:'1.5em'}}/> }
-                            </DataTable>
-                            :
-                            <h3>There currently are no pending or in-process requests.</h3>
+                            !loading ?
+                            [
+                                data.length > 0 ?
+                                <DataTable value={data} paginator={true}  scrollable={true} rows={10} >
+                                    <Column className='textField' field='status' header='Status' style={{width:'2em'}} sortable={true} />
+                                    <Column className='textField' field='name' header='Name' style={{width:'5em'}} sortable={true} />
+                                    <Column className='textField' field='dateSubmitted' header='Submitted Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
+                                    <Column className='textField' field='dateProcessed' header='Process Start Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
+                                    { auth.isAdmin && <Column body={buttonTemplate} style={{width:'1.5em'}}/> }
+                                </DataTable>
+                                :
+                                <h3>There currently are no pending or in-process requests.</h3>
+                            ]
+                            :   
+                            <div className='dashboardTableLoaderContainer'>
+                                <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                            </div>
                         } 
                         {
                             promiseInProgress && 
                             <div className='dashboardTableOverlay'>
-                                
                                 <div className='dashboardLoaderContainer'>
                                     <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
                                 </div>
-                                
                             </div>   
                         }
                     </div> 

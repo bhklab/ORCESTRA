@@ -85,3 +85,10 @@
     justify-content: left;
     align-items: center;
 }
+
+.tableLoaderContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
