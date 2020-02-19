@@ -79,6 +79,10 @@
     margin-right: auto;
 }
 
+.mainMenuItemContent p {
+    line-height: 1.5;
+}
+
 .mainMenuItemLine{
     margin-bottom: 20px;
     font-size: 20px;

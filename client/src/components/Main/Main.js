@@ -126,6 +126,15 @@ const OrcestraMain = (props) => {
                                         <div className='mainMenuLink'><a className='button' href="/Stats">View Statistics</a></div>
                                     </div>
                                 </div> 
+                                <div className='mainMenuItem'>
+                                    <h2>Generate PSets with Your Data</h2>
+                                    <div className='mainMenuItemContent'>
+                                        <p>
+                                            <b>You can generate PSets using your own datasets.</b> <br /> 
+                                            For more information, please read about <a href='/Tutorial'>contributing your data</a>.
+                                        </p>    
+                                    </div>
+                                </div> 
                             </div>    
                         </div>  
                     </div>  
