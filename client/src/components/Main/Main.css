@@ -1,7 +1,7 @@
 .mainContent{
     width: 100%;
     padding-top: 50px;
-    color:rgb(61, 64, 90);
+    color:#3D405A;
     height: 100%;
     margin-bottom: 250px;
 }
@@ -18,7 +18,7 @@
     width: 100%;
     text-align:center;
     font-size:100px;
-    color:rgb(61, 64, 90);
+    color:#3D405A;
 }
 
 .home h2 {
@@ -27,10 +27,10 @@
     width: 100%;
     text-align:center;
     font-weight:bold;
-    color:rgb(61, 64, 90);
+    color:#3D405A;
 }
 .button {
-    background-color: rgb(61, 64, 90);
+    background-color: #3D405A;
     border-radius: 5px;
     border: none;
     padding: 10px 10px;
@@ -92,6 +92,21 @@
     font-size: 75px;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.largeNum button {
+    font-size: 75px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #3D405A;
+    border: none;
+    background: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.largeNum button:hover {
+    color: #555975;
 }
 
 @media only screen and (max-width: 1000px) {
