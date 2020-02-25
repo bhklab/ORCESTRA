@@ -1,8 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { AuthContext } from "../../context/auth";
+import Navigation from '../Navigation/Navigation';
+import Footer from '../Footer/Footer';
 import PrivateRoute from './PrivateRoute';
-import App from '../App/App';
+import Main from '../Main/Main';
 import PSetSearch from '../PSetSearch/PSetSearch';
 import Dashboard from '../Dashboard/Dashboard';
 import Stats from '../Stats/Stats';
@@ -58,19 +60,19 @@ class Router extends React.Component{
 
         return(
             <AuthContext.Provider value={this.state}>
-                <BrowserRouter>
-                    <Switch>
-                        <Route exact path ='/' render={(props)=><App path='/' {...props} />} /> 
-                        <Route exact path ='/PSetSearch' render={(props)=><PSetSearch path='/PSetSearch' {...props} />}/>
-                        <Route exact path ='/Dashboard' render={(props)=><Dashboard path='/Dashboard' {...props} />}/>
-                        <Route exact path ='/Stats' render={(props)=><Stats path='/Stats' {...props} />}/>
-                        <Route exact path ='/Documentation' render={(props)=><Documentation path='/Documentation' {...props} />}/>
-                        <Route exact path ='/Tutorial' render={(props)=><Tutorial path='/Tutorial' {...props} />}/>
-                        <Route exact path='/Authentication' render={(props) => <Login {...props} />} />
-                        <Route path='/:id1/:id2' render={(props)=><PSet path='/:id1/:id2' {...props} />} />
-                        <PrivateRoute path='/Profile' component={profile} redirect='/Authentication' />
-                    </Switch>
-                </BrowserRouter>
+                <Switch>
+                    <Route exact path ='/' component={Main} /> 
+                    <Route exact path ='/PSetSearch' component={PSetSearch}/>
+                    <Route exact path ='/Dashboard' component={Dashboard}/>
+                    <Route exact path ='/Stats' component={Stats}/>
+                    <Route exact path ='/Documentation' component={Documentation}/>
+                    <Route exact path ='/Tutorial' component={Tutorial}/>
+                    <Route exact path='/Authentication' component={Login} />
+                    <Route path='/:id1/:id2' component={PSet} />
+                    <PrivateRoute path='/Profile' component={profile} redirect='/Authentication' />
+                </Switch>
+                <Navigation />
+                <Footer />
             </AuthContext.Provider>
         );
     }

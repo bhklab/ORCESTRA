@@ -1,12 +1,10 @@
 import React from 'react';
 import './Profile.css';
-import Navigation from '../Navigation/Navigation'
 import UserInfo from './subcomponents/UserInfo';
 import UserPSet from './subcomponents/UserPSet';
 import {Messages} from 'primereact/messages';
 import {AuthContext} from '../../context/auth';
 import * as APIHelper from '../Shared/PSetAPIHelper';
-import Footer from '../Footer/Footer';
 
 class Profile extends React.Component{
 
@@ -117,29 +115,25 @@ class Profile extends React.Component{
 
     render(){   
         return(
-            <React.Fragment>
-                <Navigation routing={this.props}/>
-                <div className='pageContent'>
-                    <h1>Your Profile</h1>
-                    <div className='userProfile'>
-                        <UserInfo />
-                        <div className='userPSetLists'>
-                            <Messages ref={(el) => this.messages = el} />
-                            <UserPSet heading='Your Saved PSets' btnLabel='Remove from List' 
-                                pset={this.state.psetSaved} 
-                                handleBtnClick={this.removeFromSavedList}
-                                messages={this.messages}
-                            />
-                            <UserPSet heading='Your PSet Requests in Process' btnLabel='Cancel Request' 
-                                pset={this.state.psetInProcess} 
-                                pending={true}
-                                handleBtnClick={this.cancelPSetRequest}
-                            />
-                        </div>
+            <div className='pageContent'>
+                <h1>Your Profile</h1>
+                <div className='userProfile'>
+                    <UserInfo />
+                    <div className='userPSetLists'>
+                        <Messages ref={(el) => this.messages = el} />
+                        <UserPSet heading='Your Saved PSets' btnLabel='Remove from List' 
+                            pset={this.state.psetSaved} 
+                            handleBtnClick={this.removeFromSavedList}
+                            messages={this.messages}
+                        />
+                        <UserPSet heading='Your PSet Requests in Process' btnLabel='Cancel Request' 
+                            pset={this.state.psetInProcess} 
+                            pending={true}
+                            handleBtnClick={this.cancelPSetRequest}
+                        />
                     </div>
                 </div>
-                <Footer />
-            </React.Fragment>
+            </div>
         );
     }
 }

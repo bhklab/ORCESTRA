@@ -1,18 +1,18 @@
 import React, {useContext} from 'react';
-import Navigation from '../Navigation/Navigation';
 import { Redirect } from 'react-router-dom';
 import AuthForm from './AuthForm';
 import './Login.css';
-import Footer from '../Footer/Footer';
 import {AuthContext} from '../../context/auth';
+import {withRouter} from 'react-router';
 
 const Login = (props) => {
     const auth = useContext(AuthContext);
-    const msg = props.location.state.logoutMsg;
+    const { location } = props
+    const msg = location.state.logoutMsg;
+
     return(
         <React.Fragment>
-            <Navigation routing={props} />
-            {auth.authenticated ? <Redirect to={props.location.state.path}/> : 
+            {auth.authenticated ? <Redirect to={location.state.path}/> : 
                 <div className='pageContent'>
                     <div className="loginRegContent">
                         <div className='logoutMsg'>{msg ? msg : ''}</div>
@@ -20,9 +20,8 @@ const Login = (props) => {
                     </div>   
                 </div>
             }
-            <Footer />
         </React.Fragment>
     );
 }
 
-export default Login;
+export default withRouter(Login);

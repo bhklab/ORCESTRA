@@ -4,12 +4,13 @@ import {Button} from 'primereact/button';
 import {AuthContext} from '../../context/auth';
 import './Navigation.css';
 import { slide as Menu } from 'react-burger-menu';
+import {withRouter} from 'react-router'
 
 const Navigation = (props) => {
 
     const auth = useContext(AuthContext);
-
     const [isOnline, setIsOnline] = useState(false);
+    const { location, history } = props
 
     useEffect(() => {
         const checkStatus = async () => {
@@ -22,16 +23,15 @@ const Navigation = (props) => {
 
     const onLoginClick = (event) => {
         event.preventDefault();
-        props.routing.history.push({pathname: '/Authentication', state:{path: props.routing.path}});
+        history.push({pathname: '/Authentication', state:{path: location.pathname}});
     }
 
     const onLogoutClick = (event) => {
         event.preventDefault();
-        console.log(props.routing);
         fetch('/user/logout/:' + auth.username)
             .then(res => {
                 auth.resetAuthToken();
-                props.routing.history.push({pathname: '/Authentication', state:{path: props.routing.location.pathname, logoutMsg: 'You have logged out'}});
+                history.push({pathname: '/Authentication', state:{path: location.pathname, logoutMsg: 'You have logged out'}});
             });            
     }
 
@@ -98,4 +98,4 @@ const Navigation = (props) => {
     );
 }
 
-export default Navigation;
+export default withRouter(Navigation);

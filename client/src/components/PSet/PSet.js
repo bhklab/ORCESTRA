@@ -1,6 +1,5 @@
 import React from 'react';
 import './PSet.css';
-import Navigation from '../Navigation/Navigation';
 import {TabView,TabPanel} from 'primereact/tabview';
 import * as APICalls from '../Shared/APICalls';
 import {GeneralInfoAccordion} from './PSetAccordion';
@@ -10,7 +9,6 @@ import DNATabContent from './TabContents/DNATabContent';
 import * as APIHelper from '../Shared/PSetAPIHelper';
 import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
 import {Messages} from 'primereact/messages';
-import Footer from '../Footer/Footer';
 
 class PSet extends React.Component{
     constructor(){
@@ -54,38 +52,34 @@ class PSet extends React.Component{
 
     render(){
         return(
-            <React.Fragment>
-                <Navigation routing={this.props} />
-                <div className='pageContent'>
-                    <Messages ref={(el) => this.messages = el} />
-                    <div className='psetTitle'>
-                        <h1>Explore PSet - {this.state.pset.name}</h1>
-                        <DownloadPSetButton disabled={false} selectedPSets={[this.state.pset]} onDownloadComplete={this.showMessage}/>
-                    </div>
-                    <GeneralInfoAccordion data={this.state.general}/>
-                    <div className='tabContainer'>
-                        {this.state.isReady ? 
-                            <TabView renderActiveOnly={false}>
-                                <TabPanel header="Dataset">
-                                    <DatasetTabContent metadata={this.state.dataset} />   
-                                </TabPanel>
-                                {this.state.pset.dataType.map((type) => 
-                                    <TabPanel key={type.name} header={type.name}>
-                                        {type.name === 'RNA' ? 
-                                            <RNATabContent metadata={this.state.rna}/> 
-                                            : 
-                                            <DNATabContent metadata={this.state.dna}/>
-                                        }
-                                    </TabPanel>)
-                                }
-                            </TabView>
-                            : 
-                            <h3>{this.state.message}</h3>
-                        }
-                    </div>
+            <div className='pageContent'>
+                <Messages ref={(el) => this.messages = el} />
+                <div className='psetTitle'>
+                    <h1>Explore PSet - {this.state.pset.name}</h1>
+                    <DownloadPSetButton disabled={false} selectedPSets={[this.state.pset]} onDownloadComplete={this.showMessage}/>
                 </div>
-                <Footer /> 
-            </React.Fragment>
+                <GeneralInfoAccordion data={this.state.general}/>
+                <div className='tabContainer'>
+                    {this.state.isReady ? 
+                        <TabView renderActiveOnly={false}>
+                            <TabPanel header="Dataset">
+                                <DatasetTabContent metadata={this.state.dataset} />   
+                            </TabPanel>
+                            {this.state.pset.dataType.map((type) => 
+                                <TabPanel key={type.name} header={type.name}>
+                                    {type.name === 'RNA' ? 
+                                        <RNATabContent metadata={this.state.rna}/> 
+                                        : 
+                                        <DNATabContent metadata={this.state.dna}/>
+                                    }
+                                </TabPanel>)
+                            }
+                        </TabView>
+                        : 
+                        <h3>{this.state.message}</h3>
+                    }
+                </div>
+            </div>
         );
     }
 }

@@ -1,18 +1,13 @@
 import React from 'react';
 import './App.css';
 import './PrimeStyle.css';
-
-import Navigation from '../Navigation/Navigation';
-import Main from '../Main/Main';
-import Footer from '../Footer/Footer';
+import Router from '../Routing/Router';
 
 class App extends React.Component {
 	render(){
 		return (
 			<div className="App">
-				<Navigation routing={this.props} />
-				<Main />
-				<Footer />
+				<Router />
 			</div>
 		);
 	}

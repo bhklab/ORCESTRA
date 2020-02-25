@@ -1,7 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
 import './Dashboard.css';
-import Navigation from '../Navigation/Navigation';
-import Footer from '../Footer/Footer';
 import {usePromiseTracker} from "react-promise-tracker";
 import {trackPromise} from 'react-promise-tracker';
 import Loader from 'react-loader-spinner';
@@ -75,56 +73,52 @@ const Dashboard = (props) => {
     }
 
     return(
-        <React.Fragment>
-            <Navigation routing={props} />
-            <div className='pageContent'>
-                <div className='dashboardWrapper'>
-                    <h1>PSet Request Status Board</h1>
-                    <Messages ref={(el) => Dashboard.messages = el }></Messages>
-                    <div className='dashboardSummary'>
-                        <h2>Request Status Summary</h2>
-                        <div className='dashboardSummaryContainer'>
-                            <div className='dashboardSummarySection'>
-                                <span className='number'>{ data.filter(d => d.status === 'pending').length }</span> pending request(s).
-                            </div>
-                            <div className='dashboardSummarySection'>
-                                <span className='number'>{ data.filter(d => d.status === 'in-process').length }</span> request(s) in process.
-                            </div>    
+        <div className='pageContent'>
+            <div className='dashboardWrapper'>
+                <h1>PSet Request Status Board</h1>
+                <Messages ref={(el) => Dashboard.messages = el }></Messages>
+                <div className='dashboardSummary'>
+                    <h2>Request Status Summary</h2>
+                    <div className='dashboardSummaryContainer'>
+                        <div className='dashboardSummarySection'>
+                            <span className='number'>{ data.filter(d => d.status === 'pending').length }</span> pending request(s).
+                        </div>
+                        <div className='dashboardSummarySection'>
+                            <span className='number'>{ data.filter(d => d.status === 'in-process').length }</span> request(s) in process.
                         </div>    
-                    </div>
-                    <div className='dashboardTable'>
-                        {
-                            !loading ?
-                            [
-                                data.length > 0 ?
-                                <DataTable value={data} paginator={true}  scrollable={true} rows={10} >
-                                    <Column className='textField' field='status' header='Status' style={{width:'2em'}} sortable={true} />
-                                    <Column className='textField' field='name' header='Name' style={{width:'5em'}} sortable={true} />
-                                    <Column className='textField' field='dateSubmitted' header='Submitted Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
-                                    <Column className='textField' field='dateProcessed' header='Process Start Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
-                                    { auth.isAdmin && <Column body={buttonTemplate} style={{width:'1.5em'}}/> }
-                                </DataTable>
-                                :
-                                <h3>There currently are no pending or in-process requests.</h3>
-                            ]
-                            :   
-                            <div className='dashboardTableLoaderContainer'>
+                    </div>    
+                </div>
+                <div className='dashboardTable'>
+                    {
+                        !loading ?
+                        [
+                            data.length > 0 ?
+                            <DataTable value={data} paginator={true}  scrollable={true} rows={10} >
+                                <Column className='textField' field='status' header='Status' style={{width:'2em'}} sortable={true} />
+                                <Column className='textField' field='name' header='Name' style={{width:'5em'}} sortable={true} />
+                                <Column className='textField' field='dateSubmitted' header='Submitted Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
+                                <Column className='textField' field='dateProcessed' header='Process Start Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
+                                { auth.isAdmin && <Column body={buttonTemplate} style={{width:'1.5em'}}/> }
+                            </DataTable>
+                            :
+                            <h3>There currently are no pending or in-process requests.</h3>
+                        ]
+                        :   
+                        <div className='dashboardTableLoaderContainer'>
+                            <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                        </div>
+                    } 
+                    {
+                        promiseInProgress && 
+                        <div className='dashboardTableOverlay'>
+                            <div className='dashboardLoaderContainer'>
                                 <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
                             </div>
-                        } 
-                        {
-                            promiseInProgress && 
-                            <div className='dashboardTableOverlay'>
-                                <div className='dashboardLoaderContainer'>
-                                    <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
-                                </div>
-                            </div>   
-                        }
-                    </div> 
-                </div>   
-            </div>
-            <Footer />
-        </React.Fragment>    
+                        </div>   
+                    }
+                </div> 
+            </div>   
+        </div>  
     );
 }
 

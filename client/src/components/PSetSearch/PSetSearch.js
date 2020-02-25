@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import './PSetSearch.css';
-import Navigation from '../Navigation/Navigation';
 import PSetFilter from './subcomponents/PSetFilter';
 import PSetTable from '../Shared/PSetTable';
 import SavePSetButton from '../Shared/Buttons/SavePSetButton';
@@ -11,7 +10,6 @@ import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
 import * as APIHelper from '../Shared/PSetAPIHelper';
-import Footer from '../Footer/Footer';
 
 export const SearchReqContext = React.createContext();
 
@@ -51,7 +49,7 @@ const PSetSearch = (props) => {
             let filterset = APIHelper.getFilterSet(parameters);
             let apiStr = APIHelper.buildAPIStr(filterset);
             console.log(apiStr);
-            let searchAll = apiStr === '/pset' ||  apiStr === '/pset?' ? true : false;
+            let searchAll = apiStr === '/pset' ||  apiStr === '/pset?status=complete' ? true : false;
             const psets = await fetchData(apiStr);
             setAllData(psets);
             setSearchAll(searchAll);
@@ -133,7 +131,6 @@ const PSetSearch = (props) => {
                 setIsRequest: setIsRequest
             }}
         >
-            <Navigation routing={props} />
             <div className='pageContent'>
                 <h1>Search or Request Pharmacogenomic Datasets</h1>
                 <div className='pSetListContainer'>
@@ -147,7 +144,7 @@ const PSetSearch = (props) => {
                                     <div className='pSetSummaryItem'>
                                         {
                                             searchAll ? 
-                                            <span><span className='pSetSummaryNum'>{allData.length}</span> <span>dataset(s) available.</span></span>
+                                            <span><span className='pSetSummaryNum'>{allData.length ? allData.length : 0}</span> <span>dataset(s) available.</span></span>
                                             :
                                             <span><span className='pSetSummaryNum'>{allData.length}</span> <span>{allData.length === 1 ? ' match' : ' matches'}</span> found.</span>
                                         }
@@ -184,7 +181,6 @@ const PSetSearch = (props) => {
                     </div>
                 </div>
             </div>
-            <Footer />
         </SearchReqContext.Provider>
     );
 }

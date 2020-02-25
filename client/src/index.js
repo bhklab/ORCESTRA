@@ -4,9 +4,14 @@ import './index.css';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import Router from './components/Routing/Router';
+import App from './components/App/App';
+import { BrowserRouter } from 'react-router-dom';
 import * as serviceWorker from './components/serviceWorker';
 
-ReactDOM.render(<Router />, document.getElementById('root'));
+ReactDOM.render((
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
+), document.getElementById('root'));
 
 serviceWorker.unregister();

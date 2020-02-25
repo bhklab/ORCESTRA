@@ -22,7 +22,6 @@ const OrcestraMain = (props) => {
     const [datasetVisible, setDatasetVisible] = useState(false);
     const [rnaVisible, setRNAVisible] = useState(false);
     const [dnaVisible, setDNAVisible] = useState(false);
-    const [ready, setReady] = useState(false);
 
     useEffect(() => {
         const fetchData = async (api) => {
@@ -32,7 +31,6 @@ const OrcestraMain = (props) => {
             setStatsData(json.pset);
             setFormData(json.form[0]);
             setDashboard(json.dashboard);
-            setReady(true);
         }
         fetchData('/landing/data');
     }, [])
