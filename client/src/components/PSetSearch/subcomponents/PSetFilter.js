@@ -48,7 +48,7 @@ const PSetFilter = () => {
     
     useEffect(() => {
         const initialize = async () => {
-            const formDataset = await fetchData('/formData');
+            const formDataset = await fetchData('/api/formData');
             formDataInit = formDataset[0];
             formData = formDataset[0];
             rnaRefOptions = formData.rnaRef;

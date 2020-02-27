@@ -25,7 +25,7 @@ class Profile extends React.Component{
     static contextType = AuthContext;
 
     componentDidMount(){
-        fetch('/user/pset/?username=' + this.context.username)  
+        fetch('/api/user/pset/?username=' + this.context.username)  
             .then(res => res.json())
             .then(resData => {
                 let complete = [];
@@ -49,7 +49,7 @@ class Profile extends React.Component{
         for(let i = 0; i < selectedPSet.length; i++){
             psetID.push(selectedPSet[i]._id);
         }
-        fetch('/user/pset/remove', {
+        fetch('/api/user/pset/remove', {
             method: 'POST',
             body: JSON.stringify({username: this.context.username, psetID: psetID}),
             headers: {
@@ -74,7 +74,7 @@ class Profile extends React.Component{
         for(let i = 0; i < selectedPSet.length; i++){
             psetID.push(selectedPSet[i]._id);
         }
-        fetch('/pset/cancel', {
+        fetch('/api/pset/cancel', {
             method: 'POST',
             body: JSON.stringify({username: this.context.username, psetID: psetID}),
             headers: {

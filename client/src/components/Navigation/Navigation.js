@@ -14,7 +14,7 @@ const Navigation = (props) => {
 
     useEffect(() => {
         const checkStatus = async () => {
-            const status = await fetch('/pachyderm/status');
+            const status = await fetch('/api/pachyderm/status');
             const json = await status.json();
             setIsOnline(json.isOnline);
         }
@@ -28,7 +28,7 @@ const Navigation = (props) => {
 
     const onLogoutClick = (event) => {
         event.preventDefault();
-        fetch('/user/logout/:' + auth.username)
+        fetch('/api/user/logout/:' + auth.username)
             .then(res => {
                 auth.resetAuthToken();
                 history.push({pathname: '/Authentication', state:{path: location.pathname, logoutMsg: 'You have logged out'}});

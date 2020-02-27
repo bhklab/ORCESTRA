@@ -32,7 +32,7 @@ const OrcestraMain = (props) => {
             setFormData(json.form[0]);
             setDashboard(json.dashboard);
         }
-        fetchData('/landing/data');
+        fetchData('/api/landing/data');
     }, [])
 
     const nameColumnTemplate = (rowData, column) => {

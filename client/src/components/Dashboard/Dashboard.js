@@ -29,7 +29,7 @@ const Dashboard = (props) => {
 
     const submitRequest = async (id) => {
         const result = await trackPromise(fetch(
-            '/pset/process', 
+            '/api/pset/process', 
             { 
                 method: 'POST', 
                 body: JSON.stringify({id: id}), 
@@ -41,7 +41,7 @@ const Dashboard = (props) => {
     }
 
     useEffect(() => {
-        fetchData('/pset?status=pending&status=in-process');
+        fetchData('/api/pset?status=pending&status=in-process');
     }, []);
     
     const onSubmit = async (event) => {
@@ -53,7 +53,7 @@ const Dashboard = (props) => {
         }else{
             show({severity: 'error', summary: result.data.summary, detail: result.data.message, sticky: true});
         }
-        await fetchData('/pset?status=pending&status=in-process');
+        await fetchData('/api/pset?status=pending&status=in-process');
     }
 
     const dateTimeTemplate = (rowData, column) => {

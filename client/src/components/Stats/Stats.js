@@ -27,7 +27,7 @@ class Stats extends React.Component{
     static contextType = AuthContext;
 
     componentDidMount(){
-        APICalls.queryPSet('/pset/sort', (resData) => {
+        APICalls.queryPSet('/api/pset/sort', (resData) => {
             const data = [];
             const name = [];
             const value = [];
@@ -59,7 +59,7 @@ class Stats extends React.Component{
 
     showMessages(status, data){
         APIHelper.messageAfterRequest(status, data, this.initializeState, this.messages);
-        APICalls.queryPSet('/pset/sort', (resData) => {
+        APICalls.queryPSet('/api/pset/sort', (resData) => {
             this.setState({
                 allData: resData
             });

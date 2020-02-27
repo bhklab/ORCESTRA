@@ -33,7 +33,7 @@ const PSetSearch = (props) => {
 
     useEffect(() => {
         const initializeView = async () => {
-            const psets = fetchData('/pset?status=complete');
+            const psets = fetchData('/api/pset?status=complete');
             setAllData(psets);
             setSearchAll(true);
         }
@@ -49,7 +49,7 @@ const PSetSearch = (props) => {
             let filterset = APIHelper.getFilterSet(parameters);
             let apiStr = APIHelper.buildAPIStr(filterset);
             console.log(apiStr);
-            let searchAll = apiStr === '/pset' ||  apiStr === '/pset?status=complete' ? true : false;
+            let searchAll = apiStr === '/api/pset' ||  apiStr === '/api/pset?status=complete' ? true : false;
             const psets = await fetchData(apiStr);
             setAllData(psets);
             setSearchAll(searchAll);
@@ -65,7 +65,7 @@ const PSetSearch = (props) => {
         let filterset = APIHelper.getFilterSet(parameters);
         let apiStr = APIHelper.buildAPIStr(filterset);
         console.log(apiStr);
-        let searchAll = apiStr === '/pset' ||  apiStr === '/pset?' ? true : false;
+        let searchAll = apiStr === '/api/pset' ||  apiStr === '/api/pset?' ? true : false;
         const psets = await fetchData(apiStr);
         setAllData(psets);
         setSearchAll(searchAll);
@@ -93,7 +93,7 @@ const PSetSearch = (props) => {
         reqData.name = name;
         reqData.email = email;
         console.log(reqData);
-        const res = await trackPromise(fetch('/pset/request', {
+        const res = await trackPromise(fetch('/api/pset/request', {
                 method: 'POST',
                 body: JSON.stringify({reqData: reqData}),
                 headers: {'Content-type': 'application/json'}
