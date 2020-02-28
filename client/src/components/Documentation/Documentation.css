@@ -1,6 +1,7 @@
 .documentationContent {
     margin-top: 50px;
     display: flex;
+    height: 95vh;
 }
 
 .documentationNav {
@@ -42,6 +43,34 @@
 
 .documentation {
     width: 70%;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    padding-top: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    background-color: rgba(255, 255, 255, 0.8);
+    height: 90%;
+}
+
+.documentation-scroll {
+    width: 100%;
+    height: 80%;
+    padding-bottom: 20px;
+}
+
+.documentation-scroll h3 {
+    font-size: 20px;
+}
+
+.documentation-scroll p {
+    font-size: 12px;
+}
+
+.documentation-scroll * {
+    font-family: "Raleway", "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
 }
 
 .documentation h1 {
@@ -56,5 +85,9 @@
     line-height: 30px;
     font-size: 18px;
     
+}
+
+.documentation .img-full img{
+    width: 100%;
 }
 
