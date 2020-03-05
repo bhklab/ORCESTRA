@@ -171,6 +171,9 @@ const PSetSearch = (props) => {
                             }
                         </div>
                         {
+                            isRequest ?
+                            <PSetTable allData={allData} selectedPSets={selectedPSets} updatePSetSelection={updatePSetSelection} scrollHeight='600px'/> 
+                            :
                             allData.length ?
                             <PSetTable allData={allData} selectedPSets={selectedPSets} updatePSetSelection={updatePSetSelection} scrollHeight='600px'/> 
                             :

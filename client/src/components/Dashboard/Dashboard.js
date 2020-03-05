@@ -101,7 +101,7 @@ const Dashboard = (props) => {
                                 { auth.isAdmin && <Column body={buttonTemplate} style={{width:'1.5em'}}/> }
                             </DataTable>
                             :
-                            <h3>There currently are no pending or in-process requests.</h3>
+                            <h3>There are no pending or in-process requests.</h3>
                         ]
                         :   
                         <div className='dashboardTableLoaderContainer'>

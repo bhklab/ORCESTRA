@@ -1,5 +1,5 @@
 const path = require('path');
-const configDir = path.join(__dirname, '../../config');
+//const configDir = path.join(__dirname, '../../config');
 const mongo = require('../db/mongo');
 const fs = require('fs');
 
@@ -21,21 +21,24 @@ module.exports = {
 
     buildPachydermConfigJson: async function(pset){
         console.log("buildPachydermReqJson");
-        
-        const pipelineDir = 'gray2013pipelines';
-        const configFile = 'getGRAYP_2013.json';
-        
-        const configPath = path.join(configDir, pipelineDir, configFile);
-        const configRaw = fs.readFileSync(configPath);
-        
-        const config = JSON.parse(configRaw);
-        config.transform.cmd.splice(3);
-        config.transform.cmd.push(pset._id);
-        config.update = true;
-        config.reprocess = true;
+        // const pipelineDir = 'gray2013pipelines';
+        // const configFile = 'getGRAYP_2013.json';
+        // const configPath = path.join(configDir, pipelineDir, configFile);
+        // const configRaw = fs.readFileSync(configPath);
+        const configName = 'getGRAYP_2013';
 
-        const dir = path.join(configDir, pipelineDir);
-        return({config: config, configDir: dir, configPath: configPath});
+        try{
+            //const config = JSON.parse(configRaw);
+            const config  = await mongo.getMasterConfig(configName)
+            config.transform.cmd.splice(3);
+            config.transform.cmd.push(pset._id);
+            config.update = true;
+            config.reprocess = true;
+            //const dir = path.join(configDir, pipelineDir);
+            return({config: config, configDir: null, configPath: null});
+        }catch(err){
+            throw err
+        }
     },
     
     savePachydermConfigJson: async function(config, configPath){
@@ -50,10 +53,10 @@ module.exports = {
 
     getPachydermConfigJson: async function(id){
         console.log("getPachydermConfigJson");
-        const pipelineDir = 'gray2013pipelines';
-        const configFile = 'getGRAYP_2013.json';
-        const configPath = path.join(configDir, pipelineDir, configFile);
-        const dir = path.join(configDir, pipelineDir);
+        // const pipelineDir = 'gray2013pipelines';
+        // const configFile = 'getGRAYP_2013.json';
+        // const configPath = path.join(configDir, pipelineDir, configFile);
+        // const dir = path.join(configDir, pipelineDir);
         const result = await mongo.getRequestConfig(id);
         if(result.status){
             console.log('config fetched from db: ' + result.data._id); 

@@ -2,7 +2,7 @@ const mongo = require('../db/mongo');
 
 //middleware
 const request = require('./request');
-const git = require('./git');
+//const git = require('./git');
 const pachyderm = require('./pachyderm');
 
 const getPSetByDOI = function(req, res){
@@ -59,8 +59,8 @@ const completeRequest = async function(req, res){
         const online = await pachyderm.checkOnline();
         if(online){
             console.log('online process');
-            await request.savePachydermConfigJson(config.config, config.configPath);
-            await git.pushPachydermConfigJson(reqPset._id, config.configDir);
+            //await request.savePachydermConfigJson(config.config, config.configPath);
+            //await git.pushPachydermConfigJson(reqPset._id, config.configDir);
             await pachyderm.createPipeline(config.config);
             const update = {'dateProcessed': new Date(Date.now()), 'status': 'in-process'};
             const result = await mongo.updatePSetStatus(reqPset._id, update);
@@ -78,6 +78,7 @@ const completeRequest = async function(req, res){
             }
         }
     }catch(error){
+        console.log(error)
         res.status(500)
         resData = {summary: 'Error in Request Process', message: error.message};
     }finally{
@@ -93,8 +94,8 @@ const processRequest = async function(req, res){
         if(online){
             console.log('online process');
             const config = await request.getPachydermConfigJson(req.body.id);
-            await request.savePachydermConfigJson(config.config, config.configPath);
-            await git.pushPachydermConfigJson(req.body.id, config.configDir);
+            //await request.savePachydermConfigJson(config.config, config.configPath);
+            //await git.pushPachydermConfigJson(req.body.id, config.configDir);
             await pachyderm.createPipeline(config.config);
             const update = {'dateProcessed': new Date(Date.now()), 'status': 'in-process'};
             const result = await mongo.updatePSetStatus(req.body.id, update);

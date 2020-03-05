@@ -232,6 +232,18 @@ module.exports = {
         }
     },
 
+    getMasterConfig: async function(name){
+        const db = await getDB();
+        try{
+            const collection = db.collection('req-config-master')
+            const data = collection.findOne({'pipeline.name': name}, {'projection': {'_id': false}})
+            return data
+        }catch(err){
+            console.log(err)
+            throw err
+        }
+    },
+
     cancelPSetRequest: function(psetID, username=null, callback){
         connectWithClient((err, client) => {
             if(err){
