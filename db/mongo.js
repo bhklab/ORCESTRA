@@ -236,7 +236,7 @@ module.exports = {
         const db = await getDB();
         try{
             const collection = db.collection('req-config-master')
-            const data = collection.findOne({'pipeline.name': name}, {'projection': {'_id': false}})
+            const data = collection.findOneAndUpdate({'pipeline.name': name}, {'projection': {'_id': false}})
             return data
         }catch(err){
             console.log(err)
@@ -279,54 +279,78 @@ module.exports = {
         });
     },
 
-    selectUser: function(username, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const user = db.collection('user');
-            user.findOne({'username': username}, (err, data) => {
-                client.close();
-                callback(getResult(err, data));
-            });
-        });
+    selectUser: async function(username){
+        const db = await getDB();
+        try{
+            const collection = db.collection('user')
+            const data = await collection.findOne({'username': username})
+            return data
+        }catch(err){
+            console.log(err)
+            throw err
+        }
     },
 
-    addUser: function(user, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const users = db.collection('user');
-            users.insertOne(
-                {'username': user.username, 'password': user.password, 'userPSets': [], 'registered': true},
-                (err, data) => {
-                    client.close();
-                    callback(getResult(err, data));
-                }
-            );
-        });
+    addUser: async function(user, callback){
+        const db = await getDB();
+        try{
+            const collection = db.collection('user')
+            const data = await collection.insertOne(
+                {'username': user.username, 'password': user.password, 'userPSets': [], 'registered': true}
+            )
+            return data
+        }catch(err){
+            console.log(err)
+            throw err
+        }
     },
 
-    registerUser: function(user, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const users = db.collection('user');
-            users.findOneAndUpdate(
+    registerUser: async function(user, callback){
+        const db = await getDB();
+        try{
+            const collection = db.collection('user')
+            const data = await collection.findOneAndUpdate(
                 {'username': user.username},
                 {'$set': {'password': user.password, 'registered': true}},
-                {'upsert': true},
-                (err, data) => {
-                    client.close();
-                    callback(getResult(err, data));
-                }
-            );
-        });
+                {'upsert': true}
+            )
+            return data.value
+        }catch(err){
+            console.log(err)
+            throw err
+        }
+    },
+
+    resetPassword: async function(user){
+        const db = await getDB();
+        try{
+            const collection = db.collection('user')
+            const data = await collection.findOneAndUpdate(
+                {'username': user.username},
+                {'$set': {'password': user.password}}
+            )
+            return data.value
+        }catch(err){
+            console.log(err)
+            throw err
+        }
+    },
+
+    setResetToken: async function(user){
+        const db = await getDB();
+        try{
+            const collection = db.collection('user')
+            // 30 minutes = 1800000 millisec
+            // 30sec = 30000 millisec
+            const data = await collection.findOneAndUpdate(
+                {'username': user.username},
+                {'$set': {'resetToken': user.token, 'expire': Date.now() + 30000}}
+            )
+            return data.value
+        }catch(err){
+            console.log(err)
+            throw err
+        }
     },
 
     selectUserPSets: function(username, callback){

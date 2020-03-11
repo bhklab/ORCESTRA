@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.set('js', path.join(__dirname, 'js'));
 
-app.use('/', router);
+app.use('/api', router);
 
 app.use(express.static(path.join(__dirname, 'client/build'))); // configure express to use public folder
 

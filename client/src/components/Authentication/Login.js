@@ -8,11 +8,16 @@ import {withRouter} from 'react-router';
 const Login = (props) => {
     const auth = useContext(AuthContext);
     const { location } = props
-    const msg = location.state.logoutMsg;
+    const msg = location.state ? location.state.logoutMsg : undefined;
 
     return(
         <React.Fragment>
-            {auth.authenticated ? <Redirect to={location.state.path}/> : 
+            {auth.authenticated ? 
+                    location.state ? 
+                    <Redirect to={location.state.path}/> 
+                    :
+                    <Redirect to={'/Profile'}/> 
+                : 
                 <div className='pageContent'>
                     <div className="loginRegContent">
                         <div className='logoutMsg'>{msg ? msg : ''}</div>

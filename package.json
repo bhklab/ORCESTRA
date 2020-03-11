@@ -36,6 +36,7 @@
     "req-flash": "0.0.3",
     "request": "^2.88.0",
     "shelljs": "^0.8.2",
-    "simple-git": "^1.129.0"
+    "simple-git": "^1.129.0",
+    "uid-generator": "^2.0.0"
   }
 }

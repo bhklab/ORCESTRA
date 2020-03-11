@@ -45,3 +45,12 @@
     color: red;
     font-size: 14px;
 }
+
+.forgotPasswordBtn{
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: #3D405A;
+    text-decoration: underline;
+}

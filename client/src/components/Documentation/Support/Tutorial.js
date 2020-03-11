@@ -54,22 +54,22 @@ const Tutorial = (props) => {
                                             <div>
                                                 Sensitivity info (cell line id and drug id for each cell line and drug pair used in sensitivity measurements, minimum and maximum drug dose for each cell line and drug pair, number of concentrations tested for each cell line and drug pair).
                                             </div>
-                                            <img  src={process.env.PUBLIC_URL + "/images/tutorial/sensitivity.png"}/>
+                                            <img  src={process.env.PUBLIC_URL + "/images/tutorial/sensitivity.png"} alt='' />
                                         </li> 
                                         <li>
                                             <div>
                                                 Raw Sensitivity (Drug dose values for each cell line and drug pair, along with their respective viability values).
                                             </div>
                                             <h4>Doses</h4>
-                                            <img  src={process.env.PUBLIC_URL + "/images/tutorial/doses.png"}/>
+                                            <img  src={process.env.PUBLIC_URL + "/images/tutorial/doses.png"} alt='' />
                                             <h4>Viability</h4>
-                                            <img  src={process.env.PUBLIC_URL + "/images/tutorial/viability.png"}/>
+                                            <img  src={process.env.PUBLIC_URL + "/images/tutorial/viability.png"} alt='' />
                                         </li>
                                         <li>
                                             <div>
                                                 Sensitivity Profiles (AAC, IC50, EC50, Einf etc values for each cell line and drug pair)
                                             </div>
-                                            <img  src={process.env.PUBLIC_URL + "/images/tutorial/sensitivity_profiles.png"}/>
+                                            <img  src={process.env.PUBLIC_URL + "/images/tutorial/sensitivity_profiles.png"} alt='' />
                                         </li>       
                                     </ol> 
                                     <p>

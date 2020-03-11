@@ -13,7 +13,7 @@ const Search = () => {
                         User can select different pipeline parameters uder PSet Parameters pane. Each selection of parameters triggers a database search. The search result is displayed on the data table as shown in the figure below.
                     </p> 
                     <div className='img-full'>
-                        <img src={process.env.PUBLIC_URL + "/images/documentation/search.png"} />
+                        <img src={process.env.PUBLIC_URL + "/images/documentation/search.png"} alt='' />
                     </div>  
                     <h3>How to view metadata of a PSet</h3>
                     <p>
@@ -21,7 +21,7 @@ const Search = () => {
                         Explore PSet view is displayed as in the figure below where user can view publications associated with the dataset, and command lines used in the pipeline to generate the PSet.
                     </p> 
                     <div className='img-full'>
-                        <img src={process.env.PUBLIC_URL + "/images/documentation/explore_pset.png"} />
+                        <img src={process.env.PUBLIC_URL + "/images/documentation/explore_pset.png"} alt='' />
                     </div> 
                 </div>
             </ScrollPanel>        

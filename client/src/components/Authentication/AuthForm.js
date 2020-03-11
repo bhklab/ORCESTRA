@@ -67,7 +67,7 @@ const AuthForm = (props) => {
 
     const onFindClick = async (event) => {
         event.preventDefault();
-        const api = 'user/check/?username=' + email;
+        const api = '/api/user/check/?username=' + email;
         const res = await fetch(api);
         const json = await res.json();
         if(res.ok){
@@ -79,7 +79,7 @@ const AuthForm = (props) => {
 
     const onLoginClick = async (event) => {
         event.preventDefault();
-        const res = await fetch('/user/login', {
+        const res = await fetch('/api/user/login', {
             method: 'POST',
             body: JSON.stringify({
                 user: { username: email, password: password }   
@@ -98,7 +98,7 @@ const AuthForm = (props) => {
 
     const onRegisterClick = async (event) => {
         event.preventDefault();
-        const res = await fetch('/user/register', {
+        const res = await fetch('/api/user/register', {
             method: 'POST',
             body: JSON.stringify({
                 user: { username: email, password: passwordReg1, exists: userExists }
@@ -106,11 +106,29 @@ const AuthForm = (props) => {
             headers: { 'Content-type': 'application/json' }
         })
         const data = await res.json();
-        if(data.status){
+        if(res.status){
             initialize();
             auth.setAuthToken({authenticated: data.authenticated, username: data.username});
         }else{
-            AuthForm.messages.show({severity: 'error', summary: 'Registration Failed', detail: 'Please try again.'});
+            AuthForm.messages.show({severity: 'error', summary: 'Registration Failed', detail: data.message});
+        }
+    }
+
+    const onResetClick = async (event) => {
+        event.preventDefault()
+        console.log('reset click')
+        const res = await fetch('/api/user/reset/email', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: email 
+            }),
+            headers: { 'Content-type': 'application/json' }
+        })
+        const data = await res.json()
+        if(res.ok){
+            AuthForm.messages.show({severity: 'success', summary: 'Email has been sent.', detail: 'Please follow the link in the email to reset your password.'});
+        }else{
+            AuthForm.messages.show({severity: 'error', summary: 'An error occurred', detail: data.message});
         }
     }
 
@@ -122,6 +140,9 @@ const AuthForm = (props) => {
                 <InputText className='pwdInput' type='password' name='password' value={password} onChange={handleInputChange}/>
                 <div>
                     <Button label='Login' onClick={onLoginClick} disabled={btnLoginDisabled}/>
+                </div>
+                <div>
+                    <button className='forgotPasswordBtn' onClick={onResetClick}>Reset your password</button>
                 </div>
             </React.Fragment>
         );

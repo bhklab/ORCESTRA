@@ -12,7 +12,9 @@ import Documentation from '../Documentation/Documentation';
 import Tutorial from '../Documentation/Support/Tutorial';
 import Profile from '../Profile/Profile';
 import Login from '../Authentication/Login';
+import Reset from '../Authentication/Reset';
 import PSet from '../PSet/PSet';
+import NotFound404 from '../Shared/NotFound404';
 
 class Router extends React.Component{
     constructor(){
@@ -40,7 +42,7 @@ class Router extends React.Component{
 
     componentDidMount(){
         if(!this.state.authenticated){
-            fetch('/user/checkToken')
+            fetch('/api/user/checkToken')
             .then(res => {
                 if(res.status === 200){
                     return(res.json());
@@ -68,8 +70,10 @@ class Router extends React.Component{
                     <Route exact path ='/Documentation' component={Documentation}/>
                     <Route exact path ='/Tutorial' component={Tutorial}/>
                     <Route exact path='/Authentication' component={Login} />
+                    <Route path ='/Reset/:token' component={Reset} />
                     <Route path='/:id1/:id2' component={PSet} />
                     <PrivateRoute path='/Profile' component={profile} redirect='/Authentication' />
+                    <Route component={NotFound404}/>
                 </Switch>
                 <Navigation />
                 <Footer />

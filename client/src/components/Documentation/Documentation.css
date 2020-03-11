@@ -87,7 +87,22 @@
     
 }
 
+.documentation ol{
+    color: #3D405A;
+    line-height: 30px;
+    font-size: 18px;
+}
+
 .documentation .img-full img{
     width: 100%;
+}
+
+.documentation .img-architecture {
+    display: flex;
+    justify-content: center;
+}
+
+.documentation .img-architecture img {
+    width: 50%;
 }
 

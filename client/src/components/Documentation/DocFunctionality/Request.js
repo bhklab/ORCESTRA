@@ -14,7 +14,7 @@ const Request = () => {
                         PSet request is submitted upon clicking the Submit button.
                     </p> 
                     <div className='img-full'>
-                        <img src={process.env.PUBLIC_URL + "/images/documentation/request.png"} />
+                        <img src={process.env.PUBLIC_URL + "/images/documentation/request.png"} alt='' />
                     </div>  
                     <h3>How to check status of your request</h3>
                     <p>
@@ -22,7 +22,7 @@ const Request = () => {
                         Status of your request can either be "pending" or "in-process". Pending requests are the ones that have been successfully submitted, and will be processed once the Pachyderm cluster is online. In-process requests have been successfully submitted, and the pipeline execution has been started.
                     </p> 
                     <div className='img-full'>
-                        <img src={process.env.PUBLIC_URL + "/images/documentation/request_status.png"} />
+                        <img src={process.env.PUBLIC_URL + "/images/documentation/request_status.png"} alt='' />
                     </div> 
                 </div>
             </ScrollPanel>   
