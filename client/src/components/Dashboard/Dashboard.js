@@ -91,7 +91,6 @@ const Dashboard = (props) => {
                 <div className='dashboardTable'>
                     {
                         !loading ?
-                        [
                             data.length > 0 ?
                             <DataTable value={data} paginator={true}  scrollable={true} rows={10} >
                                 <Column className='textField' field='status' header='Status' style={{width:'2em'}} sortable={true} />
@@ -102,7 +101,6 @@ const Dashboard = (props) => {
                             </DataTable>
                             :
                             <h3>There are no pending or in-process requests.</h3>
-                        ]
                         :   
                         <div className='dashboardTableLoaderContainer'>
                             <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
