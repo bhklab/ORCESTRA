@@ -73,10 +73,7 @@ class UserPSet extends React.Component{
                     <PSetTable allData={this.props.pset} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.handleSelectionChange} scrollHeight='350px' pending={this.props.pending}/>
                 </div>
                 <div className='footer'>
-                { this.props.pending ? '' : 
-                    <DownloadPSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.btnDisabled} onDownloadComplete={this.showMessages}/>
-                } 
-                <Button label={this.props.btnLabel} onClick={this.handleBtnClick} disabled={this.state.btnDisabled} />
+                { !this.props.pending && <Button label={this.props.btnLabel} onClick={this.handleBtnClick} disabled={this.state.btnDisabled} /> } 
                 </div>
             </React.Fragment>
         );
@@ -99,8 +96,8 @@ class UserPSet extends React.Component{
                     {this.props.pset ? psetData : noPSetData}
                 </div>
                 <div>
-                    <Dialog header={this.props.pending? 'Canceling PSet Request(s)' : 'Removing Pset(s)' } footer={dialogFooter} visible={this.state.dialogVisible} style={{width: '300px'}} modal={true} onHide={this.onHide}>
-                        { this.props.pending ? 'Are you sure you would like to cancel the selected PSet request(s)?' : 'Are you sure you would like to remove the selected PSet(s) from the saved list?' }
+                    <Dialog header={'Removing Pset(s)'} footer={dialogFooter} visible={this.state.dialogVisible} style={{width: '300px'}} modal={true} onHide={this.onHide}>
+                        { 'Are you sure you would like to remove the selected PSet(s) from the saved list?' }
                     </Dialog>
                 </div>
             </div>

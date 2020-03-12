@@ -19,12 +19,6 @@ const getDB = async () => {
     return db;
 }
 
-function connectWithClient(callback){
-    mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
-        callback(err, client);
-    });
-}
-
 function getQueryFilterSet(query){
     let querySet = {}
     let queryArray = [];
@@ -89,84 +83,59 @@ function getQueryFilter(keyName, filterValue){
     return(filterObj);
 }
 
-function getResult(err, data){
-    if(err){
-        return({status: 0, data: err});
-    }
-    return({status: 1, data: data});
-}
-
 module.exports = {
 
     getObjectID: function(){
         return(new ObjectID());
     },
     
-    selectPSetByDOI: function(doi, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const pset = db.collection('pset');
-            pset.findOne({'doi': doi, 'status' : 'complete'}, (err, data) => {
-                client.close();
-                callback(getResult(err, data));
-            });
-        });
+    selectPSetByDOI: async function(doi){
+        const db = await getDB();
+        try{
+            const collection = db.collection('pset')
+            const data = await collection.findOne({'doi': doi, 'status' : 'complete'})
+            return data
+        }catch(err){
+            console.log(err)
+            throw err
+        }
     },
     
-    selectPSets: function(query, callback){       
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const collection = db.collection('pset');
+    selectPSets: async function(query){       
+        const db = await getDB();
+        try{
+            const collection = db.collection('pset')
             let queryFilter = getQueryFilterSet(query);
-            collection.find(queryFilter).toArray((err, data) => {
-                client.close();
-                callback(getResult(err, data));
-            });
-        });   
+            const data = await collection.find(queryFilter).toArray()
+            return data
+        }catch(err){
+            console.log(err)
+            throw err
+        } 
     },
 
-    selectSortedPSets: function(callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const collection = db.collection('pset');
-            collection.find().sort({'download': -1}).toArray((err, data) => {
-                client.close();
-                callback(getResult(err, data));
-            });
-        });
+    selectSortedPSets: async function(){
+        const db = await getDB();
+        try{
+            const collection = db.collection('pset')
+            const data = await collection.find().sort({'download': -1}).toArray()
+            return data
+        }catch(err){
+            console.log(err)
+            throw err
+        } 
     },
 
-    updateDownloadNumber: function(psetIDs, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
+    updateDownloadNumber: async function(psetID){
+        console.log(psetID)
+        const db = await getDB();
+        try{
             const collection = db.collection('pset');
-            const objectIDArray = psetIDs.map(str => ObjectID(str));
-            collection.updateMany({'_id': {'$in': objectIDArray}}, {'$inc': {'download': 1}}, (err, result) => {
-                if(err){
-                    client.close();
-                    callback({status: 0, data: err});
-                }
-                client.close();
-                callback({
-                    status: 1, data: {
-                            summary: 'PSet(s) Download',
-                            message: 'The selected PSets will be downloaded.'
-                    }
-                });
-            });         
-        });
+            await collection.updateOne({'_id': ObjectID(psetID)}, {'$inc': {'download': 1}})
+        }catch(error){
+            console.log(error)
+            throw error
+        }
     },
 
     updatePSetStatus: async function(id, update){
@@ -236,47 +205,12 @@ module.exports = {
         const db = await getDB();
         try{
             const collection = db.collection('req-config-master')
-            const data = collection.findOneAndUpdate({'pipeline.name': name}, {'projection': {'_id': false}})
+            const data = collection.findOne({'pipeline.name': name}, {'projection': {'_id': false}})
             return data
         }catch(err){
             console.log(err)
             throw err
         }
-    },
-
-    cancelPSetRequest: function(psetID, username=null, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const pset = db.collection('pset');
-            pset.deleteMany({'_id': {'$in': psetID}}, (err, data) => {
-                if(err){
-                    client.close();
-                    callback({status: 0, data: err});
-                }
-                const user = db.collection('user');
-                user.findOneAndUpdate(
-                    {'username': username},
-                    {'$pull': {'userPSets': {'$in': psetID}}},
-                    (err, result) => {
-                        if(err){
-                            client.close();
-                            callback({status: 0, data: err});
-                        }
-                        client.close();
-                        callback({
-                            status: 1, 
-                            data: {
-                                summary: 'PSet Request(s) Cancelled',
-                                message: 'The selected PSet request(s) have been cancelled.'
-                            }
-                        });
-                    }
-                );
-            });
-        });
     },
 
     selectUser: async function(username){
@@ -291,7 +225,7 @@ module.exports = {
         }
     },
 
-    addUser: async function(user, callback){
+    addUser: async function(user){
         const db = await getDB();
         try{
             const collection = db.collection('user')
@@ -305,7 +239,7 @@ module.exports = {
         }
     },
 
-    registerUser: async function(user, callback){
+    registerUser: async function(user){
         const db = await getDB();
         try{
             const collection = db.collection('user')
@@ -353,78 +287,45 @@ module.exports = {
         }
     },
 
-    selectUserPSets: function(username, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const user = db.collection('user');
-            user.findOne({'username': username}, (err, user) => {
-                if(err){
-                    client.close();
-                    callback({status: 0, data: err});
-                }
-                const pset = db.collection('pset');
-                pset.find({'_id': {'$in': user.userPSets}}).toArray((err, data) => {
-                    client.close();
-                    callback(getResult(err, data));
-                });
-            });
-        });
+    selectUserPSets: async function(username, callback){
+        const db = await getDB();
+        try{
+            const user = db.collection('user')
+            const pset = db.collection('pset')
+            const data = await user.findOne({'username': username})
+            const psets = await pset.find({'_id': {'$in': data.userPSets}}).toArray()
+            return psets
+        }catch(err){
+            console.log(err)
+            throw err
+        } 
     },
 
-    addToUserPset: function(userPSet, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const collection = db.collection('user');
-            const objectIDArray = userPSet.psetId.map(str => ObjectID(str));
-            collection.findOneAndUpdate(
+    addToUserPset: async function(userPSet, callback){
+        const db = await getDB();
+        try{
+            const user = db.collection('user')
+            const objectIDArray = userPSet.psetId.map(str => ObjectID(str))
+            await user.findOneAndUpdate(
                 {'username': userPSet.username},
-                {'$addToSet': {'userPSets': {'$each': objectIDArray}}},
-                (err, result) => {
-                    if(err){
-                        client.close();
-                        callback({status: 0, data: err});
-                    }
-                    client.close();
-                    callback({status: 1, 
-                        data: {
-                            summary: 'PSets Saved',
-                            message: 'The selected PSets have been saved.'
-                        }});
-                }
-            );
-        });
+                {'$addToSet': {'userPSets': {'$each': objectIDArray}}})
+        }catch(err){
+            console.log(err)
+            throw err
+        }
     },
 
-    removeUserPSets: function(username, userPSets, callback){
-        connectWithClient((err, client) => {
-            if(err){
-                callback({status: 0, data: err});
-            }
-            const db = client.db(dbName);
-            const collection = db.collection('user');
-            collection.findOneAndUpdate(
+    removeUserPSets: async function(username, userPSets, callback){
+        const db = await getDB();
+        try{
+            const user = db.collection('user')
+            await user.findOneAndUpdate(
                 {'username': username},
-                {'$pull': {'userPSets': {'$in': userPSets}}},
-                (err, result) => {
-                    if(err){
-                        client.close();
-                        callback({status: 0, data: err});
-                    }
-                    client.close();
-                    callback({status: 1, 
-                        data: {
-                            summary: 'Updated Saved PSets',
-                            message: 'The selected PSet(s) have been removed from the saved list.'
-                        }});
-                }
-            );
-        });
+                {'$pull': {'userPSets': {'$in': userPSets}}})
+        }catch(err){
+            console.log(err)
+            throw err
+        }
     },
 
     selectFormData: async function(){

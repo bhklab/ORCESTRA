@@ -140,35 +140,35 @@ async function resetPwdWithToken(req, res){
     }
 }
 
-function getUserPSet(req, res){
-    mongo.selectUserPSets(req.query.username, function(result){
-        if(result.status){
-            res.send(result.data);
-        }else{
-            res.status(500).send(result.data);
-        }
-    });
+async function getUserPSet(req, res){
+    try{
+        const result = await mongo.selectUserPSets(req.query.username)
+        res.send(result)
+    }catch(error){
+        console.log(error)
+        res.status(500).send(error)
+    }
 }
 
-function addToUserPset(req, res){
+async function addToUserPset(req, res){
     var userPSet = req.body.reqData;
-    mongo.addToUserPset(userPSet, function(result){
-        if(result.status){
-            res.send(result.data);
-        }else{
-            res.status(500).send(result.data);
-        }
-    });
+    try{
+        await mongo.addToUserPset(userPSet)
+        res.send({summary: 'PSets Saved', message: 'The selected PSets have been saved.'})
+    }catch(error){
+        console.log(error)
+        res.status(500).send(error)
+    }
 }
 
-function removeUserPSet(req, res){
-    mongo.removeUserPSets(req.body.username, req.body.psetID, function(result){
-        if(result.status){
-            res.send(result.data);
-        }else{
-            res.status(500).send(result.data);
-        }
-    });
+async function removeUserPSet(req, res){
+    try{
+        await mongo.removeUserPSets(req.body.username, req.body.psetID)
+        res.send({summary: 'Updated Saved PSets', message: 'The selected PSet(s) have been removed from the saved list.'})
+    }catch(error){
+        console.log(error)
+        res.status(500).send(error)
+    }
 }
 
 function checkToken(req, res){

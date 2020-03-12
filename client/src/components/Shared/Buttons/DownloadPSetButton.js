@@ -1,37 +1,31 @@
 import React from 'react';
 import {Button} from 'primereact/button';
-import * as APICalls from '../APICalls';
+import * as API from '../APICalls';
 
 class DownloadPSetButton extends React.Component{
     constructor(){
         super();
-        this.downloadPSets = this.downloadPSets.bind(this);
+        this.downloadPSet = this.downloadPSet.bind(this);
     }
 
-    downloadPSets = event => {
+    downloadPSet = event => {
         event.preventDefault();
-        const psets = this.props.selectedPSets;
         
-        const link = document.createElement('a');
-        link.setAttribute('download', null);
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        for(let i = 0; i < psets.length; i++){
-            if(psets[i].downloadLink){
-                link.setAttribute('href', psets[i].downloadLink)
-                link.click();
-            } 
-        }
-        document.body.removeChild(link);
+        const pset = this.props.pset;
+        const anchor = document.createElement('a');
+        anchor.setAttribute('download', null);
+        anchor.style.display = 'none';
+        anchor.setAttribute('href', pset.downloadLink)
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
 
-        APICalls.downloadPSets(this.props.selectedPSets, (status, data) => {
-            //this.props.onDownloadComplete(status, data);
-        });
+        API.downloadPSet(pset._id);
     }
 
     render(){
         return(
-            <Button className='downloadBtn' label='Download' disabled={this.props.disabled} onClick={this.downloadPSets} />
+            <Button className='downloadBtn' label='Download' disabled={this.props.disabled} onClick={this.downloadPSet} />
         );
     }
 }

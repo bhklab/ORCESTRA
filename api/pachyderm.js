@@ -23,6 +23,7 @@ module.exports = {
         }finally{
             return(online);
         }
+        //return true
     },
 
     returnStatus: async function(req, res){

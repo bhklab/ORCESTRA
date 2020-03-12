@@ -18,7 +18,7 @@ export function saveOrUpdateUserPSets(username, selectedPSets, callback){
         }
         userPSet.psetId = psetId;
 
-        fetch('/user/pset/add', {
+        fetch('/api/user/pset/add', {
             method: 'POST',
             body: JSON.stringify({reqData: userPSet}),
             headers: {
@@ -34,7 +34,7 @@ export function saveOrUpdateUserPSets(username, selectedPSets, callback){
 
 export function requestPSet(data, callback){
     console.log(data);
-    fetch('/pset/request', {
+    fetch('/api/pset/request', {
         method: 'POST',
         body: JSON.stringify({
             reqData: data
@@ -48,36 +48,12 @@ export function requestPSet(data, callback){
         .catch(err => callback(0, err));
 }
 
-export function downloadPSets(psets, callback){
-    var psetIDs = [];
-    console.log(psets);
-    for(let i = 0; i < psets.length; i++){
-        psetIDs.push(psets[i]._id);
-    }
-    console.log(psetIDs);
-    fetch('/pset/download', {
-        method: 'POST',
-        body: JSON.stringify({
-            psetIDs: psetIDs
-        }),
-        headers: {
-            'Content-type': 'application/json'
-        }
-    })
-        .then(res => res.json())
-        .then(resData => {
-            callback(1, resData);
-        })
-        .catch(err => callback(0, err));
-}
-
-export function downloadOnePSet(psetID){
+export function downloadPSet(psetID){
     console.log('downloadOnePSet: ' + psetID);
-    var psetIDs = [psetID];
-    fetch('/pset/download', {
+    fetch('/api/pset/download', {
         method: 'POST',
         body: JSON.stringify({
-            psetIDs: psetIDs
+            psetID: psetID
         }),
         headers: {
             'Content-type': 'application/json'

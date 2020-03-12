@@ -18,8 +18,7 @@ const transport = nodemailer.createTransport({
 //     }
 // });
 
-
-const sendMail = function(url, doi, email, download, callback){
+const sendMail = async function(url, doi, email, download, callback){
     
     console.log("Sending email to: " + email);
 
@@ -50,9 +49,11 @@ const sendMail = function(url, doi, email, download, callback){
         html: html
     }
 
-    transport.sendMail(message, function(err, info){
-        callback(err, info);
-    });
+    try{
+        await transport.sendMail(message)
+    }catch(error){
+        throw error
+    }
 }
 
 const sendPwdResetEmail = async function(email, resetLink, callback){
@@ -81,9 +82,11 @@ const sendPwdResetEmail = async function(email, resetLink, callback){
         html: html
     }
 
-    transport.sendMail(message, function(err, info){
-        callback(err, info);
-    });
+    try{
+        await transport.sendMail(message)
+    }catch(error){
+        throw error
+    }
 }
 
 module.exports = {

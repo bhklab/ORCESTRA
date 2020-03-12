@@ -25,7 +25,7 @@ const PSetTable = (props) => {
     const downloadOnePSet = (id, link) => (event) => {
         event.preventDefault();
         console.log('downloadOnePSet');
-        API.downloadOnePSet(id);
+        API.downloadPSet(id);
         const anchor = document.createElement('a');
         anchor.setAttribute('download', null);
         anchor.style.display = 'none';

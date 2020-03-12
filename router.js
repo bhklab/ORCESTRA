@@ -7,7 +7,6 @@ const user = require('./api/user');
 const auth = require('./api/auth');
 const db = require('./api/db');
 const pachyderm = require('./api/pachyderm');
-const email = require('./api/email');
 
 // pset
 router.get('/pset', pset.getPsetList);
@@ -16,14 +15,14 @@ router.get('/pset/sort', pset.getSortedPSets);
 
 router.get('/pachyderm/status', pachyderm.returnStatus);
 
-router.post('/pset/request', pset.completeRequest);
-router.post('/pset/process', pset.processRequest);
+router.post('/pset/request', pset.processOnlineRequest);
+router.post('/pset/process', pset.processOfflineRequest);
 
 router.post('/pset/download', pset.downloadPSets);
-router.post('/pset/complete', pset.updatePSetStatus, email.sendPSetEmail);
+router.post('/pset/complete', pset.completeRequest);
 
 // prviate route
-router.post('/pset/cancel', auth.checkToken, pset.cancelPSetRequest);
+//router.post('/pset/cancel', auth.checkToken, pset.cancelPSetRequest);
 
 // user
 router.get('/user', user.getUser);

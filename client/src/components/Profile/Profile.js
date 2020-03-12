@@ -126,10 +126,9 @@ class Profile extends React.Component{
                             handleBtnClick={this.removeFromSavedList}
                             messages={this.messages}
                         />
-                        <UserPSet heading='Your PSet Requests in Process' btnLabel='Cancel Request' 
+                        <UserPSet heading='Your PSet Requests in Process'
                             pset={this.state.psetInProcess} 
                             pending={true}
-                            handleBtnClick={this.cancelPSetRequest}
                         />
                     </div>
                 </div>
