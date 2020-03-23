@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "mocha"
   },
   "nodemonConfig": {
     "ignore": [
@@ -38,5 +39,9 @@
     "shelljs": "^0.8.2",
     "simple-git": "^1.129.0",
     "uid-generator": "^2.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.1"
   }
 }

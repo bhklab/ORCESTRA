@@ -201,11 +201,11 @@ module.exports = {
         }
     },
 
-    getMasterConfig: async function(name){
+    getMasterConfig: async function(pipeline){
         const db = await getDB();
         try{
             const collection = db.collection('req-config-master')
-            const data = collection.findOne({'pipeline.name': name}, {'projection': {'_id': false}})
+            const data = collection.findOne({'pipeline.name': pipeline}, {'projection': {'_id': false}})
             return data
         }catch(err){
             console.log(err)

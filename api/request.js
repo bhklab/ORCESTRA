@@ -25,11 +25,11 @@ module.exports = {
         // const configFile = 'getGRAYP_2013.json';
         // const configPath = path.join(configDir, pipelineDir, configFile);
         // const configRaw = fs.readFileSync(configPath);
-        const configName = 'getGRAYP_2013';
+        //const configName = 'getGRAYP_2013';
 
         try{
             //const config = JSON.parse(configRaw);
-            const config  = await mongo.getMasterConfig(configName)
+            const config  = await mongo.getMasterConfig(pset.dataset.pipeline)
             config.transform.cmd.splice(3);
             config.transform.cmd.push(pset._id);
             config.update = true;
