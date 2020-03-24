@@ -167,7 +167,12 @@ const PSetFilter = () => {
                     
                     <PSetDropdown id='rnaTool' isHidden={hideRNAToolRef} parameterName='RNA Tool:' 
                         parameterOptions={formData.rnaTool} selectedParameter={context.parameters.rnaTool} 
-                        handleUpdateSelection={(e) => setRNATool(e.value)} />
+                        handleUpdateSelection={(e) => {
+                            if(e.value.length > 2){
+                                e.value.shift()
+                            }
+                            setRNATool(e.value)
+                        }} />
 
                     <PSetDropdown id='rnaRef' isHidden={hideRNAToolRef} parameterName='RNA Ref:' 
                         parameterOptions={rnaRefOptions} selectedParameter={context.parameters.rnaRef} 

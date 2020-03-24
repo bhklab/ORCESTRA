@@ -54,6 +54,16 @@ const PSetSearch = (props) => {
             setAllData(psets);
             setSearchAll(searchAll);
         }
+        
+        // async function update() {
+        //     let filterset = APIHelper.getFilterSet(parameters);
+        //     let apiStr = APIHelper.buildAPIStr(filterset);
+        //     console.log(apiStr);
+        //     let searchAll = apiStr === '/api/pset' ||  apiStr === '/api/pset?status=complete' ? true : false;
+        //     const psets = await fetchData(apiStr);
+        //     setAllData(psets);
+        //     setSearchAll(searchAll);
+        // }
         update();
         let params = parameters;
         params.name = name;

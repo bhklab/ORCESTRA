@@ -21,20 +21,27 @@ module.exports = {
 
     buildPachydermConfigJson: async function(pset){
         console.log("buildPachydermReqJson");
-        // const pipelineDir = 'gray2013pipelines';
-        // const configFile = 'getGRAYP_2013.json';
-        // const configPath = path.join(configDir, pipelineDir, configFile);
-        // const configRaw = fs.readFileSync(configPath);
-        //const configName = 'getGRAYP_2013';
-
+        console.log(pset)
         try{
-            //const config = JSON.parse(configRaw);
             const config  = await mongo.getMasterConfig(pset.dataset.pipeline)
-            config.transform.cmd.splice(3);
-            config.transform.cmd.push(pset._id);
+            // check if pipeline is fimm or CTRP
+            if(pset.dataset.pipeline != 'fimm' || pset.dataset.pipeline != 'get_CTRP'){
+                // replace cmd[2] with tool label
+                config.transform.cmd[2] = pset.rnaTool[0].label
+                
+                // replace cmd[3] with reference name
+                config.transform.cmd[3] = pset.rnaRef[0].name
+                
+                // push RNA tool(s) into input.cross[] - maximum 2
+                const toolPrefix = pset.dataset.name.toLowerCase() + '_' + (pset.dataType[0].name == 'RNA' ? 'rnaseq' : 'dnaseq')
+                for(let i = 0; i < pset.rnaTool.length; i++){
+                    let toolName = toolPrefix + '_' + pset.rnaTool[i].name
+                    config.input.cross.push({pfs:{repo: toolName, glob: "/"}})
+                }
+            }
+            config.transform.cmd.push(pset._id.toString()); // push id as the last element
             config.update = true;
             config.reprocess = true;
-            //const dir = path.join(configDir, pipelineDir);
             return({config: config, configDir: null, configPath: null});
         }catch(err){
             throw err
