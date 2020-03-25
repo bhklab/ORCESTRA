@@ -30,7 +30,7 @@ module.exports = {
                 config.transform.cmd[2] = pset.rnaTool[0].label
                 
                 // replace cmd[3] with reference name
-                config.transform.cmd[3] = pset.rnaRef[0].name
+                config.transform.cmd[3] = pset.rnaRef.name
                 
                 // push RNA tool(s) into input.cross[] - maximum 2
                 const toolPrefix = pset.dataset.name.toLowerCase() + '_' + (pset.dataType[0].name == 'RNA' ? 'rnaseq' : 'dnaseq')

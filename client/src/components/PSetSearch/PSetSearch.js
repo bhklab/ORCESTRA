@@ -25,17 +25,20 @@ const PSetSearch = (props) => {
     const [selectedPSets, setSelectedPSets] = useState([]);
     const [disableSaveBtn, setDisableSaveBtn] = useState(true);
     const [isRequest, setIsRequest] = useState(false);
-    const [notReadyToSubmit, setNotReadyToSubmit] = useState(true);
+    const [readyToSubmit, setReadyToSubmit] = useState(true);
     const [parameters, setParameters] = useState({});
     
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
 
+    const [ready, setReady] = useState(false)
+
     useEffect(() => {
         const initializeView = async () => {
-            const psets = fetchData('/api/pset?status=complete');
+            const psets = await fetchData('/api/pset?status=complete');
             setAllData(psets);
             setSearchAll(true);
+            setReady(true);
         }
         initializeView();
     }, []);
@@ -44,7 +47,7 @@ const PSetSearch = (props) => {
         setDisableSaveBtn(APIHelper.isSelected(selectedPSets) ? false : true)
     }, [selectedPSets]);
 
-    useEffect(() => {
+    useEffect(() => {   
         async function update() {
             let filterset = APIHelper.getFilterSet(parameters);
             let apiStr = APIHelper.buildAPIStr(filterset);
@@ -54,32 +57,14 @@ const PSetSearch = (props) => {
             setAllData(psets);
             setSearchAll(searchAll);
         }
-        
-        // async function update() {
-        //     let filterset = APIHelper.getFilterSet(parameters);
-        //     let apiStr = APIHelper.buildAPIStr(filterset);
-        //     console.log(apiStr);
-        //     let searchAll = apiStr === '/api/pset' ||  apiStr === '/api/pset?status=complete' ? true : false;
-        //     const psets = await fetchData(apiStr);
-        //     setAllData(psets);
-        //     setSearchAll(searchAll);
-        // }
         update();
-        let params = parameters;
-        params.name = name;
-        params.email = email;
-        setNotReadyToSubmit(APIHelper.isNotReadyToSubmit(params));
+        if(isRequest){
+            let params = JSON.parse(JSON.stringify(parameters));
+            params.name = name;
+            params.email = email;
+            setReadyToSubmit(APIHelper.isReadyToSubmit(params));
+        }
     }, [parameters])
-
-    const updatePSets = async () => {
-        let filterset = APIHelper.getFilterSet(parameters);
-        let apiStr = APIHelper.buildAPIStr(filterset);
-        console.log(apiStr);
-        let searchAll = apiStr === '/api/pset' ||  apiStr === '/api/pset?' ? true : false;
-        const psets = await fetchData(apiStr);
-        setAllData(psets);
-        setSearchAll(searchAll);
-    }
 
     const showMessage = (status, data) => {
         let severity = status ? 'success' : 'error';
@@ -117,7 +102,7 @@ const PSetSearch = (props) => {
         let params = parameters;
         params.name = name;
         params.email = email;
-        setNotReadyToSubmit(APIHelper.isNotReadyToSubmit(params));
+        setReadyToSubmit(APIHelper.isReadyToSubmit(params));
     }, [name, email])
     
     const SubmitRequestButton = () => {
@@ -128,7 +113,7 @@ const PSetSearch = (props) => {
                     <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
                 </div>
                 :
-                <Button label='Submit Request' type='submit' disabled={notReadyToSubmit} onClick={handleSubmitRequest}/>
+                <Button label='Submit Request' type='submit' disabled={!readyToSubmit} onClick={handleSubmitRequest}/>
         );
     }
         
@@ -136,7 +121,6 @@ const PSetSearch = (props) => {
         <SearchReqContext.Provider value={{ 
                 parameters: parameters, 
                 setParameters: setParameters, 
-                updatePSets: updatePSets, 
                 isRequest: isRequest, 
                 setIsRequest: setIsRequest
             }}
@@ -184,7 +168,7 @@ const PSetSearch = (props) => {
                             isRequest ?
                             <PSetTable allData={allData} selectedPSets={selectedPSets} updatePSetSelection={updatePSetSelection} scrollHeight='600px'/> 
                             :
-                            allData.length ?
+                            ready ?
                             <PSetTable allData={allData} selectedPSets={selectedPSets} updatePSetSelection={updatePSetSelection} scrollHeight='600px'/> 
                             :
                             <div className='tableLoaderContainer'>

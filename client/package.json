@@ -22,6 +22,7 @@
     "react-router-dom": "^5.1.2",
     "react-router-prop-types": "^1.0.4",
     "react-scripts": "^3.4.0",
+    "react-select": "^3.1.0",
     "react-transition-group": "^4.3.0",
     "typescript": "^3.7.2"
   },

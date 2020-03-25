@@ -49,46 +49,38 @@ export function isNoneSelected(filterset){
     return(false);
 }
 
-export function isNotReadyToSubmit(request){
-    if(!isSelected(request.dataType)){
-        return(true);
-    }else if(request.dataType.length === 1){
-        if(request.dataType[0] === 'RNA' && (!isSelected(request.rnaRef) || !isSelected(request.rnaTool))){
-            return(true);
-        }else if(request.dataType[0] === 'DNA' && (!isSelected(request.dnaRef) || !isSelected(request.dnaTool))){
-            return(true);
-        }
-    }else{
-        if(!isSelected(request.rnaRef)){
-            return(true);
-        }
-        if(!isSelected(request.dnaRef)){
-            return(true);
-        }
-        if(!isSelected(request.rnaTool)){
-            return(true);
-        }
-        if(!isSelected(request.dnaTool)){
-            return(true);
-        }
-    }
+export function isReadyToSubmit(request){
+    if(!isSelected(request.dataType)){return(false)}
 
-    if(!isSelected(request.genome)){
-        return(true);
-    } 
+    if(!isSelected(request.genome)){return(false)}
+
+    if(!hasName(request.name)){return(false)}
+
+    if(!isValidEmail(request.email)){return(false)}
+    
     if(!isSelected(request.dataset)){
-        return(true);
+        return(false)
+    }else if(request.dataset.name === 'CTRPv2' || request.dataset.name === 'FIMM'){
+        return(true)
     }
+    
+    if(!isSelected(request.rnaRef)){return(false)}
+
+    if(!isSelected(request.rnaTool)){return(false)}
+
+    // if(!isSelected(request.dnaRef)){
+    //     return(true);
+    // }
+    // if(!isSelected(request.dnaTool)){
+    //     return(true);
+    // }
+    
+
     // if(!isSelected(request.drugSensitivity)){
     //     return(true);
     // }
-    if(!hasName(request.name)){
-        return(true);
-    }
-    if(!isValidEmail(request.email)){
-        return(true);
-    }
-    return(false);
+
+    return(true);
 }
 
 export function isSelected(reqParam){
