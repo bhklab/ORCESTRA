@@ -38,7 +38,7 @@ const PSetTable = (props) => {
     const toolsRefTemplate = (rowData, column) => {
         let output ='';
         if(rowData[column.field]){
-            output = rowData[column.field].map(item => <div key={item.name}>{item.name}</div>);
+            output = rowData[column.field].map(item => <div key={item.name}>{item.label}</div>);
         }
         return(
             <div>{output}</div>

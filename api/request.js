@@ -30,10 +30,10 @@ module.exports = {
                 config.transform.cmd[2] = pset.rnaTool[0].label
                 
                 // replace cmd[3] with reference name
-                config.transform.cmd[3] = pset.rnaRef.name
+                config.transform.cmd[3] = pset.rnaRef[0].name
                 
                 // push RNA tool(s) into input.cross[] - maximum 2
-                const toolPrefix = pset.dataset.name.toLowerCase() + '_' + (pset.dataType[0].name == 'RNA' ? 'rnaseq' : 'dnaseq')
+                const toolPrefix = pset.dataset.name.toLowerCase() + '_' + (pset.dataType.name == 'RNA' ? 'rnaseq' : 'dnaseq')
                 for(let i = 0; i < pset.rnaTool.length; i++){
                     let toolName = toolPrefix + '_' + pset.rnaTool[i].name
                     config.input.cross.push({pfs:{repo: toolName, glob: "/"}})

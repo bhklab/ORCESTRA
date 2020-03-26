@@ -83,26 +83,28 @@ const PSetFilter = () => {
 
     useEffect(() => {
         if(genome.length === 0){
-            dnaRefOptions = formData.dnaRef;
+            //dnaRefOptions = formData.dnaRef;
             rnaRefOptions = formData.rnaRef;
         }else{
-            let dnaRefs = dnaRef;
+            //let dnaRefs = dnaRef;
             let rnaRefs = rnaRef;
             
             if(Array.isArray(genome)){
                 let genomeName = genome.map((genome) => {return(genome.name)});
-                dnaRefs = dnaRef.filter((ref) => {return(genomeName.includes(ref.genome) && ref)});
+                //dnaRefs = dnaRef.filter((ref) => {return(genomeName.includes(ref.genome) && ref)});
                 rnaRefs = rnaRef.filter((ref) => {return(genomeName.includes(ref.genome) && ref)});
-                dnaRefOptions = formData.dnaRef.filter((ref) => {return(genomeName.includes(ref.genome) && ref)});
+                //dnaRefOptions = formData.dnaRef.filter((ref) => {return(genomeName.includes(ref.genome) && ref)});
                 rnaRefOptions = formData.rnaRef.filter((ref) => {return(genomeName.includes(ref.genome) && ref)});
             }else{
-                dnaRefs = dnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
-                rnaRefs = rnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
-                dnaRefOptions = formData.dnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
+                if(Array.isArray(rnaRefs)){
+                    //dnaRefs = dnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
+                    rnaRefs = rnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
+                }
+                //dnaRefOptions = formData.dnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
                 rnaRefOptions = formData.rnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
             }
             
-            setDNARef(dnaRefs);
+            //setDNARef(dnaRefs);
             setRNARef(rnaRefs);
         }  
         const parameters = getParameters();

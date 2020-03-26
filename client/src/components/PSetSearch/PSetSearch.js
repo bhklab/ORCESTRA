@@ -59,7 +59,7 @@ const PSetSearch = (props) => {
         }
         update();
         if(isRequest){
-            let params = JSON.parse(JSON.stringify(parameters));
+            let params = {...parameters};
             params.name = name;
             params.email = email;
             setReadyToSubmit(APIHelper.isReadyToSubmit(params));
@@ -83,7 +83,12 @@ const PSetSearch = (props) => {
 
     const handleSubmitRequest = async event => {
         event.preventDefault();
-        let reqData = parameters;
+        let reqData = {...parameters};
+        let dataType = {...parameters.dataType}
+        let rnaRef = {...parameters.rnaRef}
+        
+        reqData.dataType = [dataType]
+        reqData.rnaRef = [rnaRef]
         reqData.drugSensitivity = reqData.dataset.drugSensitivity;
         reqData.name = name;
         reqData.email = email;
@@ -99,7 +104,7 @@ const PSetSearch = (props) => {
     }
 
     useEffect(() => {
-        let params = parameters;
+        let params = {...parameters};
         params.name = name;
         params.email = email;
         setReadyToSubmit(APIHelper.isReadyToSubmit(params));
