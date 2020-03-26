@@ -1,28 +1,29 @@
 {
   "files": {
-    "main.css": "/static/css/main.95642c8e.chunk.css",
-    "main.js": "/static/js/main.72e0900b.chunk.js",
-    "main.js.map": "/static/js/main.72e0900b.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.e077b804.js",
-    "runtime-main.js.map": "/static/js/runtime-main.e077b804.js.map",
-    "static/css/2.89f03baf.chunk.css": "/static/css/2.89f03baf.chunk.css",
-    "static/js/2.551b7e5c.chunk.js": "/static/js/2.551b7e5c.chunk.js",
-    "static/js/2.551b7e5c.chunk.js.map": "/static/js/2.551b7e5c.chunk.js.map",
+    "main.css": "/static/css/main.d309e332.chunk.css",
+    "main.js": "/static/js/main.ae1ba7bf.chunk.js",
+    "main.js.map": "/static/js/main.ae1ba7bf.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.ef76e641.js",
+    "runtime-main.js.map": "/static/js/runtime-main.ef76e641.js.map",
+    "static/css/2.bbe703e9.chunk.css": "/static/css/2.bbe703e9.chunk.css",
+    "static/js/2.6012a48f.chunk.js": "/static/js/2.6012a48f.chunk.js",
+    "static/js/2.6012a48f.chunk.js.map": "/static/js/2.6012a48f.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.0874fed33f13a45bd9abf923daf5fff0.js": "/precache-manifest.0874fed33f13a45bd9abf923daf5fff0.js",
+    "precache-manifest.8a3dc4f819f76c9e9e63eb3ee16fb373.js": "/precache-manifest.8a3dc4f819f76c9e9e63eb3ee16fb373.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/2.89f03baf.chunk.css.map": "/static/css/2.89f03baf.chunk.css.map",
-    "static/css/main.95642c8e.chunk.css.map": "/static/css/main.95642c8e.chunk.css.map",
+    "static/css/2.bbe703e9.chunk.css.map": "/static/css/2.bbe703e9.chunk.css.map",
+    "static/css/main.d309e332.chunk.css.map": "/static/css/main.d309e332.chunk.css.map",
+    "static/js/2.6012a48f.chunk.js.LICENSE.txt": "/static/js/2.6012a48f.chunk.js.LICENSE.txt",
     "static/media/index.css": "/static/media/bg3.96c961c6.png",
     "static/media/primereact.min.css": "/static/media/line.567f5738.gif",
     "static/media/theme.css": "/static/media/open-sans-v15-latin-regular.cffb686d.woff2",
     "static/media/primeicons.css": "/static/media/primeicons.e5e0e944.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.e077b804.js",
-    "static/css/2.89f03baf.chunk.css",
-    "static/js/2.551b7e5c.chunk.js",
-    "static/css/main.95642c8e.chunk.css",
-    "static/js/main.72e0900b.chunk.js"
+    "static/js/runtime-main.ef76e641.js",
+    "static/css/2.bbe703e9.chunk.css",
+    "static/js/2.6012a48f.chunk.js",
+    "static/css/main.d309e332.chunk.css",
+    "static/js/main.ae1ba7bf.chunk.js"
   ]
 }
