@@ -1,7 +1,7 @@
 import React from 'react';
 import PSetTable from '../../Shared/PSetTable';
 import {Button} from 'primereact/button';
-import DownloadPSetButton from '../../Shared/Buttons/DownloadPSetButton';
+// import DownloadPSetButton from '../../Shared/Buttons/DownloadPSetButton';
 import {Dialog} from 'primereact/dialog';
 import * as APIHelper from '../../Shared/PSetAPIHelper';
 import './UserPSet.css';

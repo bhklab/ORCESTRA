@@ -71,17 +71,17 @@ const PSetTable = (props) => {
             value={props.allData} 
             selection={props.selectedPSets} onSelectionChange={updatePSetSelectionEvent} 
             paginator={true} rows={state.rows} 
-            scrollable={true}
+            scrollable={true} resizableColumns={true} columnResizeMode="fit"
         >
-            {auth.authenticated && <Column selectionMode="multiple" style={{width: '2.5em'}} />}
-            <Column className='textField' field='name' header='Name' style={{width:'10em'}} body={nameColumnTemplate} sortable={true} />
-            <Column className='textField' field='dataset.name' header='Dataset' style={{width:'6.5em'}} sortable={true} />
-            <Column className='textField' field='drugSensitivity.version' header='Drug Sensitivity' style={{width:'10.5em'}} sortable={true} />
-            <Column field='rnaTool' body={toolsRefTemplate} style={{width:'8em'}} header='RNA Tool' sortable={true}  />
-            <Column field='dnaTool' body={toolsRefTemplate} style={{width:'8em'}} header='DNA Tool' sortable={true} />
-            <Column field='rnaRef' body={toolsRefTemplate} style={{width:'15em'}} header='RNA Ref' sortable={true} />
-            <Column field='dnaRef' body={toolsRefTemplate} style={{width:'15em'}} header='DNA Ref' sortable={true} />
-            <Column field='downloadLink' body={downloadTemplate} style={{width:'6.5em'}} header='Download' />
+            {auth.authenticated && <Column selectionMode="multiple" style={{width: '2em'}} />}
+            <Column className='textField' field='name' header='Name' style={{width:'5em'}} body={nameColumnTemplate} sortable={true} />
+            <Column className='textField' field='dataset.name' header='Dataset' style={{width:'5em'}} sortable={true} />
+            <Column className='textField' field='drugSensitivity.version' header='Drug Sensitivity' style={{width:'7em'}} sortable={true} />
+            <Column field='rnaTool' body={toolsRefTemplate} style={{width:'6em'}} header='RNA Tool' sortable={true}  />
+            {/* <Column field='dnaTool' body={toolsRefTemplate} style={{width:'8em'}} header='DNA Tool' sortable={true} /> */}
+            <Column field='rnaRef' body={toolsRefTemplate} style={{width:'10em'}} header='RNA Ref' sortable={true} />
+            {/* <Column field='dnaRef' body={toolsRefTemplate} style={{width:'15em'}} header='DNA Ref' sortable={true} /> */}
+            <Column field='downloadLink' body={downloadTemplate} style={{width:'3.5em'}} header='Download' />
         </DataTable>
     );
 

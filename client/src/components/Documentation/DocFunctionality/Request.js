@@ -24,6 +24,7 @@ const Request = () => {
                     <div className='img-full'>
                         <img src={process.env.PUBLIC_URL + "/images/documentation/request_status.png"} alt='' />
                     </div> 
+                    <div className='bottom-fill'></div>
                 </div>
             </ScrollPanel>   
         </div>    

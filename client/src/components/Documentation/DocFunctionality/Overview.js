@@ -26,7 +26,8 @@ const Overview = () => {
                     </ol>     
                     <div className='img-architecture'>
                         <img src={process.env.PUBLIC_URL + "/images/documentation/architecture.png"} alt=''/>
-                    </div>  
+                    </div>
+                    <div className='bottom-fill'></div>  
                 </div>
             </ScrollPanel>   
         </div>    

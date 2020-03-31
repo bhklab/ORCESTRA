@@ -60,26 +60,6 @@ const PSetFilter = () => {
         }
         initialize();
     }, []);
-    
-    // useEffect(() => {
-    //     if(dataType.length === 1){
-    //         if(dataType[0].name === 'RNA'){             
-    //             // setdisableDNAToolRef(true);
-    //             // setDNATool([]);
-    //             // setDNARef([]);
-    //         }else{
-    //             setDataType([])
-    //             // setdisableRNAToolRef(true);
-    //             // setRNATool([]);
-    //             // setRNARef([]);
-    //         }
-    //     }else{
-    //         setdisableRNAToolRef(false);
-    //         setdisableDNAToolRef(false);
-    //     }
-    //     const parameters = getParameters();
-    //     context.setParameters(parameters);
-    // }, [dataType]);
 
     useEffect(() => {
         if(genome.length === 0){

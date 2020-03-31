@@ -84,7 +84,7 @@ const OrcestraMain = (props) => {
                         <div className='mainMenuRow'>
                             <div className='mainMenuColumn'>
                                 <div className='mainMenuItem'>
-                                    <h2>Search and Request PSets</h2>
+                                    <h3>Search and Request PSets</h3>
                                     <div className='mainMenuItemContent'>
                                         <div>Design your own PSet using:</div>
                                         <div className='mainMenuItemLine'><span className='largeNum'>
@@ -94,7 +94,7 @@ const OrcestraMain = (props) => {
                                             <button onClick={() => {showDialog('rna')}}>{formData.rnaTool.length}</button></span> <span>RNA pipelines.</span>
                                         </div>
                                         <div className='mainMenuItemLine'><span className='largeNum'>
-                                            <button onClick={() => {showDialog('dna')}}>{formData.dnaTool.length}</button></span> <span>DNA sequence alignment tools.</span>
+                                            <button onClick={() => {showDialog('dna')}}>{formData.dnaTool.length}</button></span> <span>DNA tools.</span>
                                         </div>
                                         <div className='mainMenuLink'>
                                             <a className='button' href="/PSetSearch">Search and Request</a>
@@ -104,7 +104,7 @@ const OrcestraMain = (props) => {
                             </div>
                             <div className='mainMenuColumn'>
                                 <div className='mainMenuItem' style={{ alignSelf: 'flex-start'}}>
-                                    <h2>View PSet Request Status</h2>
+                                    <h3>View PSet Request Status</h3>
                                     <div className='mainMenuItemContent'>
                                         <div>ORCESTRA is processing following requests:</div>
                                         <div className='mainMenuItemLine'><span className='largeNum'>{dashboard.pending}</span> <span>Requests in queue.</span></div>
@@ -115,7 +115,7 @@ const OrcestraMain = (props) => {
                             </div> 
                             <div className='mainMenuColumn'>
                                 <div className='mainMenuItem'>
-                                    <h2>Top 5 Popular PSets</h2>
+                                    <h3>Top 5 Popular PSets</h3>
                                     <div className='mainMenuItemContent'>
                                         <DataTable value={statsData} >
                                             <Column className='textField' field='download' header='Download' />
@@ -125,7 +125,7 @@ const OrcestraMain = (props) => {
                                     </div>
                                 </div> 
                                 <div className='mainMenuItem'>
-                                    <h2>Generate PSets with Your Data</h2>
+                                    <h3>Generate PSets with Your Data</h3>
                                     <div className='mainMenuItemContent'>
                                         <p>
                                             <b>You can generate PSets using your own datasets.</b> <br /> 

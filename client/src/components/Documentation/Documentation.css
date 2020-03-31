@@ -1,12 +1,12 @@
 .documentationContent {
     margin-top: 50px;
     display: flex;
-    height: 95vh;
+    height: 100vh;
 }
 
 .documentationNav {
-    width: 20%;
-    margin-right: 50px;
+    width: 17%;
+    margin-right: 20px;
 }
 
 .documentationNav ul {
@@ -42,7 +42,7 @@
 }
 
 .documentation {
-    width: 70%;
+    width: 85%;
     margin-bottom: 20px;
     border-radius: 10px;
     padding-top: 5px;
@@ -50,7 +50,7 @@
     padding-right: 30px;
     padding-bottom: 30px;
     background-color: rgba(255, 255, 255, 0.8);
-    height: 90%;
+    height: 100%;
 }
 
 .documentation-scroll {
@@ -83,14 +83,14 @@
 .documentation p{
     color: #3D405A;
     line-height: 30px;
-    font-size: 18px;
+    font-size: 14px;
     
 }
 
 .documentation ol{
     color: #3D405A;
     line-height: 30px;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .documentation .img-full img{
@@ -106,3 +106,6 @@
     width: 50%;
 }
 
+.documentation .bottom-fill {
+    height: 400px;
+}

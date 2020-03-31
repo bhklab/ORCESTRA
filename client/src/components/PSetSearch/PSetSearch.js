@@ -86,7 +86,7 @@ const PSetSearch = (props) => {
         let reqData = {...parameters};
         let dataType = {...parameters.dataType}
         let rnaRef = {...parameters.rnaRef}
-        
+
         reqData.dataType = [dataType]
         reqData.rnaRef = [rnaRef]
         reqData.drugSensitivity = reqData.dataset.drugSensitivity;
@@ -131,9 +131,9 @@ const PSetSearch = (props) => {
             }}
         >
             <div className='pageContent'>
-                <h1>Search or Request Pharmacogenomic Datasets</h1>
+                <h2>Search or Request Pharmacogenomic Datasets</h2>
                 <div className='pSetListContainer'>
-                    <PSetFilter /> 
+                    <PSetFilter />
                     <div className='pSetTable'>
                         <Messages ref={(el) => PSetSearch.messages = el} />
                         <div className='pSetSelectionSummary'>

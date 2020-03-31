@@ -1,5 +1,5 @@
 .tabContainer {
-    width: 70%;
+    width: 100%;
 }
 
 .tabMainHeader {
@@ -41,12 +41,11 @@
 
 .psetTitle {
     display: flex;
+    align-items: baseline;
 }
 
-.psetTitle .downloadBtn.p-button{
-    height: 30px;
-    margin-left: 20px;
-    margin-top: 25px;
+.psetTitle .downloadBtn{
+    margin-left: 30px;
 }
 
 .pubList{
@@ -54,6 +53,6 @@
 }
 
 .generalInfoAccordion{
-    width: 70%;
+    width: 100%;
     margin-bottom: 30px;
 }

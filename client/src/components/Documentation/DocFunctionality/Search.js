@@ -22,7 +22,8 @@ const Search = () => {
                     </p> 
                     <div className='img-full'>
                         <img src={process.env.PUBLIC_URL + "/images/documentation/explore_pset.png"} alt='' />
-                    </div> 
+                    </div>
+                    <div className='bottom-fill'></div> 
                 </div>
             </ScrollPanel>        
         </div>    

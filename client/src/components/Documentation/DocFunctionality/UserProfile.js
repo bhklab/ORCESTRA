@@ -14,6 +14,7 @@ const UserProfile = () => {
                     <div className='img-full'>
                         
                     </div>  
+                    <div className='bottom-fill'></div>
                 </div>
             </ScrollPanel> 
         </div>    

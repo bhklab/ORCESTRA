@@ -55,7 +55,7 @@ class PSet extends React.Component{
             <div className='pageContent'>
                 <Messages ref={(el) => this.messages = el} />
                 <div className='psetTitle'>
-                    <h1>Explore PSet - {this.state.pset.name}</h1>
+                    <h2>Explore PSet - {this.state.pset.name}</h2>
                     <DownloadPSetButton disabled={false} pset={this.state.pset} onDownloadComplete={this.showMessage}/>
                 </div>
                 <GeneralInfoAccordion data={this.state.general}/>

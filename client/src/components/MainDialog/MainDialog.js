@@ -1,14 +1,13 @@
 import React from 'react';
 import {Dialog} from 'primereact/dialog';
-import {Accordion,AccordionTab} from 'primereact/accordion';
 import {TabView,TabPanel} from 'primereact/tabview';
 import {PSetToolAccordion, RNARefAccordion, DNARefAccordion} from '../PSet/PSetAccordion';
 
 const DatasetDialog = (props) => {
     
     const datasetAccordionTabs = props.dataset.map((item) => 
-        <AccordionTab key={item.label} header={item.label}>
-            <div className='tabContent'>
+        <TabPanel key={item.label} header={item.label}>
+            <div className='mainTabContent'>
                 <div className='tabContentSection'>
                     <h3>Publication: </h3>
                     <ul>
@@ -35,14 +34,14 @@ const DatasetDialog = (props) => {
                     <h4 className='subContent'>Version: {item.drugSensitivity.version}</h4>
                 </div>
             </div> 
-        </AccordionTab>
+        </TabPanel>
     );
     
     return(
         <Dialog header="Dataset Overview" visible={props.visible} onHide={props.onHide} style={{minWidth: '50vw', minHeight: '30vh'}} >
-            <Accordion multiple={true}>
+            <TabView>
                 {datasetAccordionTabs}
-            </Accordion>
+            </TabView>
         </Dialog>
     )
 }

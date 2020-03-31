@@ -110,7 +110,8 @@ body .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus {
 body .p-button {
     background-color: #3D405A;
     border: 1px solid #3D405A;
-    font-size: 14px
+    font-size: 14px;
+    padding: 0em 0.5em;
 }
 
 body .p-button:enabled:hover {
@@ -123,6 +124,10 @@ body .p-button:enabled:focus {
     background-color: #555975;
     border: 1px solid #555975;
     box-shadow: 0 0 0 0.1em #555975;
+}
+
+body .p-button.p-button-text-only .p-button-text {
+    padding: 0.5em 0.5em;
 }
 
 /* End of button styling */
