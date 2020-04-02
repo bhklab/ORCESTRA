@@ -4,7 +4,6 @@ export function getFilterSet(data){
     var filterset = {}
     filterset.datatype = toFilterArray(data.dataType);
     filterset.datasetName = toFilterArray(data.dataset);
-    filterset.datasetVersion = toFilterArray(data.dataset, true);
     filterset.genome = toFilterArray(data.genome);
     filterset.rnaTool = toFilterArray(data.rnaTool);
     filterset.dnaTool = toFilterArray(data.dnaTool);
@@ -18,7 +17,6 @@ export function buildAPIStr(filterSet){
     let apiStr = '/api/pset?status=complete&';
     let apiFragments = [];
     apiFragments.push(buildAPIStrFragment('dtp', filterSet.datatype));
-    apiFragments.push(buildAPIStrFragment('dsv', filterSet.datasetVersion));
     apiFragments.push(buildAPIStrFragment('dsn', filterSet.datasetName));
     apiFragments.push(buildAPIStrFragment('gnm', filterSet.genome));
     apiFragments.push(buildAPIStrFragment('rnat', filterSet.rnaTool));
@@ -74,11 +72,10 @@ export function isReadyToSubmit(request){
     // if(!isSelected(request.dnaTool)){
     //     return(true);
     // }
-    
 
-    // if(!isSelected(request.drugSensitivity)){
-    //     return(true);
-    // }
+    if(!isSelected(request.drugSensitivity)){
+        return(false);
+    }
 
     return(true);
 }

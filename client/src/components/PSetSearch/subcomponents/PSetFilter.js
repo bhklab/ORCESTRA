@@ -8,6 +8,7 @@ import './PSetFilter.css';
 
 let formDataInit = {};
 let formData = {};
+let drugSensitivityOptions = [];
 let rnaRefOptions = [];
 let dnaRefOptions = [];
 
@@ -30,7 +31,7 @@ const PSetFilter = () => {
     const [dnaTool, setDNATool] = useState([]);
     const [dnaRef, setDNARef] = useState([]);
 
-    //const [drugSensitivityOptions, setDrugSensitivityOptions] = useState([]);
+    const [disableDSOptions, setdisableDSOptions] = useState(true);
     const [disableRNAToolRef, setdisableRNAToolRef] = useState(false);
     //const [disableDNAToolRef, setdisableDNAToolRef] = useState(false);
     const [datasetDialogVisible, setDatasetDialogVisible] = useState(false);
@@ -52,8 +53,8 @@ const PSetFilter = () => {
     useEffect(() => {
         const initialize = async () => {
             const formDataset = await fetchData('/api/formData');
-            formDataInit = formDataset[0];
-            formData = formDataset[0];
+            formDataInit = formDataset[1];
+            formData = formDataset[1];
             rnaRefOptions = formData.rnaRef;
             dnaRefOptions = formData.dnaRef;
             setDataType(formData.dataType[0])
@@ -93,6 +94,23 @@ const PSetFilter = () => {
 
     useEffect(() => {
         if(context.isRequest){
+            // disable the drug sensitivity options if no dataset is selected.
+            if(typeof dataset === 'undefined'){
+                drugSensitivityOptions = []
+                setdisableDSOptions(true)
+            }else{
+                drugSensitivityOptions = dataset.versions
+                let dsCopy = []
+                for(let i = 0; i < drugSensitivity.length; i++){
+                    if(drugSensitivityOptions.some(el => el.label === drugSensitivity[i].label)){
+                        console.log('found')
+                        dsCopy.push(drugSensitivity[i])
+                    }
+                }
+                setDrugSensitivity(dsCopy[0])
+                setdisableDSOptions(false)
+            }
+
             // if CTRPv2 is selected, then pop up to ask the user if they want to include CCLE data
             if(dataset.name === 'CTRPv2'){
                 setDatasetDialogVisible(true)
@@ -103,7 +121,35 @@ const PSetFilter = () => {
             }else{
                 setdisableRNAToolRef(false)
             }
+
+        }else{
+            // enable the drug sensitivity options only if at least one dataset is selected.
+            if(dataset.length){
+                setdisableDSOptions(false)
+            }else{
+                setdisableDSOptions(true)
+            }
+
+            drugSensitivityOptions = []
+            for(let i = 0; i < dataset.length; i++){
+                for(let k = 0; k < dataset[i].versions.length; k++){
+                    if(!drugSensitivityOptions.some(el => el.label === dataset[i].versions[k].label)){
+                        drugSensitivityOptions.push(dataset[i].versions[k])
+                    }
+                }
+            }
+            
+            if(Array.isArray(drugSensitivity)){
+                let dsCopy = []
+                for(let i = 0; i < drugSensitivity.length; i++){
+                    if(drugSensitivityOptions.some(el => el.label === drugSensitivity[i].label)){
+                        dsCopy.push(drugSensitivity[i])
+                    }
+                }
+                setDrugSensitivity(dsCopy)
+            }
         }
+        
         const parameters = getParameters();
         context.setParameters(parameters);
     }, [dataset])
@@ -111,7 +157,7 @@ const PSetFilter = () => {
     useEffect(() => {
         const parameters = getParameters();
         context.setParameters(parameters);
-    }, [dataType, rnaTool, rnaRef, dnaTool, dnaRef]);
+    }, [dataType, drugSensitivity, rnaTool, rnaRef, dnaTool, dnaRef]);
 
     const setRequestView = (isRequest) => {
         let fData = JSON.parse(JSON.stringify(formData));
@@ -207,8 +253,9 @@ const PSetFilter = () => {
                         parameterOptions={formData.dataset} selectedParameter={context.parameters.dataset} 
                         handleUpdateSelection={(e) => setDataset(e.value)}/>
                     
-                    {/* <PSetDropdown id='drugSensitivity' className={this.props.dropdownClassName} isHidden={false} parameterName='Drug Sensitivity:' selectOne={true} disabled={true} 
-                        parameterOptions={this.state.drugSensitivityOptions} selectedParameter={this.props.parameters.drugSensitivity} handleUpdateSelection={this.handleFilterChange} /> */}
+                    <PSetDropdown id='drugSensitivity' isHidden={false} parameterName='Drug Sensitivity:' selectOne={context.isRequest} 
+                        disabled={disableDSOptions}
+                        parameterOptions={drugSensitivityOptions} selectedParameter={context.parameters.drugSensitivity} handleUpdateSelection={(e) => setDrugSensitivity(e.value)} />
                     
                     <PSetDropdown id='genome' isHidden={false} parameterName='Genome:' selectOne={context.isRequest} 
                         parameterOptions={formData.genome} selectedParameter={context.parameters.genome} 

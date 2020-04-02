@@ -83,16 +83,15 @@ const PSetSearch = (props) => {
 
     const handleSubmitRequest = async event => {
         event.preventDefault();
-        let reqData = {...parameters};
+        let reqData = {...parameters}
         let dataType = {...parameters.dataType}
         let rnaRef = {...parameters.rnaRef}
 
         reqData.dataType = [dataType]
         reqData.rnaRef = [rnaRef]
-        reqData.drugSensitivity = reqData.dataset.drugSensitivity;
-        reqData.name = name;
-        reqData.email = email;
-        console.log(reqData);
+        reqData.name = name
+        reqData.email = email
+        console.log(reqData)
         const res = await trackPromise(fetch('/api/pset/request', {
                 method: 'POST',
                 body: JSON.stringify({reqData: reqData}),
