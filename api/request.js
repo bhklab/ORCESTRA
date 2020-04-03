@@ -23,9 +23,9 @@ module.exports = {
         console.log("buildPachydermReqJson");
         console.log(pset)
         try{
-            const config  = await mongo.getMasterConfig(pset.drugSensitivity.pipeline)
+            const config  = await mongo.getMasterConfig(pset.dataset.versionInfo.pipeline)
             // check if pipeline is fimm or CTRP
-            if(pset.drugSensitivity.pipeline != 'fimm' || pset.drugSensitivity.pipeline != 'get_CTRP'){
+            if(pset.dataset.versionInfo.pipeline != 'fimm' || pset.dataset.versionInfo.pipeline != 'get_CTRP'){
                 // replace cmd[2] with tool label
                 config.transform.cmd[2] = pset.rnaTool[0].label
                 

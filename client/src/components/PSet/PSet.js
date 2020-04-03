@@ -34,10 +34,10 @@ class PSet extends React.Component{
             if(pset){
                 this.setState({
                     pset: pset,
-                    general: {name: pset.name, createdBy: pset.createdBy, dateCreated: pset.dateCreated},
-                    dataset: {dataset: pset.dataset, genome: pset.genome, drugSensitivity: pset.drugSensitivity},
-                    rna: {rnaTool: pset.rnaTool, rnaRef: pset.rnaRef, rawSeqDataRNA: pset.dataset.rawSeqDataRNA},
-                    dna: {dnaTool: pset.dnaTool, dnaRef: pset.dnaRef, rawSeqDataDNA: pset.dataset.rawSeqDataDNA},
+                    general: {name: pset.name, doi: pset.doi, createdBy: pset.createdBy, dateCreated: pset.dateCreated},
+                    dataset: {dataset: pset.dataset, genome: pset.genome},
+                    rna: {rnaTool: pset.rnaTool, rnaRef: pset.rnaRef, rawSeqDataRNA: pset.dataset.versionInfo.rawSeqDataRNA},
+                    dna: {dnaTool: pset.dnaTool, dnaRef: pset.dnaRef, rawSeqDataDNA: pset.dataset.versionInfo.rawSeqDataDNA},
                     isReady: true
                 });
             }else{

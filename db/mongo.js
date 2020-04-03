@@ -59,7 +59,7 @@ function getQueryFilterSet(query){
     }
 
     if(query.dst){
-        queryArray.push(getQueryFilter('drugSensitivity.version', query.dst));
+        queryArray.push(getQueryFilter('dataset.versionInfo.version', query.dst));
     }
 
     if(query.status){

@@ -48,7 +48,7 @@ const PSetTable = (props) => {
     const nameColumnTemplate = (rowData, column) => {
         let route = '/' + rowData.doi;
         return(
-            <Link to={route} >{rowData.name}</Link>
+            <Link to={route} target="_blank">{rowData.name}</Link>
         );
     }
 
@@ -76,7 +76,7 @@ const PSetTable = (props) => {
             {auth.authenticated && <Column selectionMode="multiple" style={{width: '2em'}} />}
             <Column className='textField' field='name' header='Name' style={{width:'5em'}} body={nameColumnTemplate} sortable={true} />
             <Column className='textField' field='dataset.name' header='Dataset' style={{width:'5em'}} sortable={true} />
-            <Column className='textField' field='drugSensitivity.version' header='Drug Sensitivity' style={{width:'7em'}} sortable={true} />
+            <Column className='textField' field='dataset.versionInfo.version' header='Drug Sensitivity' style={{width:'7em'}} sortable={true} />
             <Column field='rnaTool' body={toolsRefTemplate} style={{width:'6em'}} header='RNA Tool' sortable={true}  />
             {/* <Column field='dnaTool' body={toolsRefTemplate} style={{width:'8em'}} header='DNA Tool' sortable={true} /> */}
             <Column field='rnaRef' body={toolsRefTemplate} style={{width:'10em'}} header='RNA Ref' sortable={true} />

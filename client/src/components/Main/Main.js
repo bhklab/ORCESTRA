@@ -27,9 +27,13 @@ const OrcestraMain = (props) => {
         const fetchData = async (api) => {
             const res = await fetch(api);
             const json = await res.json();
-            console.log(json);
+            const dataset = json.form[0].dataset 
+            let versionCombo = 0
+            for(let i = 0; i < dataset.length; i++){
+                versionCombo += dataset[i].versions.length
+            }
             setStatsData(json.pset);
-            setFormData(json.form[0]);
+            setFormData({...json.form[0], versionCombo: versionCombo});
             setDashboard(json.dashboard);
         }
         fetchData('/api/landing/data');
@@ -87,8 +91,8 @@ const OrcestraMain = (props) => {
                                     <h3>Search and Request PSets</h3>
                                     <div className='mainMenuItemContent'>
                                         <div>Design your own PSet using:</div>
-                                        <div className='mainMenuItemLine'><span className='largeNum'>
-                                            <button onClick={() => {showDialog('dataset')}}>{formData.dataset.length}</button></span> <span>Datasets.</span>
+                                        <div className='mainMenuItemLine'>
+                                            <div className='largeNum'><button onClick={() => {showDialog('dataset')}}>{formData.versionCombo}</button></div> <div>Dataset/Drug sensitivity combinations</div>
                                         </div>
                                         <div className='mainMenuItemLine'><span className='largeNum'>
                                             <button onClick={() => {showDialog('rna')}}>{formData.rnaTool.length}</button></span> <span>RNA pipelines.</span>

@@ -95,10 +95,12 @@ class DNARefAccordion extends React.Component {
 
 class GeneralInfoAccordion extends React.Component {
     render(){   
+        const doi = 'http://doi.org/' + this.props.data.doi
         return(
             <Accordion className='generalInfoAccordion'>
                 <AccordionTab header="General Information">
                     <h4 className='subContent'>PSet Name: {this.props.data.name}</h4>
+                    <h4 className='subContent'>DOI:  <a href={doi} target="_blank">{this.props.data.doi}</a></h4>
                     <h4 className='subContent'>Date Created: {this.props.data.dateCreated}</h4>
                     {this.props.data.createdBy && <h4 className='subContent'>Created By {this.props.data.createdBy}</h4>}
                 </AccordionTab>    
