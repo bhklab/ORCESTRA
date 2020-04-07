@@ -1,18 +1,16 @@
 const mongo  = require('mongodb');
 const mongoClient = mongo.MongoClient;
-const connStr = 'mongodb+srv://root:root@development-cluster-ptdz3.azure.mongodb.net/test?retryWrites=true&w=majority';
-const dbName = 'orcestra-dev';
-const testDB = 'orcestra-test'
 const ObjectID = mongo.ObjectID;
 
-let db = null;
-const getDB = async () => {
+let db = null
+
+const getDB = async() => {
     if(db){
         return db;
     }
     try{
-        const client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true});
-        db = client.db(dbName);
+        const client = await mongoClient.connect(process.env.CONNECTION_STR_COSMOS, {useNewUrlParser: true, useUnifiedTopology: true});
+        db = client.db(process.env.DB_COSMOS);
     }catch(err){
         console.log('DB Unavailable');
     }
