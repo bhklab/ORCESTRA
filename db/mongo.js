@@ -9,8 +9,8 @@ const getDB = async() => {
         return db;
     }
     try{
-        const client = await mongoClient.connect(process.env.CONNECTION_STR_DEV, {useNewUrlParser: true, useUnifiedTopology: true});
-        db = client.db(process.env.DB_DEV);
+        const client = await mongoClient.connect(process.env.CONNECTION_STR, {useNewUrlParser: true, useUnifiedTopology: true});
+        db = client.db(process.env.DB);
     }catch(err){
         console.log('DB Unavailable');
     }
