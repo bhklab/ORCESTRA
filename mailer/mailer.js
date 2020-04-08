@@ -1,24 +1,23 @@
 const nodemailer = require('nodemailer');
-const pass = process.env.PASS;
-
-const transport = nodemailer.createTransport({
-    host: 'smtp.mailtrap.io',
-    port: 2525,
-    auth: {
-        user: '9a2ada6eb3c31b',
-        pass: 'aa2daea1eb685a'
-    }
-});
-
-// const transport = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//         user: 'orcestra.bhklab@gmail.com',
-//         pass: ''
-//     }
-// });
 
 const sendMail = async function(url, doi, email, download, callback){
+    
+    // const transport = nodemailer.createTransport({
+    //     host: process.env.MAIL_HOST_DEV,
+    //     port: 2525,
+    //     auth: {
+    //         user: process.env.MAIL_USER_DEV,
+    //         pass: process.env.MAIL_PASS_DEV
+    //     }
+    // });
+
+    const transport = nodemailer.createTransport({
+        service: process.env.MAIL_SERVICE,
+        auth: {
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASS
+        }
+    });
     
     console.log("Sending email to: " + email);
 
@@ -51,12 +50,32 @@ const sendMail = async function(url, doi, email, download, callback){
 
     try{
         await transport.sendMail(message)
+        console.log('mail sent')
     }catch(error){
+        console.log(error)
         throw error
     }
 }
 
 const sendPwdResetEmail = async function(email, resetLink, callback){
+    
+    // const transport = nodemailer.createTransport({
+    //     host: process.env.MAIL_HOST_DEV,
+    //     port: 2525,
+    //     auth: {
+    //         user: process.env.MAIL_USER_DEV,
+    //         pass: process.env.MAIL_PASS_DEV
+    //     }
+    // });
+
+    const transport = nodemailer.createTransport({
+        service: process.env.MAIL_SERVICE,
+        auth: {
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASS
+        }
+    });
+    
     console.log("Sending email to: " + email);
     
     const style = '<style>h2{font-family: arial, san-serif} .content{font-family: arial, san-serif} .signature{font-family: arial, san-serif; font-size: 14px;}</style>'
@@ -84,7 +103,9 @@ const sendPwdResetEmail = async function(email, resetLink, callback){
 
     try{
         await transport.sendMail(message)
+        console.log('mail sent')
     }catch(error){
+        console.log(error)
         throw error
     }
 }

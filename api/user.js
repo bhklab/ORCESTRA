@@ -61,8 +61,8 @@ async function loginUser(req, res){
         if(user){
             const match =  await bcrypt.compare(req.body.user.password, user.password)
             if(match){
-                const token = jwt.sign({username: req.body.user.username}, process.env.KEY, {expiresIn: '1h'});
-                res.cookie('token', token, {httpOnly: true}).send({authenticated: true, username: req.body.user.username, isAdmin: user.admin});
+                const token = jwt.sign({username: user.username, isAdmin: user.isAdmin}, process.env.KEY, {expiresIn: '1h'});
+                res.cookie('token', token, {httpOnly: true}).send({authenticated: true, username: req.body.user.username, isAdmin: user.isAdmin});
             }else{
                 res.send({authenticated: false});
             }

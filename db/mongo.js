@@ -9,8 +9,8 @@ const getDB = async() => {
         return db;
     }
     try{
-        const client = await mongoClient.connect(process.env.CONNECTION_STR_COSMOS, {useNewUrlParser: true, useUnifiedTopology: true});
-        db = client.db(process.env.DB_COSMOS);
+        const client = await mongoClient.connect(process.env.CONNECTION_STR_DEV, {useNewUrlParser: true, useUnifiedTopology: true});
+        db = client.db(process.env.DB_DEV);
     }catch(err){
         console.log('DB Unavailable');
     }
@@ -147,12 +147,11 @@ module.exports = {
                 {returnOriginal: false, upsert: false}
             );
             res.status = 1
-        }catch(err){
-            res.error = err;
-            res.status = 0;
-        }finally{
             return(res);
-        }           
+        }catch(err){
+            console.log(err)
+            throw err
+        }         
     },
 
     insertPSetRequest: async function(pset, username, config){

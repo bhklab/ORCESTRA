@@ -3,7 +3,6 @@ const mailer = require('../mailer/mailer');
 
 //middleware
 const request = require('./request');
-//const git = require('./git');
 const pachyderm = require('./pachyderm');
 
 const getPSetByDOI = async function(req, res){
@@ -54,10 +53,9 @@ const processOnlineRequest = async function(req, res){
         const config = await request.buildPachydermConfigJson(reqPset);
         await postPSetData(reqPset, reqPset.email, config);
         const online = await pachyderm.checkOnline();
+        //const online = false
         if(online){
             console.log('online process');
-            //await request.savePachydermConfigJson(config.config, config.configPath);
-            //await git.pushPachydermConfigJson(reqPset._id, config.configDir);
             await pachyderm.createPipeline(config.config);
             const update = {'dateProcessed': new Date(Date.now()), 'status': 'in-process'};
             const result = await mongo.updatePSetStatus(reqPset._id, update);
@@ -91,8 +89,6 @@ const processOfflineRequest = async function(req, res){
         if(online){
             console.log('online process');
             const config = await request.getPachydermConfigJson(req.body.id);
-            //await request.savePachydermConfigJson(config.config, config.configPath);
-            //await git.pushPachydermConfigJson(req.body.id, config.configDir);
             await pachyderm.createPipeline(config.config);
             const update = {'dateProcessed': new Date(Date.now()), 'status': 'in-process'};
             const result = await mongo.updatePSetStatus(req.body.id, update);
@@ -149,10 +145,13 @@ const completeRequest = async function(req, res){
     }
     try{
         const result = await mongo.updatePSetStatus(data.ORCESTRA_ID, update);
+        console.log('update complete')
         const url = 'http://www.orcestra.ca/' + result.data.value.doi
         await mailer.sendMail(url, result.data.value.doi, result.data.value.email, req.body.download_link)
+        res.send({status: 'OK'})
     }catch(error){
-        res.status(500).send(result.error);
+        console.log(error)
+        res.status(500).send(error);
     }
 }
 

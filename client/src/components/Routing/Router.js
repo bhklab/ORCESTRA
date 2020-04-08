@@ -22,7 +22,7 @@ class Router extends React.Component{
         this.state = {
             authenticated: false,
             isAdmin: false,
-            user: '',
+            username: '',
             setAuthToken: (value) => {
                 this.setState({
                     authenticated: value.authenticated,
@@ -50,7 +50,9 @@ class Router extends React.Component{
                     return({authenticated: false, isAdmin: false, username: ''});
                 }
             })
-            .then(data => {this.state.setAuthToken(data)});
+            .then(data => {
+                this.state.setAuthToken(data)
+            });
         }
     }
 
