@@ -24,8 +24,9 @@ module.exports = {
         console.log(pset)
         try{
             const config  = await mongo.getMasterConfig(pset.dataset.versionInfo.pipeline)
-            // check if pipeline is fimm or CTRP
-            if(pset.dataset.versionInfo.pipeline != 'fimm' || pset.dataset.versionInfo.pipeline != 'get_CTRP'){
+
+            // input tool/ref config data if necessary.
+            if(pset.rnaTool.length){
                 // replace cmd[2] with tool label
                 config.transform.cmd[2] = pset.rnaTool[0].label
                 
@@ -39,6 +40,7 @@ module.exports = {
                     config.input.cross.push({pfs:{repo: toolName, glob: "/"}})
                 }
             }
+
             config.transform.cmd.push(pset._id.toString()); // push id as the last element
             config.update = true;
             config.reprocess = true;
@@ -61,10 +63,6 @@ module.exports = {
 
     getPachydermConfigJson: async function(id){
         console.log("getPachydermConfigJson");
-        // const pipelineDir = 'gray2013pipelines';
-        // const configFile = 'getGRAYP_2013.json';
-        // const configPath = path.join(configDir, pipelineDir, configFile);
-        // const dir = path.join(configDir, pipelineDir);
         const result = await mongo.getRequestConfig(id);
         if(result.status){
             console.log('config fetched from db: ' + result.data._id); 
