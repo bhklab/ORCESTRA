@@ -27,14 +27,22 @@ module.exports = {
 
             // input tool/ref config data if necessary.
             if(pset.rnaTool.length){
-                // replace cmd[2] with tool label
-                config.transform.cmd[2] = pset.rnaTool[0].label
                 
+                let cmdIndex = 2
+                
+                config.transform.cmd[cmdIndex] = pset.rnaTool[0].label
+                cmdIndex++
+                
+                if(pset.rnaTool.length > 1){
+                    config.transform.cmd.splice(cmdIndex, 0, pset.rnaTool[1].label)
+                    cmdIndex++
+                }
+
                 // replace cmd[3] with reference name
-                config.transform.cmd[3] = pset.rnaRef[0].name
+                config.transform.cmd[cmdIndex] = pset.rnaRef[0].name
                 
                 // push RNA tool(s) into input.cross[] - maximum 2
-                const toolPrefix = pset.dataset.name.toLowerCase() + '_' + (pset.dataType.name == 'RNA' ? 'rnaseq' : 'dnaseq')
+                const toolPrefix = pset.dataset.name.toLowerCase() + '_' + (pset.dataType[0].name == 'RNA' ? 'rnaseq' : 'dnaseq')
                 for(let i = 0; i < pset.rnaTool.length; i++){
                     let toolName = toolPrefix + '_' + pset.rnaTool[i].name
                     config.input.cross.push({pfs:{repo: toolName, glob: "/"}})
@@ -66,7 +74,7 @@ module.exports = {
         const result = await mongo.getRequestConfig(id);
         if(result.status){
             console.log('config fetched from db: ' + result.data._id); 
-            return({config: result.data, configDir: dir, configPath: configPath});
+            return(result.data.config);
         }else{
             throw error;
         }

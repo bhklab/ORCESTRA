@@ -89,7 +89,7 @@ const processOfflineRequest = async function(req, res){
         if(online){
             console.log('online process');
             const config = await request.getPachydermConfigJson(req.body.id);
-            await pachyderm.createPipeline(config.config);
+            await pachyderm.createPipeline(config);
             const update = {'dateProcessed': new Date(Date.now()), 'status': 'in-process'};
             const result = await mongo.updatePSetStatus(req.body.id, update);
             if(result.status){
@@ -106,7 +106,8 @@ const processOfflineRequest = async function(req, res){
             }
             res.status(500);
         }
-    }catch{
+    }catch(error){
+        console.log(error)
         res.status(500)
         resData = {summary: 'Error in Request Process', message: error.message};
     }finally{
