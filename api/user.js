@@ -102,7 +102,7 @@ async function sendResetPwdEmail(req, res){
         await mongo.setResetToken({username: email, token: token})
         
         //generate a link with the hashed token
-        const link = 'http://localhost:3000/Reset/' + token
+        const link = process.env.BASE_URL + 'Reset/' + token
 
         // send reset password email
         await mailer.sendPwdResetEmail(email, link)

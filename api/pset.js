@@ -134,7 +134,7 @@ const downloadPSets = async function(req, res){
 }
 
 const completeRequest = async function(req, res){
-    console.log(req.body);
+    console.log('complete request');
     const data = req.body;
     const update = {
         'status': 'complete', 
@@ -146,7 +146,7 @@ const completeRequest = async function(req, res){
     try{
         const result = await mongo.updatePSetStatus(data.ORCESTRA_ID, update);
         console.log('update complete')
-        const url = 'http://www.orcestra.ca/' + result.data.value.doi
+        const url = process.env.BASE_URL + result.data.value.doi
         await mailer.sendMail(url, result.data.value.doi, result.data.value.email, req.body.download_link)
         res.send({status: 'OK'})
     }catch(error){
