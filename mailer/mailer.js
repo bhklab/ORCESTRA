@@ -1,23 +1,8 @@
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 
 const sendMail = async function(url, doi, email, download, callback){
-    
-    // const transport = nodemailer.createTransport({
-    //     host: process.env.MAIL_HOST_DEV,
-    //     port: 2525,
-    //     auth: {
-    //         user: process.env.MAIL_USER_DEV,
-    //         pass: process.env.MAIL_PASS_DEV
-    //     }
-    // });
 
-    const transport = nodemailer.createTransport({
-        service: process.env.MAIL_SERVICE,
-        auth: {
-            user: process.env.MAIL_USER,
-            pass: process.env.MAIL_PASS
-        }
-    });
+    sgMail.setApiKey(process.env.SG_MAIL_KEY)
     
     console.log("Sending email to: " + email);
 
@@ -42,14 +27,14 @@ const sendMail = async function(url, doi, email, download, callback){
     const html = style + heading + body;
     
     const message = {
-        from: 'orcestra.bhklab@gmail.com',
+        from: {email: 'no-reply@orcestra.ca', name: 'ORCESTRA'},
         to: email,
         subject: '[ORCESTRA] Your PSet is Ready!',
         html: html
     }
 
     try{
-        await transport.sendMail(message)
+        await sgMail.send(message)
         console.log('mail sent')
     }catch(error){
         console.log(error)
@@ -58,23 +43,8 @@ const sendMail = async function(url, doi, email, download, callback){
 }
 
 const sendPwdResetEmail = async function(email, resetLink, callback){
-    
-    // const transport = nodemailer.createTransport({
-    //     host: process.env.MAIL_HOST_DEV,
-    //     port: 2525,
-    //     auth: {
-    //         user: process.env.MAIL_USER_DEV,
-    //         pass: process.env.MAIL_PASS_DEV
-    //     }
-    // });
 
-    const transport = nodemailer.createTransport({
-        service: process.env.MAIL_SERVICE,
-        auth: {
-            user: process.env.MAIL_USER,
-            pass: process.env.MAIL_PASS
-        }
-    });
+    sgMail.setApiKey(process.env.SG_MAIL_KEY)
     
     console.log("Sending email to: " + email);
     
@@ -95,14 +65,14 @@ const sendPwdResetEmail = async function(email, resetLink, callback){
     const html = style + heading + body;
     
     const message = {
-        from: 'orcestra.bhklab@gmail.com',
+        from: {email: 'support@orcestra.ca', name: 'ORCESTRA'},
         to: email,
         subject: '[ORCESTRA] Please reset your password',
         html: html
     }
 
     try{
-        await transport.sendMail(message)
+        await sgMail.send(message)
         console.log('mail sent')
     }catch(error){
         console.log(error)
