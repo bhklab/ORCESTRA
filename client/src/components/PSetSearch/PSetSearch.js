@@ -90,7 +90,7 @@ const PSetSearch = (props) => {
 
         reqData.dataset = dataset
         reqData.dataType = [dataType]
-        reqData.rnaRef = [rnaRef]
+        reqData.rnaRef = (Object.keys(rnaRef).length === 0 && rnaRef.constructor === Object ? [] : [rnaRef])
         reqData.name = name
         reqData.email = email
         delete reqData.drugSensitivity
