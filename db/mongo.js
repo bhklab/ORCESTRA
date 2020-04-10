@@ -87,11 +87,11 @@ module.exports = {
         return(new ObjectID());
     },
     
-    selectPSetByDOI: async function(doi){
+    selectPSetByDOI: async function(doi, projection=null){
         const db = await getDB();
         try{
             const collection = db.collection('pset')
-            const data = await collection.findOne({'doi': doi, 'status' : 'complete'})
+            const data = await collection.findOne({'doi': doi, 'status' : 'complete'}, projection)
             return data
         }catch(err){
             console.log(err)
@@ -99,12 +99,12 @@ module.exports = {
         }
     },
     
-    selectPSets: async function(query){       
+    selectPSets: async function(query, projection=null){       
         const db = await getDB();
         try{
             const collection = db.collection('pset')
             let queryFilter = getQueryFilterSet(query);
-            const data = await collection.find(queryFilter).toArray()
+            const data = await collection.find(queryFilter, projection).toArray()
             return data
         }catch(err){
             console.log(err)
@@ -112,11 +112,11 @@ module.exports = {
         } 
     },
 
-    selectSortedPSets: async function(){
+    selectSortedPSets: async function(projection=null){
         const db = await getDB();
         try{
             const collection = db.collection('pset')
-            const data = await collection.find().sort({'download': -1}).toArray()
+            const data = await collection.find({}, projection).sort({'download': -1}).toArray()
             return data
         }catch(err){
             console.log(err)

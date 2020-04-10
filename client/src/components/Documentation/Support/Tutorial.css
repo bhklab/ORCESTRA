@@ -1,6 +1,9 @@
 .tutorial-text{
-    font-size: 18px;
+    font-size: 14px;
     font-weight: normal;
+    font-family: "Raleway", "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
     line-height: 1.5;
 }
 
@@ -16,13 +19,13 @@
     padding-right: 30px;
     padding-bottom: 30px;
     background-color: rgba(255, 255, 255, 0.8);
-    height: 90%;
+    height: 100vh;
 }
 
 .tutorial-scroll{
     width: 100%;
-    height: 80%;
-    padding-bottom: 20px;
+    height: 90%;
+    padding-bottom: 100px;
 }
 
 .tutorial-list{
@@ -32,7 +35,7 @@
 }
 
 .tutorial-list>li{
-    font-size: 2.0em;
+    font-size: 14px;
     font-weight: bold;
 }
 

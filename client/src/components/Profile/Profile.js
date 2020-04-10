@@ -116,7 +116,7 @@ class Profile extends React.Component{
     render(){   
         return(
             <div className='pageContent'>
-                <h1>Your Profile</h1>
+                <h2>Your Profile</h2>
                 <div className='userProfile'>
                     <UserInfo />
                     <div className='userPSetLists'>

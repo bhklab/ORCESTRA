@@ -1,11 +1,9 @@
 import React from 'react';
-import {ScrollPanel} from 'primereact/scrollpanel';
 
 const Request = () => {
     return(
         <div className='documentation'>
             <h1>Request</h1> 
-            <ScrollPanel className='documentation-scroll'>
                 <div>
                     <h3>How to request a PSet</h3>
                     <p>
@@ -26,7 +24,6 @@ const Request = () => {
                     </div> 
                     <div className='bottom-fill'></div>
                 </div>
-            </ScrollPanel>   
         </div>    
     );
 }

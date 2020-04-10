@@ -1,20 +1,19 @@
 import React from 'react';
-import Navigation from '../../Navigation/Navigation';
 import {ScrollPanel} from 'primereact/scrollpanel';
 import './Tutorial.css';
 
 const Tutorial = (props) => {
     return(
         <React.Fragment>
-            <Navigation routing={props} />
             <div className='pageContent'>
                 <div className='tutorial-container'>
-                    <h1>Generating PSet with Your Data</h1>
-                    <div className='tutorial-text'>
-                        Please ensure your data submission follows the respective format below:<br />
-                        The following are a list of requirements that must be fulfilled in order to successfully generate a PharmacoSet (PSet) object in PharmacoGx:
-                    </div>  
+                    <h2>Generating PSet with Your Data</h2>
                     <ScrollPanel className='tutorial-scroll'>
+                        <div className='tutorial-text'>
+                            If you would like to generate a PSet with your own data, plase submit the data to <b>support@orcestra.ca</b>. <br />
+                            Please ensure your data submission follows the respective format below:<br />
+                            The following are a list of requirements that must be fulfilled in order to successfully generate a PharmacoSet (PSet) object in PharmacoGx:
+                        </div>
                         <ol className='tutorial-list'>
                             <li>
                                 <h2>Cell line annotation</h2>

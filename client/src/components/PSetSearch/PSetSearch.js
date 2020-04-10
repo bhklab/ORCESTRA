@@ -134,7 +134,7 @@ const PSetSearch = (props) => {
             }}
         >
             <div className='pageContent'>
-                <h1>Search or Request Pharmacogenomic Datasets</h1>
+                <h2>Search or Request Pharmacogenomic Datasets</h2>
                 <div className='pSetListContainer'>
                     <PSetFilter />
                     <div className='pSetTable'>

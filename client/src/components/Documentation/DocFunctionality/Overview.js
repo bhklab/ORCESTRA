@@ -1,11 +1,10 @@
 import React from 'react';
-import {ScrollPanel} from 'primereact/scrollpanel';
 
 const Overview = () => {
     return(
         <div className='documentation'>
             <h1>Overview</h1>
-            <ScrollPanel className='documentation-scroll'>
+
                 <div>
                     <h3>Introduction</h3>
                     <p>
@@ -28,8 +27,7 @@ const Overview = () => {
                         <img src={process.env.PUBLIC_URL + "/images/documentation/architecture.png"} alt=''/>
                     </div>
                     <div className='bottom-fill'></div>  
-                </div>
-            </ScrollPanel>   
+                </div>  
         </div>    
     );
 }

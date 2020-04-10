@@ -75,7 +75,7 @@ const Dashboard = (props) => {
     return(
         <div className='pageContent'>
             <div className='dashboardWrapper'>
-                <h1>PSet Request Status Board</h1>
+                <h2>PSet Request Status Board</h2>
                 <Messages ref={(el) => Dashboard.messages = el }></Messages>
                 <div className='dashboardSummary'>
                     <h2>Request Status Summary</h2>

@@ -76,7 +76,7 @@ class Stats extends React.Component{
     render(){
         return(
             <div className='pageContent'>
-                <h1>PSet Usage and Downloads</h1>
+                <h2>PSet Usage and Downloads</h2>
                 <div className='statContainer'>
                     {
                         this.state.isReady ?

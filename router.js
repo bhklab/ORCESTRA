@@ -7,6 +7,7 @@ const user = require('./api/user');
 const auth = require('./api/auth');
 const db = require('./api/db');
 const pachyderm = require('./api/pachyderm');
+const public = require('./api/public');
 
 // pset
 router.get('/pset', pset.getPsetList);
@@ -45,5 +46,10 @@ router.get('/formdata', db.getFormData);
 
 //landing data
 router.get('/landing/data', db.getLandingData)
+
+//public api
+router.get('/psets/available', public.getAvailablePSets)
+router.get('/pset/:doi1/:doi2', public.getPSet)
+router.get('/psets/statistics/:limit', public.getStatistics)
 
 module.exports = router;

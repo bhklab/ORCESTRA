@@ -5,7 +5,9 @@ import Overview from './DocFunctionality/Overview';
 import Search from './DocFunctionality/Search';
 import Request from './DocFunctionality/Request';
 import UserProfile from './DocFunctionality/UserProfile';
-import Statistics from './DocFunctionality/Statistics';
+import AvailablePSets from './DocAPI/AvailablePSets';
+import PSetMetadata from './DocAPI/PSetMetadata';
+import StatisticsAPI from './DocAPI/StatisticsAPI';
 
 const Documentation = (props) => {
     
@@ -27,10 +29,7 @@ const Documentation = (props) => {
                             <button type='button' onClick={() => setDisplay('request')}>Request</button>
                         </li>
                         <li className={display === 'userProfile' ? 'selected' : undefined}>
-                            <button type='button' onClick={() => setDisplay('userProfile')}>User Profile</button>
-                        </li>
-                        <li className={display === 'statistics' ? 'selected' : undefined}>
-                            <button type='button' onClick={() => setDisplay('statistics')}>Statistics</button>
+                            <button type='button' onClick={() => setDisplay('userProfile')}>Profile/Statistics</button>
                         </li>
                     </ul> 
                     <h2>API</h2>
@@ -39,7 +38,7 @@ const Documentation = (props) => {
                             <button type='button' onClick={() => setDisplay('api-psets-available')}>Available PSets</button>
                         </li>
                         <li className={display === 'api-pset-single' ? 'selected' : undefined}>
-                            <button type='button' onClick={() => setDisplay('api-pset-single')} >PSet Metadata</button>
+                            <button type='button' onClick={() => setDisplay('api-pset-single')} >Single PSet</button>
                         </li>
                         <li className={display === 'api-statistics' ? 'selected' : undefined}>
                             <button type='button' onClick={() => setDisplay('api-statistics')}>Statistics</button>
@@ -50,7 +49,9 @@ const Documentation = (props) => {
                 {display === 'search' && <Search /> }
                 {display === 'request' && <Request /> }
                 {display === 'userProfile' && <UserProfile /> }
-                {display === 'statistics' && <Statistics /> }
+                {display === 'api-psets-available' && <AvailablePSets /> }
+                {display === 'api-pset-single' && <PSetMetadata /> }
+                {display === 'api-statistics' && <StatisticsAPI /> }
             </div>
         </div>
     );

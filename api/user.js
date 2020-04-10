@@ -45,6 +45,7 @@ async function registerUser(req, res){
             const token = jwt.sign({username: user.username}, process.env.KEY, {expiresIn: '1h'})
             res.cookie('token', token, {httpOnly: true}).send({status: 1, authenticated: true, username: user.username})
         }else{
+            reqUser.password = bcrypt.hashSync(reqUser.password, saltRounds)
             await mongo.addUser(reqUser)
             const token = jwt.sign({username: reqUser.username}, process.env.KEY, {expiresIn: '1h'})
             res.cookie('token', token, {httpOnly: true}).send({status: 1, authenticated: true, username: reqUser.username})

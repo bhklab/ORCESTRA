@@ -1,11 +1,9 @@
 import React from 'react';
-import {ScrollPanel} from 'primereact/scrollpanel';
 
 const Search = () => {
     return(
         <div className='documentation'>
             <h1>Search</h1>
-            <ScrollPanel className='documentation-scroll'>
                 <div>
                     <h3>How to search existing PSets</h3>
                     <p>
@@ -24,8 +22,7 @@ const Search = () => {
                         <img src={process.env.PUBLIC_URL + "/images/documentation/explore_pset.png"} alt='' />
                     </div>
                     <div className='bottom-fill'></div> 
-                </div>
-            </ScrollPanel>        
+                </div>      
         </div>    
     );
 }

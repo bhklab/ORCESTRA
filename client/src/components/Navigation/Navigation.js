@@ -21,6 +21,10 @@ const Navigation = (props) => {
         checkStatus();
     }, []);
 
+    useEffect(() => {
+        console.log('Pachyderm is ' + (isOnline ? 'online' : 'offline'))
+    }, [isOnline])
+
     const onLoginClick = (event) => {
         event.preventDefault();
         history.push({pathname: '/Authentication', state:{path: location.pathname}});

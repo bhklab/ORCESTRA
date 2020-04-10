@@ -4,6 +4,7 @@ header {
     background-color:rgb(255,255,255, 0.7);
     height:70px;
     position: fixed;
+    z-index: 999;
 }
 
 header img {
