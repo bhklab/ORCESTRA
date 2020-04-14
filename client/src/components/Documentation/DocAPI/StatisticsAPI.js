@@ -17,7 +17,7 @@ const StatisticsAPI = () => {
         <div className='documentation'>
             <h2>Statistics</h2>
             <p>
-                This RESTful API call restrieves a list of PSets ordered by the numbero f downloads:<br />
+                This RESTful API call restrieves a list of PSets ordered by the number of downloads:<br />
                 <code className='code'>curl http://orcestra.ca/api/psets/statistics/[ number of psets to be returned ]</code><br />
                 Example:<br />
                 <code className='code'>curl http://orcestra.ca/api/psets/statistics/5</code><br />
