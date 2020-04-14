@@ -6,7 +6,7 @@ const PSetMetadata = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const res = await fetch('/api/pset/10.5281/zenodo.3598711')
+            const res = await fetch('/api/pset/10.5281/zenodo.3747051')
             const data = await res.json()
             setData(JSON.stringify(data, null, 2))
         }
@@ -15,12 +15,12 @@ const PSetMetadata = () => {
     
     return(
         <div className='documentation'>
-            <h2>List of Available PSets</h2>
+            <h2>Single PSet</h2>
             <p>
-                This RESTful API call restrives a PSet associated with a DOI:<br />
+                This RESTful API call restrieves a PSet associated with specified DOI:<br />
                 <code className='code'>curl http://orcestra.ca/api/pset/[ DOI ]</code><br />
                 Example:<br />
-                <code className='code'>curl http://orcestra.ca/api/pset/10.5281/zenodo.3598711e</code><br />
+                <code className='code'>curl http://orcestra.ca/api/pset/10.5281/zenodo.3747051</code><br />
                 Current result of the successful API call is as follows:<br />
             </p>
             <ScrollPanel className='documentation-scroll'>

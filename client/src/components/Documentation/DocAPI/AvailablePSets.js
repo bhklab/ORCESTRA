@@ -18,7 +18,7 @@ const AvailablePSets = () => {
         <div className='documentation'>
             <h2>List of Available PSets</h2>
             <p>
-                This RESTful API call restrives a list of available PSets in the database:<br />
+                This RESTful API call restrieves a list of available PSets in the database:<br />
                 <code className='code'>curl http://orcestra.ca/api/psets/available</code><br />
                 Current result of the successful API call is as follows:<br />
             </p>
