@@ -1,48 +1,49 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
 //middleware
-const pset = require('./api/pset');
-const user = require('./api/user');
-const auth = require('./api/auth');
-const db = require('./api/db');
-const pachyderm = require('./api/pachyderm');
-const public = require('./api/public');
+const pset = require('./api/pset')
+const user = require('./api/user')
+const auth = require('./api/auth')
+const db = require('./api/db')
+const pachyderm = require('./api/pachyderm')
+const public = require('./api/public')
 
 // pset
-router.get('/pset', pset.getPsetList);
-router.get('/pset/one/:id1/:id2', pset.getPSetByDOI);
-router.get('/pset/sort', pset.getSortedPSets);
+router.get('/pset', pset.getPsetList)
+router.get('/pset/one/:id1/:id2', pset.getPSetByDOI)
+router.get('/pset/sort', pset.getSortedPSets)
 
-router.get('/pachyderm/status', pachyderm.returnStatus);
+router.get('/pachyderm/status', pachyderm.returnStatus)
 
-router.post('/pset/request', pset.processOnlineRequest);
-router.post('/pset/process', pset.processOfflineRequest);
+router.post('/pset/request', pset.processOnlineRequest)
+router.post('/pset/process', pset.processOfflineRequest)
 
-router.post('/pset/download', pset.downloadPSets);
-router.post('/pset/complete', pset.completeRequest);
+router.post('/pset/download', pset.downloadPSets)
+router.post('/pset/complete', pset.completeRequest)
 
 // prviate route
 //router.post('/pset/cancel', auth.checkToken, pset.cancelPSetRequest);
 
 // user
-router.get('/user', user.getUser);
-router.get('/user/check', user.checkUser);
-router.post('/user/login', user.loginUser);
-router.post('/user/register', user.registerUser);
-router.get('/user/logout/:username', user.logoutUser);
-router.post('/user/reset/email', user.sendResetPwdEmail);
-router.post('/user/reset/token', user.resetPwdWithToken);
+router.get('/user', user.getUser)
+router.get('/user/check', user.checkUser)
+router.post('/user/login', user.loginUser)
+router.post('/user/register', user.registerUser)
+router.get('/user/logout/:username', user.logoutUser)
+router.post('/user/reset/email', user.sendResetPwdEmail)
+router.post('/user/reset/token', user.resetPwdWithToken)
 
 // private routes
-router.get('/user/pset', auth.checkToken, user.getUserPSet);
-router.post('/user/pset/add', auth.checkToken, user.addToUserPset);
-router.post('/user/pset/remove', auth.checkToken, user.removeUserPSet);
-router.get('/user/checkToken', auth.checkToken, user.checkToken);
-router.post('/user/reset', auth.checkToken, user.resetPwd);
+router.get('/user/pset', auth.checkToken, user.getUserPSet)
+router.post('/user/pset/add', auth.checkToken, user.addToUserPset)
+router.post('/user/pset/remove', auth.checkToken, user.removeUserPSet)
+router.get('/user/checkToken', auth.checkToken, user.checkToken)
+router.post('/user/reset', auth.checkToken, user.resetPwd)
 
 //formdata
-router.get('/formdata', db.getFormData);
+router.get('/formdata', db.getFormData)
+router.get('/stats/data', db.getDataForStats)
 
 //landing data
 router.get('/landing/data', db.getLandingData)

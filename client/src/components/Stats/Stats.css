@@ -1,5 +1,6 @@
 .statContainer{
     display: flex;
+    flex-direction: column;
 }
 
 .container{
@@ -9,17 +10,18 @@
     padding-left: 30px;
     padding-right: 30px;
     padding-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .rankingTable {
     margin-right: 20px;
     max-height: 550px;
-    width: 60%;
+    width: 40%;
 }
 
 .downloadHistogram{
-    width: 40%;
-    padding-top: 30px;
+    width: 100%;
+
 }
 
 .rankingTableFooter{
@@ -28,6 +30,39 @@
 
 .componentloaderContainer {
     width: 100%;
+}
+
+.stats-dataset-chart {
+    width: 100%;
+    display: flex;
+}
+
+.stats-dataset-plot {
+    width: 80%;
+    min-height: 450px;
+    max-height: 900px;
+}
+
+.stats-dataset-chart-control {
+    width: 20%;
+    margin-left: 20px;
+}
+
+.stats-dataset-metric-control{
+    display: flex;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.stats-chart-control-checkbox {
+    font-size: 12px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.stats-chart-control-checkbox label {
+    margin-left: 5px;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -42,11 +77,5 @@
 
     .downloadHistogram{
         width: 100%;
-    }
-}
-
-@media only screen and (min-width: 1200px) {
-    .statContainer{
-        flex-direction: row;
     }
 }

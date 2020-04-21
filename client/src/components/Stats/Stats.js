@@ -1,108 +1,66 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './Stats.css';
-import {Messages} from 'primereact/messages';
-import PSetTable from '../Shared/PSetTable';
-import SavePSetButton from '../Shared/Buttons/SavePSetButton';
-import * as APICalls from '../Shared/APICalls';
-import * as APIHelper from '../Shared/PSetAPIHelper';
-import {AuthContext} from '../../context/auth';
-import DownloadChart from './DownloadChart';
+import {DataTable} from 'primereact/datatable';
+import {Column} from 'primereact/column';
+import { Link } from 'react-router-dom';
+import DatasetChart from './DatasetChart';
 import Loader from 'react-loader-spinner';
 
-class Stats extends React.Component{
-    constructor(){
-        super();
-        this.state = {
-            allData: [],
-            chartData: {},
-            selectedPSets: [],
-            disableBtn: true,
-            isReady: false
+const Stats = props => {
+
+    const [psets, setPSets] = useState([])
+    const [chartData, setChartData] = useState([])
+    const [isReady, setIsReady] = useState(false)
+
+    useEffect(() => {
+        const getData = async () => {
+            const res = await fetch('/api/stats/data')
+            const json = await res.json()
+            console.log(json)
+            setPSets(json.psets)
+            setChartData(json.chartData)
+            setIsReady(true)
         }
-        this.updatePSetSelection = this.updatePSetSelection.bind(this);
-        this.showMessages = this.showMessages.bind(this);
-        this.initializeState = this.initializeState.bind(this);
-    }
-
-    static contextType = AuthContext;
-
-    componentDidMount(){
-        APICalls.queryPSet('/api/pset/sort', (resData) => {
-            const data = [];
-            const name = [];
-            const value = [];
-            for(let i = 0; i < resData.length; i++){
-                data.push({name: resData[i].name, value: resData[i].download});
-                name.push(resData[i].name);
-                value.push(resData[i].download);
-                if(i >= 9){
-                    break;
-                }
-            }
-            this.setState({
-                allData: resData,
-                chartData: {data: data, name: name, value: value},
-                isReady: true
-            });
-        });
-    }
-
-    updatePSetSelection(selected){
-        this.setState({selectedPSets: selected}, () => {
-            if(APIHelper.isSelected(this.state.selectedPSets)){
-                this.setState({disableBtn: false});
-            }else{
-                this.setState({disableBtn: true});
-            }
-        });
-    }
-
-    showMessages(status, data){
-        APIHelper.messageAfterRequest(status, data, this.initializeState, this.messages);
-        APICalls.queryPSet('/api/pset/sort', (resData) => {
-            this.setState({
-                allData: resData
-            });
-        });
-    }
-
-    initializeState(){
-        this.setState({
-            selectedPSets: [],
-            disableBtn: true
-        });
-    }
+        getData()
+    }, [])
     
-    render(){
+    const nameColumnTemplate = (rowData, column) => {
+        let route = '/' + rowData.doi;
         return(
-            <div className='pageContent'>
-                <h2>PSet Usage and Downloads</h2>
-                <div className='statContainer'>
-                    {
-                        this.state.isReady ?
-                        <React.Fragment>
-                            <div className='container rankingTable'>
-                                <h3>Download Ranking</h3>
-                                <Messages ref={(el) => this.messages = el} />
-                                <PSetTable allData={this.state.allData} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.updatePSetSelection} showDownload={true} scrollHeight='340px'/>
-                                <div className='rankingTableFooter'>
-                                    {/* <DownloadPSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableBtn} onDownloadComplete={this.showMessages}/> */}
-                                    <SavePSetButton selectedPSets={this.state.selectedPSets} disabled={this.state.disableBtn} onSaveComplete={this.showMessages} />
-                                </div>
-                            </div>
-                            <div className='container downloadHistogram'>
-                                {this.state.isReady && <DownloadChart data={this.state.chartData} title='Top 10 Most Popular PSets' />}
-                            </div>
-                        </React.Fragment>
-                        :
-                        <div className='componentLoaderContainer'>
-                            <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
-                        </div>
-                    }
-                </div>
-            </div>
+            <Link to={route} target="_blank">{rowData.name}</Link>
         );
     }
+        
+    return(
+        <div className='pageContent'>
+            <h2>Dataset Metrics and PSet Usage Statistics</h2>
+            {
+                isReady ?
+                <div className='statContainer'>
+                    <div className='container downloadHistogram'>
+                        <h3>Dataset Metrics</h3>
+                        <DatasetChart chartData={chartData} />
+                    </div>
+                    <div className='container rankingTable'>
+                        <h3>Download Ranking</h3>
+                        <DataTable 
+                            value={psets} paginator={true} rows={10} scrollable={true} 
+                            resizableColumns={true} columnResizeMode="fit"
+                        >
+                            <Column className='textField' field='download' header='Number of Downloads' style={{width:'5%', textAlign:'center'}} sortable={true} />
+                            <Column className='textField' field='name' header='Name' style={{width:'7%', textAlign:'center'}} body={nameColumnTemplate} sortable={true} />
+                            <Column className='textField' field='dataset' header='Dataset' style={{width:'5%', textAlign:'center'}} sortable={true} />
+                            <Column className='textField' field='version' header='Drug Sensitivity' style={{width:'5%', textAlign:'center'}} sortable={true} />
+                        </DataTable>
+                    </div>
+                </div>
+                :
+                <div className='componentLoaderContainer'>
+                    <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                </div>
+            }
+        </div>
+    );
 }
 
 export default Stats;
