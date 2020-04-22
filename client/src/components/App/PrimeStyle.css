@@ -103,6 +103,24 @@ body .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus {
     display: inline-block;
 }
 
+body .p-radiobutton .p-radiobutton-box.p-highlight {
+    border-color: #3D405A;
+    background-color: #3D405A;
+    color: #ffffff;
+}
+
+body .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover {
+    border-color: #555975;
+    background-color: #555975;
+    color: #ffffff;
+}
+
+body .p-radiobutton .p-radiobutton-box:not(.p-disabled).p-focus {
+    box-shadow: none;
+    outline: none;
+    border: none;
+}
+
 /* End of input filter styling */
 
 /* Button styling*/
