@@ -71,29 +71,46 @@ const DatasetChart = props => {
             }
 
             datasets.sort((a, b) => (a.value > b.value) ? 1: -1)
-            
-            setData([{
-                x: datasets.map((item) => {return item.value}),
-                y: datasets.map((item) => {return item.name}),
-                text: datasets.map((item) => {return (item.name + ': ' + item.value)}),
-                mode: 'markers',
-                type: 'scatter',
-                marker: {
-                    size: 12,
-                    color: datasets.map((item) => {return item.color})
-                },
-                hoverinfo: 'text'
-            }])
 
-            let values = datasets.map((item) => {return item.value})
-            let duplicates = [...new Set(values.filter((item, index) => values.indexOf(item) != index))]
+            let smallestVal = datasets[0].value
+            let xVal = 0
+            for(let i = 0; i < datasets.length; i++){
+                let currentVal = datasets[i].value
+                if(currentVal > smallestVal){
+                    xVal = xVal + 1
+                    smallestVal = currentVal
+                }
+                datasets[i].x = xVal
+            }
 
-            console.log(duplicates)
+            let points = []
+            let unique = [...new Set(datasets.map((item) => {return item.x}))]
+            for(let i = 0; i < unique.length; i++){
+                let pointset = datasets.filter((item) => item.x === unique[i])
+                points.push({
+                    x: pointset.map((point) => {return point.x}),
+                    y: pointset.map((point) => {return point.name}),
+                    text: pointset.map((point) => {return (point.name + ': ' + point.value)}),
+                    mode: pointset.length > 1 ? 'lines+markers' : 'markers',
+                    type: 'scatter',
+                    marker: {
+                        size: 12,
+                        color: pointset.map((point) => {return point.color})
+                    },
+                    line: {
+                        color: '#777777'
+                    },
+                    hoverinfo: 'text'
+                })
+            }
+            setData(points)
 
             let bars = []
+            let values = datasets.map((item) => {return item.value})
+            let duplicates = [...new Set(values.filter((item, index) => values.indexOf(item) != index))]
             for(let i = 0; i < datasets.length; i++){
                 bars.push({
-                    x: [datasets[i].value, datasets[i].value],
+                    x: [datasets[i].x, datasets[i].x],
                     y: [0, datasets[i].value],
                     name: datasets[i].name,
                     mode: 'lines+markers',
@@ -109,7 +126,6 @@ const DatasetChart = props => {
                     },
                 })
             }
-
             setBarData(bars)
         }
     }, [parameters])
@@ -157,7 +173,7 @@ const DatasetChart = props => {
                             margin: {t: 10, b: 0, l: 100, r: 10},
                             showlegend: false
                         } }
-                        style = {{width: "100%", height: '250px', marginLeft: 'auto', marginRight: 'auto'}}
+                        style = {{width: "100%", height: '250px'}}
                         useResizeHandler = {true}
                         config = {{displayModeBar: false}}
                     />
@@ -178,7 +194,8 @@ const DatasetChart = props => {
                                 },
                                 showticklabels: true
                             },
-                            margin: {t: 0, b: 10, l: 100, r: 10}
+                            margin: {t: 0, b: 10, l: 100, r: 10},
+                            showlegend: false
                         } }
                         style = {{width: "100%", height: '200px'}}
                         useResizeHandler = {true}
@@ -190,7 +207,7 @@ const DatasetChart = props => {
                     {
                         Object.keys(parameters.datasets).map((key) => {
                             return(
-                                <div className='stats-chart-control-checkbox' key={key}>
+                                <div className='stats-chart-control-checkbox dataset-checkbox' key={key}>
                                     <Checkbox inputId={key} value={key} checked={parameters.datasets[key].checked}
                                         onChange={e => {
                                             let params = {...parameters}

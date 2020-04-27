@@ -1,6 +1,6 @@
 .statContainer{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .container{
@@ -14,13 +14,13 @@
 }
 
 .rankingTable {
-    margin-right: 20px;
+    margin-left: 20px;
     max-height: 550px;
     width: 40%;
 }
 
 .downloadHistogram{
-    width: 100%;
+    width: 60%;
 
 }
 
@@ -35,30 +35,34 @@
 .stats-dataset-chart {
     width: 100%;
     display: flex;
+    justify-content: space-between;
 }
 
 .stats-dataset-plot {
-    width: 80%;
+    width: 70%;
     min-height: 450px;
     max-height: 900px;
 }
 
 .stats-dataset-chart-control {
-    width: 20%;
+    width: 30%;
     margin-left: 20px;
 }
 
 .stats-dataset-metric-control{
     display: flex;
-    margin-left: 10px;
     margin-bottom: 10px;
+    justify-content: space-between;
 }
 
 .stats-chart-control-checkbox {
     font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.dataset-checkbox {
     margin-right: 10px;
     margin-left: 10px;
-    margin-bottom: 10px;
 }
 
 .stats-chart-control-checkbox label {
