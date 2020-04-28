@@ -52,7 +52,7 @@ const Stats = props => {
                             <Column className='textField' field='dataset' header='Dataset' style={{width:'5%', textAlign:'center'}} sortable={true} />
                             <Column className='textField' field='version' header='Drug Sensitivity' style={{width:'5%', textAlign:'center'}} sortable={true} />
                         </DataTable>
-                    </div>
+                    </div>  
                 </div>
                 :
                 <div className='componentLoaderContainer'>

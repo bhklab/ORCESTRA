@@ -45,6 +45,16 @@ module.exports = {
         }
     },
 
+    getDataForUpsetPlot: async function(req, res){
+        try{
+            const intersections = await mongo.getMetricData()
+            res.send(intersections)
+        }catch(error){
+            console.log(error)
+            res.status(500).send(error)
+        }
+    },
+
     getLandingData: async function(req, res){
         const result = await mongo.getLandingData();
         if(result.status){

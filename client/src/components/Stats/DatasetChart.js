@@ -3,8 +3,9 @@ import Plotly from "plotly.js-basic-dist";
 import createPlotlyComponent from "react-plotly.js/factory";
 import {Checkbox} from 'primereact/checkbox';
 import {RadioButton} from 'primereact/radiobutton';
+import {makeUpset} from './MakeUpset'
+import UpsetPlot from './UpsetPlot'
 const Plot = createPlotlyComponent(Plotly);
-
 
 const DatasetChart = props => {
     const defColors = [
@@ -27,13 +28,15 @@ const DatasetChart = props => {
         {name: 'Numer of Genes', value: 'numGenes'}
     ]
 
-    const [data, setData] = useState([])
     const [barData, setBarData] = useState([])
     const [parameters, setParameters] = useState({
         datasets: {},
         metricName: ''
     })
     const [isReady, setIsReady] = useState(false)
+    const [isPlotReady, setIsPlotReady] = useState(false)
+
+    const [colorCode, setColorCode] = useState({})
 
     useEffect(() => {
         let datasets = {}
@@ -58,6 +61,7 @@ const DatasetChart = props => {
     useEffect(() => {
         if(isReady){
             let datasets = []
+            let datasetColors = {}
             for(let i = 0; i < props.chartData.length; i++){
                 for(let j = 0; j < props.chartData[i].versions.length; j++){
                     if(parameters.datasets[props.chartData[i].name + '_' + j].checked){
@@ -66,67 +70,25 @@ const DatasetChart = props => {
                             value: props.chartData[i].versions[j].metric[parameters.metricName],
                             color: parameters.datasets[props.chartData[i].name + '_' + j].color
                         })
+                        datasetColors[parameters.datasets[props.chartData[i].name + '_' + j].name.split(' ').join('_')] = parameters.datasets[props.chartData[i].name + '_' + j].color
                     }
                 }
             }
 
             datasets.sort((a, b) => (a.value > b.value) ? 1: -1)
 
-            let smallestVal = datasets[0].value
-            let xVal = 0
-            for(let i = 0; i < datasets.length; i++){
-                let currentVal = datasets[i].value
-                if(currentVal > smallestVal){
-                    xVal = xVal + 1
-                    smallestVal = currentVal
+            setBarData([{
+                x: datasets.map((item) => {return item.value}), 
+                y: datasets.map((item) => {return item.name}), 
+                type: 'bar',
+                orientation: 'h',
+                marker: {
+                    color: datasets.map((item) => {return item.color})
                 }
-                datasets[i].x = xVal
-            }
+            }])
 
-            let points = []
-            let unique = [...new Set(datasets.map((item) => {return item.x}))]
-            for(let i = 0; i < unique.length; i++){
-                let pointset = datasets.filter((item) => item.x === unique[i])
-                points.push({
-                    x: pointset.map((point) => {return point.x}),
-                    y: pointset.map((point) => {return point.name}),
-                    text: pointset.map((point) => {return (point.name + ': ' + point.value)}),
-                    mode: pointset.length > 1 ? 'lines+markers' : 'markers',
-                    type: 'scatter',
-                    marker: {
-                        size: 12,
-                        color: pointset.map((point) => {return point.color})
-                    },
-                    line: {
-                        color: '#777777'
-                    },
-                    hoverinfo: 'text'
-                })
-            }
-            setData(points)
-
-            let bars = []
-            let values = datasets.map((item) => {return item.value})
-            let duplicates = [...new Set(values.filter((item, index) => values.indexOf(item) != index))]
-            for(let i = 0; i < datasets.length; i++){
-                bars.push({
-                    x: [datasets[i].x, datasets[i].x],
-                    y: [0, datasets[i].value],
-                    name: datasets[i].name,
-                    mode: 'lines+markers',
-                    type: 'scatter',
-                    line: {
-                        color: duplicates.indexOf(datasets[i].value) < 0 ? datasets[i].color : '#777777',
-                        width: 12
-                    },
-                    marker: {
-                        color: duplicates.indexOf(datasets[i].value) < 0 ? datasets[i].color : '#777777',
-                        symbol: 'line-ew',
-                        size: 12
-                    },
-                })
-            }
-            setBarData(bars)
+            setColorCode(datasetColors)
+            setIsPlotReady(true)
         }
     }, [parameters])
     
@@ -157,50 +119,14 @@ const DatasetChart = props => {
                         data= {barData}
                         layout={ {
                             autosize: true,
-                            xaxis: {
-                                showgrid: false,
-                                zeroline: false,
-                                showticklabels: false,
-                                autorange: 'reversed',
-                            },
-                            yaxis: {
-                                tickfont: {
-                                    size: 12
-                                },
-                                showgrid: true,
-                                showticklabels: true
-                            },
-                            margin: {t: 10, b: 0, l: 100, r: 10},
+                            margin: {t: 50, b: 50, l: 100, r: 10},
                             showlegend: false
                         } }
-                        style = {{width: "100%", height: '250px'}}
+                        style = {{width: "100%", height: '300px'}}
                         useResizeHandler = {true}
                         config = {{displayModeBar: false}}
                     />
-                    <Plot
-                        data= {data}
-                        layout={ {
-                            autosize: true,
-                            xaxis: {
-                                showgrid: false,
-                                zeroline: false,
-                                autorange: 'reversed',
-                                showticklabels: false
-                            },
-                            yaxis: {
-                                showgrid: true,
-                                tickfont: {
-                                    size: 12
-                                },
-                                showticklabels: true
-                            },
-                            margin: {t: 0, b: 10, l: 100, r: 10},
-                            showlegend: false
-                        } }
-                        style = {{width: "100%", height: '200px'}}
-                        useResizeHandler = {true}
-                        config = {{displayModeBar: false}}
-                    />
+                    {isPlotReady && <UpsetPlot colorCode={colorCode} />}
                 </div>
                 <div className='stats-dataset-chart-control'>
                     <h4>Select Dataset(s) to View</h4>
@@ -220,7 +146,7 @@ const DatasetChart = props => {
                             )
                         })
                     }
-                </div>    
+                </div>  
             </div>
         </React.Fragment>
     );

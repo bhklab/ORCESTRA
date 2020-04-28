@@ -364,5 +364,26 @@ module.exports = {
         }finally{
             return res;
         }
+    },
+
+    getMetricData: async function(){
+        try{
+            const db = await getDB();
+            const metricData = db.collection('metric-data');
+            const metrics = await metricData.find({}).toArray()
+            let sets = []
+            let items = []
+            for(let i = 0; i < metrics.length; i++){
+                for(let j = 0; j < metrics[i].versions.length; j++){
+                    sets.push(metrics[i].name + '_' + metrics[i].versions[j].version)
+                    items.push(metrics[i].versions[j].drugs)
+                }
+            }
+            return({sets: sets, items: items})
+        }catch(err){
+            console.log(err)
+            throw err
+        }
+        
     }
 }
