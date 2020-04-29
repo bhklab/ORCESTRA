@@ -3,92 +3,120 @@ import Plotly from "plotly.js-basic-dist";
 import createPlotlyComponent from "react-plotly.js/factory";
 import {Checkbox} from 'primereact/checkbox';
 import {RadioButton} from 'primereact/radiobutton';
-import {makeUpset} from './MakeUpset'
 import UpsetPlot from './UpsetPlot'
+import Loader from 'react-loader-spinner';
 const Plot = createPlotlyComponent(Plotly);
 
 const DatasetChart = props => {
-    const defColors = [
-        '#1f77b4',  // muted blue
-        '#ff7f0e',  // safety orange
-        '#2ca02c',  // cooked asparagus green
-        '#d62728',  // brick red
-        '#9467bd',  // muted purple
-        '#8c564b',  // chestnut brown
-        '#e377c2',  // raspberry yogurt pink
-        '#6fbd22',  // 
-        '#bcbd22',  // curry yellow-green
-        '#17becf'   // blue-teal
-    ]
 
     const metricSet = [
-        {name: 'Numer of Cell Lines', value: 'numCellLines'},
-        {name: 'Numer of Drugs', value: 'numDrugs'},
-        {name: 'Numer of Drug Sensitivity Experiments', value: 'numDrugSensitivityExp'},
-        {name: 'Numer of Genes', value: 'numGenes'}
+        {name: 'Numer of Cell Lines', value: 'cellLines'},
+        {name: 'Numer of Drugs', value: 'drugs'},
+        {name: 'Numer of Cell-Line Drug Pairs ', value: 'cellLineDrugPairs'},
+        {name: 'Numer of Genes', value: 'genes'}
     ]
-
+    const [upsetData, setUpsetData] = useState({})
     const [barData, setBarData] = useState([])
     const [parameters, setParameters] = useState({
-        datasets: {},
+        datasets: [],
         metricName: ''
     })
     const [isReady, setIsReady] = useState(false)
     const [isPlotReady, setIsPlotReady] = useState(false)
 
-    const [colorCode, setColorCode] = useState({})
-
     useEffect(() => {
-        let datasets = {}
-        let colIndex = 0
-        for(let i = 0; i < props.chartData.length; i++){
-            for(let j = 0; j < props.chartData[i].versions.length; j++){
-                datasets[props.chartData[i].name + '_' + j] = {
-                    name: props.chartData[i].name + ' ' + props.chartData[i].versions[j].drugSensitivity,
-                    checked: props.chartData[i].versions[j].metric.numCellLines ? true : false,
-                    color: defColors[colIndex < 9 ? colIndex : colIndex % 10]
-                }
-                colIndex++
-            }
-        }
-        setParameters({
-            datasets: {...datasets},
-            metricName: 'numCellLines' 
-        })
+        const getData = async () => {
+            const res = await fetch('/api/stats/metrics/options')
+            const json = await res.json()
+            console.log(json)
+            setParameters({
+                datasets: json,
+                metricName: 'cellLines'
+            })
+        } 
+        getData()
         setIsReady(true)
     }, [])
 
     useEffect(() => {
-        if(isReady){
-            let datasets = []
-            let datasetColors = {}
-            for(let i = 0; i < props.chartData.length; i++){
-                for(let j = 0; j < props.chartData[i].versions.length; j++){
-                    if(parameters.datasets[props.chartData[i].name + '_' + j].checked){
-                        datasets.push({
-                            name: parameters.datasets[props.chartData[i].name + '_' + j].name,
-                            value: props.chartData[i].versions[j].metric[parameters.metricName],
-                            color: parameters.datasets[props.chartData[i].name + '_' + j].color
-                        })
-                        datasetColors[parameters.datasets[props.chartData[i].name + '_' + j].name.split(' ').join('_')] = parameters.datasets[props.chartData[i].name + '_' + j].color
+        const updateData = async () => {
+            const res = await fetch('/api/stats/metrics/data', {
+                method: 'POST',
+                body: JSON.stringify({parameters: parameters}),
+                headers: {'Content-type': 'application/json'}
+            })
+            const json = await res.json()
+
+            if(parameters.metricName === 'cellLines' || parameters.metricName === 'drugs'){
+                let points = []
+                let bars = []
+                let data = json.upsetData.data
+                for(let i = 0; i < data.length; i++){
+                    let datasets = []
+                    let colors = []
+                    for(let j = 0; j < data[i].set.length; j++){
+                        let index = parseInt(data[i].set[j])
+                        datasets.push(json.upsetData.sets[index].name)
+                        colors.push(json.upsetData.sets[index].color)
                     }
+                    data[i].datasets = datasets
+                    data[i].colors = colors
                 }
+
+                for(let i = 0; i < data.length; i++){
+
+                    points.push({
+                            x: new Array(data[i].datasets.length).fill(i),
+                            y: data[i].datasets,
+                            mode: data[i].datasets.length > 1 ? 'lines+markers' : 'markers',
+                            type: 'scatter',
+                            marker: {
+                                size: 10,
+                                color: data[i].colors
+                            },
+                            line: {
+                                color: '#777777'
+                            },
+                            hoverinfo: 'text'
+                    }) 
+
+                    bars.push({
+                            x: [i, i],
+                            y: [0, data[i].names.length],
+                            mode: 'markers+lines',
+                            type: 'scatter',
+                            line: {
+                                color: data[i].colors.length > 1 ? '#777777' : data[i].colors[0],
+                                width: 10
+                            },
+                            marker: {
+                                color: data[i].colors.length > 1 ? '#777777' : data[i].colors[0],
+                                symbol: 'line-ew',
+                                size: 10
+                            },
+                    })
+                }
+                setUpsetData({points: points, bars: bars})
+            }else{
+                const barDatasets = json.barData
+                barDatasets.sort((a, b) => (a.value > b.value) ? 1: -1)
+
+                setBarData([{
+                    x: barDatasets.map((item) => {return item.value}), 
+                    y: barDatasets.map((item) => {return item.name}), 
+                    type: 'bar',
+                    orientation: 'h',
+                    marker: {
+                        color: barDatasets.map((item) => {return item.color})
+                    }
+                }])
             }
-
-            datasets.sort((a, b) => (a.value > b.value) ? 1: -1)
-
-            setBarData([{
-                x: datasets.map((item) => {return item.value}), 
-                y: datasets.map((item) => {return item.name}), 
-                type: 'bar',
-                orientation: 'h',
-                marker: {
-                    color: datasets.map((item) => {return item.color})
-                }
-            }])
-
-            setColorCode(datasetColors)
             setIsPlotReady(true)
+        }
+        setIsPlotReady(false)
+        if(isReady){
+            console.log(parameters)
+            updateData()
         }
     }, [parameters])
     
@@ -114,34 +142,45 @@ const DatasetChart = props => {
                 }
             </div>    
             <div className='stats-dataset-chart'>
-                <div className='stats-dataset-plot'>
-                    <Plot
-                        data= {barData}
-                        layout={ {
-                            autosize: true,
-                            margin: {t: 50, b: 50, l: 100, r: 10},
-                            showlegend: false
-                        } }
-                        style = {{width: "100%", height: '300px'}}
-                        useResizeHandler = {true}
-                        config = {{displayModeBar: false}}
-                    />
-                    {isPlotReady && <UpsetPlot colorCode={colorCode} />}
-                </div>
+                {isPlotReady ? 
+                    <div className='stats-dataset-plot'>
+                        {
+                            parameters.metricName === 'cellLineDrugPairs' || parameters.metricName === 'genes' ?
+                            <Plot
+                                data= {barData}
+                                layout={ {
+                                    autosize: true,
+                                    margin: {t: 50, b: 50, l: 130, r: 10},
+                                    showlegend: false
+                                } }
+                                style = {{width: "100%", height: '300px'}}
+                                useResizeHandler = {true}
+                                config = {{displayModeBar: false}}
+                            />
+                            :
+                            <UpsetPlot data={upsetData} />
+                        }
+                    </div>
+                    :
+                    <div className='componentLoaderContainer'>
+                        <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                    </div>
+                }
                 <div className='stats-dataset-chart-control'>
                     <h4>Select Dataset(s) to View</h4>
                     {
-                        Object.keys(parameters.datasets).map((key) => {
+                        parameters.datasets.map((dataset) => {
                             return(
-                                <div className='stats-chart-control-checkbox dataset-checkbox' key={key}>
-                                    <Checkbox inputId={key} value={key} checked={parameters.datasets[key].checked}
+                                <div className='stats-chart-control-checkbox dataset-checkbox' key={dataset.name}>
+                                    <Checkbox inputId={dataset.name} value={dataset.name} checked={dataset.checked}
                                         onChange={e => {
                                             let params = {...parameters}
-                                            params.datasets[key].checked = e.checked
+                                            let index = params.datasets.findIndex(item => item.name === dataset.name)
+                                            params.datasets[index].checked = e.checked
                                             setParameters(params)
                                         }
                                     }></Checkbox>
-                                    <label htmlFor={key}>{parameters.datasets[key].name}</label>
+                                    <label htmlFor={dataset.name}>{dataset.name}</label>
                                 </div>
                             )
                         })

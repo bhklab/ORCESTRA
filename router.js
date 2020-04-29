@@ -44,7 +44,8 @@ router.post('/user/reset', auth.checkToken, user.resetPwd)
 //formdata
 router.get('/formdata', db.getFormData)
 router.get('/stats/data', db.getDataForStats)
-router.get('/stats/upset', db.getDataForUpsetPlot)
+router.get('/stats/metrics/options', db.getMetricDataOptions)
+router.post('/stats/metrics/data', db.getMetricData)
 
 //landing data
 router.get('/landing/data', db.getLandingData)

@@ -18,7 +18,6 @@ const Stats = props => {
             const json = await res.json()
             console.log(json)
             setPSets(json.psets)
-            setChartData(json.chartData)
             setIsReady(true)
         }
         getData()
