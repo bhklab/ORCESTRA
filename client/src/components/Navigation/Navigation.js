@@ -48,6 +48,7 @@ const Navigation = (props) => {
                         <div><NavLink exact to='/' activeClassName='active-link'>Home</NavLink></div>
                         <div><NavLink exact to="/PSetSearch" activeClassName='active-link'>Search and Request</NavLink></div>
                         <div><NavLink exact to="/Dashboard" activeClassName='active-link'>Request Status</NavLink></div>
+                        <div><NavLink exact to="/Stats" activeClassName='active-link'>Statistics</NavLink></div>
                         <div><NavLink exact to="/Documentation" activeClassName='active-link'>Documentation</NavLink></div>
                         { auth.authenticated && <div className='menu-item'><NavLink exact to="/Profile" activeClassName='active-link'>Profile</NavLink></div> }
                         <div>

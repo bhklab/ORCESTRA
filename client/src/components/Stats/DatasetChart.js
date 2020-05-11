@@ -12,6 +12,7 @@ const DatasetChart = props => {
     const metricSet = [
         {name: 'Numer of Cell Lines', value: 'cellLines'},
         {name: 'Numer of Drugs', value: 'drugs'},
+        {name: 'Number of Tissue Types', value: 'tissues'},
         {name: 'Numer of Cell-Line Drug Pairs ', value: 'cellLineDrugPairs'},
         {name: 'Numer of Genes', value: 'genes'}
     ]
@@ -47,7 +48,7 @@ const DatasetChart = props => {
             })
             const json = await res.json()
 
-            if(parameters.metricName === 'cellLines' || parameters.metricName === 'drugs'){
+            if(parameters.metricName === 'cellLines' || parameters.metricName === 'drugs' || parameters.metricName === 'tissues'){
                 let points = []
                 let bars = []
                 let data = json.upsetData.data
@@ -94,6 +95,8 @@ const DatasetChart = props => {
                                 symbol: 'line-ew',
                                 size: 10
                             },
+                            text: data[i].names.length,
+                            hoverinfo: 'text'
                     })
                 }
                 setUpsetData({points: points, bars: bars})

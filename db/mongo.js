@@ -370,49 +370,15 @@ module.exports = {
         try{
             let querySet = datasets.length ? {'name':{$in: datasets}} : {}
             let field = 'versions.' + metricType
-            let projection = {}
-
-            if(metricType === 'cellLineDrugPairs'){
-                projection = {'projection': {
-                    'name': true,
-                    'versions.version': true,
-                    'versions.drugs': true,
-                    'versions.cellLines': true
-                }}
-            }else if(metricType === 'genes'){
-                projection = {'projection': {
-                    'name': true,
-                    'versions.version': true,
-                    [field]: true
-                }}
-            }else{
-                projection = {'projection': {
-                    'name': true,
-                    'versions.version': true,
-                    [field]: true
-                }}
-            }
+            let projection = {'projection': {
+                'name': true,
+                'versions.version': true,
+                [field]: true
+            }}
             
-
             const db = await getDB();
             const metricData = db.collection('metric-data');
             const metrics = await metricData.find(querySet, projection).toArray()
-
-            if(metricType === 'cellLineDrugPairs'){
-                for(let i = 0; i < metrics.length; i++){
-                    for(let j = 0; j < metrics[i].versions.length; j++){
-                        let cellLineDrugPairs = []
-                        for(let k = 0; k < metrics[i].versions[j].drugs.length; k++){
-                            for(let l = 0; l < metrics[i].versions[j].cellLines.length; l++){
-                                cellLineDrugPairs.push(
-                                    metrics[i].versions[j].drugs[k] + '-' + metrics[i].versions[j].cellLines[l]
-                                )
-                            }
-                        }
-                        metrics[i].versions[j].cellLineDrugPairs = cellLineDrugPairs
-                    }
-                }
-            }
 
             return(metrics)
         }catch(err){

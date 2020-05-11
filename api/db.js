@@ -67,12 +67,13 @@ module.exports = {
                     const name = metricData[i].name + '_' + metricData[i].versions[j].version
                     if(queryDatasetNames.indexOf(name) > -1){
                         let dset = datasets.find(item => {return item.name === name})
-                        barData.push({
-                            name: name,
-                            value: metricData[i].versions[j][metricType].length,
-                            color: dset.color
-                        })
-                        if(metricType === 'cellLines' || metricType === 'drugs'){
+                        if(metricType === 'cellLineDrugPairs' || metricType === 'genes'){
+                            barData.push({
+                                name: name,
+                                value: metricData[i].versions[j][metricType],
+                                color: dset.color
+                            })
+                        }else{
                             sets.push({name: name, color: dset.color})
                             items.push(metricData[i].versions[j][metricType])
                         }
@@ -81,7 +82,7 @@ module.exports = {
             }
 
             let upsetData = []
-            if(metricType === 'cellLines' || metricType === 'drugs'){
+            if(metricType === 'cellLines' || metricType === 'drugs' || metricType === 'tissues'){
                 upsetData = upset.makeUpset(sets, items)
             }
             
