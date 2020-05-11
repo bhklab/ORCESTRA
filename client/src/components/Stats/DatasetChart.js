@@ -138,7 +138,7 @@ const DatasetChart = props => {
                                         setParameters(params)
                                     }
                                 }></RadioButton>
-                                <label htmlFor={metric.value}>{metric.name}</label>
+                                <div>{metric.name}</div>
                             </div>
                         )
                     })

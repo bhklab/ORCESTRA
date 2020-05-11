@@ -52,11 +52,18 @@
     display: flex;
     margin-bottom: 10px;
     justify-content: space-between;
+    width: 80%;
 }
 
 .stats-chart-control-checkbox {
     font-size: 12px;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.stats-chart-control-checkbox > div {
+    margin-left: 5px;
 }
 
 .dataset-checkbox {
