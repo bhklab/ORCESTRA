@@ -42,7 +42,11 @@ module.exports = {
                 config.transform.cmd[cmdIndex] = pset.rnaRef[0].name
                 
                 // push RNA tool(s) into input.cross[] - maximum 2
-                const toolPrefix = pset.dataset.name.toLowerCase() + '_' + (pset.dataType[0].name == 'RNA' ? 'rnaseq' : 'dnaseq')
+                let datasetName = pset.dataset.name.toLowerCase()
+                if(datasetName === 'gdsc1' || pset.dataset.name === 'gdsc2'){
+                    datasetName = datasetName.slice(0, -1)
+                }
+                const toolPrefix = datasetName + '_' + (pset.dataType[0].name == 'RNA' ? 'rnaseq' : 'dnaseq')
                 for(let i = 0; i < pset.rnaTool.length; i++){
                     let toolName = toolPrefix + '_' + pset.rnaTool[i].name
                     config.input.cross.push({pfs:{repo: toolName, glob: "/"}})
