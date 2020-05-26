@@ -6,11 +6,14 @@ const request = require('./request');
 const pachyderm = require('./pachyderm');
 
 const getPSetByDOI = async function(req, res){
+    console.log('getPSetByDOI')
     const doi = req.params.id1 + '/' + req.params.id2;
+    console.log(doi)
     try{
         const result = await mongo.selectPSetByDOI(doi)
         let date = result.dateCreated.toISOString();
         result.dateCreated = date.split('T')[0];
+        console.log(result)
         res.send(result)
     }catch(error){
         res.status(500).send(error);

@@ -49,6 +49,11 @@ module.exports = {
                 }
             }
 
+            if(pset.dataset.name === 'GDSC1' || pset.dataset.name === 'GDSC2'){
+                const ver = pset.dataset.versionInfo.version.split('-')[1].slice(0, -1)
+                config.transform.cmd.push(ver)
+            }
+
             config.transform.cmd.push(pset._id.toString()); // push id as the last element
             config.update = true;
             config.reprocess = true;
