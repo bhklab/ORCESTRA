@@ -5,3 +5,4 @@ mock-pachyderm-api/package-lock.json
 #api/pachyderm-config/
 node_modules
 .env
+db-scripts/data

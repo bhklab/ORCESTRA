@@ -19,6 +19,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.4",
+    "csvtojson": "^2.0.10",
     "doasync": "^2.0.1",
     "dotenv": "^8.2.0",
     "ejs": "^2.6.1",
