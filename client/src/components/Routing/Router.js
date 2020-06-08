@@ -14,6 +14,7 @@ import Profile from '../Profile/Profile';
 import Login from '../Authentication/Login';
 import Reset from '../Authentication/Reset';
 import PSet from '../PSet/PSet';
+import CanonicalPSets from '../CanonicalPSets/CanonicalPSets';
 import NotFound404 from '../Shared/NotFound404';
 
 class Router extends React.Component{
@@ -74,6 +75,7 @@ class Router extends React.Component{
                     <Route exact path='/Authentication' component={Login} />
                     <Route path ='/Reset/:token' component={Reset} />
                     <Route path='/:id1/:id2' component={PSet} />
+                    <Route path='/Canonical' component={CanonicalPSets} />
                     <PrivateRoute path='/Profile' component={profile} redirect='/Authentication' />
                     <Route component={NotFound404}/>
                 </Switch>

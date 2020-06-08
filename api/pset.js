@@ -81,14 +81,15 @@ const getCanonicalPSets = async function(req, res){
                     nonCanonicalSet.push(datasets[j])
                 }
             }
+            if(!canonicalSet.length){
+                canonicalSet.push(nonCanonicalSet.shift())
+            }
             canonical.push({
                 dataset: datasetVersion[i].name, 
                 canonicals: canonicalSet, 
                 nonCanonicals: nonCanonicalSet
             })
         }
-
-        console.log(canonical)
 
         res.send(canonical)
     }catch(error){

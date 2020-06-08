@@ -108,6 +108,13 @@ const OrcestraMain = (props) => {
                             </div>
                             <div className='mainMenuColumn'>
                                 <div className='mainMenuItem' style={{ alignSelf: 'flex-start'}}>
+                                    <h3>Canonical PSets</h3>
+                                    <div className='mainMenuItemContent'>
+                                        <div>The latest version of PSets created by BHK Lab.</div>
+                                        <div className='mainMenuLink'><a className='button' href="/Canonical">View Canonical PSets</a></div>
+                                    </div>
+                                </div>
+                                <div className='mainMenuItem' style={{ alignSelf: 'flex-start'}}>
                                     <h3>View PSet Request Status</h3>
                                     <div className='mainMenuItemContent'>
                                         <div>ORCESTRA is processing following requests:</div>
