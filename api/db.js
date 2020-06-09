@@ -84,6 +84,9 @@ module.exports = {
             let upsetData = []
             if(metricType === 'cellLines' || metricType === 'drugs' || metricType === 'tissues'){
                 upsetData = upset.makeUpset(sets, items)
+                for(let i = 0; i < upsetData.length; i++){
+                    upsetData[i].setIndices = upsetData[i].setIndices.split('-').filter(x=>x).map(s => {return parseInt(s)})
+                }
             }
             
             res.send({
@@ -101,17 +104,9 @@ module.exports = {
 
     getMetricDataOptions: async function(req, res){
         try{
+             // plot colors to be used to color code each set. These are 20 randomly generated colors.
             const defColors = [
-                '#1f77b4',  // muted blue
-                '#ff7f0e',  // safety orange
-                '#2ca02c',  // cooked asparagus green
-                '#d62728',  // brick red
-                '#9467bd',  // muted purple
-                '#8c564b',  // chestnut brown
-                '#e377c2',  // raspberry yogurt pink
-                '#6fbd22',  // 
-                '#bcbd22',  // curry yellow-green
-                '#17becf'   // blue-teal
+                '#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#6fbd22','#bcbd22','#17becf','#222AA1','#7DC922','#03F14A','#2F0248','#D31E70','#370E0F','#101A21','#FF9585','#BE93F6','#1CF4A5','#DACC14','#BB012F','#62AD27','#49947F','#A817D1','#159326','#652CBF','#1922A7','#2FC186','#6A0570'
             ]
             
             const data = await mongo.getAvailableDatasetForMetrics()

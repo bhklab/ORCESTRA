@@ -8,14 +8,16 @@ function makeUpset(sets, names) { // names: [[],[]]
     for (var i = 0; i < numSets; i++) {
       var intSet = {
         "set": i.toString(),
-        "names": names[i]
+        "names": names[i],
+        "setIndices": i.toString() + '-'
       }
       data2.push(intSet)
   
       for (var j = i + 1; j < numSets; j++) {
         var intSet2 = {
           "set": i.toString() + j.toString(),
-          "names": findIntersection(names[i], names[j])
+          "names": findIntersection(names[i], names[j]),
+          "setIndices": i.toString() + '-' + j.toString() + '-'
         }
         data2.push(intSet2)
         helperUpset(i, j+1, numSets, names, data2)
@@ -41,7 +43,8 @@ function makeUpset(sets, names) { // names: [[],[]]
       //console.log(inds)
       data2.push({
         "set": i.toString(),
-        "names": names[i]
+        "names": names[i],
+        "setIndices": i.toString() + '-'
       })
     }
   
@@ -117,7 +120,8 @@ function helperUpset(start, end, numSets, names, data) {
     else {
       var intSet = {
         "set": data[data.length-1].set + end.toString(),
-        "names": findIntersection(data[data.length-1].names, names[end])
+        "names": findIntersection(data[data.length-1].names, names[end]),
+        "setIndices": data[data.length-1].setIndices + '-' + end.toString() + '-'
       }
       data.push(intSet)
       return helperUpset(start, end+1, numSets, names, data)

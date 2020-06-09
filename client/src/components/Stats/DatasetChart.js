@@ -52,11 +52,12 @@ const DatasetChart = props => {
                 let points = []
                 let bars = []
                 let data = json.upsetData.data
+                console.log(json.upsetData)
                 for(let i = 0; i < data.length; i++){
                     let datasets = []
                     let colors = []
-                    for(let j = 0; j < data[i].set.length; j++){
-                        let index = parseInt(data[i].set[j])
+                    for(let j = 0; j < data[i].setIndices.length; j++){
+                        let index = data[i].setIndices[j]
                         datasets.push(json.upsetData.sets[index].name)
                         colors.push(json.upsetData.sets[index].color)
                     }
