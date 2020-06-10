@@ -30,15 +30,54 @@ module.exports = {
                 data.chartData.push(item)
             }
 
-            const psets = await mongo.selectSortedPSets()
-            for(let i = 0; i < psets.length; i++){
-                data.psets.push({
-                    download: psets[i].download,
-                    name: psets[i].name,
-                    dataset: psets[i].dataset.name,
-                    version: psets[i].dataset.versionInfo.version
-                })
+            // const psets = await mongo.selectSortedPSets()
+            // for(let i = 0; i < psets.length; i++){
+            //     data.psets.push({
+            //         download: psets[i].download,
+            //         name: psets[i].name,
+            //         dataset: psets[i].dataset.name,
+            //         version: psets[i].dataset.versionInfo.version
+            //     })
+            // }
+            const canDataset = await mongo.getCanonicalPSets()
+            let psets = []
+            for(let i = 0; i < canDataset.length; i++){
+                if(canDataset[i].dataset === 'GDSC'){
+                    for(let j = 0; j < canDataset[i].canonicals.length; j++){
+                        let canDownload = canDataset[i].canonicals[j].download
+                        let version = canDataset[i].canonicals[j].dataset.versionInfo.version.match(/\((.*?)\)/)
+                        let v = version[1].split('-')[0] 
+                        for(let k = 0; k < canDataset[i].nonCanonicals.length; k++){
+                            let nonCanVersion = canDataset[i].nonCanonicals[k].dataset.versionInfo.version.match(/\((.*?)\)/)
+                            if(nonCanVersion[1].split('-')[0] === v){
+                                canDownload += canDataset[i].nonCanonicals[k].download
+                            }
+                        }
+                        canDataset[i].canonicals[j].download = canDownload
+                        psets.push({
+                            download: canDataset[i].canonicals[0].download,
+                            name: canDataset[i].canonicals[0].name,
+                            dataset: canDataset[i].canonicals[0].dataset.name,
+                            version: canDataset[i].canonicals[0].dataset.versionInfo.version
+                        })
+                    }
+                }else{
+                    let canDownload = canDataset[i].canonicals[0].download
+
+                    for(let j = 0; j < canDataset[i].nonCanonicals.length; j++){
+                        canDownload += canDataset[i].nonCanonicals[j].download
+                    }
+                    canDataset[i].canonicals[0].download = canDownload
+                    psets.push({
+                        download: canDataset[i].canonicals[0].download,
+                        name: canDataset[i].canonicals[0].name,
+                        dataset: canDataset[i].canonicals[0].dataset.name,
+                        version: canDataset[i].canonicals[0].dataset.versionInfo.version
+                    })
+                }
             }
+            psets.sort((a, b) => (a.download < b.download) ? 1 : -1)
+            data.psets = psets;
             res.send(data);
         }catch(error){
             console.log(error)

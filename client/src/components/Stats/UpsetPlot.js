@@ -27,7 +27,7 @@ const UpsetPlot = (props) => {
                                 showgrid: true,
                                 showticklabels: true
                             },
-                            margin: {t: 10, b: 0, l: 100, r: 10},
+                            margin: {t: 10, b: 0, l: 120, r: 10},
                             showlegend: false
                         } }
                         style = {{width: '2000px', height: '250px'}}
@@ -51,7 +51,7 @@ const UpsetPlot = (props) => {
                                 },
                                 showticklabels: true
                             },
-                            margin: {t: 0, b: 10, l: 100, r: 10},
+                            margin: {t: 0, b: 10, l: 120, r: 10},
                             showlegend: false
                         } }
                         style = {{ width: '2000px', height: '200px'}}

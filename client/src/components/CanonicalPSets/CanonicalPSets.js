@@ -87,6 +87,7 @@ const CanonicalPSets = (props) => {
 
     const canonTable = (psets) => (
         <StyledTable>
+            <tbody>
             {psets.map(pset => {
                 return(
                     <tr key={pset.name}>
@@ -97,11 +98,13 @@ const CanonicalPSets = (props) => {
                     </tr>
                 )
             })}
+            </tbody>
         </StyledTable>    
     )
 
     const nonCanonTable = (psets) => (
         <NonCannonTable>
+            <tbody>
             {psets.map(pset => {
                 return(
                     <tr key={pset.name}>
@@ -112,6 +115,7 @@ const CanonicalPSets = (props) => {
                     </tr>
                 )
             })}
+            </tbody>
         </NonCannonTable> 
     )
 

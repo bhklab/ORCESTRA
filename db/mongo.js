@@ -403,5 +403,65 @@ module.exports = {
             console.log(err)
             throw err
         }
+    },
+
+    getCanonicalPSets: async function(){
+        try{
+            let canonical = []
+            let canonicalParameters = {rnaTool: 'kallisto_0_46_1', rnaRef: 'Gencode_v33'}
+            const form = await this.selectFormData()
+            const datasets = form.data[0].dataset
+    
+            let datasetVersion = []
+            for(let i = 0; i < datasets.length; i++){
+                let versions = datasets[i].versions.map(version => {
+                    return(parseInt(version.version.substring(0, 4)))
+                })
+                versions.sort((a, b) => {return b - a})
+                let unique = [...new Set(versions)]
+                datasetVersion.push({name: datasets[i].name, versions: unique})
+            }
+            console.log(datasetVersion)
+    
+            const result = await this.selectPSets()
+    
+            const bhkPSets = result.filter(data => data.createdBy === 'BHK Lab')
+    
+            for(let i = 0; i < datasetVersion.length; i++){
+                let datasets = bhkPSets.filter(data => data.dataset.name === datasetVersion[i].name)
+                let canonicalSet = []
+                let nonCanonicalSet = []
+                for(let j = 0; j < datasets.length; j++){
+                    let version = datasets[j].dataset.versionInfo.version.substring(0, 4)
+                    if(version === datasetVersion[i].versions[0].toString()){ 
+                        if(datasetVersion[i].name === 'FIMM' || datasetVersion[i].name === 'CTRPv2'){
+                            canonicalSet.push(datasets[j])
+                        }else{
+                            if(datasets[j].rnaTool[0].name === canonicalParameters.rnaTool && 
+                                datasets[j].rnaRef[0].name === canonicalParameters.rnaRef){
+                                    canonicalSet.push(datasets[j])
+                            }else{
+                                nonCanonicalSet.push(datasets[j])
+                            }
+                        } 
+                    }else{
+                        nonCanonicalSet.push(datasets[j])
+                    }
+                }
+                if(!canonicalSet.length){
+                    canonicalSet.push(nonCanonicalSet.shift())
+                }
+                canonical.push({
+                    dataset: datasetVersion[i].name, 
+                    canonicals: canonicalSet, 
+                    nonCanonicals: nonCanonicalSet
+                })
+            }
+    
+            return canonical
+        }catch(error){
+            console.log(error)
+            throw error
+        }
     }
 }
