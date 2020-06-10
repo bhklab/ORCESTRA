@@ -57,6 +57,7 @@ module.exports = {
                         psets.push({
                             download: canDataset[i].canonicals[0].download,
                             name: canDataset[i].canonicals[0].name,
+                            doi: canDataset[i].canonicals[0].doi,
                             dataset: canDataset[i].canonicals[0].dataset.name,
                             version: canDataset[i].canonicals[0].dataset.versionInfo.version
                         })
@@ -71,6 +72,7 @@ module.exports = {
                     psets.push({
                         download: canDataset[i].canonicals[0].download,
                         name: canDataset[i].canonicals[0].name,
+                        doi: canDataset[i].canonicals[0].doi,
                         dataset: canDataset[i].canonicals[0].dataset.name,
                         version: canDataset[i].canonicals[0].dataset.versionInfo.version
                     })
