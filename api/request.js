@@ -23,7 +23,7 @@ module.exports = {
         console.log("buildPachydermReqJson");
         console.log(pset)
         try{
-            const config  = await mongo.getMasterConfig(pset.dataset.versionInfo.pipeline)
+            const config  = await mongo.getMasterConfig(pset.dataset)
 
             // input tool/ref config data if necessary.
             if(pset.rnaTool.length){
@@ -42,7 +42,7 @@ module.exports = {
                 config.transform.cmd[cmdIndex] = pset.rnaRef[0].name
                 
                 // push RNA tool(s) into input.cross[] - maximum 2
-                const toolPrefix = pset.dataset.name.toLowerCase() + '_' + (pset.dataType[0].name == 'RNA' ? 'rnaseq' : 'dnaseq')
+                const toolPrefix = pset.dataset.name.toLowerCase() + '_' + (pset.dataType[0].name == 'rnaseq' ? 'rnaseq' : 'dnaseq')
                 for(let i = 0; i < pset.rnaTool.length; i++){
                     let toolName = toolPrefix + '_' + pset.rnaTool[i].name
                     config.input.cross.push({pfs:{repo: toolName, glob: "/"}})

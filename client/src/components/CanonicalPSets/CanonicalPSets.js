@@ -92,7 +92,7 @@ const CanonicalPSets = (props) => {
                 return(
                     <tr key={pset.name}>
                         <td className='psetName'>{nameColumnTemplate(pset)}</td>
-                        <td><div>Drug Sensitivity Data:</div> <span className='bold'>{pset.dataset.versionInfo.version}</span></td>
+                        <td><div>Drug Sensitivity Data:</div> <span className='bold'>{pset.dataset.versionInfo}</span></td>
                         <td>RNA Tools: <span className='bold'>{toolsRefTemplate(pset.rnaTool)}</span></td>
                         <td className='rnaRefColumn'>RNA Ref: <span className='bold'>{toolsRefTemplate(pset.rnaRef)}</span></td>
                     </tr>
@@ -109,7 +109,7 @@ const CanonicalPSets = (props) => {
                 return(
                     <tr key={pset.name}>
                         <td className='psetName'>{nameColumnTemplate(pset)}</td>
-                        <td><div>Drug Sensitivity Data:</div> {pset.dataset.versionInfo.version}</td>
+                        <td><div>Drug Sensitivity Data:</div> {pset.dataset.versionInfo}</td>
                         <td>RNA Tools: {toolsRefTemplate(pset.rnaTool)}</td>
                         <td className='rnaRefColumn'>RNA Ref: {toolsRefTemplate(pset.rnaRef)}</td>
                     </tr>

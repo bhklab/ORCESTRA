@@ -32,12 +32,12 @@ const buildInsertPSetObjects = async function(connStr, dbName, filePath){
             return data.name === csvjson[i]['Dataset']
         })
 
-        pset.dataType = [{name: 'RNA'}];
+        pset.dataType = [{name: 'rnaseq', label: 'RNA Sequence'}];
 
         pset.dataset = {
             label:csvjson[i]['Dataset'], 
             name:csvjson[i]['Dataset'], 
-            versionInfo: formdataset.versions.find(version => {return version.version === csvjson[i]['Drug Sensitivity']})
+            versionInfo: formdataset.versions.find(version => {return version.version === csvjson[i]['Drug Sensitivity']}).version
         }
 
         const genome = formdata.genome.find(g => {return g.name === csvjson[i]['Genome']})
@@ -45,9 +45,9 @@ const buildInsertPSetObjects = async function(connStr, dbName, filePath){
         pset.createdBy = 'BHK Lab';
         pset.dateCreated = new Date(Date.now());
         const tool = formdata.rnaTool.find(tool => {return tool.label === csvjson[i]['RNA-tool']}) 
-        pset.rnaTool = typeof tool === 'undefined' ? [] : [tool]
+        pset.rnaTool = typeof tool === 'undefined' ? [] : [{name: tool.name, label: tool.label}]
         const ref = formdata.rnaRef.find(ref => {return ref.name === csvjson[i]['Transcriptome']})
-        pset.rnaRef = typeof ref === 'undefined' ? [] : [ref]
+        pset.rnaRef = typeof ref === 'undefined' ? [] : [{name: ref.name, label: ref.label}]
         pset.dnaTool = [];
         pset.dnaRef = [];
 

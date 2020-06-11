@@ -83,7 +83,7 @@ const PSetSearch = (props) => {
 
     const handleSubmitRequest = async event => {
         event.preventDefault();
-        let dataset = {name: parameters.dataset.name, label: parameters.dataset.label, versionInfo: parameters.drugSensitivity}
+        let dataset = {name: parameters.dataset.name, label: parameters.dataset.label, versionInfo: parameters.drugSensitivity.version}
         let reqData = {...parameters}
         let dataType = {...parameters.dataType}
         let rnaRef = {...parameters.rnaRef}

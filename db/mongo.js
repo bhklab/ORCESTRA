@@ -57,7 +57,7 @@ function getQueryFilterSet(query){
     }
 
     if(query.dst){
-        queryArray.push(getQueryFilter('dataset.versionInfo.version', query.dst));
+        queryArray.push(getQueryFilter('dataset.versionInfo', query.dst));
     }
 
     if(query.status){
@@ -81,6 +81,28 @@ function getQueryFilter(keyName, filterValue){
     return(filterObj);
 }
 
+async function buildPSetObject(pset, formdata){
+    let psetObj = await JSON.parse(JSON.stringify(pset))
+    const dataset = await formdata.dataset.find(data => {return data.name === pset.dataset.name})
+    
+    // assign versionInfo metadata
+    psetObj.dataset.versionInfo = await dataset.versions.find(version => {return version.version === pset.dataset.versionInfo})
+    
+    // assign rnaTool commands
+    for(let i = 0; i < psetObj.rnaTool.length; i++){
+        psetObj.rnaTool[i].commands = await formdata.rnaTool.find(tool => {return tool.name === psetObj.rnaTool[i].name}).commands
+    }
+
+    //assign rnaRef commands
+    for(let i = 0; i < psetObj.rnaRef.length; i++){
+        const ref = await formdata.rnaRef.find(ref=> {return ref.name === psetObj.rnaRef[i].name})
+        psetObj.rnaRef[i].genome = ref.genome
+        psetObj.rnaRef[i].source = ref.source
+    }
+
+    return psetObj
+}
+
 module.exports = {
 
     getObjectID: function(){
@@ -90,9 +112,11 @@ module.exports = {
     selectPSetByDOI: async function(doi, projection=null){
         const db = await getDB();
         try{
+            const form = await this.getFormData()
             const collection = db.collection('pset')
-            const data = await collection.findOne({'doi': doi, 'status' : 'complete'}, projection)
-            return data
+            const pset = await collection.findOne({'doi': doi, 'status' : 'complete'}, projection)
+            const psetObj = await buildPSetObject(pset, form)
+            return psetObj
         }catch(err){
             console.log(err)
             throw err
@@ -105,18 +129,6 @@ module.exports = {
             const collection = db.collection('pset')
             let queryFilter = getQueryFilterSet(query);
             const data = await collection.find(queryFilter, projection).toArray()
-            return data
-        }catch(err){
-            console.log(err)
-            throw err
-        } 
-    },
-
-    selectSortedPSets: async function(projection=null){
-        const db = await getDB();
-        try{
-            const collection = db.collection('pset')
-            const data = await collection.find({}, projection).sort({'download': -1}).toArray()
             return data
         }catch(err){
             console.log(err)
@@ -198,11 +210,14 @@ module.exports = {
         }
     },
 
-    getMasterConfig: async function(pipeline){
+    getMasterConfig: async function(dataset){
         const db = await getDB();
         try{
+            const form = await this.getFormData()
+            const versions = form.dataset.find(data => {return data.name === dataset.name}).versions
+            const versionInfo = versions.find(version => {return version.version === dataset.versionInfo})
             const collection = db.collection('req-config-master')
-            const data = collection.findOne({'pipeline.name': pipeline}, {'projection': {'_id': false}})
+            const data = collection.findOne({'pipeline.name': versionInfo.pipeline}, {'projection': {'_id': false}})
             return data
         }catch(err){
             console.log(err)
@@ -325,17 +340,15 @@ module.exports = {
         }
     },
 
-    selectFormData: async function(){
-        const db = await getDB();
-        const collection = db.collection('formdata');
-        const res = {status: 0, data: {}};
+    getFormData: async function(){
         try{
-            res.data = await collection.find().toArray();
-            res.status = 1;
+            const db = await getDB();
+            const collection = db.collection('formdata');
+            const form = await collection.find().toArray();
+            return form[0]
         }catch(err){
-            res.data = err
-        }finally{
-            return res;
+            console.log(err)
+            throw err
         }
     },
 
@@ -343,13 +356,17 @@ module.exports = {
         const db = await getDB();
         const res = {status: 0, err: {}, form: {}, user: {}, pset: {}, dashboard: {}};
         try{
-            const form = db.collection('formdata');
             const user = db.collection('user');
             const pset = db.collection('pset');
-            res.form = await form.find().toArray();
+
+            res.form = await this.getFormData();
+
             res.user = await user.find({'registered': true}).count();
-            const array = await pset.find().sort({'download': -1}).toArray();
-            res.pset = array.splice(0,5);
+
+            const ranking = await this.getCanonicalDownloadRanking();
+            res.pset = ranking.splice(0,5);
+
+            const array = await pset.find().toArray();
             const pending = await array.filter(pset => {
                 return pset.status === 'pending'
             });
@@ -358,6 +375,7 @@ module.exports = {
             })
             res.dashboard.pending = pending ? pending.length : 0;
             res.dashboard.inProcess = inProcess? inProcess.length: 0;
+
             res.status = 1;
         }catch(err){
             res.err = err
@@ -409,8 +427,8 @@ module.exports = {
         try{
             let canonical = []
             let canonicalParameters = {rnaTool: 'kallisto_0_46_1', rnaRef: 'Gencode_v33'}
-            const form = await this.selectFormData()
-            const datasets = form.data[0].dataset
+            const form = await this.getFormData()
+            const datasets = form.dataset
     
             let datasetVersion = []
             for(let i = 0; i < datasets.length; i++){
@@ -432,7 +450,7 @@ module.exports = {
                 let canonicalSet = []
                 let nonCanonicalSet = []
                 for(let j = 0; j < datasets.length; j++){
-                    let version = datasets[j].dataset.versionInfo.version.substring(0, 4)
+                    let version = datasets[j].dataset.versionInfo.substring(0, 4)
                     if(version === datasetVersion[i].versions[0].toString()){ 
                         if(datasetVersion[i].name === 'FIMM' || datasetVersion[i].name === 'CTRPv2'){
                             canonicalSet.push(datasets[j])
@@ -463,5 +481,55 @@ module.exports = {
             console.log(error)
             throw error
         }
+    },
+
+    getCanonicalDownloadRanking: async function(){
+        try{
+            const canDataset = await this.getCanonicalPSets()
+            let psets = []
+            for(let i = 0; i < canDataset.length; i++){
+                if(canDataset[i].dataset === 'GDSC'){
+                    for(let j = 0; j < canDataset[i].canonicals.length; j++){
+                        let canDownload = canDataset[i].canonicals[j].download
+                        let version = canDataset[i].canonicals[j].dataset.versionInfo.match(/\((.*?)\)/)
+                        let v = version[1].split('-')[0] 
+                        for(let k = 0; k < canDataset[i].nonCanonicals.length; k++){
+                            let nonCanVersion = canDataset[i].nonCanonicals[k].dataset.versionInfo.match(/\((.*?)\)/)
+                            if(nonCanVersion[1].split('-')[0] === v){
+                                canDownload += canDataset[i].nonCanonicals[k].download
+                            }
+                        }
+                        canDataset[i].canonicals[j].download = canDownload
+                        psets.push({
+                            download: canDataset[i].canonicals[j].download,
+                            name: canDataset[i].canonicals[j].name,
+                            doi: canDataset[i].canonicals[j].doi,
+                            dataset: canDataset[i].canonicals[j].dataset.name,
+                            version: canDataset[i].canonicals[j].dataset.versionInfo
+                        })
+                    }
+                }else{
+                    let canDownload = canDataset[i].canonicals[0].download
+
+                    for(let j = 0; j < canDataset[i].nonCanonicals.length; j++){
+                        canDownload += canDataset[i].nonCanonicals[j].download
+                    }
+                    canDataset[i].canonicals[0].download = canDownload
+                    psets.push({
+                        download: canDataset[i].canonicals[0].download,
+                        name: canDataset[i].canonicals[0].name,
+                        doi: canDataset[i].canonicals[0].doi,
+                        dataset: canDataset[i].canonicals[0].dataset.name,
+                        version: canDataset[i].canonicals[0].dataset.versionInfo
+                    })
+                }
+            }
+            psets.sort((a, b) => (a.download < b.download) ? 1 : -1)
+            return psets
+        }catch(error){
+            console.log(error)
+            throw error
+        }
+        
     }
 }

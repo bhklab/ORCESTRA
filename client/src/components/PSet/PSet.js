@@ -58,7 +58,7 @@ class PSet extends React.Component{
                     <h2>Explore PSet - {this.state.pset.name}</h2>
                     <DownloadPSetButton disabled={false} pset={this.state.pset} onDownloadComplete={this.showMessage}/>
                 </div>
-                <GeneralInfoAccordion data={this.state.general}/>
+                {this.state.isReady && <GeneralInfoAccordion data={this.state.general}/>}
                 <div className='tabContainer'>
                     {this.state.isReady ? 
                         <TabView renderActiveOnly={false}>
@@ -66,8 +66,8 @@ class PSet extends React.Component{
                                 <DatasetTabContent metadata={this.state.dataset} />   
                             </TabPanel>
                             {this.state.pset.dataType.map((type) => 
-                                <TabPanel key={type.name} header={type.name}>
-                                    {type.name === 'RNA' ? 
+                                <TabPanel key={type.name} header={type.label}>
+                                    {type.name === 'rnaseq' ? 
                                         <RNATabContent metadata={this.state.rna}/> 
                                         : 
                                         <DNATabContent metadata={this.state.dna}/>

@@ -53,8 +53,8 @@ const PSetFilter = () => {
     useEffect(() => {
         const initialize = async () => {
             const formDataset = await fetchData('/api/formData');
-            formDataInit = formDataset[0];
-            formData = formDataset[0];
+            formDataInit = formDataset;
+            formData = formDataset;
             rnaRefOptions = formData.rnaRef;
             dnaRefOptions = formData.dnaRef;
             setDataType(formData.dataType[0])
@@ -155,6 +155,7 @@ const PSetFilter = () => {
     }, [dataset])
 
     useEffect(() => {
+        console.log(drugSensitivity)
         const parameters = getParameters();
         context.setParameters(parameters);
     }, [dataType, drugSensitivity, rnaTool, rnaRef, dnaTool, dnaRef]);

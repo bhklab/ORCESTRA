@@ -12,7 +12,6 @@ const public = require('./api/public')
 // pset
 router.get('/pset', pset.getPsetList)
 router.get('/pset/one/:id1/:id2', pset.getPSetByDOI)
-router.get('/pset/sort', pset.getSortedPSets)
 router.get('/pset/canonical', pset.getCanonicalPSets)
 
 router.get('/pachyderm/status', pachyderm.returnStatus)

@@ -11,9 +11,7 @@ const getPSetByDOI = async function(req, res){
     console.log(doi)
     try{
         const result = await mongo.selectPSetByDOI(doi)
-        let date = result.dateCreated.toISOString();
-        result.dateCreated = date.split('T')[0];
-        console.log(result)
+        console.log(result)        
         res.send(result)
     }catch(error){
         res.status(500).send(error);
@@ -23,15 +21,6 @@ const getPSetByDOI = async function(req, res){
 const getPsetList = async function(req, res){
     try{
         const result = await mongo.selectPSets(req.query)
-        res.send(result)
-    }catch(error){
-        res.status(500).send(error);
-    }
-}
-
-const getSortedPSets = async function(req, res){
-    try{
-        const result = await mongo.selectSortedPSets()
         res.send(result)
     }catch(error){
         res.status(500).send(error);
@@ -171,7 +160,6 @@ const completeRequest = async function(req, res){
 module.exports = {
     getPSetByDOI,
     getPsetList,
-    getSortedPSets,
     getCanonicalPSets,
     postPSetData,
     processOnlineRequest,

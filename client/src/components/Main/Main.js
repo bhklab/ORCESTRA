@@ -27,13 +27,13 @@ const OrcestraMain = (props) => {
         const fetchData = async (api) => {
             const res = await fetch(api);
             const json = await res.json();
-            const dataset = json.form[0].dataset 
+            const dataset = json.form.dataset 
             let versionCombo = 0
             for(let i = 0; i < dataset.length; i++){
                 versionCombo += dataset[i].versions.length
             }
             setStatsData(json.pset);
-            setFormData({...json.form[0], versionCombo: versionCombo});
+            setFormData({...json.form, versionCombo: versionCombo});
             setDashboard(json.dashboard);
         }
         fetchData('/api/landing/data');
@@ -152,8 +152,6 @@ const OrcestraMain = (props) => {
             <DatasetDialog visible={datasetVisible} onHide={() => {hideDialog('dataset')}} dataset={formData.dataset} />
             <RNADialog visible={rnaVisible} onHide={() => {hideDialog('rna')}} rna={{tool: formData.rnaTool, ref: formData.rnaRef}} />
             <DNADialog visible={dnaVisible} onHide={() => {hideDialog('dna')}} dna={{tool: formData.dnaTool, ref: formData.dnaRef}} />
-            }
-            
         </React.Fragment>
     );
     

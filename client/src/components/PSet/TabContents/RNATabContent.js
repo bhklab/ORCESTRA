@@ -12,7 +12,7 @@ class RNATabContent extends React.Component{
 
         return(
             <React.Fragment>
-                <h1 className='tabMainHeader'>Analysis Details - RNA Data</h1>
+                <h1 className='tabMainHeader'>Analysis Details - RNA Sequence Data</h1>
                 <div className='tabContent'>
                     <div className='tabContentSection'>
                         <h3>Raw Data Source: </h3>

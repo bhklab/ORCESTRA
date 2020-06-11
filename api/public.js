@@ -4,8 +4,8 @@ module.exports = {
     getAvailablePSets: async (req, res) => {
         console.log('getAvailablePSets')
         try{
-            //const result = await mongo.selectPSets({'status': 'complete'})
-            const result = await mongo.selectPSets({'status': 'complete'}, {'projection': {
+            const form = await mongo.getFormData()
+            let psets = await mongo.selectPSets({'status': 'complete'}, {'projection': {
                 '_id': false,
                 'status': false,
                 'email': false, 
@@ -17,11 +17,21 @@ module.exports = {
                 'genome': false,
                 'dataType': false,
                 'dataset.label': false,
-                'dataset.versionInfo.pipeline': false,
-                'dataset.versionInfo.label': false,
-                'dataset.versionInfo.rawSeqDataDNA': false
             }})
-            res.send(result)
+            for(let i = 0; i < psets.length; i++){
+                const version = form.dataset.find(
+                    d => {return d.name === psets[i].dataset.name}
+                ).versions.find(
+                    version => {return(version.version === psets[i].dataset.versionInfo)}
+                )
+                psets[i].dataset.versionInfo = {
+                    version: version.version, 
+                    publication: version.publication, 
+                    rawSeqDataRNA: version.rawSeqDataRNA, 
+                    drugSensitivity: version.drugSensitiviry
+                }
+            }
+            res.send(psets)
         }catch(error){
             console.log(error)
             res.status(500).send(error);
@@ -32,6 +42,7 @@ module.exports = {
         console.log('getPSet')
         try{
             const doi = req.params.doi1 + '/' + req.params.doi2;
+            console.log(doi)
             const result = await mongo.selectPSetByDOI(doi, {'projection': {
                 '_id': false,
                 'status': false,
@@ -58,7 +69,7 @@ module.exports = {
     getStatistics: async (req, res) => {
         console.log('getStatistics')
         try{
-            const result = await mongo.selectSortedPSets({'projection': {
+            let result = await mongo.selectPSets({}, {'projection': {
                 '_id': false,
                 'status': false,
                 'email': false, 
@@ -73,6 +84,7 @@ module.exports = {
                 'dataType': false,
                 'dataset': false
             }})
+            result.sort((a, b) => (a.download < b.download) ? 1 : -1)
             let num = parseInt(req.params.limit, 10)
             num = (isNaN(num) || num >= result.length ? result.length -1 : num)
             res.send(result.slice(0, num))

@@ -101,7 +101,9 @@ const dataset = [
             {
                 version: '2019(v1-8.0)', pipeline: 'getGDSCv1', label: '2019(v1-8.0)(GDSC)',
                 publication: [
-                    {citation: 'Yang, Wanjuan et al. “Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells.” Nucleic acids research vol. 41,Database issue (2013): D955-61. doi:10.1093/nar/gks1111', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3531057/'}
+                    {citation: 'Yang, Wanjuan et al. “Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells.” Nucleic acids research vol. 41,Database issue (2013): D955-61. doi:10.1093/nar/gks1111', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3531057/'},
+                    {citation: 'Iorio F, Knijnenburg TA, Vis DJ, et al. A Landscape of Pharmacogenomic Interactions in Cancer. Cell. 2016;166(3):740‐754. doi:10.1016/j.cell.2016.06.017', link: 'https://pubmed.ncbi.nlm.nih.gov/27397505/'},
+                    {citation: 'Garnett MJ, Edelman EJ, Heidorn SJ, et al. Systematic identification of genomic markers of drug sensitivity in cancer cells. Nature. 2012;483(7391):570‐575. Published 2012 Mar 28. doi:10.1038/nature11005', link: 'https://pubmed.ncbi.nlm.nih.gov/22460902/'}
                 ], 
                 rawSeqDataRNA: 'https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-3983/', 
                 rawSeqDataDNA: '',
@@ -110,7 +112,9 @@ const dataset = [
             {
                 version: '2019(v2-8.0)', pipeline: 'GDSCv2', label: '2019(v2-8.0)(GDSC)',
                 publication: [
-                    {citation: 'Yang, Wanjuan et al. “Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells.” Nucleic acids research vol. 41,Database issue (2013): D955-61. doi:10.1093/nar/gks1111', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3531057/'}
+                    {citation: 'Yang, Wanjuan et al. “Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells.” Nucleic acids research vol. 41,Database issue (2013): D955-61. doi:10.1093/nar/gks1111', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3531057/'},
+                    {citation: 'Iorio F, Knijnenburg TA, Vis DJ, et al. A Landscape of Pharmacogenomic Interactions in Cancer. Cell. 2016;166(3):740‐754. doi:10.1016/j.cell.2016.06.017', link: 'https://pubmed.ncbi.nlm.nih.gov/27397505/'},
+                    {citation: 'Garnett MJ, Edelman EJ, Heidorn SJ, et al. Systematic identification of genomic markers of drug sensitivity in cancer cells. Nature. 2012;483(7391):570‐575. Published 2012 Mar 28. doi:10.1038/nature11005', link: 'https://pubmed.ncbi.nlm.nih.gov/22460902/'}
                 ], 
                 rawSeqDataRNA: 'https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-3983/', 
                 rawSeqDataDNA: '',
@@ -119,7 +123,9 @@ const dataset = [
             {
                 version: '2020(v1-8.2)', pipeline: 'getGDSCv1', label: '2020(v1-8.2)(GDSC)',
                 publication: [
-                    {citation: 'Yang, Wanjuan et al. “Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells.” Nucleic acids research vol. 41,Database issue (2013): D955-61. doi:10.1093/nar/gks1111', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3531057/'}
+                    {citation: 'Yang, Wanjuan et al. “Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells.” Nucleic acids research vol. 41,Database issue (2013): D955-61. doi:10.1093/nar/gks1111', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3531057/'},
+                    {citation: 'Iorio F, Knijnenburg TA, Vis DJ, et al. A Landscape of Pharmacogenomic Interactions in Cancer. Cell. 2016;166(3):740‐754. doi:10.1016/j.cell.2016.06.017', link: 'https://pubmed.ncbi.nlm.nih.gov/27397505/'},
+                    {citation: 'Garnett MJ, Edelman EJ, Heidorn SJ, et al. Systematic identification of genomic markers of drug sensitivity in cancer cells. Nature. 2012;483(7391):570‐575. Published 2012 Mar 28. doi:10.1038/nature11005', link: 'https://pubmed.ncbi.nlm.nih.gov/22460902/'}
                 ], 
                 rawSeqDataRNA: 'https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-3983/', 
                 rawSeqDataDNA: '',
@@ -128,7 +134,9 @@ const dataset = [
             {
                 version: '2020(v2-8.2)', pipeline: 'GDSCv2', label: '2020(v2-8.2)(GDSC)',
                 publication: [
-                    {citation: 'Yang, Wanjuan et al. “Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells.” Nucleic acids research vol. 41,Database issue (2013): D955-61. doi:10.1093/nar/gks1111', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3531057/'}
+                    {citation: 'Yang, Wanjuan et al. “Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells.” Nucleic acids research vol. 41,Database issue (2013): D955-61. doi:10.1093/nar/gks1111', link: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3531057/'},
+                    {citation: 'Iorio F, Knijnenburg TA, Vis DJ, et al. A Landscape of Pharmacogenomic Interactions in Cancer. Cell. 2016;166(3):740‐754. doi:10.1016/j.cell.2016.06.017', link: 'https://pubmed.ncbi.nlm.nih.gov/27397505/'},
+                    {citation: 'Garnett MJ, Edelman EJ, Heidorn SJ, et al. Systematic identification of genomic markers of drug sensitivity in cancer cells. Nature. 2012;483(7391):570‐575. Published 2012 Mar 28. doi:10.1038/nature11005', link: 'https://pubmed.ncbi.nlm.nih.gov/22460902/'}
                 ], 
                 rawSeqDataRNA: 'https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-3983/', 
                 rawSeqDataDNA: '',
@@ -160,7 +168,7 @@ const dataset = [
 const insertFormdata = async function(connStr, dbName){
     console.log('insertFormData')
     const form = {
-        dataType: [{label: 'RNA', name: 'RNA'}, {label: 'DNA', name: 'DNA'}],
+        dataType: [{label: 'RNA Sequence', name: 'rnaseq'}, {label: 'DNA', name: 'DNA'}],
         dataset: dataset,
         genome: [{label: 'GRCh37', name: 'GRCh37'}, {label: 'GRCh38', name: 'GRCh38'}],
         rnaTool: [
@@ -202,7 +210,7 @@ const insertFormdata = async function(connStr, dbName){
         client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
         const db = client.db(dbName)
         const formdata = db.collection('formdata')
-        formdata.insertOne(form)
+        await formdata.insertOne(form)
         client.close()
         console.log('done')
     }catch(error){
