@@ -439,7 +439,6 @@ module.exports = {
                 let unique = [...new Set(versions)]
                 datasetVersion.push({name: datasets[i].name, versions: unique})
             }
-            console.log(datasetVersion)
     
             const result = await this.selectPSets()
     

@@ -19,7 +19,8 @@ module.exports = {
             console.log(result);
             online = result.response.major ? true : false;
         }catch(error){
-            console.log(error);
+            //console.log(error);
+            console.log('pachyderm is offline')
         }finally{
             return(online);
         }
