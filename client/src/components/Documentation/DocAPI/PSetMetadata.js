@@ -19,9 +19,9 @@ const PSetMetadata = () => {
             <h2>Single PSet</h2>
             <p>
                 This RESTful API call restrieves a PSet associated with specified DOI:<br />
-                <code className='code'>curl https://www.orcestra.ca/api/pset/[ DOI ]</code><br />
+                <code className='code'>curl http://api.orcestra.ca/pset/[ DOI ]</code><br />
                 Example:<br />
-                <code className='code'>curl https://www.orcestra.ca/api/pset/10.5281/zenodo.3848004</code><br />
+                <code className='code'>curl http://api.orcestra.ca/pset/10.5281/zenodo.3848004</code><br />
                 Current result of the successful API call is as follows:<br />
             </p>
             <ScrollPanel className='documentation-scroll'>
