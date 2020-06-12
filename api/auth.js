@@ -4,11 +4,11 @@ module.exports = {
     checkToken: function(req, res, next){
         const token = req.cookies.token;
         if(!token){
-            res.status(401).send({data: 'Unauthorized: No token provided'});
+            res.send({authenticated: false, isAdmin: false, username: '', message: 'Unauthorized: Token not provided'});
         }else{
             jwt.verify(token, process.env.KEY, function(err, decoded){
                 if(err){
-                    res.status(401).send({data: 'Unauthorized: Invalid token'});
+                    res.send({authenticated: false, isAdmin: false, username: '', message: 'Unauthorized: Token not provided'});
                 }else{
                     req.username = decoded.username;
                     req.isAdmin = decoded.isAdmin;
