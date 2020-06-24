@@ -423,7 +423,7 @@ module.exports = {
         }
     },
 
-    getCanonicalPSets: async function(){
+    getCanonicalPSets: async function(query={}, projection=null){
         try{
             let canonical = []
             let canonicalParameters = {rnaTool: 'kallisto_0_46_1', rnaRef: 'Gencode_v33'}
@@ -440,7 +440,7 @@ module.exports = {
                 datasetVersion.push({name: datasets[i].name, versions: unique})
             }
     
-            const result = await this.selectPSets()
+            const result = await this.selectPSets(query, projection)
     
             const bhkPSets = result.filter(data => data.createdBy === 'BHK Lab')
     

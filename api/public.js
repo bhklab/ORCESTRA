@@ -38,6 +38,48 @@ module.exports = {
         }
     },
 
+    getCanonicalPSets: async (req, res) => {
+        console.log('getAvailablePSets')
+        try{
+            const form = await mongo.getFormData()
+            let datasets = await mongo.getCanonicalPSets({'status': 'complete'}, {'projection': {
+                '_id': false,
+                'status': false,
+                'email': false, 
+                'commitID': false, 
+                'dateSubmitted': false,
+                'dateProcessed': false,
+                'dnaTool': false,
+                'dnaRef': false,
+                'genome': false,
+                'dataType': false,
+                'dataset.label': false,
+            }})
+            
+            let canonicals = []
+            datasets.forEach(data => data.canonicals.forEach(c => canonicals.push(c)))
+
+            // attach version / drug sensitivity info.
+            for(let i = 0; i < canonicals.length; i++){
+                const version = form.dataset.find(
+                    d => {return d.name === canonicals[i].dataset.name}
+                ).versions.find(
+                    version => {return(version.version === canonicals[i].dataset.versionInfo)}
+                )
+                canonicals[i].dataset.versionInfo = {
+                    version: version.version, 
+                    publication: version.publication, 
+                    rawSeqDataRNA: version.rawSeqDataRNA, 
+                    drugSensitivity: version.drugSensitiviry
+                }
+            }
+            res.send(canonicals)
+        }catch(error){
+            console.log(error)
+            res.status(500).send(error);
+        }
+    },
+
     getPSet: async (req, res) => {
         console.log('getPSet')
         try{
