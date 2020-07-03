@@ -2,15 +2,12 @@ import React, {useState, useEffect, useContext} from 'react';
 import {InputSwitch} from 'primereact/inputswitch';
 import PSetDropdown from '../../Shared/PSetDropdown/PSetDropdown';
 import {SearchReqContext} from '../PSetSearch';
-import {Dialog} from 'primereact/dialog';
-import {Button} from 'primereact/button';
 import './PSetFilter.css';
 
 let formDataInit = {};
 let formData = {};
 let drugSensitivityOptions = [];
 let rnaRefOptions = [];
-let dnaRefOptions = [];
 
 async function fetchData(url) {
     const response = await fetch(url);
@@ -28,13 +25,13 @@ const PSetFilter = () => {
     const [genome, setGenome] = useState([]);
     const [rnaTool, setRNATool] = useState([]);
     const [rnaRef, setRNARef] = useState([]);
-    const [dnaTool, setDNATool] = useState([]);
-    const [dnaRef, setDNARef] = useState([]);
+    const [accRNA, setAccRNA] = useState([]);
+    const [accDNA, setAccDNA] = useState([]);
 
     const [disableDSOptions, setdisableDSOptions] = useState(true);
     const [disableRNAToolRef, setdisableRNAToolRef] = useState(false);
-    //const [disableDNAToolRef, setdisableDNAToolRef] = useState(false);
-    const [datasetDialogVisible, setDatasetDialogVisible] = useState(false);
+    const [disableAccRNA, setDisableAccRNA] = useState(true);
+    const [disableAccDNA, setDisableAccDNA] = useState(true);
 
     const getParameters = () => {
         let parameters = {
@@ -43,9 +40,9 @@ const PSetFilter = () => {
             drugSensitivity, 
             genome, 
             rnaTool, 
-            rnaRef, 
-            dnaTool, 
-            dnaRef
+            rnaRef,
+            accRNA,
+            accDNA
         };
         return parameters;
     }
@@ -53,10 +50,10 @@ const PSetFilter = () => {
     useEffect(() => {
         const initialize = async () => {
             const formDataset = await fetchData('/api/formData');
+            console.log(formDataset)
             formDataInit = formDataset;
             formData = formDataset;
             rnaRefOptions = formData.rnaRef;
-            dnaRefOptions = formData.dnaRef;
             setDataType(formData.dataType[0])
         }
         initialize();
@@ -64,28 +61,20 @@ const PSetFilter = () => {
 
     useEffect(() => {
         if(genome.length === 0){
-            //dnaRefOptions = formData.dnaRef;
             rnaRefOptions = formData.rnaRef;
         }else{
-            //let dnaRefs = dnaRef;
             let rnaRefs = rnaRef;
             
             if(Array.isArray(genome)){
                 let genomeName = genome.map((genome) => {return(genome.name)});
-                //dnaRefs = dnaRef.filter((ref) => {return(genomeName.includes(ref.genome) && ref)});
                 rnaRefs = rnaRef.filter((ref) => {return(genomeName.includes(ref.genome) && ref)});
-                //dnaRefOptions = formData.dnaRef.filter((ref) => {return(genomeName.includes(ref.genome) && ref)});
                 rnaRefOptions = formData.rnaRef.filter((ref) => {return(genomeName.includes(ref.genome) && ref)});
             }else{
                 if(Array.isArray(rnaRefs)){
-                    //dnaRefs = dnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
                     rnaRefs = rnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
                 }
-                //dnaRefOptions = formData.dnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
                 rnaRefOptions = formData.rnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
             }
-            
-            //setDNARef(dnaRefs);
             setRNARef(rnaRefs);
         }  
         const parameters = getParameters();
@@ -100,26 +89,60 @@ const PSetFilter = () => {
                 setdisableDSOptions(true)
             }else{
                 drugSensitivityOptions = dataset.versions
-                let dsCopy = []
-                for(let i = 0; i < drugSensitivity.length; i++){
-                    if(drugSensitivityOptions.some(el => el.label === drugSensitivity[i].label)){
-                        console.log('found')
-                        dsCopy.push(drugSensitivity[i])
+                if(drugSensitivity.length){
+                    let dsCopy = []
+                    for(let i = 0; i < drugSensitivity.length; i++){
+                        if(drugSensitivityOptions.some(el => el.label === drugSensitivity[i].label)){
+                            console.log('found')
+                            dsCopy.push(drugSensitivity[i])
+                        }
                     }
+                    setDrugSensitivity(dsCopy[0])
                 }
-                setDrugSensitivity(dsCopy[0])
                 setdisableDSOptions(false)
             }
 
-            // if CTRPv2 is selected, then pop up to ask the user if they want to include CCLE data
-            if(dataset.name === 'CTRPv2'){
-                setDatasetDialogVisible(true)
-            }else if(dataset.name === 'FIMM'){
-                setRNATool([])
-                setRNARef([])
-                setdisableRNAToolRef(true)
-            }else{
-                setdisableRNAToolRef(false)
+            // handle events when each dataset is selected
+            switch(dataset.name){
+                case 'CCLE':
+                    setdisableRNAToolRef(false)
+                    setDisableAccRNA(false)
+                    setDisableAccDNA(false)
+                    break;
+                case 'CTRPv2':
+                    setRNATool([])
+                    setRNARef([])
+                    setdisableRNAToolRef(true)
+                    setDisableAccRNA(true)
+                    setDisableAccDNA(true)
+                    break;
+                case 'FIMM':
+                    setRNATool([])
+                    setRNARef([])
+                    setdisableRNAToolRef(true)
+                    setDisableAccRNA(true)
+                    setDisableAccDNA(true)
+                    break;
+                case 'gCSI':
+                    setdisableRNAToolRef(false)
+                    setDisableAccRNA(true)
+                    setDisableAccDNA(false)
+                    break;
+                case 'GDSC':
+                    setdisableRNAToolRef(false)
+                    setDisableAccRNA(false)
+                    setDisableAccDNA(false)
+                    break;
+                case 'UHNBreast':
+                    setdisableRNAToolRef(false)
+                    setDisableAccRNA(true)
+                    setDisableAccDNA(true)
+                    break;
+                default:
+                    setdisableRNAToolRef(false)
+                    setDisableAccRNA(true)
+                    setDisableAccDNA(true)
+                    break;
             }
 
         }else{
@@ -158,7 +181,7 @@ const PSetFilter = () => {
         console.log(drugSensitivity)
         const parameters = getParameters();
         context.setParameters(parameters);
-    }, [dataType, drugSensitivity, rnaTool, rnaRef, dnaTool, dnaRef]);
+    }, [dataType, drugSensitivity, rnaTool, rnaRef]);
 
     const setRequestView = (isRequest) => {
         let fData = JSON.parse(JSON.stringify(formData));
@@ -208,35 +231,9 @@ const PSetFilter = () => {
         formData = fData;
         context.setIsRequest(isRequest);
     }
-
-    const onDatasetDialogYes = (event) => {
-        event.preventDefault()
-        setDatasetDialogVisible(false)
-    }
-
-    const onDatasetDialogNo = (event) => {
-        event.preventDefault()
-        setdisableRNAToolRef(true)
-        setRNATool([])
-        setRNARef([])
-        setDatasetDialogVisible(false)
-    }
-
-    const footer = (
-        <div>
-            <Button label='Yes' onClick={onDatasetDialogYes}/>
-            <Button label='No' onClick={onDatasetDialogNo}/>
-        </div> 
-    )
     
     return(
         <React.Fragment>
-            <Dialog header="CTRP Dataset Selected" footer={footer} visible={datasetDialogVisible} onHide={() => setDatasetDialogVisible(false)} style={{minWidth: '30vw', minHeight: '20vh'}} >
-                <h3>CTRP Dataset was selected</h3>
-                <div>
-                    Would you like to include CCLE RNA sequence data?
-                </div>    
-            </Dialog>
             <div className='pSetFilterContainer'>
                 <div className='pSetFilter'>
                     <h2>PSet Parameters</h2>
@@ -276,14 +273,18 @@ const PSetFilter = () => {
                     <PSetDropdown id='rnaRef' disabled={disableRNAToolRef} parameterName='RNA Ref:' selectOne={context.isRequest} 
                         parameterOptions={rnaRefOptions} selectedParameter={context.parameters.rnaRef} 
                         handleUpdateSelection={(e) => setRNARef(e.value)} />
-                    
-                    <PSetDropdown id='dnaTool' disabled={true} parameterName='DNA Tool:' 
-                        parameterOptions={formData.dnaTool} selectedParameter={context.parameters.dnaTool} 
-                        handleUpdateSelection={(e) => setDNATool(e.value)} />
-                    
-                    <PSetDropdown id='dnaRef' disabled={true} parameterName='DNA Ref:' 
-                        parameterOptions={dnaRefOptions} selectedParameter={context.parameters.dnaRef} 
-                        handleUpdateSelection={(e) => setDNARef(e.value)} />
+                    {
+                        context.isRequest &&
+                        <PSetDropdown id='accRNA' disabled={disableAccRNA} parameterName='Accompanying RNA:' 
+                            parameterOptions={formData.accompanyRNA} selectedParameter={context.parameters.accRNA} 
+                            handleUpdateSelection={(e) => setAccRNA(e.value)} />
+                    }
+                    {
+                        context.isRequest &&
+                        <PSetDropdown id='accDNA' disabled={disableAccDNA} parameterName='Accompanying DNA:' 
+                            parameterOptions={formData.accompanyDNA} selectedParameter={context.parameters.accDNA} 
+                            handleUpdateSelection={(e) => setAccDNA(e.value)} />
+                    }
                 </div>
             </div>
         </React.Fragment>

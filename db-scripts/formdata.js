@@ -182,6 +182,22 @@ const insertFormdata = async function(connStr, dbName){
             {label: 'Gencode v33 Transcriptome', name: 'Gencode_v33', genome: 'GRCh38', source: 'ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_33/gencode.v33.transcripts.fa.gz'},
             {label: 'Gencode v33lift37 Transcriptome', name: 'Gencode_v33lift37', genome: 'GRCh37', source: 'ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_23/GRCh37_mapping/gencode.v23lift37.annotation.gtf.gz'}
         ],
+        accompanyRNA: [
+            {label: 'CCLE (microarray)', name: 'microarray', dataset: 'CCLE', type: 'rna', source: 'https://data.broadinstitute.org/ccle_legacy_data/mRNA_expression/CCLE_Expression.Arrays_2013-03-18.tar.gz'},
+            {label: 'GDSC (microarray)', name: 'microarray', dataset: 'GDSC', type: 'rna', source: 'ftp://ftp.ebi.ac.uk//pub/databases/microarray/data/experiment/MTAB/E-MTAB-783'},
+        ],
+        accompanyDNA: [
+            {label: 'CCLE (cnv)', name: 'cnv', dataset: 'CCLE', type: 'cnv', source: 'https://data.broadinstitute.org/ccle_legacy_data'},
+            {label: 'CCLE (mutation)', name: 'mutation', dataset: 'CCLE', type: 'mut', source: 'https://data.broadinstitute.org/ccle_legacy_data/hybrid_capture_sequencing/CCLE_hybrid_capture1650_hg19_NoCommonSNPs_NoNeutralVariants_CDS_2012.05.07.maf'},
+            {label: 'gCSI (cnv)', name: 'cnv', dataset: 'gCSI', type: 'cnv', source: 'https://www.ebi.ac.uk/ega/datasets/EGAD00010000951'},
+            {label: 'gCSI (mutation)', name: 'mutation', dataset: 'gCSI', type: 'mut', source: 'http://research-pub.gene.com/gCSI-cellline-data/compareDrugScreens_current.tar.gz'},
+            {label: 'GDSC (cnv)', name: 'cnv', dataset: 'GDSC', type: 'cnv', source: 'https://www.ebi.ac.uk/ega/studies/EGAS00001000978'},
+            {label: 'GDSC (fusion)', name: 'fusion', dataset: 'GDSC', type: 'fusion', source: 'ftp://ftp.sanger.ac.uk/pub4/cancerrxgene/releases/release-5.0/gdsc_mutation_w5.csv'},
+            {label: 'GDSC (mutation)', name: 'mutation', dataset: 'GDSC', type: 'mut', source: {
+                mutation: 'ftp://ftp.sanger.ac.uk/pub4/cancerrxgene/releases/release-5.0/gdsc_mutation_w5.csv',
+                mutation_exome: 'https://cog.sanger.ac.uk/cmp/download/mutations_latest.csv.gz'
+            }}
+        ],
         dnaTool: [
             {label: 'MuTect1', name: 'MuTect1', commands: []},
             {label: 'MuTect2', name: 'MuTect2', commands: []}

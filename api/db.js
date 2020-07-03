@@ -4,7 +4,7 @@ const upset = require('../helper/upset');
 module.exports = {
     getFormData: async function(req, res){
         try{
-            let form = {dataType: [], dataset: [], genome: [], rnaTool: [], rnaRef: [], dnaTool: [], dnaRef: []}
+            let form = {dataType: [], dataset: [], genome: [], rnaTool: [], rnaRef: [], accompanyRNA: [], accompanyDNA: [], dnaTool: [], dnaRef: []}
             const meta = await mongo.getFormData();
             
             form.dataType = meta.dataType
@@ -18,6 +18,8 @@ module.exports = {
             form.rnaRef = meta.rnaRef.map(ref => {return {label: ref.label, name: ref.name, genome: ref.genome}})
             form.dnaTool = meta.dnaTool.map(tool => {return {label: tool.label, name: tool.name}})
             form.dnaRef = meta.dnaRef.map(ref => {return {label: ref.label, name: ref.name, genome: ref.genome}})
+            form.accompanyRNA = meta.accompanyRNA.map(acc => {return({label: acc.label, name: acc.name, dataset: acc.dataset})})
+            form.accompanyDNA = meta.accompanyDNA.map(acc => {return({label: acc.label, name: acc.name, dataset: acc.dataset})})
 
             res.send(form);
         }catch(error){

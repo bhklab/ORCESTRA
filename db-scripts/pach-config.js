@@ -33,6 +33,22 @@ const insertPachConfig = async function(connStr, dbName, configDir){
     }
 }
 
+const updatePachConfig = async function(connStr, dbName, update, config){
+    console.log('updatePachConfig')
+    try{
+        client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
+        const db = client.db(dbName)
+        const reqConfig = db.collection('req-config-master');
+        await reqConfig.updateMany({}, update, config);
+        client.close()
+        console.log('done')
+    }catch(err){
+        console.log(err)
+        client.close()
+    }
+}
+
 module.exports = {
-    insertPachConfig
+    insertPachConfig,
+    updatePachConfig
 }
