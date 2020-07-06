@@ -193,10 +193,10 @@ const insertFormdata = async function(connStr, dbName){
             {label: 'gCSI (mutation)', name: 'mutation', dataset: 'gCSI', type: 'mut', source: 'http://research-pub.gene.com/gCSI-cellline-data/compareDrugScreens_current.tar.gz'},
             {label: 'GDSC (cnv)', name: 'cnv', dataset: 'GDSC', type: 'cnv', source: 'https://www.ebi.ac.uk/ega/studies/EGAS00001000978'},
             {label: 'GDSC (fusion)', name: 'fusion', dataset: 'GDSC', type: 'fusion', source: 'ftp://ftp.sanger.ac.uk/pub4/cancerrxgene/releases/release-5.0/gdsc_mutation_w5.csv'},
-            {label: 'GDSC (mutation)', name: 'mutation', dataset: 'GDSC', type: 'mut', source: {
-                mutation: 'ftp://ftp.sanger.ac.uk/pub4/cancerrxgene/releases/release-5.0/gdsc_mutation_w5.csv',
-                mutation_exome: 'https://cog.sanger.ac.uk/cmp/download/mutations_latest.csv.gz'
-            }}
+            {label: 'GDSC (mutation)', name: 'mutation', dataset: 'GDSC', type: 'mut', source: [
+                {name: 'mutation', label: 'Mutation', source: 'ftp://ftp.sanger.ac.uk/pub4/cancerrxgene/releases/release-5.0/gdsc_mutation_w5.csv'},
+                {name: 'mutation_exome', label: 'Exome Mutation', source: 'https://cog.sanger.ac.uk/cmp/download/mutations_latest.csv.gz'}
+            ]}
         ],
         dnaTool: [
             {label: 'MuTect1', name: 'MuTect1', commands: []},

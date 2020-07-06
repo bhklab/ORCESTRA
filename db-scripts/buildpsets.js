@@ -68,6 +68,50 @@ const buildInsertPSetObjects = async function(connStr, dbName, filePath){
     console.log('done')
 }
 
+const updatePSets = async function(connStr, dbName){
+    const client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
+    try{
+        const db = client.db(dbName)
+        
+        const form = await db.collection('formdata').find().toArray()
+        const psets = await db.collection('pset').find().toArray()
+        
+        const accRNA = form[0].accompanyRNA
+        const accDNA = form[0].accompanyDNA
+
+        for(let i = 0; i < psets.length; i++){
+            let rna = []
+            let dna = []
+            
+            rna = accRNA.filter(r => {
+                return r.dataset === psets[i].dataset.name
+            })
+            if(rna.length){
+                psets[i].accompanyRNA = rna.map(r => {return({label: r.label, name: r.name, dataset: r.dataset, type: r.type})})
+            }else{
+                psets[i].accompanyRNA = []
+            }
+            
+            dna = accDNA.filter(d => {
+                return d.dataset === psets[i].dataset.name
+            })
+            if(dna.length){
+                psets[i].accompanyDNA = dna.map(d => {return({label: d.label, name: d.name, dataset: d.dataset, type: d.type})})
+            }else{
+                psets[i].accompanyDNA = []
+            }
+            await db.collection('pset').updateOne({'_id': psets[i]._id}, {'$set': psets[i]}, {upsert: true})
+        }
+
+        client.close()
+        console.log('done')
+    }catch(error){
+        console.log(error)
+        client.close()
+    }
+}
+
 module.exports = {
-    buildInsertPSetObjects
+    buildInsertPSetObjects,
+    updatePSets
 }

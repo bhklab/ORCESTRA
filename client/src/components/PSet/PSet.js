@@ -6,6 +6,7 @@ import {GeneralInfoAccordion} from './PSetAccordion';
 import DatasetTabContent from './TabContents/DatasetTabContent';
 import RNATabContent from './TabContents/RNATabContent';
 import DNATabContent from './TabContents/DNATabContent';
+import AccompanyDataTabContent from './TabContents/AccompanyDataTabContent';
 import * as Helper from '../Shared/Helper';
 import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
 import {Messages} from 'primereact/messages';
@@ -19,6 +20,8 @@ class PSet extends React.Component{
             dataset: {},
             rna: {},
             dna: {},
+            accompanyRNA: {},
+            accompanyDNA: {},
             isReady: false,
             message: ''
         }
@@ -38,6 +41,8 @@ class PSet extends React.Component{
                     dataset: {dataset: pset.dataset, genome: pset.genome},
                     rna: {rnaTool: pset.rnaTool, rnaRef: pset.rnaRef, rawSeqDataRNA: pset.dataset.versionInfo.rawSeqDataRNA},
                     dna: {dnaTool: pset.dnaTool, dnaRef: pset.dnaRef, rawSeqDataDNA: pset.dataset.versionInfo.rawSeqDataDNA},
+                    accompanyRNA: pset.accompanyRNA,
+                    accompanyDNA: pset.accompanyDNA,
                     isReady: true
                 });
             }else{
@@ -73,6 +78,18 @@ class PSet extends React.Component{
                                         <DNATabContent metadata={this.state.dna}/>
                                     }
                                 </TabPanel>)
+                            }
+                            {this.state.accompanyRNA.length &&
+                                <TabPanel header='Accompanying RNA Data'>
+                                    <h1 className='tabMainHeader'>Dataset: {this.state.pset.dataset.name}</h1>
+                                    <AccompanyDataTabContent data={this.state.accompanyRNA} />
+                                </TabPanel>
+                            }
+                            {this.state.accompanyDNA.length &&
+                                <TabPanel header={'Accompanying DNA Data'}>
+                                    <h1 className='tabMainHeader'>Dataset: {this.state.pset.dataset.name}</h1>
+                                    <AccompanyDataTabContent data={this.state.accompanyDNA} />
+                                </TabPanel>
                             }
                         </TabView>
                         : 

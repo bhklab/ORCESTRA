@@ -100,6 +100,21 @@ async function buildPSetObject(pset, formdata){
         psetObj.rnaRef[i].source = ref.source
     }
 
+    // assign accompanying RNA and DNA metadata
+    if(psetObj.accompanyRNA.length){
+        psetObj.accompanyRNA.forEach(x => {
+            const accRNA = formdata.accompanyRNA.find(rna => {return (rna.dataset === x.dataset && rna.type === x.type)})
+            x.source = accRNA.source
+        })
+    }
+
+    if(psetObj.accompanyDNA.length){
+        psetObj.accompanyDNA.forEach(x => {
+            const accDNA = formdata.accompanyDNA.find(dna => {return (dna.dataset === x.dataset && dna.type === x.type)})
+            x.source = accDNA.source
+        })
+    }
+
     return psetObj
 }
 
