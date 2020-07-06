@@ -4,7 +4,7 @@ import UserInfo from './subcomponents/UserInfo';
 import UserPSet from './subcomponents/UserPSet';
 import {Messages} from 'primereact/messages';
 import {AuthContext} from '../../context/auth';
-import * as APIHelper from '../Shared/PSetAPIHelper';
+import * as Helper from '../Shared/Helper';
 
 class Profile extends React.Component{
 
@@ -58,13 +58,13 @@ class Profile extends React.Component{
         })
             .then(res => res.json())
             .then(resData => {
-                APIHelper.messageAfterRequest(1, resData, null, this.messages);
+                Helper.messageAfterRequest(1, resData, null, this.messages);
                 var saved = this.state.psetSaved;
                 saved = this.removePSetByID(saved, psetID);
                 this.setState({psetSaved: saved}, callback(0));
             })
             .catch(err => {
-                APIHelper.messageAfterRequest(0, err, null, this.messages);
+                Helper.messageAfterRequest(0, err, null, this.messages);
                 callback(1);
             });
     }
@@ -83,13 +83,13 @@ class Profile extends React.Component{
         })
             .then(res => res.json())
             .then(resData => {
-                APIHelper.messageAfterRequest(1, resData, null, this.messages);
+                Helper.messageAfterRequest(1, resData, null, this.messages);
                 var inProcess = this.state.psetInProcess;
                 inProcess = this.removePSetByID(inProcess, psetID);
                 this.setState({psetInProcess: inProcess}, callback(0));
             })
             .catch(err => {
-                APIHelper.messageAfterRequest(0, err, null, this.messages);
+                Helper.messageAfterRequest(0, err, null, this.messages);
                 callback(1);
             });
     }

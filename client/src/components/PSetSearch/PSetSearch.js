@@ -9,7 +9,7 @@ import Loader from 'react-loader-spinner';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
-import * as APIHelper from '../Shared/PSetAPIHelper';
+import * as Helper from '../Shared/Helper';
 
 export const SearchReqContext = React.createContext();
 
@@ -25,6 +25,7 @@ const PSetSearch = (props) => {
     const [selectedPSets, setSelectedPSets] = useState([]);
     const [disableSaveBtn, setDisableSaveBtn] = useState(true);
     const [isRequest, setIsRequest] = useState(false);
+    const [search, setSearch] = useState(false);
     const [readyToSubmit, setReadyToSubmit] = useState(true);
     const [parameters, setParameters] = useState({});
     
@@ -44,25 +45,29 @@ const PSetSearch = (props) => {
     }, []);
 
     useEffect(() => {
-        setDisableSaveBtn(APIHelper.isSelected(selectedPSets) ? false : true)
+        setDisableSaveBtn(Helper.isSelected(selectedPSets) ? false : true)
     }, [selectedPSets]);
 
     useEffect(() => {   
-        async function update() {
-            let filterset = APIHelper.getFilterSet(parameters);
-            let apiStr = APIHelper.buildAPIStr(filterset);
+        async function updateSearch() {
+            let filterset = Helper.getFilterSet(parameters);
+            let apiStr = Helper.buildAPIStr(filterset);
             console.log(apiStr);
             let searchAll = apiStr === '/api/pset' ||  apiStr === '/api/pset?status=complete' ? true : false;
             const psets = await fetchData(apiStr);
             setAllData(psets);
             setSearchAll(searchAll);
         }
-        update();
+
+        if(search){
+            updateSearch();
+        }
+        
         if(isRequest){
             let params = {...parameters};
             params.name = name;
             params.email = email;
-            setReadyToSubmit(APIHelper.isReadyToSubmit(params));
+            setReadyToSubmit(Helper.isReadyToSubmit(params));
         }
     }, [parameters])
 
@@ -110,7 +115,7 @@ const PSetSearch = (props) => {
         let params = {...parameters};
         params.name = name;
         params.email = email;
-        setReadyToSubmit(APIHelper.isReadyToSubmit(params));
+        setReadyToSubmit(Helper.isReadyToSubmit(params));
     }, [name, email])
     
     const SubmitRequestButton = () => {
@@ -130,7 +135,9 @@ const PSetSearch = (props) => {
                 parameters: parameters, 
                 setParameters: setParameters, 
                 isRequest: isRequest, 
-                setIsRequest: setIsRequest
+                setIsRequest: setIsRequest,
+                search: search,
+                setSearch: setSearch
             }}
         >
             <div className='pageContent'>

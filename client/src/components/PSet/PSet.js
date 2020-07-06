@@ -6,7 +6,7 @@ import {GeneralInfoAccordion} from './PSetAccordion';
 import DatasetTabContent from './TabContents/DatasetTabContent';
 import RNATabContent from './TabContents/RNATabContent';
 import DNATabContent from './TabContents/DNATabContent';
-import * as APIHelper from '../Shared/PSetAPIHelper';
+import * as Helper from '../Shared/Helper';
 import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
 import {Messages} from 'primereact/messages';
 
@@ -47,7 +47,7 @@ class PSet extends React.Component{
     }
 
     showMessage(status, data){
-        APIHelper.messageAfterRequest(status, data, this.initializeState, this.messages);
+        Helper.messageAfterRequest(status, data, this.initializeState, this.messages);
     }
 
     render(){

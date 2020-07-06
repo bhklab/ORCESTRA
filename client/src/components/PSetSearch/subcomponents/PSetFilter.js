@@ -8,6 +8,8 @@ let formDataInit = {};
 let formData = {};
 let drugSensitivityOptions = [];
 let rnaRefOptions = [];
+let accRNAOptions = [];
+let accDNAOptions = [];
 
 async function fetchData(url) {
     const response = await fetch(url);
@@ -62,6 +64,7 @@ const PSetFilter = () => {
     useEffect(() => {
         if(genome.length === 0){
             rnaRefOptions = formData.rnaRef;
+            context.setParameters(getParameters());
         }else{
             let rnaRefs = rnaRef;
             
@@ -77,8 +80,6 @@ const PSetFilter = () => {
             }
             setRNARef(rnaRefs);
         }  
-        const parameters = getParameters();
-        context.setParameters(parameters);
     }, [genome])
 
     useEffect(() => {
@@ -105,6 +106,10 @@ const PSetFilter = () => {
             // handle events when each dataset is selected
             switch(dataset.name){
                 case 'CCLE':
+                    setAccRNA([])
+                    setAccDNA([])    
+                    accRNAOptions = formData.accompanyRNA.filter(rna => {return rna.dataset === 'CCLE'})
+                    accDNAOptions = formData.accompanyDNA.filter(dna => {return dna.dataset === 'CCLE'})
                     setdisableRNAToolRef(false)
                     setDisableAccRNA(false)
                     setDisableAccDNA(false)
@@ -112,6 +117,8 @@ const PSetFilter = () => {
                 case 'CTRPv2':
                     setRNATool([])
                     setRNARef([])
+                    setAccRNA([])
+                    setAccDNA([])
                     setdisableRNAToolRef(true)
                     setDisableAccRNA(true)
                     setDisableAccDNA(true)
@@ -119,26 +126,39 @@ const PSetFilter = () => {
                 case 'FIMM':
                     setRNATool([])
                     setRNARef([])
+                    setAccRNA([])
+                    setAccDNA([])
                     setdisableRNAToolRef(true)
                     setDisableAccRNA(true)
                     setDisableAccDNA(true)
                     break;
                 case 'gCSI':
+                    setAccRNA([])
+                    setAccDNA([])
+                    accDNAOptions = formData.accompanyDNA.filter(dna => {return dna.dataset === 'gCSI'})
                     setdisableRNAToolRef(false)
                     setDisableAccRNA(true)
                     setDisableAccDNA(false)
                     break;
                 case 'GDSC':
+                    setAccRNA([])
+                    setAccDNA([])
+                    accRNAOptions = formData.accompanyRNA.filter(rna => {return rna.dataset === 'GDSC'})
+                    accDNAOptions = formData.accompanyDNA.filter(dna => {return dna.dataset === 'GDSC'})
                     setdisableRNAToolRef(false)
                     setDisableAccRNA(false)
                     setDisableAccDNA(false)
                     break;
                 case 'UHNBreast':
+                    setAccRNA([])
+                    setAccDNA([])
                     setdisableRNAToolRef(false)
                     setDisableAccRNA(true)
                     setDisableAccDNA(true)
                     break;
                 default:
+                    setAccRNA([])
+                    setAccDNA([])
                     setdisableRNAToolRef(false)
                     setDisableAccRNA(true)
                     setDisableAccDNA(true)
@@ -172,16 +192,11 @@ const PSetFilter = () => {
                 setDrugSensitivity(dsCopy)
             }
         }
-        
-        const parameters = getParameters();
-        context.setParameters(parameters);
     }, [dataset])
 
     useEffect(() => {
-        console.log(drugSensitivity)
-        const parameters = getParameters();
-        context.setParameters(parameters);
-    }, [dataType, drugSensitivity, rnaTool, rnaRef]);
+        context.setParameters(getParameters());
+    }, [dataType, drugSensitivity, rnaTool, rnaRef, accRNA, accDNA]);
 
     const setRequestView = (isRequest) => {
         let fData = JSON.parse(JSON.stringify(formData));
@@ -227,6 +242,8 @@ const PSetFilter = () => {
             }
             fData = formDataInit;
             setdisableRNAToolRef(false)
+            setAccRNA([])
+            setAccDNA([])
         }
         formData = fData;
         context.setIsRequest(isRequest);
@@ -240,24 +257,41 @@ const PSetFilter = () => {
                     <div className='filterSet'>
                         <label className='bold'>Request PSet: </label> 
                         <InputSwitch checked={context.isRequest} tooltip="Turn this on to request a PSet." 
-                            onChange={(e) => setRequestView(e.value)} />
+                            onChange={(e) => {
+                                context.setSearch(false)
+                                setRequestView(e.value)
+                            }
+                        } />
                     </div>
 
                     <PSetDropdown id='dataType' isHidden={false} parameterName='Data Type:' selectOne={true}
                         parameterOptions={formData.dataType} selectedParameter={context.parameters.dataType} 
-                        handleUpdateSelection={(e) => setDataType(e.value)} />
+                        handleUpdateSelection={(e) => {
+                            context.setSearch(true)
+                            setDataType(e.value)
+                        }} />
 
                     <PSetDropdown id='dataset' isHidden={false} parameterName='Dataset:' selectOne={context.isRequest} 
                         parameterOptions={formData.dataset} selectedParameter={context.parameters.dataset} 
-                        handleUpdateSelection={(e) => setDataset(e.value)}/>
+                        handleUpdateSelection={(e) => {
+                            context.setSearch(true)
+                            setDataset(e.value)
+                        }} />
                     
                     <PSetDropdown id='drugSensitivity' isHidden={false} parameterName='Drug Sensitivity:' selectOne={context.isRequest} 
                         disabled={disableDSOptions}
-                        parameterOptions={drugSensitivityOptions} selectedParameter={context.parameters.drugSensitivity} handleUpdateSelection={(e) => setDrugSensitivity(e.value)} />
+                        parameterOptions={drugSensitivityOptions} selectedParameter={context.parameters.drugSensitivity} 
+                        handleUpdateSelection={(e) => {
+                            context.setSearch(true)
+                            setDrugSensitivity(e.value)
+                        }} />
                     
                     <PSetDropdown id='genome' isHidden={false} parameterName='Genome:' selectOne={context.isRequest} 
                         parameterOptions={formData.genome} selectedParameter={context.parameters.genome} 
-                        handleUpdateSelection={(e) => setGenome(e.value)} />
+                        handleUpdateSelection={(e) => {
+                            context.setSearch(true)
+                            setGenome(e.value)
+                        }} />
                     
                     <PSetDropdown id='rnaTool' disabled={disableRNAToolRef} parameterName='RNA Tool:' 
                         parameterOptions={formData.rnaTool} selectedParameter={context.parameters.rnaTool} 
@@ -267,23 +301,33 @@ const PSetFilter = () => {
                                     e.value.shift()
                                 }
                             }
+                            context.setSearch(true)
                             setRNATool(e.value)
                         }} />
 
                     <PSetDropdown id='rnaRef' disabled={disableRNAToolRef} parameterName='RNA Ref:' selectOne={context.isRequest} 
                         parameterOptions={rnaRefOptions} selectedParameter={context.parameters.rnaRef} 
-                        handleUpdateSelection={(e) => setRNARef(e.value)} />
+                        handleUpdateSelection={(e) => {
+                            context.setSearch(true)
+                            setRNARef(e.value)
+                        }} />
                     {
                         context.isRequest &&
                         <PSetDropdown id='accRNA' disabled={disableAccRNA} parameterName='Accompanying RNA:' 
-                            parameterOptions={formData.accompanyRNA} selectedParameter={context.parameters.accRNA} 
-                            handleUpdateSelection={(e) => setAccRNA(e.value)} />
+                            parameterOptions={accRNAOptions} selectedParameter={context.parameters.accRNA} 
+                            handleUpdateSelection={(e) => {
+                                context.setSearch(true)
+                                setAccRNA(e.value)
+                            }} />
                     }
                     {
                         context.isRequest &&
                         <PSetDropdown id='accDNA' disabled={disableAccDNA} parameterName='Accompanying DNA:' 
-                            parameterOptions={formData.accompanyDNA} selectedParameter={context.parameters.accDNA} 
-                            handleUpdateSelection={(e) => setAccDNA(e.value)} />
+                            parameterOptions={accDNAOptions} selectedParameter={context.parameters.accDNA} 
+                            handleUpdateSelection={(e) => {
+                                context.setSearch(true)
+                                setAccDNA(e.value)
+                            }} />
                     }
                 </div>
             </div>

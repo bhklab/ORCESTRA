@@ -3,7 +3,7 @@ import PSetTable from '../../Shared/PSetTable';
 import {Button} from 'primereact/button';
 // import DownloadPSetButton from '../../Shared/Buttons/DownloadPSetButton';
 import {Dialog} from 'primereact/dialog';
-import * as APIHelper from '../../Shared/PSetAPIHelper';
+import * as Helper from '../../Shared/Helper';
 import './UserPSet.css';
 
 class UserPSet extends React.Component{
@@ -38,7 +38,7 @@ class UserPSet extends React.Component{
     }
 
     showMessages(status, data){
-        APIHelper.messageAfterRequest(status, data, null, this.props.messages);
+        Helper.messageAfterRequest(status, data, null, this.props.messages);
     }
 
     onClickYes(){

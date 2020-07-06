@@ -66,13 +66,6 @@ export function isReadyToSubmit(request){
 
     if(!isSelected(request.rnaTool)){return(false)}
 
-    // if(!isSelected(request.dnaRef)){
-    //     return(true);
-    // }
-    // if(!isSelected(request.dnaTool)){
-    //     return(true);
-    // }
-
     if(!isSelected(request.drugSensitivity)){
         return(false);
     }
@@ -99,6 +92,15 @@ export function messageAfterRequest(status, data, initialize=null, msgComponent)
     }else{
         msgComponent.show({severity: 'error', summary: 'An error occured', detail: data.toString(), sticky: true});
     } 
+}
+
+export function isDifferent(prev, current){
+    console.log(prev)
+    console.log(current)
+    // if(prev.dataType.name === current.dataType.name){
+    //     return false
+    // }
+    // return true
 }
 
 function hasName(name){
