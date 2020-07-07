@@ -1,12 +1,8 @@
 import React from 'react';
 import './PSet.css';
-import {TabView,TabPanel} from 'primereact/tabview';
+import * as PSetTabs from './PSetTabs';
 import * as APICalls from '../Shared/APICalls';
 import {GeneralInfoAccordion} from './PSetAccordion';
-import DatasetTabContent from './TabContents/DatasetTabContent';
-import RNATabContent from './TabContents/RNATabContent';
-import DNATabContent from './TabContents/DNATabContent';
-import AccompanyDataTabContent from './TabContents/AccompanyDataTabContent';
 import * as Helper from '../Shared/Helper';
 import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
 import {Messages} from 'primereact/messages';
@@ -25,6 +21,7 @@ class PSet extends React.Component{
             isReady: false,
             message: ''
         }
+        this.selectTab = this.selectTab.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
 
@@ -41,14 +38,25 @@ class PSet extends React.Component{
                     dataset: {dataset: pset.dataset, genome: pset.genome},
                     rna: {rnaTool: pset.rnaTool, rnaRef: pset.rnaRef, rawSeqDataRNA: pset.dataset.versionInfo.rawSeqDataRNA},
                     dna: {dnaTool: pset.dnaTool, dnaRef: pset.dnaRef, rawSeqDataDNA: pset.dataset.versionInfo.rawSeqDataDNA},
-                    accompanyRNA: pset.accompanyRNA,
-                    accompanyDNA: pset.accompanyDNA,
                     isReady: true
                 });
             }else{
                 this.setState({message: 'We could not find a PSet with the ID.'})
             }
         });
+    }
+
+    selectTab(){
+        if(this.state.pset.accompanyRNA.length && this.state.pset.accompanyDNA.length){
+            return <PSetTabs.RNASeqAccRNADNATab pset={this.state.pset} dataset={this.state.dataset} rna={this.state.rna} dna={this.state.dna} />
+        }
+        if(this.state.pset.accompanyRNA.length && !this.state.pset.accompanyDNA.length){
+            return <PSetTabs.RNASeqAccRNATab pset={this.state.pset} dataset={this.state.dataset} rna={this.state.rna} dna={this.state.dna} />
+        }
+        if(!this.state.pset.accompanyRNA.length && this.state.pset.accompanyDNA.length){
+            return <PSetTabs.RNASeqAccDNATab pset={this.state.pset} dataset={this.state.dataset} rna={this.state.rna} dna={this.state.dna} />
+        }
+        return <PSetTabs.RNASeqTab pset={this.state.pset} dataset={this.state.dataset} rna={this.state.rna} dna={this.state.dna} />
     }
 
     showMessage(status, data){
@@ -65,33 +73,9 @@ class PSet extends React.Component{
                 </div>
                 {this.state.isReady && <GeneralInfoAccordion data={this.state.general}/>}
                 <div className='tabContainer'>
-                    {this.state.isReady ? 
-                        <TabView renderActiveOnly={false}>
-                            <TabPanel header="Dataset">
-                                <DatasetTabContent metadata={this.state.dataset} />   
-                            </TabPanel>
-                            {this.state.pset.dataType.map((type) => 
-                                <TabPanel key={type.name} header={type.label}>
-                                    {type.name === 'rnaseq' ? 
-                                        <RNATabContent metadata={this.state.rna}/> 
-                                        : 
-                                        <DNATabContent metadata={this.state.dna}/>
-                                    }
-                                </TabPanel>)
-                            }
-                            {this.state.accompanyRNA.length &&
-                                <TabPanel header='Accompanying RNA Data'>
-                                    <h1 className='tabMainHeader'>Dataset: {this.state.pset.dataset.name}</h1>
-                                    <AccompanyDataTabContent data={this.state.accompanyRNA} />
-                                </TabPanel>
-                            }
-                            {this.state.accompanyDNA.length &&
-                                <TabPanel header={'Accompanying DNA Data'}>
-                                    <h1 className='tabMainHeader'>Dataset: {this.state.pset.dataset.name}</h1>
-                                    <AccompanyDataTabContent data={this.state.accompanyDNA} />
-                                </TabPanel>
-                            }
-                        </TabView>
+                    {
+                        this.state.isReady ? 
+                        this.selectTab()
                         : 
                         <h3>{this.state.message}</h3>
                     }
