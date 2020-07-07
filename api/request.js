@@ -50,8 +50,20 @@ module.exports = {
             }
 
             if(pset.dataset.name === 'GDSC'){
-                const ver = pset.dataset.versionInfo.version.split('-')[1].slice(0, -1)
+                const ver = pset.dataset.versionInfo.split('-')[1].slice(0, -1)
                 config.transform.cmd.push(ver)
+            }
+
+            if(pset.accompanyRNA.length){
+                pset.accompanyRNA.forEach(rna => {
+                    config.transform.cmd.push(rna.name)
+                })
+            }
+
+            if(pset.accompanyDNA.length){
+                pset.accompanyDNA.forEach(dna => {
+                    config.transform.cmd.push(dna.name)
+                })
             }
 
             config.transform.cmd.push(pset._id.toString()); // push id as the last element

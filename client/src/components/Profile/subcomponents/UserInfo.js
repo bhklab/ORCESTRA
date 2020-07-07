@@ -1,4 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
+import { Link } from "react-router-dom";
 import './UserInfo.css'
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
@@ -53,6 +54,7 @@ const UserInfo = (props) => {
             <h2>User Information</h2>
             <Messages ref={(el) => UserInfo.messages = el}></Messages>
             <div className='userInfo'>Username: {auth.username}</div>
+            { auth.isAdmin && <div className='userInfo'><Link to = '/admin'>Admin Menu</Link></div> }
             {
                 show &&
                 <div>

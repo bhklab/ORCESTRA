@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import './PSetSearch.css';
 import PSetFilter from './subcomponents/PSetFilter';
 import PSetTable from '../Shared/PSetTable';
@@ -10,16 +10,24 @@ import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
 import * as Helper from '../Shared/Helper';
+import {AuthContext} from '../../context/auth';
 
 export const SearchReqContext = React.createContext();
 
-async function fetchData(url) {
-    const response = await fetch(url);
+async function fetchData(url, parameters) {
+    const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({parameters: {...parameters, status: 'complete'}}),
+        headers: {'Content-type': 'application/json'}
+    });
     const json = await response.json();
     return(json);
 }
 
 const PSetSearch = (props) => {
+    
+    const auth = useContext(AuthContext);
+    
     const [allData, setAllData] = useState([]);
     const [searchAll, setSearchAll] = useState(true);
     const [selectedPSets, setSelectedPSets] = useState([]);
@@ -36,7 +44,7 @@ const PSetSearch = (props) => {
 
     useEffect(() => {
         const initializeView = async () => {
-            const psets = await fetchData('/api/pset?status=complete');
+            const psets = await fetchData('/api/pset/search');
             setAllData(psets);
             setSearchAll(true);
             setReady(true);
@@ -50,13 +58,16 @@ const PSetSearch = (props) => {
 
     useEffect(() => {   
         async function updateSearch() {
-            let filterset = Helper.getFilterSet(parameters);
-            let apiStr = Helper.buildAPIStr(filterset);
-            console.log(apiStr);
-            let searchAll = apiStr === '/api/pset' ||  apiStr === '/api/pset?status=complete' ? true : false;
-            const psets = await fetchData(apiStr);
+            console.log(parameters)
+            const psets = await fetchData('/api/pset/search', parameters)
+            let all = true
+            Object.keys(parameters).forEach(key => {
+                if(Array.isArray(parameters[key]) && parameters[key].length){
+                    all = false
+                }
+            })
             setAllData(psets);
-            setSearchAll(searchAll);
+            setSearchAll(all);
         }
 
         if(search){
@@ -181,10 +192,20 @@ const PSetSearch = (props) => {
                         </div>
                         {
                             isRequest ?
-                            <PSetTable allData={allData} selectedPSets={selectedPSets} updatePSetSelection={updatePSetSelection} scrollHeight='600px'/> 
+                            <PSetTable 
+                                allData={allData} selectedPSets={selectedPSets} 
+                                updatePSetSelection={updatePSetSelection} scrollHeight='600px'
+                                authenticated={auth.authenticated}
+                                download={true}
+                            /> 
                             :
                             ready ?
-                            <PSetTable allData={allData} selectedPSets={selectedPSets} updatePSetSelection={updatePSetSelection} scrollHeight='600px'/> 
+                            <PSetTable 
+                                allData={allData} selectedPSets={selectedPSets} 
+                                updatePSetSelection={updatePSetSelection} scrollHeight='600px'
+                                authenticated={auth.authenticated}
+                                download={true}
+                            /> 
                             :
                             <div className='tableLoaderContainer'>
                                 <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />

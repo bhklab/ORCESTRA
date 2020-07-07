@@ -27,8 +27,8 @@ const PSetFilter = () => {
     const [genome, setGenome] = useState([]);
     const [rnaTool, setRNATool] = useState([]);
     const [rnaRef, setRNARef] = useState([]);
-    const [accRNA, setAccRNA] = useState([]);
-    const [accDNA, setAccDNA] = useState([]);
+    const [accompanyRNA, setAccompanyRNA] = useState([]);
+    const [accompanyDNA, setAccompanyDNA] = useState([]);
 
     const [disableDSOptions, setdisableDSOptions] = useState(true);
     const [disableRNAToolRef, setdisableRNAToolRef] = useState(false);
@@ -43,8 +43,8 @@ const PSetFilter = () => {
             genome, 
             rnaTool, 
             rnaRef,
-            accRNA,
-            accDNA
+            accompanyRNA,
+            accompanyDNA
         };
         return parameters;
     }
@@ -106,8 +106,8 @@ const PSetFilter = () => {
             // handle events when each dataset is selected
             switch(dataset.name){
                 case 'CCLE':
-                    setAccRNA([])
-                    setAccDNA([])    
+                    setAccompanyRNA([])
+                    setAccompanyDNA([])    
                     accRNAOptions = formData.accompanyRNA.filter(rna => {return rna.dataset === 'CCLE'})
                     accDNAOptions = formData.accompanyDNA.filter(dna => {return dna.dataset === 'CCLE'})
                     setdisableRNAToolRef(false)
@@ -117,8 +117,8 @@ const PSetFilter = () => {
                 case 'CTRPv2':
                     setRNATool([])
                     setRNARef([])
-                    setAccRNA([])
-                    setAccDNA([])
+                    setAccompanyRNA([])
+                    setAccompanyDNA([])
                     setdisableRNAToolRef(true)
                     setDisableAccRNA(true)
                     setDisableAccDNA(true)
@@ -126,23 +126,23 @@ const PSetFilter = () => {
                 case 'FIMM':
                     setRNATool([])
                     setRNARef([])
-                    setAccRNA([])
-                    setAccDNA([])
+                    setAccompanyRNA([])
+                    setAccompanyDNA([])
                     setdisableRNAToolRef(true)
                     setDisableAccRNA(true)
                     setDisableAccDNA(true)
                     break;
                 case 'gCSI':
-                    setAccRNA([])
-                    setAccDNA([])
+                    setAccompanyRNA([])
+                    setAccompanyDNA([])
                     accDNAOptions = formData.accompanyDNA.filter(dna => {return dna.dataset === 'gCSI'})
                     setdisableRNAToolRef(false)
                     setDisableAccRNA(true)
                     setDisableAccDNA(false)
                     break;
                 case 'GDSC':
-                    setAccRNA([])
-                    setAccDNA([])
+                    setAccompanyRNA([])
+                    setAccompanyDNA([])
                     accRNAOptions = formData.accompanyRNA.filter(rna => {return rna.dataset === 'GDSC'})
                     accDNAOptions = formData.accompanyDNA.filter(dna => {return dna.dataset === 'GDSC'})
                     setdisableRNAToolRef(false)
@@ -150,15 +150,15 @@ const PSetFilter = () => {
                     setDisableAccDNA(false)
                     break;
                 case 'UHNBreast':
-                    setAccRNA([])
-                    setAccDNA([])
+                    setAccompanyRNA([])
+                    setAccompanyDNA([])
                     setdisableRNAToolRef(false)
                     setDisableAccRNA(true)
                     setDisableAccDNA(true)
                     break;
                 default:
-                    setAccRNA([])
-                    setAccDNA([])
+                    setAccompanyRNA([])
+                    setAccompanyDNA([])
                     setdisableRNAToolRef(false)
                     setDisableAccRNA(true)
                     setDisableAccDNA(true)
@@ -196,7 +196,7 @@ const PSetFilter = () => {
 
     useEffect(() => {
         context.setParameters(getParameters());
-    }, [dataType, drugSensitivity, rnaTool, rnaRef, accRNA, accDNA]);
+    }, [dataType, drugSensitivity, rnaTool, rnaRef, accompanyRNA, accompanyDNA]);
 
     const setRequestView = (isRequest) => {
         let fData = JSON.parse(JSON.stringify(formData));
@@ -242,8 +242,8 @@ const PSetFilter = () => {
             }
             fData = formDataInit;
             setdisableRNAToolRef(false)
-            setAccRNA([])
-            setAccDNA([])
+            setAccompanyRNA([])
+            setAccompanyDNA([])
         }
         formData = fData;
         context.setIsRequest(isRequest);
@@ -314,19 +314,19 @@ const PSetFilter = () => {
                     {
                         context.isRequest &&
                         <PSetDropdown id='accRNA' disabled={disableAccRNA} parameterName='Accompanying RNA:' 
-                            parameterOptions={accRNAOptions} selectedParameter={context.parameters.accRNA} 
+                            parameterOptions={accRNAOptions} selectedParameter={context.parameters.accompanyRNA} 
                             handleUpdateSelection={(e) => {
                                 context.setSearch(true)
-                                setAccRNA(e.value)
+                                setAccompanyRNA(e.value)
                             }} />
                     }
                     {
                         context.isRequest &&
                         <PSetDropdown id='accDNA' disabled={disableAccDNA} parameterName='Accompanying DNA:' 
-                            parameterOptions={accDNAOptions} selectedParameter={context.parameters.accDNA} 
+                            parameterOptions={accDNAOptions} selectedParameter={context.parameters.accompanyDNA} 
                             handleUpdateSelection={(e) => {
                                 context.setSearch(true)
-                                setAccDNA(e.value)
+                                setAccompanyDNA(e.value)
                             }} />
                     }
                 </div>

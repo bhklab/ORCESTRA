@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/auth";
 import Navigation from '../Navigation/Navigation';
 import Footer from '../Footer/Footer';
 import PrivateRoute from './PrivateRoute';
+import AdminRoute from './AdminRoute';
 import Main from '../Main/Main';
 import PSetSearch from '../PSetSearch/PSetSearch';
 import Dashboard from '../Dashboard/Dashboard';
@@ -11,6 +12,7 @@ import Stats from '../Stats/Stats';
 import Documentation from '../Documentation/Documentation';
 import Tutorial from '../Documentation/Support/Tutorial';
 import Profile from '../Profile/Profile';
+import Admin from '../Admin/Admin';
 import Login from '../Authentication/Login';
 import Reset from '../Authentication/Reset';
 import PSet from '../PSet/PSet';
@@ -45,26 +47,16 @@ class Router extends React.Component{
         if(!this.state.authenticated){
             fetch('/api/user/checkToken')
             .then(res => {
-                if(res.status === 200){
-                    return(res.json());
-                }else{
-                    return({authenticated: false, isAdmin: false, username: ''});
-                }
+                return(res.json());
             })
-            .then(data => {
-                this.state.setAuthToken(data)
-            });
+            .then(data => {this.state.setAuthToken(data)});
         }
     }
 
     render(){
-        
-        const profile = (
-            <Profile />
-        );
-
         return(
             <AuthContext.Provider value={this.state}>
+                <Navigation />
                 <Switch>
                     <Route exact path ='/' component={Main} /> 
                     <Route exact path ='/PSetSearch' component={PSetSearch}/>
@@ -76,10 +68,10 @@ class Router extends React.Component{
                     <Route path ='/Reset/:token' component={Reset} />
                     <Route path='/:id1/:id2' component={PSet} />
                     <Route path='/Canonical' component={CanonicalPSets} />
-                    <PrivateRoute path='/Profile' component={profile} redirect='/Authentication' />
+                    <PrivateRoute path='/Profile' component={Profile} redirect='/Authentication' />
+                    <AdminRoute path='/admin' component={Admin} redirect='/profile' />
                     <Route component={NotFound404}/>
                 </Switch>
-                <Navigation />
                 <Footer />
             </AuthContext.Provider>
         );

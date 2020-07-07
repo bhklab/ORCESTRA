@@ -20,44 +20,33 @@ const getDB = async() => {
 function getQueryFilterSet(query){
     let querySet = {}
     let queryArray = [];
+
     if(!query){
         return(querySet);
     } 
 
-    if(query.dtp){
-        queryArray.push(getQueryFilter('dataType.name', query.dtp));
+    if(query.dataType){
+        queryArray.push(getQueryFilter('dataType.name', query.dataType.name));
     }
     
-    if(query.dsv){
-        queryArray.push(getQueryFilter('dataset.version', query.dsv));
+    if(query.dataset && query.dataset.length){
+        queryArray.push(getQueryFilter('dataset.name', query.dataset.map(ds => {return(ds.name)})));
     }
 
-    if(query.dsn){
-        queryArray.push(getQueryFilter('dataset.name', query.dsn));
+    if(query.drugSensitivity && query.drugSensitivity.length){
+        queryArray.push(getQueryFilter('dataset.versionInfo', query.drugSensitivity.map(dsen => {return(dsen.version)})));
     }
 
-    if(query.gnm){
-        queryArray.push(getQueryFilter('genome.name', query.gnm));
+    if(query.genome && query.genome.length){
+        queryArray.push(getQueryFilter('genome.name', query.genome.map(g => {return(g.name)})));
     }
 
-    if(query.rnat){
-        queryArray.push(getQueryFilter('rnaTool.name', query.rnat));
+    if(query.rnaTool && query.rnaTool.length){
+        queryArray.push(getQueryFilter('rnaTool.name', query.rnaTool.map(rt => {return(rt.name)})));
     }
 
-    if(query.dnat){
-        queryArray.push(getQueryFilter('dnaTool.name', query.dnat));
-    }
-
-    if(query.rnar){
-        queryArray.push(getQueryFilter('rnaRef.name', query.rnar));
-    }
-
-    if(query.dnar){
-        queryArray.push(getQueryFilter('dnaRef.name', query.dnar));
-    }
-
-    if(query.dst){
-        queryArray.push(getQueryFilter('dataset.versionInfo', query.dst));
+    if(query.rnaRef && query.rnaRef.length){
+        queryArray.push(getQueryFilter('rnaRef.name', query.rnaRef.map(rref => {return(rref.name)})));
     }
 
     if(query.status){
@@ -460,29 +449,19 @@ module.exports = {
             const bhkPSets = result.filter(data => data.createdBy === 'BHK Lab')
     
             for(let i = 0; i < datasetVersion.length; i++){
+                
                 let datasets = bhkPSets.filter(data => data.dataset.name === datasetVersion[i].name)
                 let canonicalSet = []
                 let nonCanonicalSet = []
+                
                 for(let j = 0; j < datasets.length; j++){
-                    let version = datasets[j].dataset.versionInfo.substring(0, 4)
-                    if(version === datasetVersion[i].versions[0].toString()){ 
-                        if(datasetVersion[i].name === 'FIMM' || datasetVersion[i].name === 'CTRPv2'){
-                            canonicalSet.push(datasets[j])
-                        }else{
-                            if(datasets[j].rnaTool[0].name === canonicalParameters.rnaTool && 
-                                datasets[j].rnaRef[0].name === canonicalParameters.rnaRef){
-                                    canonicalSet.push(datasets[j])
-                            }else{
-                                nonCanonicalSet.push(datasets[j])
-                            }
-                        } 
+                    if(datasets[j].canonical){ 
+                        canonicalSet.push(datasets[j])
                     }else{
                         nonCanonicalSet.push(datasets[j])
                     }
                 }
-                if(!canonicalSet.length){
-                    canonicalSet.push(nonCanonicalSet.shift())
-                }
+
                 canonical.push({
                     dataset: datasetVersion[i].name, 
                     canonicals: canonicalSet, 
@@ -491,6 +470,21 @@ module.exports = {
             }
     
             return canonical
+        }catch(error){
+            console.log(error)
+            throw error
+        }
+    },
+
+    updateCanonicalPSets : async function(canonicals){
+        const db = await getDB();
+        try{
+            const ids = canonicals.map(c => {return(ObjectID(c))});
+            const psets = db.collection('pset')
+            await psets.updateMany({'_id': {'$in': ids}}, {'$set': {'canonical': true}}, {'upsert': true})
+            await psets.updateMany({'_id': {'$nin': ids}}, {'$set': {'canonical': false}}, {'upsert': true})
+            const result = await this.selectPSets({status: 'complete'})
+            return result
         }catch(error){
             console.log(error)
             throw error

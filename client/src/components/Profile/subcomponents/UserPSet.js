@@ -70,7 +70,14 @@ class UserPSet extends React.Component{
         const psetData = (
             <React.Fragment>
                 <div>
-                    <PSetTable allData={this.props.pset} selectedPSets={this.state.selectedPSets} updatePSetSelection={this.handleSelectionChange} scrollHeight='350px' pending={this.props.pending}/>
+                    <PSetTable 
+                        allData={this.props.pset} selectedPSets={this.state.selectedPSets} 
+                        updatePSetSelection={this.handleSelectionChange} 
+                        scrollHeight='350px' 
+                        pending={this.props.pending}
+                        download={true}
+                        authenticated={true}
+                    />
                 </div>
                 <div className='footer'>
                 { !this.props.pending && <Button label={this.props.btnLabel} onClick={this.handleBtnClick} disabled={this.state.btnDisabled} /> } 

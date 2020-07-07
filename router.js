@@ -11,16 +11,15 @@ const public = require('./api/public')
 
 // pset
 router.get('/pset', pset.getPsetList)
+router.post('/pset/search', pset.searchPSets)
 router.get('/pset/one/:id1/:id2', pset.getPSetByDOI)
 router.get('/pset/canonical', pset.getCanonicalPSets)
-
 router.get('/pachyderm/status', pachyderm.returnStatus)
-
 router.post('/pset/request', pset.processOnlineRequest)
 router.post('/pset/process', pset.processOfflineRequest)
-
 router.post('/pset/download', pset.downloadPSets)
 router.post('/pset/complete', pset.completeRequest)
+router.post('/pset/canonical/update', pset.updateCanonicalPSets)
 
 // prviate route
 //router.post('/pset/cancel', auth.checkToken, pset.cancelPSetRequest);

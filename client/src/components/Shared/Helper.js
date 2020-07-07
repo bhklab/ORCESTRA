@@ -1,38 +1,5 @@
 // Helper functions used for PSet API requests.
 
-export function getFilterSet(data){
-    var filterset = {}
-    filterset.datatype = toFilterArray(data.dataType);
-    filterset.datasetName = toFilterArray(data.dataset);
-    filterset.genome = toFilterArray(data.genome);
-    filterset.rnaTool = toFilterArray(data.rnaTool);
-    filterset.dnaTool = toFilterArray(data.dnaTool);
-    filterset.rnaRef = toFilterArray(data.rnaRef);
-    filterset.dnaRef = toFilterArray(data.dnaRef);
-    filterset.drugSensitivity = toFilterArray(data.drugSensitivity, true);
-    return(filterset);
-}
-
-export function buildAPIStr(filterSet){
-    let apiStr = '/api/pset?status=complete&';
-    let apiFragments = [];
-    apiFragments.push(buildAPIStrFragment('dtp', filterSet.datatype));
-    apiFragments.push(buildAPIStrFragment('dsn', filterSet.datasetName));
-    apiFragments.push(buildAPIStrFragment('gnm', filterSet.genome));
-    apiFragments.push(buildAPIStrFragment('rnat', filterSet.rnaTool));
-    apiFragments.push(buildAPIStrFragment('dnat', filterSet.dnaTool));
-    apiFragments.push(buildAPIStrFragment('rnar', filterSet.rnaRef));
-    apiFragments.push(buildAPIStrFragment('dnar', filterSet.dnaRef));
-    apiFragments.push(buildAPIStrFragment('dst', filterSet.drugSensitivity));
-    for(let i = 0; i < apiFragments.length; i++){
-        if(apiFragments[i].length > 0){
-            apiStr += apiFragments[i] + '&';
-        }
-    }
-    apiStr = apiStr.replace(/&$/, '');
-    return(apiStr);
-}
-
 export function isNoneSelected(filterset){
     if(!filterset.datatype.length && 
         !filterset.datasetName.length && 
@@ -94,15 +61,6 @@ export function messageAfterRequest(status, data, initialize=null, msgComponent)
     } 
 }
 
-export function isDifferent(prev, current){
-    console.log(prev)
-    console.log(current)
-    // if(prev.dataType.name === current.dataType.name){
-    //     return false
-    // }
-    // return true
-}
-
 function hasName(name){
     if(typeof name === 'undefined' || name === null){
         return(false);
@@ -125,45 +83,4 @@ function isValidEmail(email){
         return(false);
     }
     return(true);
-}
-
-function toFilterArray(selectedValues, isDatasetVersion = false){
-    var filterArray = [];
-    if(typeof selectedValues === 'undefined' || selectedValues === null){
-        return(filterArray);
-    }
-    if(Object.keys(selectedValues).length === 0 && selectedValues.constructor === Object){
-        return(filterArray);
-    }
-    if(Array.isArray(selectedValues)){
-        if(isDatasetVersion){
-            for(let i = 0; i < selectedValues.length; i++){   
-                filterArray.push(selectedValues[i].version);
-            }
-        }else{
-            for(let i = 0; i < selectedValues.length; i++){   
-                filterArray.push(selectedValues[i].name);
-            }
-        }
-        return(filterArray);
-    } 
-    if(isDatasetVersion){
-        filterArray.push(selectedValues.version);
-    }else{
-        filterArray.push(selectedValues.name);
-    }
-    return(filterArray);
-}
-
-function buildAPIStrFragment(keyName, filterArray){
-    var apiFragment = '';
-    if(filterArray.length > 0){
-        for(let i = 0; i < filterArray.length; i++){
-            apiFragment += keyName + '=' + filterArray[i]
-            if(i < filterArray.length - 1){
-                apiFragment += '&';
-            }
-        }
-    }   
-    return(apiFragment);
 }

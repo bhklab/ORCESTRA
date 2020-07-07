@@ -27,10 +27,28 @@ const getPsetList = async function(req, res){
     }
 }
 
+const searchPSets = async function(req, res){
+    try{
+        const result = await mongo.selectPSets(req.body.parameters)
+        res.send(result)
+    }catch(error){
+        res.status(500).send(error);
+    }
+}
+
 const getCanonicalPSets = async function(req, res){
     try{
         const canonical = await mongo.getCanonicalPSets()
         res.send(canonical)
+    }catch(error){
+        res.status(500).send(error);
+    }
+}
+
+const updateCanonicalPSets = async function(req, res){
+    try{
+        const result = await mongo.updateCanonicalPSets(req.body.selected.map(s => {return(s._id)}))
+        res.send(result)
     }catch(error){
         res.status(500).send(error);
     }
@@ -160,7 +178,9 @@ const completeRequest = async function(req, res){
 module.exports = {
     getPSetByDOI,
     getPsetList,
+    searchPSets,
     getCanonicalPSets,
+    updateCanonicalPSets,
     postPSetData,
     processOnlineRequest,
     processOfflineRequest,

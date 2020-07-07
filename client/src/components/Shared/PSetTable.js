@@ -1,13 +1,10 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import { Link } from 'react-router-dom';
 import * as API from '../Shared/APICalls';
-import {AuthContext} from '../../context/auth';
 
 const PSetTable = (props) => {
-
-    const auth = useContext(AuthContext);
     
     const [state, setState] = useState({
         rows: 10,
@@ -45,6 +42,16 @@ const PSetTable = (props) => {
         );
     }
 
+    const accompanyDataTemplate = (rowData, column) => {
+        let output ='';
+        if(rowData[column.field]){
+            output = rowData[column.field].map(item => <div key={item.name}>{item.name}</div>);
+        }
+        return(
+            <div>{output}</div>
+        );
+    }
+
     const nameColumnTemplate = (rowData, column) => {
         let route = '/' + rowData.doi;
         return(
@@ -62,6 +69,16 @@ const PSetTable = (props) => {
         )
     }
 
+    const canonicalTemplate = (rowData, column) => {
+        let output = ''
+        if(rowData[column.field]){
+            output = 'Yes'
+        }
+        return(
+            <div>{output}</div>
+        );
+    }
+
     const updatePSetSelectionEvent = event => {
         props.updatePSetSelection(event.value);
     }
@@ -71,17 +88,18 @@ const PSetTable = (props) => {
             value={props.allData} 
             selection={props.selectedPSets} onSelectionChange={updatePSetSelectionEvent} 
             paginator={true} rows={state.rows} 
-            scrollable={true} resizableColumns={true} columnResizeMode="fit"
+            scrollable={true} resizableColumns={true} columnResizeMode="fit" style={{maxWidth: '900px'}}
         >
-            {auth.authenticated && <Column selectionMode="multiple" style={{width: '2em'}} />}
-            <Column className='textField' field='name' header='Name' style={{width:'7em'}} body={nameColumnTemplate} sortable={true} />
-            <Column className='textField' field='dataset.name' header='Dataset' style={{width:'5em'}} sortable={true} />
-            <Column className='textField' field='dataset.versionInfo' header='Drug Sensitivity' style={{width:'7em'}} sortable={true} />
-            <Column field='rnaTool' body={toolsRefTemplate} style={{width:'6em'}} header='RNA Tool' sortable={true}  />
-            {/* <Column field='dnaTool' body={toolsRefTemplate} style={{width:'8em'}} header='DNA Tool' sortable={true} /> */}
-            <Column field='rnaRef' body={toolsRefTemplate} style={{width:'10em'}} header='RNA Ref' sortable={true} />
-            {/* <Column field='dnaRef' body={toolsRefTemplate} style={{width:'15em'}} header='DNA Ref' sortable={true} /> */}
-            <Column field='downloadLink' body={downloadTemplate} style={{width:'3.5em'}} header='Download' />
+            {props.authenticated && <Column selectionMode="multiple" style={{width: '2em', textAlign: 'center'}} />}
+            <Column className='textField' field='name' header='Name' style={{width:'6em'}} body={nameColumnTemplate} sortable={true} />
+            <Column className='textField' field='dataset.name' header='Dataset' style={{width:'4em'}} sortable={true} />
+            <Column className='textField' field='dataset.versionInfo' header='Drug Sensitivity' style={{width:'5em'}} sortable={true} />
+            <Column field='rnaTool' body={toolsRefTemplate} style={{width:'5em'}} header='RNA Tool' sortable={true}  />
+            <Column field='rnaRef' body={toolsRefTemplate} style={{width:'5em'}} header='RNA Ref' sortable={true} />
+            <Column field='accompanyRNA' body={accompanyDataTemplate} style={{width:'4em'}} header='RNA Data' />
+            <Column field='accompanyDNA' body={accompanyDataTemplate} style={{width:'4em'}} header='DNA Data' />
+            <Column field='canonical' body={canonicalTemplate} style={{width:'3.5em', textAlign: 'center'}} header='Canonical' />
+            {props.download && <Column field='downloadLink' body={downloadTemplate} style={{width:'3.5em', textAlign: 'center'}} header='Download' /> }
         </DataTable>
     );
 
