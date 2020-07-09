@@ -1,23 +1,38 @@
 const mongo = require('../db/mongo');
 
 module.exports = {
-    getAvailablePSets: async (req, res) => {
-        console.log('getAvailablePSets')
+
+    getPSets: async (req, res) => {
+        console.log('getPSets')
+
+        const filter = {'status': 'complete'}
+
+        const projection = {'projection': {
+            '_id': false,
+            'status': false,
+            'email': false, 
+            'commitID': false, 
+            'dateSubmitted': false,
+            'dateProcessed': false,
+            'dnaTool': false,
+            'dnaRef': false,
+            'genome': false,
+            'dataType': false,
+            'dataset.label': false,
+        }}
+
+        let psets = []
+
         try{
             const form = await mongo.getFormData()
-            let psets = await mongo.selectPSets({'status': 'complete'}, {'projection': {
-                '_id': false,
-                'status': false,
-                'email': false, 
-                'commitID': false, 
-                'dateSubmitted': false,
-                'dateProcessed': false,
-                'dnaTool': false,
-                'dnaRef': false,
-                'genome': false,
-                'dataType': false,
-                'dataset.label': false,
-            }})
+            
+            if(req.params.filter === 'canonical'){
+                let datasets = await mongo.getCanonicalPSets(filter, projection)
+                datasets.forEach(data => data.canonicals.forEach(c => psets.push(c)))
+            }else{
+                psets = await mongo.selectPSets(filter, projection)
+            }
+
             for(let i = 0; i < psets.length; i++){
                 const version = form.dataset.find(
                     d => {return d.name === psets[i].dataset.name}
@@ -30,50 +45,26 @@ module.exports = {
                     rawSeqDataRNA: version.rawSeqDataRNA, 
                     drugSensitivity: version.drugSensitiviry
                 }
-            }
-            res.send(psets)
-        }catch(error){
-            console.log(error)
-            res.status(500).send(error);
-        }
-    },
 
-    getCanonicalPSets: async (req, res) => {
-        console.log('getAvailablePSets')
-        try{
-            const form = await mongo.getFormData()
-            let datasets = await mongo.getCanonicalPSets({'status': 'complete'}, {'projection': {
-                '_id': false,
-                'status': false,
-                'email': false, 
-                'commitID': false, 
-                'dateSubmitted': false,
-                'dateProcessed': false,
-                'dnaTool': false,
-                'dnaRef': false,
-                'genome': false,
-                'dataType': false,
-                'dataset.label': false,
-            }})
-            
-            let canonicals = []
-            datasets.forEach(data => data.canonicals.forEach(c => canonicals.push(c)))
+                // attach accompanyRNA data if exists
+                if(psets[i].accompanyRNA.length){
+                    const accRNA = form.accompanyRNA.filter(acc => {
+                        return acc.dataset === psets[i].dataset.name
+                    })
+                    psets[i].accompanyRNA = accRNA
+                }
 
-            // attach version / drug sensitivity info.
-            for(let i = 0; i < canonicals.length; i++){
-                const version = form.dataset.find(
-                    d => {return d.name === canonicals[i].dataset.name}
-                ).versions.find(
-                    version => {return(version.version === canonicals[i].dataset.versionInfo)}
-                )
-                canonicals[i].dataset.versionInfo = {
-                    version: version.version, 
-                    publication: version.publication, 
-                    rawSeqDataRNA: version.rawSeqDataRNA, 
-                    drugSensitivity: version.drugSensitiviry
+                // attach accompanyDNA data if exists
+                if(psets[i].accompanyRNA.length){
+                    const accDNA = form.accompanyDNA.filter(acc => {
+                        return acc.dataset === psets[i].dataset.name
+                    })
+                    psets[i].accompanyDNA = accDNA
                 }
             }
-            res.send(canonicals)
+
+            res.send(psets)
+
         }catch(error){
             console.log(error)
             res.status(500).send(error);

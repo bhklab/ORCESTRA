@@ -50,8 +50,7 @@ router.post('/stats/metrics/data', db.getMetricData)
 router.get('/landing/data', db.getLandingData)
 
 //public api
-router.get('/psets/available', public.getAvailablePSets)
-router.get('/psets/canonical', public.getCanonicalPSets)
+router.get('/psets/:filter', public.getPSets)
 router.get('/pset/:doi1/:doi2', public.getPSet)
 router.get('/psets/statistics/:limit', public.getStatistics)
 
