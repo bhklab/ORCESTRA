@@ -1,37 +1,47 @@
 import React from 'react';
 import {PSetToolAccordion, RNARefAccordion} from '../PSetAccordion';
+import AccompanyDataTabContent from './AccompanyDataTabContent';
 
-class RNATabContent extends React.Component{
-    
-    render(){   
-        const genomeRawData = (   
-            <div>
-                { this.props.metadata.rawSeqDataRNA ? <a href={this.props.metadata.rawSeqDataRNA}>{this.props.metadata.rawSeqDataRNA}</a> : 'Not Available' }
-            </div>
-        );
+const RNATabContent = props => {
+    const rawSeqDataRNA = props.metadata.find(x => x.name === 'rawSeqDataRNA')
+    const rnaRef = props.metadata.find(x => x.name === 'rnaRef')
+    const rnaTool = props.metadata.find(x => x.name === 'rnaTool')
+    const accRNA = props.metadata.find(x => x.name === 'accRNA')
 
-        return(
-            <React.Fragment>
-                <h1 className='tabMainHeader'>Analysis Details - RNA Sequence Data</h1>
-                <div className='tabContent'>
+    return(
+        <React.Fragment>
+            <h1 className='tabMainHeader'>RNA Data</h1>
+            <div className='tabContent'>
+                {
+                    rawSeqDataRNA &&
                     <div className='tabContentSection'>
                         <h3>Raw Data Source: </h3>
                         <div className='subContent'>
-                            {genomeRawData}
+                            <a href={rawSeqDataRNA.value}>{rawSeqDataRNA.value}</a>
                         </div>
                     </div>
+                }
+                {
+                    rnaRef &&
                     <div className='tabContentSection'>
                         <h3>RNA Transcriptome</h3>
-                        <RNARefAccordion items={this.props.metadata.rnaRef} />
+                        <RNARefAccordion items={rnaRef.value} />
                     </div>
+                }
+                {
+                    rnaTool &&
                     <div className='tabContentSection'>
                         <h3>Tools and Commands Used</h3>
-                        <PSetToolAccordion items={this.props.metadata.rnaTool} />
+                        <PSetToolAccordion items={rnaTool.value} />
                     </div>
-                </div>
-            </React.Fragment>
-        );
-    }
+                }
+                {
+                    accRNA &&
+                    <AccompanyDataTabContent data={accRNA.value} />
+                }
+            </div>
+        </React.Fragment>
+    );
 }
 
 export default RNATabContent;

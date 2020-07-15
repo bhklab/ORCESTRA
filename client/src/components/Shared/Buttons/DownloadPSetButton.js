@@ -1,33 +1,29 @@
 import React from 'react';
 import {Button} from 'primereact/button';
-import * as API from '../APICalls';
 
-class DownloadPSetButton extends React.Component{
-    constructor(){
-        super();
-        this.downloadPSet = this.downloadPSet.bind(this);
-    }
+const DownloadPSetButton = props => {
 
-    downloadPSet = event => {
+    const downloadPSet = async (event) => {
         event.preventDefault();
         
-        const pset = this.props.pset;
         const anchor = document.createElement('a');
         anchor.setAttribute('download', null);
         anchor.style.display = 'none';
-        anchor.setAttribute('href', pset.downloadLink)
+        anchor.setAttribute('href', props.pset.downloadLink)
         document.body.appendChild(anchor);
         anchor.click();
         document.body.removeChild(anchor);
 
-        API.downloadPSet(pset._id);
+        await fetch('/api/pset/download', {
+            method: 'POST',
+            body: JSON.stringify({psetID: props.pset._id}),
+            headers: {'Content-type': 'application/json'}
+        })
     }
 
-    render(){
-        return(
-            <Button className='downloadBtn' label='Download' disabled={this.props.disabled} onClick={this.downloadPSet} />
-        );
-    }
+    return(
+        <Button className='downloadBtn' label='Download' disabled={props.disabled} onClick={downloadPSet} />
+    );
 }
 
 export default DownloadPSetButton;

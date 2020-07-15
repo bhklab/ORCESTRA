@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import { Link } from 'react-router-dom';
-import * as API from '../Shared/APICalls';
 
 const PSetTable = (props) => {
     
@@ -19,10 +18,14 @@ const PSetTable = (props) => {
         setState({...state, loading: false})
     }, []);
 
-    const downloadOnePSet = (id, link) => (event) => {
+    const downloadPSet = (id, link) => async (event) => {
         event.preventDefault();
         console.log('downloadOnePSet');
-        API.downloadPSet(id);
+        await fetch('/api/pset/download', {
+            method: 'POST',
+            body: JSON.stringify({psetID: id}),
+            headers: {'Content-type': 'application/json'}
+        })
         const anchor = document.createElement('a');
         anchor.setAttribute('download', null);
         anchor.style.display = 'none';
@@ -62,7 +65,7 @@ const PSetTable = (props) => {
     const downloadTemplate = (rowData, column) => {
         let link = 'Not Available';
         if(rowData.downloadLink){
-            link = <a id={rowData._id} href='#' onClick={downloadOnePSet(rowData._id, rowData.downloadLink)}>Download</a>
+            link = <a id={rowData._id} href='#' onClick={downloadPSet(rowData._id, rowData.downloadLink)}>Download</a>
         }
         return(
             link

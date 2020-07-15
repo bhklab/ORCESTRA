@@ -10,10 +10,29 @@ const getPSetByDOI = async function(req, res){
     const doi = req.params.id1 + '/' + req.params.id2;
     console.log(doi)
     try{
-        const result = await mongo.selectPSetByDOI(doi)
-        console.log(result)        
-        res.send(result)
+        const result = await mongo.selectPSetByDOI(doi) 
+        let pset = {}  
+        pset._id = result._id;
+        pset.name = result.name;
+        pset.downloadLink = result.downloadLink;
+        pset.generalInfo = {name: result.name, doi: result.doi, createdBy: result.createdBy, dateCreated: result.dateCreated};
+        pset.datasetInfo = {dataset: result.dataset, genome: result.genome};
+        pset.rnaData = []
+        pset.dnaData = []
+
+        if(result.rnaTool.length) {pset.rnaData.push({name: 'rnaTool', value: result.rnaTool});}
+        if(result.rnaRef.length) {pset.rnaData.push({name: 'rnaRef', value: result.rnaRef});}
+        if(result.dataset.versionInfo.rawSeqDataRNA.length) {pset.rnaData.push({name: 'rawSeqDataRNA', value: result.dataset.versionInfo.rawSeqDataRNA});}
+        if(result.accompanyRNA.length) {pset.rnaData.push({name: 'accRNA', value: result.accompanyRNA});}
+        
+        if(result.dnaTool.length) {pset.dnaData.push({name: 'dnaTool', value: result.dnaTool});}
+        if(result.dnaRef.length) {pset.dnaData.push({name: 'dnaRef', value: result.dnaRef});}
+        if(result.dataset.versionInfo.rawSeqDataDNA.length) {pset.dnaData.push({name: 'rawSeqDataDNA', value: result.dataset.versionInfo.rawSeqDataDNA});}
+        if(result.accompanyDNA.length) {pset.dnaData.push({name: 'accDNA', value: result.accompanyDNA});}
+
+        res.send(pset)
     }catch(error){
+        console.log(error);
         res.status(500).send(error);
     }
 }

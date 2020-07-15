@@ -1,88 +1,52 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './PSet.css';
-import * as PSetTabs from './PSetTabs';
-import * as APICalls from '../Shared/APICalls';
+import PSetTab from './PSetTab';
 import {GeneralInfoAccordion} from './PSetAccordion';
-import * as Helper from '../Shared/Helper';
 import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
-import {Messages} from 'primereact/messages';
 
-class PSet extends React.Component{
-    constructor(){
-        super();
-        this.state = {
-            pset: {},
-            general: {},
-            dataset: {},
-            rna: {},
-            dna: {},
-            accompanyRNA: {},
-            accompanyDNA: {},
-            isReady: false,
-            message: ''
+const PSet = (props) => {
+    const [pset, setPSet] = useState({})
+    const [ready, setReady] = useState(false)
+    const [error, setError] = useState(false)
+
+    useEffect(() => {
+        const getData = async () => {
+            let apiStr = '/api/pset/one/' + props.match.params.id1 + '/' + props.match.params.id2;
+            try{
+                const res = await fetch(apiStr)
+                if(res.ok){
+                    const json = await res.json()
+                    setPSet(json)
+                    setReady(true)
+                }else{
+                    setError(true)
+                }
+            }catch(error){
+                console.log(error)
+                setError(true)
+            } 
         }
-        this.selectTab = this.selectTab.bind(this);
-        this.showMessage = this.showMessage.bind(this);
-    }
+        getData()
+    }, [])
 
-    componentDidMount(){
-        console.log(this.props.match.params.id1 + '/' + this.props.match.params.id2);
-        let apiStr = '/api/pset/one/' + this.props.match.params.id1 + '/' + this.props.match.params.id2;
-        console.log(apiStr);
-        APICalls.queryPSet(apiStr, (pset) => {
-            console.log(pset);
-            if(pset){
-                this.setState({
-                    pset: pset,
-                    general: {name: pset.name, doi: pset.doi, createdBy: pset.createdBy, dateCreated: pset.dateCreated},
-                    dataset: {dataset: pset.dataset, genome: pset.genome},
-                    rna: {rnaTool: pset.rnaTool, rnaRef: pset.rnaRef, rawSeqDataRNA: pset.dataset.versionInfo.rawSeqDataRNA},
-                    dna: {dnaTool: pset.dnaTool, dnaRef: pset.dnaRef, rawSeqDataDNA: pset.dataset.versionInfo.rawSeqDataDNA},
-                    isReady: true
-                });
-            }else{
-                this.setState({message: 'We could not find a PSet with the ID.'})
-            }
-        });
-    }
-
-    selectTab(){
-        if(this.state.pset.accompanyRNA.length && this.state.pset.accompanyDNA.length){
-            return <PSetTabs.RNASeqAccRNADNATab pset={this.state.pset} dataset={this.state.dataset} rna={this.state.rna} dna={this.state.dna} />
-        }
-        if(this.state.pset.accompanyRNA.length && !this.state.pset.accompanyDNA.length){
-            return <PSetTabs.RNASeqAccRNATab pset={this.state.pset} dataset={this.state.dataset} rna={this.state.rna} dna={this.state.dna} />
-        }
-        if(!this.state.pset.accompanyRNA.length && this.state.pset.accompanyDNA.length){
-            return <PSetTabs.RNASeqAccDNATab pset={this.state.pset} dataset={this.state.dataset} rna={this.state.rna} dna={this.state.dna} />
-        }
-        return <PSetTabs.RNASeqTab pset={this.state.pset} dataset={this.state.dataset} rna={this.state.rna} dna={this.state.dna} />
-    }
-
-    showMessage(status, data){
-        Helper.messageAfterRequest(status, data, this.initializeState, this.messages);
-    }
-
-    render(){
-        return(
-            <div className='pageContent'>
-                <Messages ref={(el) => this.messages = el} />
-                <div className='psetTitle'>
-                    <h2>Explore PSet - {this.state.pset.name}</h2>
-                    <DownloadPSetButton disabled={false} pset={this.state.pset} onDownloadComplete={this.showMessage}/>
-                </div>
-                {this.state.isReady && <GeneralInfoAccordion data={this.state.general}/>}
-                <div className='tabContainer'>
-                    {
-                        this.state.isReady ? 
-                        this.selectTab()
-                        : 
-                        <h3>{this.state.message}</h3>
-                    }
-                </div>
-            </div>
-        );
-    }
+    return(
+        <div className='pageContent'>
+            {
+                ready &&
+                <React.Fragment>
+                    <div className='psetTitle'>
+                        <h2>Explore PSet - {pset.name}</h2>
+                        <DownloadPSetButton disabled={false} pset={pset} />
+                    </div>
+                    <GeneralInfoAccordion data={pset.generalInfo}/>
+                    <div className='tabContainer'>
+                        <PSetTab dataset={pset.datasetInfo} rnaData={pset.rnaData} dnaData={pset.dnaData} />
+                    </div>
+                </React.Fragment>
+            } 
+            { error && <h3>PSet with the specified DOI could not be found</h3>}
+        </div>
+    );
 }
 
 export default PSet;

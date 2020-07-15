@@ -251,5 +251,6 @@ const insertFormdata = async function(connStr, dbName){
 }
 
 module.exports = {
-    insertFormdata
+    insertFormdata,
+    insertMolecularData
 }

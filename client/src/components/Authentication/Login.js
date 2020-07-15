@@ -13,7 +13,7 @@ const Login = (props) => {
     return(
         <React.Fragment>
             {auth.authenticated ? 
-                    location.state && location.state.path != '/' ? 
+                    location.state && location.state.path !== '/' ? 
                     <Redirect to={location.state.path}/> 
                     :
                     <Redirect to={'/Profile'}/> 

@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom';
 import DatasetChart from './DatasetChart';
 import Loader from 'react-loader-spinner';
 
-const Stats = props => {
+const Stats = () => {
 
     const [psets, setPSets] = useState([])
-    const [chartData, setChartData] = useState([])
+    const [chartData] = useState([])
     const [isReady, setIsReady] = useState(false)
 
     useEffect(() => {

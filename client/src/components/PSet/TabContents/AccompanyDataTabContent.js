@@ -18,7 +18,7 @@ const getType = function(type){
 const AccompanyDataTabContent = props => {
     
     return(
-        <div className='tabContent'>
+        <React.Fragment>
             {
                 props.data.map(d => {
                     return(
@@ -43,7 +43,7 @@ const AccompanyDataTabContent = props => {
                     )
                 })
             }
-        </div>    
+        </React.Fragment>    
     )
 }
 
