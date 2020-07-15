@@ -294,7 +294,7 @@ module.exports = {
             // 30sec = 30000 millisec
             const data = await collection.findOneAndUpdate(
                 {'username': user.username},
-                {'$set': {'resetToken': user.token, 'expire': Date.now() + 30000}}
+                {'$set': {'resetToken': user.token, 'expire': Date.now() + 1800000}}
             )
             return data.value
         }catch(err){
@@ -430,7 +430,6 @@ module.exports = {
     getCanonicalPSets: async function(query={}, projection=null){
         try{
             let canonical = []
-            let canonicalParameters = {rnaTool: 'kallisto_0_46_1', rnaRef: 'Gencode_v33'}
             const form = await this.getFormData()
             const datasets = form.dataset
     
@@ -517,19 +516,21 @@ module.exports = {
                         })
                     }
                 }else{
-                    let canDownload = canDataset[i].canonicals[0].download
+                    if(canDataset[i].canonicals.length){
+                        let canDownload = canDataset[i].canonicals[0].download
 
-                    for(let j = 0; j < canDataset[i].nonCanonicals.length; j++){
-                        canDownload += canDataset[i].nonCanonicals[j].download
+                        for(let j = 0; j < canDataset[i].nonCanonicals.length; j++){
+                            canDownload += canDataset[i].nonCanonicals[j].download
+                        }
+                        canDataset[i].canonicals[0].download = canDownload
+                        psets.push({
+                            download: canDataset[i].canonicals[0].download,
+                            name: canDataset[i].canonicals[0].name,
+                            doi: canDataset[i].canonicals[0].doi,
+                            dataset: canDataset[i].canonicals[0].dataset.name,
+                            version: canDataset[i].canonicals[0].dataset.versionInfo
+                        })
                     }
-                    canDataset[i].canonicals[0].download = canDownload
-                    psets.push({
-                        download: canDataset[i].canonicals[0].download,
-                        name: canDataset[i].canonicals[0].name,
-                        doi: canDataset[i].canonicals[0].doi,
-                        dataset: canDataset[i].canonicals[0].dataset.name,
-                        version: canDataset[i].canonicals[0].dataset.versionInfo
-                    })
                 }
             }
             psets.sort((a, b) => (a.download < b.download) ? 1 : -1)

@@ -157,7 +157,21 @@ const dataset = [
                 drugSensitivity: {version: '2019', source: 'https://codeocean.com/capsule/6718332/'}
             }
         ]
-    }
+    },
+    {
+        label: 'CMAP', name: 'CMAP', 
+        versions: [
+            {
+                version: '2016', pipeline: '', label: '2016(CMAP)', 
+                publication: [
+                    {citation: 'Lamb J, Crawford ED, Peck D, et al. The Connectivity Map: using gene-expression signatures to connect small molecules, genes, and disease. Science. 2006;313(5795):1929-1935. doi:10.1126/science.1132939', link: 'https://pubmed.ncbi.nlm.nih.gov/17008526/'}
+                ], 
+                rawSeqDataRNA: '', 
+                rawSeqDataDNA: '',
+                drugSensitivity: {}
+            }
+        ]
+    },
 ]
 
 /**
@@ -184,6 +198,7 @@ const insertFormdata = async function(connStr, dbName){
         ],
         accompanyRNA: [
             {label: 'CCLE (microarray)', name: 'microarray', dataset: 'CCLE', type: 'rna', source: 'https://data.broadinstitute.org/ccle_legacy_data/mRNA_expression/CCLE_Expression.Arrays_2013-03-18.tar.gz'},
+            {label: 'CMAP (microarray)', name: 'microarray', dataset: 'CMAP', type: 'rna', source: 'https://portals.broadinstitute.org/cmap/'},
             {label: 'GDSC (microarray)', name: 'microarray', dataset: 'GDSC', type: 'rna', source: 'ftp://ftp.ebi.ac.uk//pub/databases/microarray/data/experiment/MTAB/E-MTAB-783'},
         ],
         accompanyDNA: [
