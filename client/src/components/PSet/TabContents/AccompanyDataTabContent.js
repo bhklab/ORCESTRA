@@ -1,4 +1,5 @@
 import React from 'react';
+import { TabContentSection} from '../PSetStyle';
 
 const getType = function(type){
     switch(type){
@@ -27,17 +28,17 @@ const AccompanyDataTabContent = props => {
                             Array.isArray(d.source) ?
                             d.source.map(s => {
                                 return(
-                                    <div key={Math.random()} className='tabContentSection'>
+                                    <TabContentSection key={Math.random()}>
                                         <h3>{s.label}</h3>
                                         <h4 className='subContent'>Source: {<a href={s.source}>{s.source}</a>}</h4>
-                                    </div>
+                                    </TabContentSection>
                                 )
                             })
                             :
-                            <div key={Math.random()} className='tabContentSection'>
+                            <TabContentSection key={Math.random()}>
                                 <h3>{getType(d.type)}</h3>
                                 <h4 className='subContent'>Source: {<a href={d.source}>{d.source}</a>}</h4>
-                            </div>
+                            </TabContentSection>
                         }
                         </div>
                     )

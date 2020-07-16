@@ -1,6 +1,7 @@
 import React from 'react';
 import {PSetToolAccordion, RNARefAccordion} from '../PSetAccordion';
 import AccompanyDataTabContent from './AccompanyDataTabContent';
+import { TabHeader, TabContent, TabContentSection} from '../PSetStyle';
 
 const RNATabContent = props => {
     const rawSeqDataRNA = props.metadata.find(x => x.name === 'rawSeqDataRNA')
@@ -10,36 +11,36 @@ const RNATabContent = props => {
 
     return(
         <React.Fragment>
-            <h1 className='tabMainHeader'>RNA Data</h1>
-            <div className='tabContent'>
+            <TabHeader>RNA Data</TabHeader>
+            <TabContent>
                 {
                     rawSeqDataRNA &&
-                    <div className='tabContentSection'>
+                    <TabContentSection>
                         <h3>Raw Data Source: </h3>
                         <div className='subContent'>
                             <a href={rawSeqDataRNA.value}>{rawSeqDataRNA.value}</a>
                         </div>
-                    </div>
+                    </TabContentSection>
                 }
                 {
                     rnaRef &&
-                    <div className='tabContentSection'>
+                    <TabContentSection>
                         <h3>RNA Transcriptome</h3>
                         <RNARefAccordion items={rnaRef.value} />
-                    </div>
+                    </TabContentSection>
                 }
                 {
                     rnaTool &&
-                    <div className='tabContentSection'>
+                    <TabContentSection>
                         <h3>Tools and Commands Used</h3>
                         <PSetToolAccordion items={rnaTool.value} />
-                    </div>
+                    </TabContentSection>
                 }
                 {
                     accRNA &&
                     <AccompanyDataTabContent data={accRNA.value} />
                 }
-            </div>
+            </TabContent>
         </React.Fragment>
     );
 }

@@ -22,7 +22,7 @@ const DownloadPSetButton = props => {
     }
 
     return(
-        <Button className='downloadBtn' label='Download' disabled={props.disabled} onClick={downloadPSet} />
+        <Button label='Download' disabled={props.disabled} onClick={downloadPSet} style={{marginLeft: '30px'}}/>
     );
 }
 

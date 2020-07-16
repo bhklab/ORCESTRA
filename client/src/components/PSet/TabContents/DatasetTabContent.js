@@ -1,4 +1,5 @@
 import React from 'react';
+import { TabHeader, TabContent, TabContentSection} from '../PSetStyle';
 
 class DatasetTabContent extends React.Component{
 
@@ -23,9 +24,9 @@ class DatasetTabContent extends React.Component{
         
         return(
             <React.Fragment>
-                <h1 className='tabMainHeader'>Dataset: {this.props.metadata.dataset.label}</h1>
-                <div className='tabContent'>
-                    <div className='tabContentSection'>
+                <TabHeader>Dataset: {this.props.metadata.dataset.label}</TabHeader>
+                <TabContent>
+                    <TabContentSection>
                         <h3>Drug Sensitivity</h3>
                         <h4 className='subContent'>Source: {
                             this.props.metadata.dataset.versionInfo.drugSensitivity.source ? 
@@ -34,20 +35,20 @@ class DatasetTabContent extends React.Component{
                             }
                         </h4>
                         <h4 className='subContent'>Version: {this.props.metadata.dataset.versionInfo.drugSensitivity.version}</h4>
-                    </div>
+                    </TabContentSection>
                     
-                    <div className='tabContentSection'>
+                    <TabContentSection>
                         <h3>Publication: </h3>
                         <ul>
                             {publication}
                         </ul> 
-                    </div>
+                    </TabContentSection>
                     
-                    <div className='tabContentSection'>
+                    <TabContentSection>
                         <h3>Genome Version</h3>
                         <div className='subContent'>{this.props.metadata.genome.name ? this.props.metadata.genome.name : "Not Available"}</div>
-                    </div>
-                </div> 
+                    </TabContentSection>
+                </TabContent> 
             </React.Fragment>
         );
     }

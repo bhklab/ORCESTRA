@@ -16,19 +16,26 @@ const getPSetByDOI = async function(req, res){
         pset.name = result.name;
         pset.downloadLink = result.downloadLink;
         pset.generalInfo = {name: result.name, doi: result.doi, createdBy: result.createdBy, dateCreated: result.dateCreated};
-        pset.datasetInfo = {dataset: result.dataset, genome: result.genome};
-        pset.rnaData = []
-        pset.dnaData = []
+        pset.tabData = []
 
-        if(result.rnaTool.length) {pset.rnaData.push({name: 'rnaTool', value: result.rnaTool});}
-        if(result.rnaRef.length) {pset.rnaData.push({name: 'rnaRef', value: result.rnaRef});}
-        if(result.dataset.versionInfo.rawSeqDataRNA.length) {pset.rnaData.push({name: 'rawSeqDataRNA', value: result.dataset.versionInfo.rawSeqDataRNA});}
-        if(result.accompanyRNA.length) {pset.rnaData.push({name: 'accRNA', value: result.accompanyRNA});}
+        // insert tab data
+        pset.tabData.push({header: 'Dataset', data: {dataset: result.dataset, genome: result.genome}})
+        let rnaData = [];
+        let dnaData = [];
+
+        if(result.rnaTool.length) {rnaData.push({name: 'rnaTool', value: result.rnaTool});}
+        if(result.rnaRef.length) {rnaData.push({name: 'rnaRef', value: result.rnaRef});}
+        if(result.dataset.versionInfo.rawSeqDataRNA.length) {rnaData.push({name: 'rawSeqDataRNA', value: result.dataset.versionInfo.rawSeqDataRNA});}
+        if(result.accompanyRNA.length) {rnaData.push({name: 'accRNA', value: result.accompanyRNA});}
+        if(rnaData.length) {pset.tabData.push({header: 'RNA', data: rnaData})}
         
-        if(result.dnaTool.length) {pset.dnaData.push({name: 'dnaTool', value: result.dnaTool});}
-        if(result.dnaRef.length) {pset.dnaData.push({name: 'dnaRef', value: result.dnaRef});}
-        if(result.dataset.versionInfo.rawSeqDataDNA.length) {pset.dnaData.push({name: 'rawSeqDataDNA', value: result.dataset.versionInfo.rawSeqDataDNA});}
-        if(result.accompanyDNA.length) {pset.dnaData.push({name: 'accDNA', value: result.accompanyDNA});}
+        if(result.dnaTool.length) {dnaData.push({name: 'dnaTool', value: result.dnaTool});}
+        if(result.dnaRef.length) {dnaData.push({name: 'dnaRef', value: result.dnaRef});}
+        if(result.dataset.versionInfo.rawSeqDataDNA.length) {dnaData.push({name: 'rawSeqDataDNA', value: result.dataset.versionInfo.rawSeqDataDNA});}
+        if(result.accompanyDNA.length) {dnaData.push({name: 'accDNA', value: result.accompanyDNA});}
+        if(dnaData.length) {pset.tabData.push({header: 'DNA', data: dnaData})}
+
+        if(result.pipeline) {pset.tabData.push({header: 'Pipeline', data: {commitID: result.commitID, config: result.pipeline}})}
 
         res.send(pset)
     }catch(error){

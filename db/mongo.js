@@ -120,6 +120,14 @@ module.exports = {
             const collection = db.collection('pset')
             const pset = await collection.findOne({'doi': doi, 'status' : 'complete'}, projection)
             const psetObj = await buildPSetObject(pset, form)
+            const reqConfig = db.collection('req-config')
+            let pipelineConfig = {}
+            pipelineConfig = await reqConfig.findOne({'_id': psetObj._id})
+            if(!pipelineConfig){
+                const masterConfig = db.collection('req-config-master')
+                pipelineConfig = await masterConfig.findOne({'pipeline.name': psetObj.dataset.versionInfo.pipeline})
+            }
+            psetObj.pipeline = pipelineConfig
             return psetObj
         }catch(err){
             console.log(err)

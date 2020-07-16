@@ -1,6 +1,7 @@
 import React from 'react';
 import {PSetToolAccordion, DNARefAccordion} from '../PSetAccordion';
 import AccompanyDataTabContent from './AccompanyDataTabContent';
+import { TabHeader, TabContent, TabContentSection} from '../PSetStyle';
 
 const DNATabContent = props => {
     const rawSeqDataDNA = props.metadata.find(x => x.name === 'rawSeqDataDNA')
@@ -10,36 +11,36 @@ const DNATabContent = props => {
 
     return(
         <React.Fragment>
-            <h1 className='tabMainHeader'>DNA Data</h1>
-            <div className='tabContent'>
+            <TabHeader>DNA Data</TabHeader>
+            <TabContent>
                 {
                     rawSeqDataDNA &&
-                    <div className='tabContentSection'>
+                    <TabContentSection>
                         <h3>Raw Data Source: </h3>
                         <div className='subContent'>
                             <a href={rawSeqDataDNA.value}>{rawSeqDataDNA.value}</a>
                         </div>
-                    </div>
+                    </TabContentSection>
                 }
                 {
                     dnaRef &&
-                    <div className='tabContentSection'>
+                    <TabContentSection>
                         <h3>Exome Reference</h3>
                         <DNARefAccordion items={dnaRef.value} />
-                    </div>
+                    </TabContentSection>
                 }
                 {
                     dnaTool &&
-                    <div className='tabContentSection'>
+                    <TabContentSection>
                         <h3>Tools and Commands Used</h3>
                         <PSetToolAccordion items={dnaTool.value} />
-                    </div>
+                    </TabContentSection>
                 }
                 {
                     accDNA &&
                     <AccompanyDataTabContent data={accDNA.value} />
                 }
-            </div>
+            </TabContent>
         </React.Fragment>
     );
 }
