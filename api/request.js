@@ -41,8 +41,10 @@ module.exports = {
                 // replace cmd[3] with reference name
                 config.transform.cmd[cmdIndex] = pset.rnaRef[0].name
                 
+                const defaultDataType = pset.dataType.find(dt => {return dt.default});
+                
                 // push RNA tool(s) into input.cross[] - maximum 2
-                const toolPrefix = pset.dataset.name.toLowerCase() + '_' + (pset.dataType[0].name == 'rnaseq' ? 'rnaseq' : 'dnaseq')
+                const toolPrefix = pset.dataset.name.toLowerCase() + '_' + (defaultDataType.name == 'rnaseq' ? 'rnaseq' : 'dnaseq')
                 for(let i = 0; i < pset.rnaTool.length; i++){
                     let toolName = toolPrefix + '_' + pset.rnaTool[i].name
                     config.input.cross.push({pfs:{repo: toolName, glob: "/"}})
@@ -54,15 +56,10 @@ module.exports = {
                 config.transform.cmd.push(ver)
             }
 
-            if(pset.accompanyRNA.length){
-                pset.accompanyRNA.forEach(rna => {
-                    config.transform.cmd.push(rna.name)
-                })
-            }
-
-            if(pset.accompanyDNA.length){
-                pset.accompanyDNA.forEach(dna => {
-                    config.transform.cmd.push(dna.name)
+            const accompanyData = pset.dataType.filter(dt => {return !dt.default})
+            if(accompanyData.length){
+                accompanyData.forEach(acc => {
+                    config.transform.cmd.push(acc.name)
                 })
             }
 

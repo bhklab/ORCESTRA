@@ -1,256 +1,231 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useRef} from 'react';
 import {InputSwitch} from 'primereact/inputswitch';
 import PSetDropdown from '../../Shared/PSetDropdown/PSetDropdown';
 import {SearchReqContext} from '../PSetSearch';
 import './PSetFilter.css';
 
-let formDataInit = {};
-let formData = {};
-let drugSensitivityOptions = [];
-let rnaRefOptions = [];
-let accRNAOptions = [];
-let accDNAOptions = [];
-
-async function fetchData(url) {
-    const response = await fetch(url);
-    const json = await response.json();
-    return(json);
-}
-
 const PSetFilter = () => {
     
     const context = useContext(SearchReqContext);
+    const formRef = useRef();
+    const paramRef = useRef();
 
-    const [dataType, setDataType] = useState([]);
-    const [dataset, setDataset] = useState([]);
-    const [drugSensitivity, setDrugSensitivity] = useState([]);
-    const [genome, setGenome] = useState([]);
-    const [rnaTool, setRNATool] = useState([]);
-    const [rnaRef, setRNARef] = useState([]);
-    const [accompanyRNA, setAccompanyRNA] = useState([]);
-    const [accompanyDNA, setAccompanyDNA] = useState([]);
-
-    const [disableDSOptions, setdisableDSOptions] = useState(true);
-    const [disableRNAToolRef, setdisableRNAToolRef] = useState(false);
-    const [disableAccRNA, setDisableAccRNA] = useState(true);
-    const [disableAccDNA, setDisableAccDNA] = useState(true);
-
-    const getParameters = () => {
-        let parameters = {
-            dataType, 
-            dataset, 
-            drugSensitivity, 
-            genome, 
-            rnaTool, 
-            rnaRef,
-            accompanyRNA,
-            accompanyDNA
-        };
-        return parameters;
-    }
+    const [ready, setReady] = useState(false);
     
     useEffect(() => {
         const initialize = async () => {
-            const formDataset = await fetchData('/api/formData');
-            console.log(formDataset)
-            formDataInit = formDataset;
-            formData = formDataset;
-            rnaRefOptions = formData.rnaRef;
-            setDataType(formData.dataType[0])
+            const res = await fetch('/api/formData');
+            const json = await res.json();
+            console.log(json)
+            formRef.current = json;
+            formRef.current.drugSensOptions = [];
+            formRef.current.disableDrugSensOptions = true;
+            formRef.current.disableToolRefOptions = false;
+            formRef.current.hideDataTypeOptions = false;
+            paramRef.current = { dataset: [], drugSensitivity: [], genome: [], dataType: [], rnaTool: [], rnaRef: [], defaultData: [] }
+            setReady(true)
         }
         initialize();
     }, []);
 
-    useEffect(() => {
+
+    //function to show rnaRef options that belong to a selected genome(s), and hide others.
+    const onGenomeSelection = (genome) => {
+        console.log(genome)
+        // if genomes are not selected, show all rnaRef options
         if(genome.length === 0){
-            rnaRefOptions = formData.rnaRef;
-            context.setParameters(getParameters());
+            formRef.current.rnaRef.forEach(ref => {ref.hide = false})
+        // if one or more genome is selected, show rnaRef options that belong to the selected genome(s)
         }else{
-            let rnaRefs = rnaRef;
-            
             if(Array.isArray(genome)){
-                let genomeName = genome.map((genome) => {return(genome.name)});
-                rnaRefs = rnaRef.filter((ref) => {return(genomeName.includes(ref.genome) && ref)});
-                rnaRefOptions = formData.rnaRef.filter((ref) => {return(genomeName.includes(ref.genome) && ref)});
+                formRef.current.rnaRef.forEach(ref => {
+                    ref.hide = (genome.find(g => {return ref.genome === g.name})) ? false : true;
+                })
             }else{
-                if(Array.isArray(rnaRefs)){
-                    rnaRefs = rnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
-                }
-                rnaRefOptions = formData.rnaRef.filter((ref) => {return(genome.name === ref.genome && ref)});
-            }
-            setRNARef(rnaRefs);
-        }  
-    }, [genome])
-
-    useEffect(() => {
-        if(context.isRequest){
-            // disable the drug sensitivity options if no dataset is selected.
-            if(typeof dataset === 'undefined'){
-                drugSensitivityOptions = []
-                setdisableDSOptions(true)
-            }else{
-                drugSensitivityOptions = dataset.versions
-                if(drugSensitivity.length){
-                    let dsCopy = []
-                    for(let i = 0; i < drugSensitivity.length; i++){
-                        if(drugSensitivityOptions.some(el => el.label === drugSensitivity[i].label)){
-                            console.log('found')
-                            dsCopy.push(drugSensitivity[i])
-                        }
-                    }
-                    setDrugSensitivity(dsCopy[0])
-                }
-                setdisableDSOptions(false)
-            }
-
-            // handle events when each dataset is selected
-            switch(dataset.name){
-                case 'CCLE':
-                    setAccompanyRNA([])
-                    setAccompanyDNA([])    
-                    accRNAOptions = formData.accompanyRNA.filter(rna => {return rna.dataset === 'CCLE'})
-                    accDNAOptions = formData.accompanyDNA.filter(dna => {return dna.dataset === 'CCLE'})
-                    setdisableRNAToolRef(false)
-                    setDisableAccRNA(false)
-                    setDisableAccDNA(false)
-                    break;
-                case 'CTRPv2':
-                    setRNATool([])
-                    setRNARef([])
-                    setAccompanyRNA([])
-                    setAccompanyDNA([])
-                    setdisableRNAToolRef(true)
-                    setDisableAccRNA(true)
-                    setDisableAccDNA(true)
-                    break;
-                case 'FIMM':
-                    setRNATool([])
-                    setRNARef([])
-                    setAccompanyRNA([])
-                    setAccompanyDNA([])
-                    setdisableRNAToolRef(true)
-                    setDisableAccRNA(true)
-                    setDisableAccDNA(true)
-                    break;
-                case 'gCSI':
-                    setAccompanyRNA([])
-                    setAccompanyDNA([])
-                    accDNAOptions = formData.accompanyDNA.filter(dna => {return dna.dataset === 'gCSI'})
-                    setdisableRNAToolRef(false)
-                    setDisableAccRNA(true)
-                    setDisableAccDNA(false)
-                    break;
-                case 'GDSC':
-                    setAccompanyRNA([])
-                    setAccompanyDNA([])
-                    accRNAOptions = formData.accompanyRNA.filter(rna => {return rna.dataset === 'GDSC'})
-                    accDNAOptions = formData.accompanyDNA.filter(dna => {return dna.dataset === 'GDSC'})
-                    setdisableRNAToolRef(false)
-                    setDisableAccRNA(false)
-                    setDisableAccDNA(false)
-                    break;
-                case 'UHNBreast':
-                    setAccompanyRNA([])
-                    setAccompanyDNA([])
-                    setdisableRNAToolRef(false)
-                    setDisableAccRNA(true)
-                    setDisableAccDNA(true)
-                    break;
-                default:
-                    setAccompanyRNA([])
-                    setAccompanyDNA([])
-                    setdisableRNAToolRef(false)
-                    setDisableAccRNA(true)
-                    setDisableAccDNA(true)
-                    break;
-            }
-
-        }else{
-            // enable the drug sensitivity options only if at least one dataset is selected.
-            if(dataset.length){
-                setdisableDSOptions(false)
-            }else{
-                setdisableDSOptions(true)
-            }
-
-            drugSensitivityOptions = []
-            for(let i = 0; i < dataset.length; i++){
-                for(let k = 0; k < dataset[i].versions.length; k++){
-                    if(!drugSensitivityOptions.some(el => el.label === dataset[i].versions[k].label)){
-                        drugSensitivityOptions.push(dataset[i].versions[k])
-                    }
-                }
-            }
-            
-            if(Array.isArray(drugSensitivity)){
-                let dsCopy = []
-                for(let i = 0; i < drugSensitivity.length; i++){
-                    if(drugSensitivityOptions.some(el => el.label === drugSensitivity[i].label)){
-                        dsCopy.push(drugSensitivity[i])
-                    }
-                }
-                setDrugSensitivity(dsCopy)
+                formRef.current.rnaRef.forEach(ref => {
+                    ref.hide = (ref.genome === genome.name) ? false : true;
+                })
             }
         }
-    }, [dataset])
+    }
 
-    useEffect(() => {
-        context.setParameters(getParameters());
-    }, [dataType, drugSensitivity, rnaTool, rnaRef, accompanyRNA, accompanyDNA]);
-
-    const setRequestView = (isRequest) => {
-        let fData = JSON.parse(JSON.stringify(formData));
-        if(isRequest){
-            if(dataset.length){
-                fData.dataset = dataset;
-                setDataset(dataset[0]);
-            }
-            if(genome.length){
-                fData.genome = genome;
-                setGenome(genome[0]);
-            }
-            if(rnaTool.length){
-                fData.rnaTool = JSON.parse(JSON.stringify(rnaTool));
-                let tools = JSON.parse(JSON.stringify(rnaTool));
-                while(tools.length > 2){
-                    tools.shift()
-                }
-                setRNATool(tools)
-            }
-            if(rnaRef.length){
-                fData.rnaRef = rnaRef;
-                setRNARef(rnaRef[0]);
-            }
+    const onDatasetSelectionRequest = (dataset) => {
+        console.log('onDatasetSelectionRequest')
+        formRef.current.drugSensOptions = [];
+        //disable the drug sensitivity options if no dataset is selected.
+        if(typeof dataset === 'undefined'){
+            formRef.current.disableDrugSensOptions = true;
         }else{
-            if(fData.dataset.length < formDataInit.dataset.length){
-                setDataset(fData.dataset);
-            }else if(!Array.isArray(dataset)){
-                let val  = dataset;
-                setDataset([val]);
-            }
-            if(fData.genome.length < formDataInit.genome.length){
-                setGenome(fData.genome);
-            }else if(!Array.isArray(genome)){
-                let val = genome;
-                setGenome([val]);
-            }
-            if(fData.rnaRef.length < formDataInit.rnaRef.length){
-                setRNARef(fData.rnaRef);
-            }else if(!Array.isArray(rnaRef)){
-                let val  = rnaRef;
-                setRNARef([val]);
-            }
-            fData = formDataInit;
-            setdisableRNAToolRef(false)
-            setAccompanyRNA([])
-            setAccompanyDNA([])
+            // set drug sensitivity and optional data type options
+            setDrugSensParamOptions(dataset);
+            formRef.current.disableDrugSensOptions = false;
         }
-        formData = fData;
-        context.setIsRequest(isRequest);
+        setOptionsOnDatasetSelection(dataset);
+    }
+
+    //show drug sensitivity options available for selected dataset(s)
+    const onDatasetSelectionSearch = (dataset) => {
+        // empty current options
+        formRef.current.drugSensOptions = [];
+        // enable the drug sensitivity options only if at least one dataset is selected.
+        if(dataset.length){
+            formRef.current.disableDrugSensOptions = false;
+        }else{
+            formRef.current.disableDrugSensOptions = true;
+        }
+        // set drug sensitivity options
+        dataset.forEach(ds => {
+            setDrugSensParamOptions(ds);
+        })
+    }
+
+    const setOptionsOnDatasetSelection = (dataset) => {
+        // handle form options depending on a selected dataset
+        switch(dataset.name){
+            case 'CCLE':
+                paramRef.current.defaultData = formRef.current.dataType.filter(dt => {return dt.default});
+                paramRef.current.dataType = [];
+                setDataTypeOptions(dataset);
+                formRef.current.disableToolRefOptions = false;
+                formRef.current.hideDataTypeOptions = false;
+                break;
+            case 'CTRPv2':
+                paramRef.current.defaultData = [];
+                paramRef.current.dataType = [];
+                paramRef.current.rnaTool = [];
+                paramRef.current.rnaRef = [];
+                formRef.current.disableToolRefOptions = true;
+                formRef.current.hideDataTypeOptions = true;
+                break;
+            case 'FIMM':
+                paramRef.current.defaultData = [];
+                paramRef.current.dataType = [];    
+                paramRef.current.rnaTool = [];
+                paramRef.current.rnaRef = [];
+                formRef.current.disableToolRefOptions = true;
+                formRef.current.hideDataTypeOptions = true;
+                break;
+            case 'gCSI':
+                paramRef.current.defaultData = formRef.current.dataType.filter(dt => {return dt.default});
+                paramRef.current.dataType = []; 
+                setDataTypeOptions(dataset);   
+                formRef.current.disableToolRefOptions = false;
+                formRef.current.hideDataTypeOptions = false;
+                break;
+            case 'GDSC':
+                paramRef.current.defaultData = formRef.current.dataType.filter(dt => {return dt.default});
+                paramRef.current.dataType = []; 
+                setDataTypeOptions(dataset);   
+                formRef.current.disableToolRefOptions = false;
+                formRef.current.hideDataTypeOptions = false;
+                break;
+            default:
+                paramRef.current.defaultData = formRef.current.dataType.filter(dt => {return dt.default});
+                paramRef.current.dataType = [];     
+                formRef.current.disableToolRefOptions = false;
+                formRef.current.hideDataTypeOptions = true;
+                break;
+        }
+    }
+
+    const setDataTypeOptions = (dataset) => {
+        const accRNA = formRef.current.accompanyRNA.filter(acc => {return acc.dataset === dataset.name});
+        const accDNA = formRef.current.accompanyDNA.filter(acc => {return acc.dataset === dataset.name});
+        const options = accRNA.concat(accDNA);
+        formRef.current.dataType.forEach(dt => {
+            dt.hide = (options.find(option => {return option.name === dt.name})) ? false : true;
+        })   
+    }
+
+    const requestToggleOn = (request) => {
+        formRef.current.dataset.forEach(ds => {ds.hide = ds.unavailable ? true : false})
+        formRef.current.dataType.forEach(dt => {dt.hide = (dt.name === 'rnaseq') ? true : false})
+        paramRef.current.dataType = []
+        if(paramRef.current.dataset.length){
+            setParameterOptions('dataset');
+            paramRef.current.dataset = paramRef.current.dataset[0];
+            paramRef.current.drugSensitivity = [];
+            setOptionsOnDatasetSelection(paramRef.current.dataset)
+            // set drug sensitivity options
+            formRef.current.drugSensOptions = [];
+            setDrugSensParamOptions(paramRef.current.dataset);
+        }
+        if(paramRef.current.genome.length){
+            setParameterOptions('genome');
+            paramRef.current.genome = paramRef.current.genome[0];
+        }
+        if(paramRef.current.rnaTool.length){
+            setParameterOptions('rnaTool');
+            // limit selection of RNA tools to two
+            let tools = JSON.parse(JSON.stringify(paramRef.current.rnaTool));
+            while(tools.length > 2){
+                tools.shift()
+            }
+            paramRef.current.rnaTool = tools;
+        }
+        if(paramRef.current.rnaRef.length){
+            setParameterOptions('rnaRef');
+            paramRef.current.rnaRef = paramRef.current.rnaRef[0];
+        }
+        context.setIsRequest(request);
+        context.setParameters({...paramRef.current, search: true});
+    }
+
+    const requestToggleOff = (request) => {   
+        formRef.current.dataset.forEach(ds => {ds.hide = false});
+        restoreParameters('dataset');
+        paramRef.current.drugSensitivity = [];
+        paramRef.current.dataType = [];
+        restoreParameters('genome');
+        restoreParameters('rnaRef');
+        formRef.current.hideDataTypeOptions = false;
+        formRef.current.dataType.forEach(dt => {dt.hide = false});
+        formRef.current.dataset.forEach(ds => {ds.hide = false});
+        formRef.current.genome.forEach(g => {g.hide = false});
+        formRef.current.rnaRef.forEach(ref => {ref.hide = false});
+        context.setIsRequest(request);
+        context.setParameters({...paramRef.current, search: true});
+    }
+
+    const setParameterOptions = (name) => {
+        formRef.current[name].forEach(ref => {
+            ref.hide = paramRef.current[name].find(p => {return ref.name === p.name}) ? false : true
+        })
+    }
+
+    const restoreParameters = (name) => {
+        const visibleOptions = formRef.current[name].filter(option => {return !option.hide});
+        if(visibleOptions.length < formRef.current[name].length){
+            paramRef.current[name] = visibleOptions;
+            if(name === 'dataset'){
+                // restore drug sensitivity options
+                formRef.current.drugSensOptions = [];
+                visibleOptions.forEach(option => {
+                    setDrugSensParamOptions(option)
+                })
+            }
+        }else if(!Array.isArray(paramRef.current[name])){
+            paramRef.current[name] = [paramRef.current[name]];
+            if(name === 'dataset'){
+                // restore drug sensitivity options
+                formRef.current.drugSensOptions = [];
+                setDrugSensParamOptions(paramRef.current[name])
+            }
+        }
+    }
+
+    const setDrugSensParamOptions = (dataset) => {
+        dataset.versions.forEach(v => {
+            if(!formRef.current.drugSensOptions.some(drug => drug.label === v.label)){
+                formRef.current.drugSensOptions.push(v);
+            }
+        })
     }
     
     return(
         <React.Fragment>
+        {
+            ready&&
             <div className='pSetFilterContainer'>
                 <div className='pSetFilter'>
                     <h2>PSet Parameters</h2>
@@ -258,79 +233,73 @@ const PSetFilter = () => {
                         <label className='bold'>Request PSet: </label> 
                         <InputSwitch checked={context.isRequest} tooltip="Turn this on to request a PSet." 
                             onChange={(e) => {
-                                context.setSearch(false)
-                                setRequestView(e.value)
-                            }
-                        } />
+                                if(e.value){ 
+                                    requestToggleOn(e.value); 
+                                }else{ 
+                                    requestToggleOff(e.value); 
+                                }
+                            }} 
+                        />
                     </div>
 
-                    <PSetDropdown id='dataType' isHidden={false} parameterName='Data Type:' selectOne={true}
-                        parameterOptions={formData.dataType} selectedParameter={context.parameters.dataType} 
+                    <PSetDropdown id='dataset' isHidden={false} parameterName='Dataset:' selectOne={context.isRequest}  
+                        parameterOptions={formRef.current.dataset.filter(ds => {return(!ds.hide)})} selectedParameter={paramRef.current.dataset} 
                         handleUpdateSelection={(e) => {
-                            context.setSearch(true)
-                            setDataType(e.value)
-                        }} />
-
-                    <PSetDropdown id='dataset' isHidden={false} parameterName='Dataset:' selectOne={context.isRequest} 
-                        parameterOptions={formData.dataset} selectedParameter={context.parameters.dataset} 
-                        handleUpdateSelection={(e) => {
-                            context.setSearch(true)
-                            setDataset(e.value)
+                            if(context.isRequest){
+                                onDatasetSelectionRequest(e.value)
+                            }else{
+                                onDatasetSelectionSearch(e.value)
+                            }
+                            paramRef.current.dataset = e.value;
+                            context.setParameters({...paramRef.current, dataset: e.value, search: true});
                         }} />
                     
                     <PSetDropdown id='drugSensitivity' isHidden={false} parameterName='Drug Sensitivity:' selectOne={context.isRequest} 
-                        disabled={disableDSOptions}
-                        parameterOptions={drugSensitivityOptions} selectedParameter={context.parameters.drugSensitivity} 
+                        disabled={formRef.current.disableDrugSensOptions}
+                        parameterOptions={formRef.current.drugSensOptions} selectedParameter={paramRef.current.drugSensitivity} 
                         handleUpdateSelection={(e) => {
-                            context.setSearch(true)
-                            setDrugSensitivity(e.value)
+                            paramRef.current.drugSensitivity = e.value;
+                            context.setParameters({...paramRef.current, drugSensitivity: e.value, search: true});
                         }} />
                     
                     <PSetDropdown id='genome' isHidden={false} parameterName='Genome:' selectOne={context.isRequest} 
-                        parameterOptions={formData.genome} selectedParameter={context.parameters.genome} 
+                        parameterOptions={formRef.current.genome.filter(g => {return(!g.hide)})} selectedParameter={paramRef.current.genome} 
                         handleUpdateSelection={(e) => {
-                            context.setSearch(true)
-                            setGenome(e.value)
-                        }} />
-                    
-                    <PSetDropdown id='rnaTool' disabled={disableRNAToolRef} parameterName='RNA Tool:' 
-                        parameterOptions={formData.rnaTool} selectedParameter={context.parameters.rnaTool} 
-                        handleUpdateSelection={(e) => {
-                            if(context.isRequest && e.value.length > 2){
-                                while(e.value.length > 2){
-                                    e.value.shift()
-                                }
-                            }
-                            context.setSearch(true)
-                            setRNATool(e.value)
+                            onGenomeSelection(e.value)
+                            paramRef.current.genome = e.value;
+                            context.setParameters({...paramRef.current, genome: e.value, search: true});
                         }} />
 
-                    <PSetDropdown id='rnaRef' disabled={disableRNAToolRef} parameterName='RNA Ref:' selectOne={context.isRequest} 
-                        parameterOptions={rnaRefOptions} selectedParameter={context.parameters.rnaRef} 
+                    <PSetDropdown id='rnaTool' disabled={formRef.current.disableToolRefOptions} parameterName='RNA Tool:' 
+                        parameterOptions={formRef.current.rnaTool} selectedParameter={paramRef.current.rnaTool} 
                         handleUpdateSelection={(e) => {
-                            context.setSearch(true)
-                            setRNARef(e.value)
+                            if(context.isRequest && e.value.length > 2){
+                                while(e.value.length > 2){ e.value.shift() }
+                            }
+                            paramRef.current.rnaTool = e.value;
+                            context.setParameters({...paramRef.current, rnaTool: e.value, search: true});
                         }} />
+
+                    <PSetDropdown id='rnaRef' disabled={formRef.current.disableToolRefOptions} parameterName='RNA Ref:' selectOne={context.isRequest} 
+                        parameterOptions={formRef.current.rnaRef.filter(ref => {return(!ref.hide)})} selectedParameter={paramRef.current.rnaRef} 
+                        handleUpdateSelection={(e) => {
+                            paramRef.current.rnaRef = e.value;
+                            context.setParameters({...paramRef.current, rnaRef: e.value, search: true});
+                        }} />
+                    
                     {
-                        context.isRequest &&
-                        <PSetDropdown id='accRNA' disabled={disableAccRNA} parameterName='Accompanying RNA:' 
-                            parameterOptions={accRNAOptions} selectedParameter={context.parameters.accompanyRNA} 
-                            handleUpdateSelection={(e) => {
-                                context.setSearch(true)
-                                setAccompanyRNA(e.value)
-                            }} />
+                        (context.isRequest && !formRef.current.disableToolRefOptions) && <span style={{fontSize: '12px'}}>* RNA sequencing data is included by default</span>
                     }
-                    {
-                        context.isRequest &&
-                        <PSetDropdown id='accDNA' disabled={disableAccDNA} parameterName='Accompanying DNA:' 
-                            parameterOptions={accDNAOptions} selectedParameter={context.parameters.accompanyDNA} 
-                            handleUpdateSelection={(e) => {
-                                context.setSearch(true)
-                                setAccompanyDNA(e.value)
-                            }} />
-                    }
+                    <PSetDropdown id='dataType' isHidden={formRef.current.hideDataTypeOptions} parameterName={context.isRequest ? 'Data Type (Optional):' : 'Data Type:'}
+                        parameterOptions={formRef.current.dataType.filter(dt => {return(!dt.hide)})} selectedParameter={paramRef.current.dataType} 
+                        handleUpdateSelection={(e) => {
+                            paramRef.current.dataType = e.value;
+                            context.setParameters({...paramRef.current, dataType: e.value, search: true});
+                        }} />
+                    
                 </div>
             </div>
+        }   
         </React.Fragment>
     );
 }

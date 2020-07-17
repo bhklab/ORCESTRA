@@ -54,6 +54,7 @@ const getPsetList = async function(req, res){
 }
 
 const searchPSets = async function(req, res){
+    console.log('searchPSets')
     try{
         const result = await mongo.selectPSets(req.body.parameters)
         res.send(result)

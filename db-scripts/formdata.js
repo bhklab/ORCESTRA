@@ -170,7 +170,8 @@ const dataset = [
                 rawSeqDataDNA: '',
                 drugSensitivity: {}
             }
-        ]
+        ],
+        unavailable: true
     },
 ]
 
@@ -233,6 +234,13 @@ const insertFormdata = async function(connStr, dbName){
                 cosmic: {name: 'COSMIC_v79.hg38.vcf', source: 'https://cancer.sanger.ac.uk/cosmic/download'}, 
                 exonTarget: {name: 'SureSelect_Human_All_Exon_V7_hg38.bed', source: 'https://earray.chem.agilent.com/suredesign/search.htm'}
             }
+        ],
+        molecularData: [
+            {label: 'RNA Sequence', name: 'rnaseq', type: 'RNA' , default: true},
+            {label: 'Microarray', name: 'microarray', type: 'RNA'},
+            {label: 'Copy Number Variation', name: 'cnv', type: 'DNA'},
+            {label: 'Fusion', name: 'fusion', type: 'DNA'},
+            {label: 'Mutation', name: 'mutation', type: 'DNA'}
         ]
     };
 
@@ -251,6 +259,5 @@ const insertFormdata = async function(connStr, dbName){
 }
 
 module.exports = {
-    insertFormdata,
-    insertMolecularData
+    insertFormdata
 }

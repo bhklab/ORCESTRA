@@ -45,10 +45,10 @@ const PSetTable = (props) => {
         );
     }
 
-    const accompanyDataTemplate = (rowData, column) => {
+    const dataTypeTemplate = (rowData, column) => {
         let output ='';
         if(rowData[column.field]){
-            output = rowData[column.field].map(item => <div key={item.name}>{item.name}</div>);
+            output = rowData[column.field].map(item => <div key={item.name}>{item.name} ({item.type})</div>);
         }
         return(
             <div>{output}</div>
@@ -88,7 +88,7 @@ const PSetTable = (props) => {
 
     return(
         <DataTable 
-            value={props.allData} 
+            value={props.psets} 
             selection={props.selectedPSets} onSelectionChange={updatePSetSelectionEvent} 
             paginator={true} rows={state.rows} 
             scrollable={true} resizableColumns={true} columnResizeMode="fit" style={{maxWidth: '900px'}}
@@ -96,11 +96,10 @@ const PSetTable = (props) => {
             {props.authenticated && <Column selectionMode="multiple" style={{width: '2em', textAlign: 'center'}} />}
             <Column className='textField' field='name' header='Name' style={{width:'6em'}} body={nameColumnTemplate} sortable={true} />
             <Column className='textField' field='dataset.name' header='Dataset' style={{width:'4em'}} sortable={true} />
-            <Column className='textField' field='dataset.versionInfo' header='Drug Sensitivity' style={{width:'5em'}} sortable={true} />
+            <Column className='textField' field='dataset.versionInfo' header='Drug Sensitivity' style={{width:'6em'}} sortable={true} />
             <Column field='rnaTool' body={toolsRefTemplate} style={{width:'5em'}} header='RNA Tool' sortable={true}  />
             <Column field='rnaRef' body={toolsRefTemplate} style={{width:'5em'}} header='RNA Ref' sortable={true} />
-            <Column field='accompanyRNA' body={accompanyDataTemplate} style={{width:'4em'}} header='RNA Data' />
-            <Column field='accompanyDNA' body={accompanyDataTemplate} style={{width:'4em'}} header='DNA Data' />
+            <Column field='dataType' body={dataTypeTemplate} style={{width:'5em'}} header='Molecular Data' />
             <Column field='canonical' body={canonicalTemplate} style={{width:'3.5em', textAlign: 'center'}} header='Canonical' />
             {props.download && <Column field='downloadLink' body={downloadTemplate} style={{width:'3.5em', textAlign: 'center'}} header='Download' /> }
         </DataTable>

@@ -78,29 +78,46 @@ const updatePSets = async function(connStr, dbName){
         
         const accRNA = form[0].accompanyRNA
         const accDNA = form[0].accompanyDNA
+        const molecular = form[0].molecularData
 
         for(let i = 0; i < psets.length; i++){
-            let rna = []
-            let dna = []
+            let molData = [];
+
+            if(psets[i].rnaTool.length && psets[i].rnaRef.length){
+                molData.push(molecular.find(mol => {return mol.name === 'rnaseq'}))
+            }
             
-            rna = accRNA.filter(r => {
+            let rna = accRNA.filter(r => {
                 return r.dataset === psets[i].dataset.name
             })
             if(rna.length){
-                psets[i].accompanyRNA = rna.map(r => {return({label: r.label, name: r.name, dataset: r.dataset, type: r.type})})
-            }else{
-                psets[i].accompanyRNA = []
+                molecular.forEach(mol => {
+                    if(rna.find(r => {return r.name === mol.name})){
+                        molData.push(mol)
+                    }
+                })
             }
             
-            dna = accDNA.filter(d => {
+            let dna = accDNA.filter(d => {
                 return d.dataset === psets[i].dataset.name
             })
             if(dna.length){
-                psets[i].accompanyDNA = dna.map(d => {return({label: d.label, name: d.name, dataset: d.dataset, type: d.type})})
-            }else{
-                psets[i].accompanyDNA = []
+                molecular.forEach(mol => {
+                    if(dna.find(d => {return d.name === mol.name})){
+                        molData.push(mol)
+                    }
+                })
             }
-            await db.collection('pset').updateOne({'_id': psets[i]._id}, {'$set': psets[i]}, {upsert: true})
+
+            psets[i].dataType = molData;
+            delete psets[i].accompanyDNA;
+            delete psets[i].accompanyRNA;
+            
+            await db.collection('pset').updateOne(
+                {'_id': psets[i]._id}, 
+                {'$set': psets[i], '$unset': {'accompanyRNA': "", 'accompanyDNA': ""}}, 
+                {upsert: true}
+            )
         }
 
         client.close()

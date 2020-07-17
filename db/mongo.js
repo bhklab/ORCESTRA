@@ -25,8 +25,8 @@ function getQueryFilterSet(query){
         return(querySet);
     } 
 
-    if(query.dataType){
-        queryArray.push(getQueryFilter('dataType.name', query.dataType.name));
+    if(query.dataType && query.dataType.length){
+        queryArray.push(getQueryFilter('dataType.name', query.dataType.map(dt => {return(dt.name)}), true));
     }
     
     if(query.dataset && query.dataset.length){
@@ -60,13 +60,13 @@ function getQueryFilterSet(query){
     return(querySet);
 }
 
-function getQueryFilter(keyName, filterValue){
+function getQueryFilter(keyName, filterValue, all=false){
     var filterObj = {};
     if(!Array.isArray(filterValue)){
         filterObj[keyName] = filterValue;
         return(filterObj);
     }
-    filterObj[keyName] = {$in: filterValue};
+    filterObj[keyName] = all ? {$all: filterValue} : {$in: filterValue};
     return(filterObj);
 }
 
@@ -88,19 +88,23 @@ async function buildPSetObject(pset, formdata){
         psetObj.rnaRef[i].genome = ref.genome
         psetObj.rnaRef[i].source = ref.source
     }
+    
+    psetObj.accompanyRNA = []
+    psetObj.accompanyDNA = []
+    let accRNA = psetObj.dataType.filter(dt => {return dt.type === 'RNA' && !dt.default})
+    let accDNA = psetObj.dataType.filter(dt => {return dt.type === 'DNA' && !dt.default})
 
     // assign accompanying RNA and DNA metadata
-    if(psetObj.accompanyRNA.length){
-        psetObj.accompanyRNA.forEach(x => {
-            const accRNA = formdata.accompanyRNA.find(rna => {return (rna.dataset === x.dataset && rna.type === x.type)})
-            x.source = accRNA.source
+    if(accRNA.length){
+        accRNA.forEach(rna => {
+            const data = formdata.accompanyRNA.find(acc => {return (psetObj.dataset.name === acc.dataset && rna.name === acc.name)})
+            psetObj.accompanyRNA.push(data)
         })
     }
-
-    if(psetObj.accompanyDNA.length){
-        psetObj.accompanyDNA.forEach(x => {
-            const accDNA = formdata.accompanyDNA.find(dna => {return (dna.dataset === x.dataset && dna.type === x.type)})
-            x.source = accDNA.source
+    if(accDNA.length){
+        accDNA.forEach(dna => {
+            const data = formdata.accompanyDNA.find(acc => {return (psetObj.dataset.name === acc.dataset && dna.name === acc.name)})
+            psetObj.accompanyDNA.push(data)
         })
     }
 
@@ -139,6 +143,7 @@ module.exports = {
         const db = await getDB();
         try{
             const collection = db.collection('pset')
+            console.log(query)
             let queryFilter = getQueryFilterSet(query);
             const data = await collection.find(queryFilter, projection).toArray()
             return data

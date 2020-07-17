@@ -6,18 +6,19 @@ module.exports = {
         try{
             let form = {dataType: [], dataset: [], genome: [], rnaTool: [], rnaRef: [], accompanyRNA: [], accompanyDNA: [], dnaTool: [], dnaRef: []}
             const meta = await mongo.getFormData();
-            
-            form.dataType = meta.dataType
+
             meta.dataset.forEach((ds) => {form.dataset.push({
                 label: ds.label,
                 name: ds.name,
-                versions: ds.versions.map(version => {return {version: version.version, label: version.label, disabled: version.disabled}})
+                versions: ds.versions.map(version => {return {version: version.version, label: version.label, disabled: version.disabled}}),
+                unavailable: ds.unavailable
             })})
             form.genome = meta.genome
             form.rnaTool = meta.rnaTool.map(tool => {return {label: tool.label, name: tool.name}})
             form.rnaRef = meta.rnaRef.map(ref => {return {label: ref.label, name: ref.name, genome: ref.genome}})
             form.dnaTool = meta.dnaTool.map(tool => {return {label: tool.label, name: tool.name}})
             form.dnaRef = meta.dnaRef.map(ref => {return {label: ref.label, name: ref.name, genome: ref.genome}})
+            form.dataType = meta.molecularData
             form.accompanyRNA = meta.accompanyRNA.map(acc => {return({label: acc.label, name: acc.name, dataset: acc.dataset})})
             form.accompanyDNA = meta.accompanyDNA.map(acc => {return({label: acc.label, name: acc.name, dataset: acc.dataset})})
 

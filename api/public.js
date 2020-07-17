@@ -17,8 +17,8 @@ module.exports = {
             'dnaTool': false,
             'dnaRef': false,
             'genome': false,
-            'dataType': false,
             'dataset.label': false,
+            'dataset.unavailable': false
         }}
 
         let psets = []
@@ -46,20 +46,23 @@ module.exports = {
                     drugSensitivity: version.drugSensitiviry
                 }
 
-                // attach accompanyRNA data if exists
-                if(psets[i].accompanyRNA.length){
-                    const accRNA = form.accompanyRNA.filter(acc => {
-                        return acc.dataset === psets[i].dataset.name
-                    })
-                    psets[i].accompanyRNA = accRNA
-                }
+                psets[i].accompanyRNA = []
+                psets[i].accompanyDNA = []
+                let accRNA = psets[i].dataType.filter(dt => {return dt.type === 'RNA' && !dt.default})
+                let accDNA = psets[i].dataType.filter(dt => {return dt.type === 'DNA' && !dt.default})
 
-                // attach accompanyDNA data if exists
-                if(psets[i].accompanyRNA.length){
-                    const accDNA = form.accompanyDNA.filter(acc => {
-                        return acc.dataset === psets[i].dataset.name
+                // assign accompanying RNA and DNA metadata
+                if(accRNA.length){
+                    accRNA.forEach(rna => {
+                        const data = form.accompanyRNA.find(acc => {return (psets[i].dataset.name === acc.dataset && rna.name === acc.name)})
+                        psets[i].accompanyRNA.push(data)
                     })
-                    psets[i].accompanyDNA = accDNA
+                }
+                if(accDNA.length){
+                    accDNA.forEach(dna => {
+                        const data = form.accompanyDNA.find(acc => {return (psets[i].dataset.name === acc.dataset && dna.name === acc.name)})
+                        psets[i].accompanyDNA.push(data)
+                    })
                 }
             }
 
@@ -86,8 +89,8 @@ module.exports = {
                 'dnaTool': false,
                 'dnaRef': false,
                 'genome': false,
-                'dataType': false,
                 'dataset.label': false,
+                'dataset.unavailable': false,
                 'dataset.versionInfo.pipeline': false,
                 'dataset.versionInfo.label': false,
                 'dataset.versionInfo.rawSeqDataDNA': false

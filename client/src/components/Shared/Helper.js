@@ -15,7 +15,7 @@ export function isNoneSelected(filterset){
 }
 
 export function isReadyToSubmit(request){
-    if(!isSelected(request.dataType)){return(false)}
+    //if(!isSelected(request.dataType)){return(false)}
 
     if(!isSelected(request.genome)){return(false)}
 
@@ -29,9 +29,9 @@ export function isReadyToSubmit(request){
         return(true)
     }
     
-    if(!isSelected(request.rnaRef)){return(false)}
+    //if(!isSelected(request.rnaRef)){return(false)}
 
-    if(!isSelected(request.rnaTool)){return(false)}
+    //if(!isSelected(request.rnaTool)){return(false)}
 
     if(!isSelected(request.drugSensitivity)){
         return(false);

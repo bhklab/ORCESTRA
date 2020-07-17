@@ -24,18 +24,26 @@ async function fetchData(url, parameters) {
     return(json);
 }
 
-const PSetSearch = (props) => {
+const PSetSearch = () => {
     
     const auth = useContext(AuthContext);
     
-    const [allData, setAllData] = useState([]);
+    const [psets, setPSets] = useState([]);
     const [searchAll, setSearchAll] = useState(true);
     const [selectedPSets, setSelectedPSets] = useState([]);
     const [disableSaveBtn, setDisableSaveBtn] = useState(true);
     const [isRequest, setIsRequest] = useState(false);
-    const [search, setSearch] = useState(false);
     const [readyToSubmit, setReadyToSubmit] = useState(true);
-    const [parameters, setParameters] = useState({});
+    
+    const [parameters, setParameters] = useState({
+        dataset: [],
+        drugSensitivity: [],
+        genome: [],
+        dataType: [],
+        rnaTool: [],
+        rnaRef: [],
+        search: false
+    });
     
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -45,7 +53,7 @@ const PSetSearch = (props) => {
     useEffect(() => {
         const initializeView = async () => {
             const psets = await fetchData('/api/pset/search');
-            setAllData(psets);
+            setPSets(psets);
             setSearchAll(true);
             setReady(true);
         }
@@ -57,21 +65,28 @@ const PSetSearch = (props) => {
     }, [selectedPSets]);
 
     useEffect(() => {   
-        async function updateSearch() {
-            console.log(parameters)
-            const psets = await fetchData('/api/pset/search', parameters)
-            let all = true
+        async function search() {
+            console.log('search');
+            console.log(parameters);
+            let copy = JSON.parse(JSON.stringify(parameters));
+            Object.keys(copy).forEach(key => {
+                if(!Array.isArray(copy[key])){
+                    copy[key] = [copy[key]];
+                }
+            });
+            const psets = await fetchData('/api/pset/search', copy);
+            let all = true;
             Object.keys(parameters).forEach(key => {
                 if(Array.isArray(parameters[key]) && parameters[key].length){
-                    all = false
+                    all = false;
                 }
-            })
-            setAllData(psets);
+            });
+            setPSets(psets);
             setSearchAll(all);
         }
 
-        if(search){
-            updateSearch();
+        if(parameters.search){
+            search();
         }
         
         if(isRequest){
@@ -81,6 +96,13 @@ const PSetSearch = (props) => {
             setReadyToSubmit(Helper.isReadyToSubmit(params));
         }
     }, [parameters])
+
+    useEffect(() => {
+        let params = {...parameters};
+        params.name = name;
+        params.email = email;
+        setReadyToSubmit(Helper.isReadyToSubmit(params));
+    }, [name, email])
 
     const showMessage = (status, data) => {
         let severity = status ? 'success' : 'error';
@@ -97,19 +119,26 @@ const PSetSearch = (props) => {
         setDisableSaveBtn(true);
     }
 
-    const handleSubmitRequest = async event => {
+    const submitRequest = async event => {
         event.preventDefault();
         let dataset = {name: parameters.dataset.name, label: parameters.dataset.label, versionInfo: parameters.drugSensitivity.version}
         let reqData = {...parameters}
-        let dataType = {...parameters.dataType}
+        let dataType = parameters.defaultData.concat(parameters.dataType)
         let rnaRef = {...parameters.rnaRef}
 
         reqData.dataset = dataset
-        reqData.dataType = [dataType]
+        reqData.dataType = dataType
         reqData.rnaRef = (Object.keys(rnaRef).length === 0 && rnaRef.constructor === Object ? [] : [rnaRef])
         reqData.name = name
         reqData.email = email
+        
+        // delete any unnecessary fields for the database.
         delete reqData.drugSensitivity
+        delete reqData.defaultData 
+        delete reqData.search
+        reqData.dataType.forEach(dt => {delete dt.hide})
+        reqData.rnaRef.forEach(ref => {delete ref.hide})
+
         console.log(reqData)
         
         const res = await trackPromise(fetch('/api/pset/request', {
@@ -122,13 +151,6 @@ const PSetSearch = (props) => {
         initializeState();
     }
 
-    useEffect(() => {
-        let params = {...parameters};
-        params.name = name;
-        params.email = email;
-        setReadyToSubmit(Helper.isReadyToSubmit(params));
-    }, [name, email])
-    
     const SubmitRequestButton = () => {
         const {promiseInProgress} = usePromiseTracker();
         return(
@@ -137,7 +159,7 @@ const PSetSearch = (props) => {
                     <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
                 </div>
                 :
-                <Button label='Submit Request' type='submit' disabled={!readyToSubmit} onClick={handleSubmitRequest}/>
+                <Button label='Submit Request' type='submit' disabled={!readyToSubmit} onClick={submitRequest}/>
         );
     }
         
@@ -146,9 +168,7 @@ const PSetSearch = (props) => {
                 parameters: parameters, 
                 setParameters: setParameters, 
                 isRequest: isRequest, 
-                setIsRequest: setIsRequest,
-                search: search,
-                setSearch: setSearch
+                setIsRequest: setIsRequest
             }}
         >
             <div className='pageContent'>
@@ -164,9 +184,9 @@ const PSetSearch = (props) => {
                                     <div className='pSetSummaryItem'>
                                         {
                                             searchAll ? 
-                                            <span><span className='pSetSummaryNum'>{allData.length ? allData.length : 0}</span> <span>dataset(s) available.</span></span>
+                                            <span><span className='pSetSummaryNum'>{psets.length ? psets.length : 0}</span> <span>dataset(s) available.</span></span>
                                             :
-                                            <span><span className='pSetSummaryNum'>{allData.length}</span> <span>{allData.length === 1 ? ' match' : ' matches'}</span> found.</span>
+                                            <span><span className='pSetSummaryNum'>{psets.length}</span> <span>{psets.length === 1 ? ' match' : ' matches'}</span> found.</span>
                                         }
                                     </div>
                                 </div>
@@ -191,17 +211,9 @@ const PSetSearch = (props) => {
                             }
                         </div>
                         {
-                            isRequest ?
-                            <PSetTable 
-                                allData={allData} selectedPSets={selectedPSets} 
-                                updatePSetSelection={updatePSetSelection} scrollHeight='600px'
-                                authenticated={auth.authenticated}
-                                download={true}
-                            /> 
-                            :
                             ready ?
                             <PSetTable 
-                                allData={allData} selectedPSets={selectedPSets} 
+                                psets={psets} selectedPSets={selectedPSets} 
                                 updatePSetSelection={updatePSetSelection} scrollHeight='600px'
                                 authenticated={auth.authenticated}
                                 download={true}
