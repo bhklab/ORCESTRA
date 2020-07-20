@@ -215,8 +215,7 @@ const PSetSearch = () => {
                             <PSetTable 
                                 psets={psets} selectedPSets={selectedPSets} 
                                 updatePSetSelection={updatePSetSelection} scrollHeight='600px'
-                                authenticated={auth.authenticated}
-                                download={true}
+                                authenticated={auth.authenticated} download={true}
                             /> 
                             :
                             <div className='tableLoaderContainer'>

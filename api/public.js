@@ -41,6 +41,7 @@ module.exports = {
                 )
                 psets[i].dataset.versionInfo = {
                     version: version.version, 
+                    type: version.type,
                     publication: version.publication, 
                     rawSeqDataRNA: version.rawSeqDataRNA, 
                     drugSensitivity: version.drugSensitiviry
@@ -64,6 +65,10 @@ module.exports = {
                         psets[i].accompanyDNA.push(data)
                     })
                 }
+
+                // delete unnecessary fields
+                delete psets[i].dataType;
+                delete psets[i].pipeline;
             }
 
             res.send(psets)
@@ -92,9 +97,13 @@ module.exports = {
                 'dataset.label': false,
                 'dataset.unavailable': false,
                 'dataset.versionInfo.pipeline': false,
-                'dataset.versionInfo.label': false,
-                'dataset.versionInfo.rawSeqDataDNA': false
+                'dataset.versionInfo.label': false
             }})
+            
+            // delete unnecessary fields
+            delete result.dataType;
+            delete result.pipeline;
+
             res.send(result)
         }catch(error){
             console.log(error)

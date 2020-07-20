@@ -138,8 +138,12 @@ const PSetFilter = () => {
     }
 
     const requestToggleOn = (request) => {
+        // hide dataset option(s) that are not available to use for a PSet request.
         formRef.current.dataset.forEach(ds => {ds.hide = ds.unavailable ? true : false})
         formRef.current.dataType.forEach(dt => {dt.hide = (dt.name === 'rnaseq') ? true : false})
+        formRef.current.disableToolRefOptions = true;
+        formRef.current.hideDataTypeOptions = true;
+
         paramRef.current.dataType = []
         if(paramRef.current.dataset.length){
             setParameterOptions('dataset');
@@ -209,7 +213,7 @@ const PSetFilter = () => {
             if(name === 'dataset'){
                 // restore drug sensitivity options
                 formRef.current.drugSensOptions = [];
-                setDrugSensParamOptions(paramRef.current[name])
+                setDrugSensParamOptions(paramRef.current[name][0])
             }
         }
     }
@@ -251,9 +255,34 @@ const PSetFilter = () => {
                                 onDatasetSelectionSearch(e.value)
                             }
                             paramRef.current.dataset = e.value;
-                            context.setParameters({...paramRef.current, dataset: e.value, search: true});
+                            context.setParameters({...paramRef.current, search: true});
                         }} />
                     
+                    {
+                        (context.isRequest && !formRef.current.disableToolRefOptions) && 
+                        <div>
+                            Molecular Data: 
+                            {
+                                paramRef.current.defaultData.length === 1 ?
+                                <span style={{marginLeft: '10px', fontWeight: 'bold'}}>{paramRef.current.defaultData[0].label}</span>
+                                :
+                                <ul>
+                                {
+                                    paramRef.current.defaultData.map(data => {
+                                        return(<li key={Math.random()}>{data.label}</li>);
+                                    })
+                                }
+                                </ul>
+                            } 
+                        </div>
+                    }
+                    <PSetDropdown id='dataType' isHidden={formRef.current.hideDataTypeOptions} parameterName={ context.isRequest ? 'Optional Molecular Data:' : 'Molecular Data Type:'}
+                        parameterOptions={formRef.current.dataType.filter(dt => {return(!dt.hide)})} selectedParameter={paramRef.current.dataType} 
+                        handleUpdateSelection={(e) => {
+                            paramRef.current.dataType = e.value;
+                            context.setParameters({...paramRef.current, dataType: e.value, search: true});
+                        }} />
+
                     <PSetDropdown id='drugSensitivity' isHidden={false} parameterName='Drug Sensitivity:' selectOne={context.isRequest} 
                         disabled={formRef.current.disableDrugSensOptions}
                         parameterOptions={formRef.current.drugSensOptions} selectedParameter={paramRef.current.drugSensitivity} 
@@ -286,17 +315,6 @@ const PSetFilter = () => {
                             paramRef.current.rnaRef = e.value;
                             context.setParameters({...paramRef.current, rnaRef: e.value, search: true});
                         }} />
-                    
-                    {
-                        (context.isRequest && !formRef.current.disableToolRefOptions) && <span style={{fontSize: '12px'}}>* RNA sequencing data is included by default</span>
-                    }
-                    <PSetDropdown id='dataType' isHidden={formRef.current.hideDataTypeOptions} parameterName={context.isRequest ? 'Data Type (Optional):' : 'Data Type:'}
-                        parameterOptions={formRef.current.dataType.filter(dt => {return(!dt.hide)})} selectedParameter={paramRef.current.dataType} 
-                        handleUpdateSelection={(e) => {
-                            paramRef.current.dataType = e.value;
-                            context.setParameters({...paramRef.current, dataType: e.value, search: true});
-                        }} />
-                    
                 </div>
             </div>
         }   

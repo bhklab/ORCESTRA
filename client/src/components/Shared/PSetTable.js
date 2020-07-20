@@ -91,17 +91,18 @@ const PSetTable = (props) => {
             value={props.psets} 
             selection={props.selectedPSets} onSelectionChange={updatePSetSelectionEvent} 
             paginator={true} rows={state.rows} 
-            scrollable={true} resizableColumns={true} columnResizeMode="fit" style={{maxWidth: '900px'}}
+            resizableColumns={true} columnResizeMode="fit"
+            scrollable={true} scrollHeight={props.scrollHeight }
         >
-            {props.authenticated && <Column selectionMode="multiple" style={{width: '2em', textAlign: 'center'}} />}
-            <Column className='textField' field='name' header='Name' style={{width:'6em'}} body={nameColumnTemplate} sortable={true} />
-            <Column className='textField' field='dataset.name' header='Dataset' style={{width:'4em'}} sortable={true} />
-            <Column className='textField' field='dataset.versionInfo' header='Drug Sensitivity' style={{width:'6em'}} sortable={true} />
-            <Column field='rnaTool' body={toolsRefTemplate} style={{width:'5em'}} header='RNA Tool' sortable={true}  />
-            <Column field='rnaRef' body={toolsRefTemplate} style={{width:'5em'}} header='RNA Ref' sortable={true} />
-            <Column field='dataType' body={dataTypeTemplate} style={{width:'5em'}} header='Molecular Data' />
-            <Column field='canonical' body={canonicalTemplate} style={{width:'3.5em', textAlign: 'center'}} header='Canonical' />
-            {props.download && <Column field='downloadLink' body={downloadTemplate} style={{width:'3.5em', textAlign: 'center'}} header='Download' /> }
+            {props.authenticated && <Column selectionMode="multiple" style={{width: '30px', textAlign: 'center'}} />}
+            <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplate} sortable={true} />
+            <Column className='textField' field='dataset.name' header='Dataset' style={{width:'100px'}} sortable={true} />
+            <Column className='textField' field='dataset.versionInfo' header='Drug Sensitivity' style={{width:'150px'}} sortable={true} />
+            <Column field='rnaTool' body={toolsRefTemplate} style={{width:'120px'}} header='RNA Tool' sortable={true}  />
+            <Column field='rnaRef' body={toolsRefTemplate} style={{width:'120px'}} header='RNA Ref' sortable={true} />
+            <Column field='dataType' body={dataTypeTemplate} style={{width:'125px'}} header='Molecular Data' />
+            <Column field='canonical' body={canonicalTemplate} style={{width:'90px', textAlign: 'center'}} header='Canonical' />
+            {props.download && <Column field='downloadLink' body={downloadTemplate} style={{width:'90px', textAlign: 'center'}} header='Download' /> }
         </DataTable>
     );
 
