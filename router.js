@@ -55,4 +55,6 @@ router.get('/pset/:doi1/:doi2', public.getPSet);
 router.get('/psets/statistics/:limit', public.getStatistics);
 router.get('/psets/update-download/:doi1/:doi2', public.updateDownloadCount);
 
+//router.get('/development/email', pset.sendEmail);
+
 module.exports = router;

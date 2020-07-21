@@ -444,7 +444,7 @@ module.exports = {
         try{
             let canonical = []
             const form = await this.getFormData()
-            const datasets = form.dataset
+            const datasets = form.dataset.filter(ds => {return !ds.unavailable});
     
             let datasetVersion = []
             for(let i = 0; i < datasets.length; i++){
@@ -456,7 +456,7 @@ module.exports = {
                 datasetVersion.push({name: datasets[i].name, versions: unique})
             }
     
-            const result = await this.selectPSets(query, projection)
+            const result = await this.selectPSets({}, projection)
     
             const bhkPSets = result.filter(data => data.createdBy === 'BHK Lab')
     

@@ -202,6 +202,20 @@ const completeRequest = async function(req, res){
     }
 }
 
+// const sendEmail = async function(req, res){
+//     try{
+//         await mailer.sendMail(
+//             'https://www.orcestra.ca/10.5281/zenodo.3905481', 
+//             '10.5281/zenodo.3905481', 'minoru.nakano@uhnresearch.ca', 
+//             'https://zenodo.org/record/3905481/files/GDSC2.rds?download=1'
+//         );
+//         res.send({status: 'OK'})
+//     }catch(error){
+//         console.log(error)
+//         res.status(500).send(error);
+//     }
+// }
+
 module.exports = {
     getPSetByDOI,
     getPsetList,
@@ -213,5 +227,6 @@ module.exports = {
     processOfflineRequest,
     //cancelPSetRequest,
     downloadPSets,
-    completeRequest
+    completeRequest,
+    //sendEmail
 };
