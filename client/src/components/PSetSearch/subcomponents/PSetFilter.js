@@ -92,6 +92,7 @@ const PSetFilter = () => {
             case 'CTRPv2':
                 paramRef.current.defaultData = [];
                 paramRef.current.dataType = [];
+                paramRef.current.genome = [];
                 paramRef.current.rnaTool = [];
                 paramRef.current.rnaRef = [];
                 formRef.current.disableToolRefOptions = true;
@@ -99,7 +100,8 @@ const PSetFilter = () => {
                 break;
             case 'FIMM':
                 paramRef.current.defaultData = [];
-                paramRef.current.dataType = [];    
+                paramRef.current.dataType = [];  
+                paramRef.current.genome = [];  
                 paramRef.current.rnaTool = [];
                 paramRef.current.rnaRef = [];
                 formRef.current.disableToolRefOptions = true;
@@ -291,7 +293,7 @@ const PSetFilter = () => {
                             context.setParameters({...paramRef.current, drugSensitivity: e.value, search: true});
                         }} />
                     
-                    <PSetDropdown id='genome' isHidden={false} parameterName='Genome:' selectOne={context.isRequest} 
+                    <PSetDropdown id='genome' disabled={formRef.current.disableToolRefOptions} isHidden={false} parameterName='Genome:' selectOne={context.isRequest} 
                         parameterOptions={formRef.current.genome.filter(g => {return(!g.hide)})} selectedParameter={paramRef.current.genome} 
                         handleUpdateSelection={(e) => {
                             onGenomeSelection(e.value)

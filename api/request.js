@@ -59,7 +59,7 @@ module.exports = {
             const accompanyData = pset.dataType.filter(dt => {return !dt.default})
             if(accompanyData.length){
                 accompanyData.forEach(acc => {
-                    config.transform.cmd.push(acc.name)
+                    config.transform.cmd.push(acc.name);
                 })
             }
 

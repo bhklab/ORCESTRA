@@ -15,25 +15,23 @@ export function isNoneSelected(filterset){
 }
 
 export function isReadyToSubmit(request){
-    //if(!isSelected(request.dataType)){return(false)}
-
-    if(!isSelected(request.genome)){return(false)}
-
+    if(!isSelected(request.dataset)){
+        return(false)
+    }
+    if(!isSelected(request.drugSensitivity)){
+        return(false);
+    }
     if(!hasName(request.name)){return(false)}
 
     if(!isValidEmail(request.email)){return(false)}
-    
-    if(!isSelected(request.dataset)){
-        return(false)
-    }else if(request.dataset.name === 'CTRPv2' || request.dataset.name === 'FIMM'){
-        return(true)
+
+    if(!isSelected(request.genome) && !(request.dataset.name === 'CTRPv2' || request.dataset.name === 'FIMM')){
+        return(false);
     }
-    
-    //if(!isSelected(request.rnaRef)){return(false)}
-
-    //if(!isSelected(request.rnaTool)){return(false)}
-
-    if(!isSelected(request.drugSensitivity)){
+    if(!isSelected(request.rnaTool) && !(request.dataset.name === 'CTRPv2' || request.dataset.name === 'FIMM')){
+        return(false);
+    }
+    if(!isSelected(request.rnaRef) && !(request.dataset.name === 'CTRPv2' || request.dataset.name === 'FIMM')){
         return(false);
     }
 

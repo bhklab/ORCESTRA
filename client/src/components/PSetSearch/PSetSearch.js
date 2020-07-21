@@ -44,9 +44,6 @@ const PSetSearch = () => {
         rnaRef: [],
         search: false
     });
-    
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
 
     const [ready, setReady] = useState(false)
 
@@ -90,19 +87,9 @@ const PSetSearch = () => {
         }
         
         if(isRequest){
-            let params = {...parameters};
-            params.name = name;
-            params.email = email;
-            setReadyToSubmit(Helper.isReadyToSubmit(params));
+            setReadyToSubmit(Helper.isReadyToSubmit(parameters));
         }
-    }, [parameters])
-
-    useEffect(() => {
-        let params = {...parameters};
-        params.name = name;
-        params.email = email;
-        setReadyToSubmit(Helper.isReadyToSubmit(params));
-    }, [name, email])
+    }, [parameters]);
 
     const showMessage = (status, data) => {
         let severity = status ? 'success' : 'error';
@@ -122,24 +109,22 @@ const PSetSearch = () => {
     const submitRequest = async event => {
         event.preventDefault();
         let dataset = {name: parameters.dataset.name, label: parameters.dataset.label, versionInfo: parameters.drugSensitivity.version}
-        let reqData = {...parameters}
-        let dataType = parameters.defaultData.concat(parameters.dataType)
-        let rnaRef = {...parameters.rnaRef}
+        let reqData = {...parameters};
+        let dataType = parameters.defaultData.concat(parameters.dataType);
+        let rnaRef = {...parameters.rnaRef};
 
-        reqData.dataset = dataset
-        reqData.dataType = dataType
-        reqData.rnaRef = (Object.keys(rnaRef).length === 0 && rnaRef.constructor === Object ? [] : [rnaRef])
-        reqData.name = name
-        reqData.email = email
+        reqData.dataset = dataset;
+        reqData.dataType = dataType;
+        reqData.rnaRef = (Object.keys(rnaRef).length === 0 && rnaRef.constructor === Object ? [] : [rnaRef]);
         
         // delete any unnecessary fields for the database.
-        delete reqData.drugSensitivity
-        delete reqData.defaultData 
-        delete reqData.search
-        reqData.dataType.forEach(dt => {delete dt.hide})
-        reqData.rnaRef.forEach(ref => {delete ref.hide})
+        delete reqData.drugSensitivity;
+        delete reqData.defaultData;
+        delete reqData.search;
+        reqData.dataType.forEach(dt => {delete dt.hide});
+        reqData.rnaRef.forEach(ref => {delete ref.hide});
 
-        console.log(reqData)
+        console.log(reqData);
         
         const res = await trackPromise(fetch('/api/pset/request', {
                 method: 'POST',
@@ -198,11 +183,11 @@ const PSetSearch = () => {
                                     <h2>Request PSet</h2>
                                     <div className='reqFormInput'>
                                         <label>PSet Name:</label>
-                                            <InputText id='name' className='paramInput' value={name || ''} onChange={(e) => {setName(e.target.value)}} />
+                                            <InputText id='name' className='paramInput' value={parameters.name || ''} onChange={(e) => {setParameters({...parameters, name: e.target.value})}} />
                                     </div>
                                     <div className='reqFormInput'>
                                         <label>Email to receive DOI:</label>
-                                            <InputText id='email' className='paramInput' value={email || ''} onChange={(e) => {setEmail(e.target.value)}} />
+                                            <InputText id='email' className='paramInput' value={parameters.email || ''} onChange={(e) => {setParameters({...parameters, email: e.target.value})}} />
                                     </div>
                                     <div className='reqFormInput'>
                                         <SubmitRequestButton />
