@@ -137,5 +137,17 @@ module.exports = {
             console.log(error)
             res.status(500).send(error);
         }
+    },
+
+    updateDownloadCount: async (req, res) => {
+        console.log('updateDownloadCount');
+        try{
+            const doi = req.params.doi1 + '/' + req.params.doi2;
+            await mongo.updateDownloadCount(doi);
+            res.send({});
+        }catch(error){
+            console.log(error);
+            res.send({});
+        }
     }
 }

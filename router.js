@@ -50,8 +50,9 @@ router.post('/stats/metrics/data', db.getMetricData)
 router.get('/landing/data', db.getLandingData)
 
 //public api
-router.get('/psets/:filter', public.getPSets)
-router.get('/pset/:doi1/:doi2', public.getPSet)
-router.get('/psets/statistics/:limit', public.getStatistics)
+router.get('/psets/:filter', public.getPSets);
+router.get('/pset/:doi1/:doi2', public.getPSet);
+router.get('/psets/statistics/:limit', public.getStatistics);
+router.get('/psets/update-download/:doi1/:doi2', public.updateDownloadCount);
 
 module.exports = router;

@@ -553,5 +553,17 @@ module.exports = {
             throw error
         }
         
+    },
+
+    updateDownloadCount: async function(doi){
+        console.log(doi);
+        const db = await getDB();
+        try{
+            const collection = db.collection('pset');
+            await collection.updateOne({'doi': doi}, {'$inc': {'download': 1}});
+        }catch(error){
+            console.log(error);
+            throw error;
+        }
     }
 }
