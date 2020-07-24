@@ -1,48 +1,48 @@
 import React, {useState, useEffect, useContext} from 'react';
 import './Dashboard.css';
-import {usePromiseTracker} from "react-promise-tracker";
-import {trackPromise} from 'react-promise-tracker';
 import Loader from 'react-loader-spinner';
 import {Messages} from 'primereact/messages';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import {AuthContext} from '../../context/auth';
 
-const Dashboard = (props) => {
+const Dashboard = () => {
     
     const auth = useContext(AuthContext);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const { promiseInProgress } = usePromiseTracker();
+    useEffect(() => {
+        const getData = async () => {
+            const res = await fetch('/api/pset/search', {
+                method: 'POST',
+                body: JSON.stringify({parameters: {status: ['pending', 'in-process']}}),
+                headers: {'Content-type': 'application/json'}
+            });
+            const json = await res.json();
+            console.log(json);
+            setData(json);
+            setLoading(false);
+        }
+        getData();
+    }, []);
 
     const show = (message) => {
         Dashboard.messages.show(message);
     }
 
-    const fetchData = async (url) => {
-        const response = await fetch(url);
-        const json = await response.json();
-        setData(json);
-        setLoading(false);
-    }
-
     const submitRequest = async (id) => {
-        const result = await trackPromise(fetch(
+        const result = await fetch(
             '/api/pset/process', 
             { 
                 method: 'POST', 
                 body: JSON.stringify({id: id}), 
                 headers: {'Content-type': 'application/json'} 
             }
-        ));
+        );
         const json = await result.json();
         return({ok: result.ok, data: json});
     }
-
-    useEffect(() => {
-        fetchData('/api/pset?status=pending&status=in-process');
-    }, []);
     
     const onSubmit = async (event) => {
         event.preventDefault();
@@ -53,7 +53,14 @@ const Dashboard = (props) => {
         }else{
             show({severity: 'error', summary: result.data.summary, detail: result.data.message, sticky: true});
         }
-        await fetchData('/api/pset?status=pending&status=in-process');
+        const res = await fetch('/api/pset/search', {
+            method: 'POST',
+            body: JSON.stringify({parameters: {status: ['pending', 'in-process']}}),
+            headers: {'Content-type': 'application/json'}
+        });
+        const json = await res.json();
+        console.log(json);
+        setData(json);
     }
 
     const dateTimeTemplate = (rowData, column) => {
@@ -106,14 +113,6 @@ const Dashboard = (props) => {
                             <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
                         </div>
                     } 
-                    {
-                        promiseInProgress && 
-                        <div className='dashboardTableOverlay'>
-                            <div className='dashboardLoaderContainer'>
-                                <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
-                            </div>
-                        </div>   
-                    }
                 </div> 
             </div>   
         </div>  

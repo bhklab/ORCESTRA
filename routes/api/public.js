@@ -1,4 +1,7 @@
-const mongo = require('../db/mongo');
+const formdata = require('../../db/helper/formdata');
+const psetSelect = require('../../db/helper/pset-select');
+const psetUpdate = require('../../db/helper/pset-update');
+const psetCanonical = require('../../db/helper/pset-canonical');
 
 module.exports = {
 
@@ -24,13 +27,13 @@ module.exports = {
         let psets = []
 
         try{
-            const form = await mongo.getFormData()
+            const form = await formdata.getFormData()
             
             if(req.params.filter === 'canonical'){
-                let datasets = await mongo.getCanonicalPSets(filter, projection)
+                let datasets = await psetCanonical.getCanonicalPSets(filter, projection)
                 datasets.forEach(data => data.canonicals.forEach(c => psets.push(c)))
             }else{
-                psets = await mongo.selectPSets(filter, projection)
+                psets = await psetSelect.selectPSets(filter, projection)
             }
 
             for(let i = 0; i < psets.length; i++){
@@ -84,7 +87,7 @@ module.exports = {
         try{
             const doi = req.params.doi1 + '/' + req.params.doi2;
             console.log(doi)
-            const result = await mongo.selectPSetByDOI(doi, {'projection': {
+            const result = await psetSelect.selectPSetByDOI(doi, {'projection': {
                 '_id': false,
                 'status': false,
                 'email': false, 
@@ -114,7 +117,7 @@ module.exports = {
     getStatistics: async (req, res) => {
         console.log('getStatistics')
         try{
-            let result = await mongo.selectPSets({}, {'projection': {
+            let result = await psetSelect.selectPSets({}, {'projection': {
                 '_id': false,
                 'status': false,
                 'email': false, 
@@ -143,7 +146,7 @@ module.exports = {
         console.log('updateDownloadCount');
         try{
             const doi = req.params.doi1 + '/' + req.params.doi2;
-            await mongo.updateDownloadCount(doi);
+            await psetUpdate.updateDownloadCount(doi);
             res.send({});
         }catch(error){
             console.log(error);

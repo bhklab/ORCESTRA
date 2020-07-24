@@ -1,4 +1,4 @@
-const grpc = require('../grpc/grpc-client');
+const grpc = require('../../grpc/grpc-client');
 
 module.exports = {
     createPipeline: async function(request){

@@ -26,10 +26,11 @@ const Admin = props => {
         const getData = async () => {
             const res = await trackPromise(fetch('/api/pset/search', {
                 method: 'POST',
-                body: JSON.stringify({status: 'complete'}),
+                body: JSON.stringify({parameters: {status: 'complete'}}),
                 headers: {'Content-type': 'application/json'}
-            }))
+            }));
             const json = await res.json()
+            console.log(json);
             setSelected(json.filter(p => {return p.canonical}))
             setData({ready: true, psets: json})
         }
@@ -39,18 +40,24 @@ const Admin = props => {
     const updateCanonicalPSets = async (event) => {
         event.preventDefault()
         setData({...data, ready: false})
-        const res = await trackPromise(fetch('/api/pset/canonical/update', {
+        await trackPromise(fetch('/api/pset/canonical/update', {
             method: 'POST',
             body: JSON.stringify({selected: selected}),
             headers: {'Content-type': 'application/json'}
-        }))
-        const json = await res.json()
-        setSelected(json.filter(p => {return p.canonical}))
-        setData({ready: true, psets: json})
+        }));
+        const res = await trackPromise(fetch('/api/pset/search', {
+            method: 'POST',
+            body: JSON.stringify({parameters: {status: 'complete'}}),
+            headers: {'Content-type': 'application/json'}
+        }));
+        const json = await res.json();
+        setSelected(json.filter(p => {return p.canonical}));
+        setData({ready: true, psets: json});
     }
 
     const handleSelectionChange = (selection) => {
-        setSelected(selection)
+        console.log(selection);
+        setSelected(selection);
     }
     
     return(
@@ -64,7 +71,7 @@ const Admin = props => {
             {
                 data.ready ?
                 <PSetTable 
-                    allData={data.psets} selectedPSets={selected} 
+                    psets={data.psets} selectedPSets={selected} 
                     updatePSetSelection={handleSelectionChange} scrollHeight='600px'
                     authenticated={auth.authenticated}
                     download={false}

@@ -21,9 +21,8 @@ const PSet = (props) => {
 
     useEffect(() => {
         const getData = async () => {
-            let apiStr = '/api/pset/one/' + props.match.params.id1 + '/' + props.match.params.id2;
             try{
-                const res = await fetch(apiStr)
+                const res = await fetch('/api/pset/one/' + props.match.params.id1 + '/' + props.match.params.id2)
                 if(res.ok){
                     const json = await res.json()
                     console.log(json)

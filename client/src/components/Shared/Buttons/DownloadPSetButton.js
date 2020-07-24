@@ -16,7 +16,7 @@ const DownloadPSetButton = props => {
 
         await fetch('/api/pset/download', {
             method: 'POST',
-            body: JSON.stringify({psetID: props.pset._id}),
+            body: JSON.stringify({psetID: props.pset.doi}),
             headers: {'Content-type': 'application/json'}
         })
     }

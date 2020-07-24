@@ -1,7 +1,5 @@
-const path = require('path');
-//const configDir = path.join(__dirname, '../../config');
-const mongo = require('../db/mongo');
-const fs = require('fs');
+const mongo = require('../../db/mongo');
+const psetRequest = require('../../db/helper/pset-request');
 
 module.exports = {
     receivePSetRequest: async function(reqPset){
@@ -23,7 +21,7 @@ module.exports = {
         console.log("buildPachydermReqJson");
         console.log(pset)
         try{
-            const config  = await mongo.getMasterConfig(pset.dataset)
+            const config  = await psetRequest.getMasterConfig(pset.dataset)
 
             // input tool/ref config data if necessary.
             if(pset.rnaTool.length){
@@ -71,21 +69,10 @@ module.exports = {
             throw err
         }
     },
-    
-    // not used
-    savePachydermConfigJson: async function(config, configPath){
-        console.log("savePachydermJson");
-        let json = JSON.stringify(config, null, 2);
-        fs.writeFile(configPath, json, (err)=> {
-            if(err){
-                throw err
-            }
-        });
-    },
 
     getPachydermConfigJson: async function(id){
         console.log("getPachydermConfigJson");
-        const result = await mongo.getRequestConfig(id);
+        const result = await psetRequest.getRequestConfig(id);
         if(result.status){
             console.log('config fetched from db: ' + result.data._id); 
             return(result.data.config);

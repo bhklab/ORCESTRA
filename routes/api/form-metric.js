@@ -1,11 +1,13 @@
-const mongo = require('../db/mongo');
-const upset = require('../helper/upset');
+const formdata = require('../../db/helper/formdata');
+const metricdata = require('../../db/helper/metricdata');
+const psetCanonical = require('../../db/helper/pset-canonical');
+const upset = require('../../helper/upset');
 
 module.exports = {
     getFormData: async function(req, res){
         try{
             let form = {dataType: [], dataset: [], genome: [], rnaTool: [], rnaRef: [], accompanyRNA: [], accompanyDNA: [], dnaTool: [], dnaRef: []}
-            const meta = await mongo.getFormData();
+            const meta = await formdata.getFormData();
 
             meta.dataset.forEach((ds) => {form.dataset.push({
                 label: ds.label,
@@ -32,7 +34,7 @@ module.exports = {
     getDataForStats: async function(req, res){ 
         let data = {psets: [], chartData:[]}
         try{
-            const form = await mongo.getFormData()
+            const form = await formdata.getFormData()
             const dataset = form.dataset
             for(let i = 0; i < dataset.length; i++){
                 let item = {
@@ -47,7 +49,7 @@ module.exports = {
                 }
                 data.chartData.push(item)
             }
-            data.psets = await mongo.getCanonicalDownloadRanking();
+            data.psets = await psetCanonical.getCanonicalDownloadRanking();
             res.send(data);
         }catch(error){
             console.log(error)
@@ -62,10 +64,9 @@ module.exports = {
             const metricType = req.body.parameters.metricName
             const datasets = req.body.parameters.datasets
             const queryDatasets = datasets.map((item) => {return item.dataset})
-            const metricData = await mongo.getMetricData(metricType, queryDatasets)
             const queryDatasetNames = datasets.map((item) => {if(item.checked){return item.name}})
 
-            console.log('data returned')
+            const metricData = await metricdata.getMetricData(metricType, queryDatasets)
             
             let barData = []
             let sets = []
@@ -118,7 +119,7 @@ module.exports = {
                 '#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#6fbd22','#bcbd22','#17becf','#222AA1','#7DC922','#03F14A','#2F0248','#D31E70','#370E0F','#101A21','#FF9585','#BE93F6','#1CF4A5','#DACC14','#BB012F','#62AD27','#49947F','#A817D1','#159326','#652CBF','#1922A7','#2FC186','#6A0570'
             ]
             
-            const data = await mongo.getAvailableDatasetForMetrics()
+            const data = await metricdata.getAvailableDatasetForMetrics()
             let datasets = []
             let colIndex = 0
             for(let i = 0; i < data.length; i++){
@@ -141,7 +142,7 @@ module.exports = {
     },
 
     getLandingData: async function(req, res){
-        const result = await mongo.getLandingData();
+        const result = await metricdata.getLandingData();
         if(result.status){
             res.send(result);
         }else{
