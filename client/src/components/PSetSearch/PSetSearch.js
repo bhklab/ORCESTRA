@@ -42,6 +42,8 @@ const PSetSearch = () => {
         dataType: [],
         rnaTool: [],
         rnaRef: [],
+        name: '',
+        email: '',
         search: false
     });
 
@@ -183,11 +185,11 @@ const PSetSearch = () => {
                                     <h2>Request PSet</h2>
                                     <div className='reqFormInput'>
                                         <label>PSet Name:</label>
-                                            <InputText id='name' className='paramInput' value={parameters.name || ''} onChange={(e) => {setParameters({...parameters, name: e.target.value})}} />
+                                            <InputText id='name' className='paramInput' value={parameters.name || ''} onChange={(e) => {setParameters({...parameters, name: e.target.value, search: false})}} />
                                     </div>
                                     <div className='reqFormInput'>
                                         <label>Email to receive DOI:</label>
-                                            <InputText id='email' className='paramInput' value={parameters.email || ''} onChange={(e) => {setParameters({...parameters, email: e.target.value})}} />
+                                            <InputText id='email' className='paramInput' value={parameters.email || ''} onChange={(e) => {setParameters({...parameters, email: e.target.value, search: false})}} />
                                     </div>
                                     <div className='reqFormInput'>
                                         <SubmitRequestButton />
