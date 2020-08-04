@@ -2,8 +2,8 @@
     width: 100%;
     padding-top: 50px;
     color:#3D405A;
-    height: 100%;
-    margin-bottom: 250px;
+    min-height: 100vh;
+    padding-bottom: 170px;
 }
 
 .home {

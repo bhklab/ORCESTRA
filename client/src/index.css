@@ -1,17 +1,13 @@
-html {
+html, body{
   height: 100%;
+  margin: 0;
   /* overflow: hidden; */
 }
 
-body{
-  /* height: 100%; */
-  margin: 0;
-}
-
 #root {
-  min-height: 100vh;
-  margin: 0;
-  /* padding-bottom: 100px; */
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
   padding-top: 90px;
   font-family: "Raleway", "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -41,7 +37,7 @@ h1, h2, h3, h4, h5{
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-  height: 100%;
-  margin-bottom: 250px;
+  min-height: 100vh;
+  padding-bottom: 170px;
   color: #3D405A;
 }
