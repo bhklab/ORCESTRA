@@ -1,9 +1,10 @@
 .appFooter {
+    position: relative;
+    clear: both;
     bottom: 0%;
     width:100%;
     background-color:rgb(255,255,255, 0.7);
     height: 170px;
-    margin-bottom: -100px;
     font-size: calc(0.7em + 0.2vw);
     padding: 10px 0;
     display: flex;
