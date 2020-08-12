@@ -7,7 +7,7 @@ const getPSetByDOI = async function(req, res){
     const doi = req.params.id1 + '/' + req.params.id2;
     console.log(doi)
     try{
-        const result = await psetSelect.selectPSetByDOI(doi) 
+        const result = await psetSelect.selectPSetByDOI(doi)
         let pset = {}  
         pset._id = result._id;
         pset.name = result.name;
@@ -27,8 +27,8 @@ const getPSetByDOI = async function(req, res){
         if(result.accompanyRNA.length) {rnaData.push({name: 'accRNA', value: result.accompanyRNA});}
         if(rnaData.length) {pset.tabData.push({header: 'RNA', data: rnaData})}
         
-        if(result.dnaTool.length) {dnaData.push({name: 'dnaTool', value: result.dnaTool});}
-        if(result.dnaRef.length) {dnaData.push({name: 'dnaRef', value: result.dnaRef});}
+        //if(result.dnaTool.length) {dnaData.push({name: 'dnaTool', value: result.dnaTool});}
+        //if(result.dnaRef.length) {dnaData.push({name: 'dnaRef', value: result.dnaRef});}
         if(result.dataset.versionInfo.rawSeqDataDNA.length) {dnaData.push({name: 'rawSeqDataDNA', value: result.dataset.versionInfo.rawSeqDataDNA});}
         if(result.accompanyDNA.length) {dnaData.push({name: 'accDNA', value: result.accompanyDNA});}
         if(dnaData.length) {pset.tabData.push({header: 'DNA', data: dnaData})}
