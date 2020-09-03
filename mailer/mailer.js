@@ -1,4 +1,14 @@
 const sgMail = require('@sendgrid/mail');
+//const nodemailer = require('nodemailer');
+
+// var transport = nodemailer.createTransport({
+//     host: "smtp.mailtrap.io",
+//     port: 2525,
+//     auth: {
+//         user: "9a2ada6eb3c31b",
+//         pass: "aa2daea1eb685a"
+//     }
+// });
 
 const sendMail = async function(url, doi, email, download, callback){
 
@@ -80,7 +90,53 @@ const sendPwdResetEmail = async function(email, resetLink, callback){
     }
 }
 
+const sendPSetReqEmail = async function(id, name, submittedDate){
+
+    sgMail.setApiKey(process.env.SG_MAIL_KEY)
+    
+    console.log("Sending email to: " + process.env.ORCESTRA_EMAIL);
+    
+    const style = '<style>' + 
+                    'h2{font-family: arial, san-serif}' + 
+                    '.content{font-family: arial, san-serif;}' + 
+                    '.signature{font-family: arial, san-serif; font-size: 14px;}' + 
+                    '.psetInfo{margin-left: 20px; font-size: 14px; font-family: arial, san-serif;}' +
+                '</style>';
+    const heading = '<h2>An offline PSet request has been submitted</h2>';
+    const body = '<p class="content">A following PSet request has been submitted: </p>' + 
+                '<p class="psetInfo">' +
+                    `ORCESTRA ID: ${id}  <br />` + 
+                    `PSet Name: ${name} <br />` + 
+                    `Submitted Date: ${submittedDate.toString()}` +
+                '</p>' +
+                '<p class="content">Please manually push the request to Pachyderm by starting Pachyderm, and sign in to ORCESTRA as an administrator.</p>' + 
+                 '<p class="signature">' + 
+                    'ORCESTRA powered by BHK Lab' + 
+                    '<br />The MaRS center' +
+                    '<br />101 College St. Toronto ON, CANADA' +
+                    '<br /><a href="https://bhklab.ca/">https://bhklab.ca/</a>'
+                 '</p>';
+    const html = style + heading + body;
+    
+    const message = {
+        from: {email: 'no-reply@orcestra.ca', name: 'ORCESTRA'},
+        to: process.env.ORCESTRA_EMAIL,
+        subject: '[ORCESTRA] A PSet request has been submitted.',
+        html: html
+    };
+
+    try{
+        await sgMail.send(message);
+        //await transport.sendMail(message);
+        console.log('request notification email sent');
+    }catch(error){
+        console.log(error);
+        throw error;
+    }
+}
+
 module.exports = {
     sendMail,
-    sendPwdResetEmail
+    sendPwdResetEmail,
+    sendPSetReqEmail
 }

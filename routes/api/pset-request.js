@@ -25,11 +25,12 @@ const processOnlineRequest = async function(req, res){
                 };
             }
         }else{
-            console.log('offline process')
+            console.log('offline process');
+            await mailer.sendPSetReqEmail(reqPset._id, reqPset.name, reqPset.dateSubmitted);
             resData = {
                 summary: 'Request Submitted', 
                 message: 'PSet request has been submitted. Your request will be processed when Pachyderm is online. You will receive an email when ORCESTRA completes your request.'
-            }
+            };
         }
     }catch(error){
         console.log(error)
