@@ -28,7 +28,6 @@ cd ORCESTRA
 ## Dev Dependenices
 
 - Nodemon
-- Eslint
 
 ## Build Instructions
 
