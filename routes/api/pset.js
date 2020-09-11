@@ -1,7 +1,15 @@
+/**
+ * @fileoverview Contains API functions for PSet retrieval and modification.
+ */
 const psetSelect = require('../../db/helper/pset-select');
 const psetUpdate = require('../../db/helper/pset-update');
 const psetCanonical = require('../../db/helper/pset-canonical');
 
+/**
+ * Retrives PSet by DOI and parses it into an object form to be used for the single PSet page.
+ * @param {*} req 
+ * @param {*} res 
+ */
 const getPSetByDOI = async function(req, res){
     console.log('getPSetByDOI')
     const doi = req.params.id1 + '/' + req.params.id2;
@@ -42,6 +50,11 @@ const getPSetByDOI = async function(req, res){
     }
 }
 
+/**
+ * Retrieves filtered PSets.
+ * @param {*} req 
+ * @param {*} res 
+ */
 const searchPSets = async function(req, res){
     console.log('searchPSets');
     try{

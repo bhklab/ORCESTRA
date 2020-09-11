@@ -1,3 +1,9 @@
+/**
+ * Contains functions that handles user-related use cases such as 
+ * user registration, 
+ * authentications and 
+ * password reset
+ */
 const userdata = require('../../db/helper/userdata');
 const userPSet = require('../../db/helper/user-pset');
 const bcrypt = require('bcryptjs');
@@ -16,6 +22,11 @@ async function getUser(req, res){
     }
 }
 
+/**
+ * Checks if a user exists, and whether the user is registered.
+ * @param {*} req 
+ * @param {*} res 
+ */
 async function checkUser(req, res){
     try{
         const user = await userdata.selectUser(req.query.username)

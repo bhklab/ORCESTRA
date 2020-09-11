@@ -3,7 +3,15 @@ const metricdata = require('../../db/helper/metricdata');
 const psetCanonical = require('../../db/helper/pset-canonical');
 const upset = require('../../helper/upset');
 
+/**
+ * Module that includes functions to get formdata and PSet metric data for various usage in the web app.
+ */
 module.exports = {
+    /**
+     * Retrieves a formData object from DB, and parses it into arrays of parameter options so that it can be used in drowndown selections.
+     * @param {*} req 
+     * @param {*} res 
+     */
     getFormData: async function(req, res){
         try{
             let form = {dataType: [], dataset: [], genome: [], rnaTool: [], rnaRef: [], accompanyRNA: [], accompanyDNA: [], dnaTool: [], dnaRef: []}
@@ -31,6 +39,11 @@ module.exports = {
         }
     },
 
+    /**
+     * Retrieves formdata and statistics data.
+     * @param {*} req 
+     * @param {*} res 
+     */
     getDataForStats: async function(req, res){ 
         let data = {psets: [], chartData:[]}
         try{
@@ -57,6 +70,11 @@ module.exports = {
         }
     },
 
+    /**
+     * Retrieves PSet metric data, and parses it into a format used for the upset plot
+     * @param {*} req 
+     * @param {*} res 
+     */
     getMetricData: async function(req, res){
         try{
             console.log(req.body.parameters.metricName)
@@ -91,6 +109,7 @@ module.exports = {
                 }
             }
 
+            // parse data to be used for the upset plot if the data metric type is one of cell lines, drugs and tissues.
             let upsetData = []
             if(metricType === 'cellLines' || metricType === 'drugs' || metricType === 'tissues'){
                 upsetData = upset.makeUpset(sets, items)
@@ -112,6 +131,11 @@ module.exports = {
         }
     },
 
+    /**
+     * Retrieves datasets available to be displayed in the upset plot and parses it into an array of objects that contain metadata necessary to render the plot.
+     * @param {*} req 
+     * @param {*} res 
+     */
     getMetricDataOptions: async function(req, res){
         try{
              // plot colors to be used to color code each set. These are 20 randomly generated colors.
@@ -141,6 +165,11 @@ module.exports = {
         }
     },
 
+    /**
+     * Retrieves all the data to be rendered on the landing page.
+     * @param {*} req 
+     * @param {*} res 
+     */
     getLandingData: async function(req, res){
         const result = await metricdata.getLandingData();
         if(result.status){

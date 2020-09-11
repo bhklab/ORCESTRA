@@ -1,6 +1,15 @@
 const jwt = require('jsonwebtoken');
 
+/**
+ * Module to handle user authentication
+ */
 module.exports = {
+    /**
+     * Checks if the authentication token in a request cookie is still valid
+     * @param {*} req request object
+     * @param {*} res response object
+     * @param {*} next callback function 
+     */
     checkToken: function(req, res, next){
         const token = req.cookies.token;
         if(!token){

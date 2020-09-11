@@ -1,7 +1,14 @@
 const mongo = require('../../db/mongo');
 const psetRequest = require('../../db/helper/pset-request');
 
+/**
+ * Contains functions that handles a PSet request.
+ */
 module.exports = {
+    /**
+     * Creates a PSet object to be stored in the database from the PSet request object.
+     * @param {*} reqPset 
+     */
     receivePSetRequest: async function(reqPset){
         console.log('receivePSetRequest');
         let pset = reqPset;
@@ -17,6 +24,10 @@ module.exports = {
         return pset;
     }, 
 
+    /**
+     * Builds Pachyderm config json object from a PSet object.
+     * @param {*} pset 
+     */
     buildPachydermConfigJson: async function(pset){
         console.log("buildPachydermReqJson");
         console.log(pset)
@@ -70,6 +81,10 @@ module.exports = {
         }
     },
 
+    /**
+     * Retrieves Pachyderm config json object by request ID.
+     * @param {*} id 
+     */
     getPachydermConfigJson: async function(id){
         console.log("getPachydermConfigJson");
         const result = await psetRequest.getRequestConfig(id);

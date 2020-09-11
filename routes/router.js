@@ -1,3 +1,6 @@
+/**
+ * @fileoverview routing specification for the web app backend
+ */
 const express = require('express');
 const router = express.Router();
 

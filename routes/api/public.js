@@ -3,6 +3,9 @@ const psetSelect = require('../../db/helper/pset-select');
 const psetUpdate = require('../../db/helper/pset-update');
 const psetCanonical = require('../../db/helper/pset-canonical');
 
+/**
+ * Contains functions used for publically exposed API calls.
+ */
 module.exports = {
 
     getPSets: async (req, res) => {
@@ -142,6 +145,9 @@ module.exports = {
         }
     },
 
+    /**
+     * Used by PharmacoGx to update PSet download count when a user downloads a PSet from ORCESTRA through PharmacoGx
+     */
     updateDownloadCount: async (req, res) => {
         console.log('updateDownloadCount');
         try{

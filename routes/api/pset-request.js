@@ -1,9 +1,23 @@
+/**
+ * @fileoverview Includes functions that handles PSet request.
+ */
 const psetRequest = require('../../db/helper/pset-request');
 const psetUpdate = require('../../db/helper/pset-update');
 const mailer = require('../../mailer/mailer');
 const request = require('./request');
 const pachyderm = require('./pachyderm');
 
+/**
+ * Handles incoming PSet requests by the users.
+ * Builds a PSet object according to the request.
+ * Builds a Pachyderm config json object according to the request.
+ * Stores the PSet object into DB.
+ * Checks if Pachyderm is online.
+ * Process the request if online.
+ * Send a request notification email to admin@orcestra.ca if offline.
+ * @param {*} req 
+ * @param {*} res 
+ */
 const processOnlineRequest = async function(req, res){
     console.log("completeRequest");
     let resData = {}; 
@@ -41,6 +55,13 @@ const processOnlineRequest = async function(req, res){
     }
 }
 
+/**
+ * Triggers PSet request processing when manually pushed by admin.
+ * Checks if Pachyderm is online.
+ * If online, retrieves the json config file, creates pipeline and update PSet status.
+ * @param {*} req 
+ * @param {*} res 
+ */
 const processOfflineRequest = async function(req, res){
     console.log("processRequest");
     let resData = {};
@@ -75,6 +96,12 @@ const processOfflineRequest = async function(req, res){
     }
 }
 
+/**
+ * Handles post-pipeline processing request from Pachyderm.
+ * Recieves post-pipeline request, updates the database and sends email to the user.
+ * @param {*} req 
+ * @param {*} res 
+ */
 const completeRequest = async function(req, res){
     console.log('complete request');
     const data = req.body;

@@ -1,6 +1,13 @@
 const grpc = require('../../grpc/grpc-client');
 
+/**
+ * Module that includes wrappers that calls GRPC interface functions
+ */
 module.exports = {
+    /**
+     * Calls GRPC createPipeline function and handles error.
+     * @param {*} request 
+     */
     createPipeline: async function(request){
         console.log("createPipeline");
         grpc.createPipeline(request, (result) => {
@@ -11,7 +18,9 @@ module.exports = {
             }
         });
     },
-
+     /**
+      * Checks if Pachyderm is online by calling GRPC getVersion.
+      */
     checkOnline: async function(){
         let online = false;
         try{
@@ -27,6 +36,11 @@ module.exports = {
         //return true
     },
 
+    /**
+     * Returns if Pachyderm is online by calling the checkOnline function.
+     * @param {*} req 
+     * @param {*} res 
+     */
     returnStatus: async function(req, res){
         let online = false;
         try{
