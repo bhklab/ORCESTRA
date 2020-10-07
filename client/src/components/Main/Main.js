@@ -84,69 +84,64 @@ const OrcestraMain = (props) => {
                 <div className="home">
                     <h1>ORCESTRA</h1>   
                     <h2>Orchestration platform for reproducing pharmacogenomic analyses</h2>
-                    <div className='mainMenuContainer'>
-                        <div className='mainMenuRow'>
-                            <div className='mainMenuColumn'>
-                                <div className='mainMenuItem'>
-                                    <h3>Search and Request PSets</h3>
-                                    <div className='mainMenuItemContent'>
-                                        <div>Design your own PSet using:</div>
-                                        <div className='mainMenuItemLine'>
-                                            <div className='largeNum'><button onClick={() => {showDialog('dataset')}}>{formData.versionCombo}</button></div> <div>Dataset/Drug sensitivity combinations</div>
-                                        </div>
-                                        <div className='mainMenuItemLine'><span className='largeNum'>
-                                            <button onClick={() => {showDialog('rna')}}>{formData.rnaTool.length}</button></span> <span>RNA pipelines.</span>
-                                        </div>
-                                        <div className='mainMenuItemLine'><span className='largeNum'>
-                                            <button onClick={() => {showDialog('dna')}}>{formData.dnaTool.length}</button></span> <span>DNA tools.</span>
-                                        </div>
-                                        <div className='mainMenuLink'>
-                                            <a className='button' href="/PSetSearch">Search and Request</a>
-                                        </div>
+                    <div className='mainMenuRow'>
+                        <div className='mainMenuColumn'>
+                            <div className='mainMenuItem'>
+                                <h3>Search and Request PSets</h3>
+                                <div className='mainMenuItemContent'>
+                                    <div>Design your own PSet using:</div>
+                                    <div className='mainMenuItemLine'>
+                                        <div className='largeNum'><button onClick={() => {showDialog('dataset')}}>{formData.versionCombo}</button></div> <div>Dataset/Drug sensitivity combinations</div>
+                                    </div>
+                                    <div className='mainMenuItemLine'><span className='largeNum'>
+                                        <button onClick={() => {showDialog('rna')}}>{formData.rnaTool.length}</button></span> <span>RNA pipelines.</span>
+                                    </div>
+                                    <div className='mainMenuLink'>
+                                        <a className='button' href="/PSetSearch">Search and Request</a>
                                     </div>
                                 </div>
                             </div>
-                            <div className='mainMenuColumn'>
-                                <div className='mainMenuItem' style={{ alignSelf: 'flex-start'}}>
-                                    <h3>Canonical PSets</h3>
-                                    <div className='mainMenuItemContent'>
-                                        <div>The latest version of PSets created by BHK Lab.</div>
-                                        <div className='mainMenuLink'><a className='button' href="/Canonical">View Canonical PSets</a></div>
-                                    </div>
+                        </div>
+                        <div className='mainMenuColumn'>
+                            <div className='mainMenuItem' style={{ alignSelf: 'flex-start'}}>
+                                <h3>Canonical PSets</h3>
+                                <div className='mainMenuItemContent'>
+                                    <div>The latest version of PSets created by BHK Lab.</div>
+                                    <div className='mainMenuLink'><a className='button' href="/Canonical">View Canonical PSets</a></div>
                                 </div>
-                                <div className='mainMenuItem' style={{ alignSelf: 'flex-start'}}>
-                                    <h3>View PSet Request Status</h3>
-                                    <div className='mainMenuItemContent'>
-                                        <div>ORCESTRA is processing following requests:</div>
-                                        <div className='mainMenuItemLine'><span className='largeNum'>{dashboard.pending}</span> <span>Requests in queue.</span></div>
-                                        <div className='mainMenuItemLine'><span className='largeNum'>{dashboard.inProcess}</span> <span >Requests in process.</span></div>
-                                        <div className='mainMenuLink'><a className='button' href="/Dashboard">View Dashboard</a></div>
-                                    </div>
+                            </div>
+                            <div className='mainMenuItem' style={{ alignSelf: 'flex-start'}}>
+                                <h3>View PSet Request Status</h3>
+                                <div className='mainMenuItemContent'>
+                                    <div>ORCESTRA is processing following requests:</div>
+                                    <div className='mainMenuItemLine'><span className='largeNum'>{dashboard.pending}</span> <span>Requests in queue.</span></div>
+                                    <div className='mainMenuItemLine'><span className='largeNum'>{dashboard.inProcess}</span> <span >Requests in process.</span></div>
+                                    <div className='mainMenuLink'><a className='button' href="/Dashboard">View Dashboard</a></div>
+                                </div>
+                            </div>
+                        </div> 
+                        <div className='mainMenuColumn'>
+                            <div className='mainMenuItem'>
+                                <h3>Top 5 Popular PSets</h3>
+                                <div className='mainMenuItemContent'>
+                                    <DataTable value={statsData} >
+                                        <Column className='textField' field='download' header='Download' />
+                                        <Column className='textField' field='name' header='Name' body={nameColumnTemplate}/>
+                                    </DataTable>
+                                    <div className='mainMenuLink'><a className='button' href="/Stats">View Statistics</a></div>
                                 </div>
                             </div> 
-                            <div className='mainMenuColumn'>
-                                <div className='mainMenuItem'>
-                                    <h3>Top 5 Popular PSets</h3>
-                                    <div className='mainMenuItemContent'>
-                                        <DataTable value={statsData} >
-                                            <Column className='textField' field='download' header='Download' />
-                                            <Column className='textField' field='name' header='Name' body={nameColumnTemplate}/>
-                                        </DataTable>
-                                        <div className='mainMenuLink'><a className='button' href="/Stats">View Statistics</a></div>
-                                    </div>
-                                </div> 
-                                <div className='mainMenuItem'>
-                                    <h3>Generate PSets with Your Data</h3>
-                                    <div className='mainMenuItemContent'>
-                                        <p>
-                                            <b>You can generate PSets using your own datasets.</b> <br /> 
-                                            For more information, please read about <a href='/Tutorial'>contributing your data</a>.
-                                        </p>    
-                                    </div>
-                                </div> 
-                            </div>    
-                        </div>  
-                    </div>  
+                            <div className='mainMenuItem'>
+                                <h3>Generate PSets with Your Data</h3>
+                                <div className='mainMenuItemContent'>
+                                    <p>
+                                        <b>You can generate PSets using your own datasets.</b> <br /> 
+                                        For more information, please read about <a href='/Tutorial'>contributing your data</a>.
+                                    </p>    
+                                </div>
+                            </div> 
+                        </div>    
+                    </div>   
                 </div>
             </div>
             <DatasetDialog visible={datasetVisible} onHide={() => {hideDialog('dataset')}} dataset={formData.dataset} />
