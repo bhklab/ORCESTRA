@@ -77,37 +77,41 @@ module.exports = {
      */
     getMetricData: async function(req, res){
         try{
-            console.log(req.body.parameters.metricName)
+            console.log(req.body.parameters.metricName);
             
-            const metricType = req.body.parameters.metricName
-            const datasets = req.body.parameters.datasets
-            const queryDatasets = datasets.map((item) => {return item.dataset})
-            const queryDatasetNames = datasets.map((item) => {if(item.checked){return item.name}})
+            const metricType = req.body.parameters.metricName;
+            const datasets = req.body.parameters.datasets;
+            const queryDatasets = [...new Set(datasets.map((item) => (item.dataset)))];
+            const queryDatasetNames = datasets.map((item) => {if(item.checked){return item.name}});
 
-            const metricData = await metricdata.getMetricData(metricType, queryDatasets)
+            const metricData = await metricdata.getMetricData(metricType, queryDatasets);
             
-            let barData = []
-            let sets = []
-            let items = []
-            
-            for(let i = 0; i < metricData.length; i++){
-                for(let j = 0; j < metricData[i].versions.length; j++){
-                    const name = metricData[i].name + '_' + metricData[i].versions[j].version
-                    if(queryDatasetNames.indexOf(name) > -1){
-                        let dset = datasets.find(item => {return item.name === name})
-                        if(metricType === 'cellLineDrugPairs' || metricType === 'genes'){
-                            barData.push({
-                                name: name,
-                                value: metricData[i].versions[j][metricType],
-                                color: dset.color
-                            })
-                        }else{
-                            sets.push({name: name, color: dset.color})
-                            items.push(metricData[i].versions[j][metricType])
+            let barData = [];
+            let sets = [];
+            let items = [];
+
+            metricData.forEach(metric => {
+                metric.versions.forEach(version => {
+                    if(datasets.find(ds => (ds.version, version.version))){
+                        const name = `${metric.name}_${version.version}`;
+                        if(queryDatasetNames.indexOf(name) > -1){
+                            let dset = datasets.find(item => {return item.name === name})
+                            if(metricType === 'cellLineDrugPairs' || metricType === 'genes' || metricType === 'experiments'){
+                                barData.push({
+                                    name: name,
+                                    value: metricType === 'experiments' ? version[metricType].current.length : version[metricType],
+                                    color: dset.color
+                                });
+                            }else{
+                                sets.push({name: name, color: dset.color});
+                                items.push(
+                                    metricType === 'tissues' ? version[metricType] : version[metricType].current
+                                );
+                            }
                         }
                     }
-                }
-            }
+                });
+            });
 
             // parse data to be used for the upset plot if the data metric type is one of cell lines, drugs and tissues.
             let upsetData = []
@@ -132,7 +136,8 @@ module.exports = {
     },
 
     /**
-     * Retrieves datasets available to be displayed in the upset plot and parses it into an array of objects that contain metadata necessary to render the plot.
+     * Retrieves available datasets to be displayed in the upset plot and parses it into an array of objects that contain required metadata to render the plot.
+     * Currently, the datasets that are used for canonical PSets are returned.
      * @param {*} req 
      * @param {*} res 
      */
@@ -141,27 +146,23 @@ module.exports = {
              // plot colors to be used to color code each set. These are 20 randomly generated colors.
             const defColors = [
                 '#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#6fbd22','#bcbd22','#17becf','#222AA1','#7DC922','#03F14A','#2F0248','#D31E70','#370E0F','#101A21','#FF9585','#BE93F6','#1CF4A5','#DACC14','#BB012F','#62AD27','#49947F','#A817D1','#159326','#652CBF','#1922A7','#2FC186','#6A0570'
-            ]
+            ];
             
-            const data = await metricdata.getAvailableDatasetForMetrics()
-            let datasets = []
-            let colIndex = 0
-            for(let i = 0; i < data.length; i++){
-                for(let j = 0; j < data[i].versions.length; j++){
-                    datasets.push({
-                        name: data[i].name + "_" + data[i].versions[j].version,
-                        dataset: data[i].name,
-                        version: data[i].versions[j].version,
-                        checked: true,
-                        color: defColors[colIndex]
-                    })
-                    colIndex++
-                }
-            }
-            res.send(datasets)
+            let data = await metricdata.getAvailableDatasetForMetrics();
+            console.log(data);
+            // parses available dataset into an array of objects that can be used for upset plot rendering
+            const datasets = data.map((d, i) => ({
+                name: d.name + "_" + d.version,
+                dataset: d.name,
+                version: d.version,
+                checked: true, // checked it set to true to display dataset metrics for all of the available datasets.
+                color: defColors[i] // used for upset plot
+            }));
+
+            res.send(datasets);
         }catch(error){
-            console.log(error)
-            res.status(500).send(error)
+            console.log(error);
+            res.status(500).send(error);
         }
     },
 

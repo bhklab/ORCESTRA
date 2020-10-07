@@ -1,4 +1,4 @@
-const csv = require('csvtojson')
+const csv = require('csvtojson');
 const mongo  = require('mongodb');
 const mongoClient = mongo.MongoClient;
 

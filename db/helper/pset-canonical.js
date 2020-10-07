@@ -2,6 +2,12 @@ const formdata = require('./formdata');
 const psetSelect = require('./pset-select');
 
 module.exports = {
+    /**
+     * For Canonical PSets and API.
+     * Returns an array of objects containing canonical and non-canonical PSets for a particular dataset.
+     * @param {*} query 
+     * @param {*} projection 
+     */
     getCanonicalPSets: async function(query={}, projection=null){
         try{
             let canonical = []
@@ -50,6 +56,10 @@ module.exports = {
         }
     },
 
+    /**
+     * For Stats and Main pages.
+     * Obtains the download rankings of the canonical PSets
+     */
     getCanonicalDownloadRanking: async function(){
         try{
             const canDataset = await this.getCanonicalPSets()

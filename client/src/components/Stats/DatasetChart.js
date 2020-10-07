@@ -7,13 +7,13 @@ import UpsetPlot from './UpsetPlot'
 import Loader from 'react-loader-spinner';
 const Plot = createPlotlyComponent(Plotly);
 
-const DatasetChart = props => {
+const DatasetChart = () => {
 
     const metricSet = [
         {name: 'Numer of Cell Lines', value: 'cellLines'},
         {name: 'Numer of Drugs', value: 'drugs'},
         {name: 'Number of Tissue Types', value: 'tissues'},
-        {name: 'Numer of Cell-Line Drug Pairs ', value: 'cellLineDrugPairs'},
+        {name: 'Numer of Drug Experiments ', value: 'experiments'},
         {name: 'Numer of Genes', value: 'genes'}
     ]
     const [upsetData, setUpsetData] = useState({})
@@ -21,7 +21,7 @@ const DatasetChart = props => {
     const [parameters, setParameters] = useState({
         datasets: [],
         metricName: ''
-    })
+    });
     const [isReady, setIsReady] = useState(false)
     const [isPlotReady, setIsPlotReady] = useState(false)
 
@@ -149,7 +149,7 @@ const DatasetChart = props => {
                 {isPlotReady ? 
                     <div className='stats-dataset-plot'>
                         {
-                            parameters.metricName === 'cellLineDrugPairs' || parameters.metricName === 'genes' ?
+                            parameters.metricName === 'experiments' || parameters.metricName === 'cellLineDrugPairs' || parameters.metricName === 'genes' ?
                             <Plot
                                 data= {barData}
                                 layout={ {

@@ -40,7 +40,7 @@ router.post('/user/pset/remove', auth.checkToken, user.removeUserPSet);
 router.get('/user/checkToken', auth.checkToken, user.checkToken);
 router.post('/user/reset', auth.checkToken, user.resetPwd);
 
-//formdata
+//formdata and stats
 router.get('/formdata', formMetric.getFormData);
 router.get('/stats/data', formMetric.getDataForStats);
 router.get('/stats/metrics/options', formMetric.getMetricDataOptions);
