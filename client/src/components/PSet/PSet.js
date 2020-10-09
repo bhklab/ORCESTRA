@@ -4,6 +4,7 @@ import DatasetTabContent from './TabContents/DatasetTabContent';
 import RNATabContent from './TabContents/RNATabContent';
 import DNATabContent from './TabContents/DNATabContent';
 import PipelineTabContent from './TabContents/PipelineTabContent';
+import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';
 import {GeneralInfoAccordion} from './PSetAccordion';
 import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
 import {TabContainer} from './PSetStyle';
@@ -58,6 +59,7 @@ const PSet = (props) => {
                                         {td.header === 'RNA' && <RNATabContent metadata={td.data} />}
                                         {td.header === 'DNA' && <DNATabContent metadata={td.data} />}
                                         {td.header === 'Pipeline' && <PipelineTabContent data={td.data} />}
+                                        {td.header === 'Release Notes' && <ReleaseNoteTabContent data={td.data} />}
                                     </TabPanel>
                                 ))
                             }

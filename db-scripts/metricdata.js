@@ -18,8 +18,8 @@ const insertMetricData = async function(connStr, dbName, metricsDir){
         CTRPv2: {name: 'CTRPv2', version: '2015'},
         FIMM: {name: 'FIMM', version: '2016'},
         gCSI: {name: 'gCSI', version: '2017'},
-        GDSC180: {name: 'GDSC', version: '2020(v1-8.0)'},
-        GDSC280: {name: 'GDSC', version: '2020(v2-8.0)'},
+        GDSC180: {name: 'GDSC', version: '2019(v1-8.0)'},
+        GDSC280: {name: 'GDSC', version: '2019(v2-8.0)'},
         GDSC182: {name: 'GDSC', version: '2020(v1-8.2)'},
         GDSC282: {name: 'GDSC', version: '2020(v2-8.2)'},
         GRAY2013: {name: 'GRAY', version: '2013'},
@@ -36,8 +36,8 @@ const insertMetricData = async function(connStr, dbName, metricsDir){
         {name: 'FIMM', versions: [{version: '2016'}]},
         {name: 'gCSI', versions: [{version: '2017'}]},
         {name: 'GDSC', versions: [
-            {version: '2020(v1-8.0)'}, 
-            {version: '2020(v2-8.0)'},
+            {version: '2019(v1-8.0)'}, 
+            {version: '2019(v2-8.0)'},
             {version: '2020(v1-8.2)'}, 
             {version: '2020(v2-8.2)'}
         ]},
@@ -84,6 +84,46 @@ const insertMetricData = async function(connStr, dbName, metricsDir){
                 }
             })
             
+        });
+
+        /**
+         *  parse molecular data section
+         */
+        version.molData = {}
+
+        let filePath = path.join(metricsDir, dirs[i], 'notes.txt');
+        let data = fs.readFileSync(filePath, 'UTF-8');
+
+        let molData = data.split('#molecular data')[1].split(/\r?\n/).filter((item) => {return item});
+        molData.forEach(line => {
+            let split = line.split(': ');
+            let molDataType = split[0].trim();
+
+            switch(molDataType){
+                case 'RNA-seq':
+                    version.molData.rnaSeq = split[1].trim();
+                    break;
+                case 'Microarray':
+                    version.molData.microarray = split[1].trim();
+                    break;
+                case 'Mutation':
+                    version.molData.mutation = split[1].trim();
+                    break;
+                case 'Mutation(Exome)':
+                    version.molData.mutationExome = split[1].trim();
+                    break;
+                case 'CNV': 
+                    version.molData.cnv = split[1].trim();
+                    break;
+                case 'Fusion':
+                    version.molData.fusion = split[1].trim();
+                    break;
+                case 'Methylation':
+                    version.molData.fusion = split[1].trim();
+                    break;
+                default:
+                    break;
+            }
         });
 
         //const drugs = fs.readFileSync(path.join(metricsDir, dirs[i], 'drugs.txt'), 'UTF-8')

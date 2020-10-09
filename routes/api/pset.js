@@ -43,6 +43,8 @@ const getPSetByDOI = async function(req, res){
 
         if(result.pipeline) {pset.tabData.push({header: 'Pipeline', data: {commitID: result.commitID, config: result.pipeline}})}
 
+        pset.tabData.push({header: 'Release Notes', data: result.releaseNotes});
+
         res.send(pset)
     }catch(error){
         console.log(error);

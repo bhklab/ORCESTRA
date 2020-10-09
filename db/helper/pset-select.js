@@ -127,6 +127,10 @@ module.exports = {
                 pipelineConfig = await masterConfigCollection.findOne({'pipeline.name': psetObj.dataset.versionInfo.pipeline})
             }
             psetObj.pipeline = pipelineConfig
+
+            // add release notes metrics
+            psetObj.releaseNotes = {};
+
             return psetObj
         }catch(err){
             console.log(err)
