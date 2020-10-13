@@ -12,13 +12,15 @@ module.exports = {
      */
     getMetricData: async function(metricType, datasets){
         try{
-            let querySet = datasets.length ? {'name':{$in: datasets}} : {}
+            let querySet = datasets.length ? {'name':{$in: datasets}} : {};
             let field = 'versions.' + metricType;
-            let projection = {'projection': {
-                'name': true,
-                'versions.version': true,
-                [field]: true
-            }}
+            let projection = metricType.length ? {
+                    'projection': {
+                    'name': true,
+                    'versions.version': true,
+                    [field]: true
+                }
+            } : {};
             
             const db = await mongo.getDB();
             const metricData = db.collection('metric-data');
@@ -89,4 +91,47 @@ module.exports = {
             return res;
         }
     },
+
+    /**
+     * For single PSet page release notes
+     * Returns an object containing metric data of a specific version of a dataset.
+     * @param name string value for the name of the dataset
+     * @param version string value for the dataset version
+     */
+    getMetricDataVersion: async function(name, version, projectedField){
+        try{
+            console.log(`${name} ${version}`);
+            const db = await mongo.getDB();
+            const metricData = db.collection('metric-data');
+            let data = await metricData.aggregate([
+                {
+                    '$match': {
+                        'name': name
+                    }
+                },
+                {'$unwind': '$versions'},
+                {'$match': {
+                    'versions.version': version
+                }},
+                {
+                    '$group': {
+                        _id: '$_id',
+                        version: { '$push':{
+                            'version': '$versions.version',
+                            [projectedField]: '$versions.' + projectedField
+                        }}
+                    }
+                }
+            ]).toArray();
+            let metrics = {
+                name: name,
+                ...data[0].version[0]
+            }
+            return(metrics);
+        }catch(error){
+            console.log(error);
+            throw error;
+        }
+        
+    }
 }

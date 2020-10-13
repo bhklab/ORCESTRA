@@ -1,5 +1,6 @@
 const mongo = require('../mongo');
 const formdata = require('./formdata');
+const metricData = require('./metricdata');
 
 function getQueryFilterSet(query){
     let querySet = {}
@@ -114,23 +115,23 @@ module.exports = {
         try{
             const form = await formdata.getFormData();
 
-            const psetCollection = db.collection('pset')
-            const pset = await psetCollection.findOne({'doi': doi, 'status' : 'complete'}, projection)
-            const psetObj = await buildPSetObject(pset, form)
+            const psetCollection = db.collection('pset');
+            const pset = await psetCollection.findOne({'doi': doi, 'status' : 'complete'}, projection);
+            const psetObj = await buildPSetObject(pset, form);
 
-            const reqConfigCollection = db.collection('req-config')
-            let pipelineConfig = {}
-            pipelineConfig = await reqConfigCollection.findOne({'_id': psetObj._id})
+            const reqConfigCollection = db.collection('req-config');
+            let pipelineConfig = {};
+            pipelineConfig = await reqConfigCollection.findOne({'_id': psetObj._id});
 
             if(!pipelineConfig){
-                const masterConfigCollection = db.collection('req-config-master')
-                pipelineConfig = await masterConfigCollection.findOne({'pipeline.name': psetObj.dataset.versionInfo.pipeline})
+                const masterConfigCollection = db.collection('req-config-master');
+                pipelineConfig = await masterConfigCollection.findOne({'pipeline.name': psetObj.dataset.versionInfo.pipeline});
             }
-            psetObj.pipeline = pipelineConfig
-
+            psetObj.pipeline = pipelineConfig;
             // add release notes metrics
-            psetObj.releaseNotes = {};
-
+            const metrics = await metricData.getMetricDataVersion(psetObj.dataset.name, psetObj.dataset.versionInfo.version, 'molData');
+            console.log(metrics);
+            psetObj.releaseNotes = metrics;
             return psetObj
         }catch(err){
             console.log(err)

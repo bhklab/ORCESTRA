@@ -119,7 +119,7 @@ const insertMetricData = async function(connStr, dbName, metricsDir){
                     version.molData.fusion = split[1].trim();
                     break;
                 case 'Methylation':
-                    version.molData.fusion = split[1].trim();
+                    version.molData.methylation = split[1].trim();
                     break;
                 default:
                     break;

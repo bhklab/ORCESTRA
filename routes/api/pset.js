@@ -4,6 +4,7 @@
 const psetSelect = require('../../db/helper/pset-select');
 const psetUpdate = require('../../db/helper/pset-update');
 const psetCanonical = require('../../db/helper/pset-canonical');
+const metricData = require('../../db/helper/metricdata');
 
 /**
  * Retrives PSet by DOI and parses it into an object form to be used for the single PSet page.
@@ -96,10 +97,30 @@ const downloadPSets = async function(req, res){
     }
 }
 
+const getReleaseNotesData = async function(req, res){
+    try{
+        const data = await metricData.getMetricDataVersion(req.params.name, req.params.version, req.params.type);
+        let metrics = {
+            name: data.name,
+            version: data.version,
+            [req.params.type]: {
+                current: req.params.type === 'experiments' ? data[req.params.type].current : data[req.params.type].current.map(d => ({name: d})),
+                new: data[req.params.type].new.map(d => ({name: d})),
+                removed: data[req.params.type].removed.map(d => ({name: d}))
+            }
+        }
+        res.send(metrics);
+    }catch(error){
+        console.log(error);
+        res.status(500).send(error);
+    }
+}
+
 module.exports = {
     getPSetByDOI,
     searchPSets,
     getCanonicalPSets,
     updateCanonicalPSets,
-    downloadPSets
+    downloadPSets,
+    getReleaseNotesData
 };

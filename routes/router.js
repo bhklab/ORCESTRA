@@ -16,6 +16,7 @@ const public = require('./api/public');
 // pset
 router.post('/pset/search', pset.searchPSets);
 router.get('/pset/one/:id1/:id2', pset.getPSetByDOI);
+router.get('/pset/releasenotes/:name/:version/:type', pset.getReleaseNotesData);
 router.get('/pset/canonical', pset.getCanonicalPSets);
 router.post('/pset/canonical/update', pset.updateCanonicalPSets);
 router.post('/pset/download', pset.downloadPSets);
