@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import ReleaseNoteTableGroup from './ReleaseNoteTableGroup';
-import ReleaseNoteExperimentTableGroup from './ReleaseNoteExperimentTableGroup';
 
 const StyledReleaseNotes = styled.div`
     width: 95%;
@@ -114,7 +113,7 @@ const ReleaseNoteTabContent = (props) => {
                 </StyledMetricGroupMenu>
                 {display === 'cellLines' && <ReleaseNoteTableGroup dataset={{name: props.data.name, version: props.data.version}} type='cellLines'/>}
                 {display === 'drugs' && <ReleaseNoteTableGroup dataset={{name: props.data.name, version: props.data.version}} type='drugs'/>}
-                {display === 'experiments' && <ReleaseNoteExperimentTableGroup dataset={{name: props.data.name, version: props.data.version}} type='experiments'/>}
+                {display === 'experiments' && <ReleaseNoteTableGroup dataset={{name: props.data.name, version: props.data.version}} type='experiments'/>}
                 {display === 'molData' && molDataGroup(props.data.molData)}
             </StyledMetricsPanel>
         </StyledReleaseNotes>

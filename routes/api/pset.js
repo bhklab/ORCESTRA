@@ -99,11 +99,19 @@ const downloadPSets = async function(req, res){
     }
 }
 
+/**
+ * Returns release notes data for a specific category (cell lines, drugs or experiments)
+ * @param {*} req 
+ * @param {*} res 
+ */
 const getReleaseNotesData = async function(req, res){
     try{
         let currentData;
+
+        // retrieves metric data of a speciried dataset-version for the specific catetory (type)
         const data = await metricData.getMetricDataVersion(req.params.name, req.params.version, req.params.type);
 
+        // if getting data for experiments, data for current experiments table is read from a json file.
         if(req.params.type === 'experiments'){
             const jsonstr = fs.readFileSync(path.join(__dirname, '../../db', 'current-experiments-csv', `${req.params.name}_${req.params.version}_current_experiments.json`), 'utf8');
             currentData = JSON.parse(jsonstr);
