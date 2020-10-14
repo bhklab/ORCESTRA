@@ -14,8 +14,8 @@ const Footer = (props) => {
                 </div>
                 <div className="footerSupport footerLinks">
                     <h3>Support</h3>
-                    <NavLink exact to="/Documentation" >Documentation</NavLink>
-                    <NavLink exact to="/Tutorial" >Contributing your data</NavLink>
+                    <NavLink exact to="/Documentation/overview" >Documentation</NavLink>
+                    <NavLink exact to="/Documentation/datacontribution" >Contributing your data</NavLink>
                     <a href="https://github.com/bhklab">GitHub</a>
                     <a href="https://bhklab.ca/">BHKLab</a>
                 </div>
