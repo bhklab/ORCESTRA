@@ -8,13 +8,15 @@ const UserProfile = () => {
                 <h3>What you can do with your profile</h3>
                 <p>
                     <b>ORCESTRA</b> comes with user account feature which allows registred users to:
-                    <ul>
-                        <li>Save existing PSets as "favorites".</li>
-                        <li>Keep track of the user's PSet reguqest status.</li>
-                    </ul>
+                </p>
+                <ul>
+                    <li>Save existing PSets as "favorites".</li>
+                    <li>Keep track of the user's PSet reguqest status.</li>
+                </ul>
+                <p>
                     To register for the user account, simply click on the "Login/Register" button on navigation 
                     bar, and enter your email address and password.
-                </p>   
+                </p> 
             </div>
             <div>
                 <h3>Usage Statistics</h3>

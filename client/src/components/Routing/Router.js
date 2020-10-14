@@ -62,7 +62,7 @@ class Router extends React.Component{
                     <Route exact path ='/PSetSearch' component={PSetSearch}/>
                     <Route exact path ='/Dashboard' component={Dashboard}/>
                     <Route exact path ='/Stats' component={Stats}/>
-                    <Route exact path ='/Documentation' component={Documentation}/>
+                    <Route exact path ='/Documentation/:section' component={Documentation} />
                     <Route exact path ='/Tutorial' component={Tutorial}/>
                     <Route exact path='/Authentication' component={Login} />
                     <Route path ='/Reset/:token' component={Reset} />

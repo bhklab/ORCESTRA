@@ -5,13 +5,14 @@ import Overview from './DocFunctionality/Overview';
 import Search from './DocFunctionality/Search';
 import Request from './DocFunctionality/Request';
 import UserProfile from './DocFunctionality/UserProfile';
+import DataContribution from './DocFunctionality/DataContribution';
 import AvailablePSets from './DocAPI/AvailablePSets';
 import PSetMetadata from './DocAPI/PSetMetadata';
 import StatisticsAPI from './DocAPI/StatisticsAPI';
 
 const Documentation = (props) => {
     
-    const [display, setDisplay] = useState('overview');
+    const [display, setDisplay] = useState(props.match.params.section);
 
     return(
         <div className='pageContent'>
@@ -32,6 +33,12 @@ const Documentation = (props) => {
                             <button type='button' onClick={() => setDisplay('userProfile')}>Profile/Statistics</button>
                         </li>
                     </ul> 
+                    <h2>Support</h2>
+                    <ul>
+                        <li className={display === 'datacontribution' ? 'selected' : undefined}>
+                            <button type='button' onClick={() => setDisplay('datacontribution')}>Contributing Your Data</button>
+                        </li>   
+                    </ul>
                     <h2>API</h2>
                     <ul>
                         <li className={display === 'api-psets-available' ? 'selected' : undefined}>
@@ -49,6 +56,7 @@ const Documentation = (props) => {
                 {display === 'search' && <Search /> }
                 {display === 'request' && <Request /> }
                 {display === 'userProfile' && <UserProfile /> }
+                {display === 'datacontribution' && <DataContribution /> }
                 {display === 'api-psets-available' && <AvailablePSets /> }
                 {display === 'api-pset-single' && <PSetMetadata /> }
                 {display === 'api-statistics' && <StatisticsAPI /> }

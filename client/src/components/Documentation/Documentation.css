@@ -64,7 +64,7 @@
 }
 
 .documentation-scroll p {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .documentation-scroll pre {
@@ -95,7 +95,15 @@
     color: #3D405A;
     line-height: 30px;
     font-size: 14px;
-    
+}
+
+.documentation .docSection {
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.documentation .docSection p {
+    margin-left: 20px;
 }
 
 .documentation ol{
