@@ -96,46 +96,49 @@ async function buildPSetObject(pset, formdata){
     return psetObj
 }
 
-module.exports = {
-    selectPSets: async function(query, projection=null){       
-        const db = await mongo.getDB();
-        try{
-            const collection = db.collection('pset')
-            let queryFilter = getQueryFilterSet(query);
-            const data = await collection.find(queryFilter, projection).toArray()
-            return data
-        }catch(err){
-            console.log(err)
-            throw err
-        } 
-    },
+const selectPSets = async function(query, projection=null){       
+    const db = await mongo.getDB();
+    try{
+        const collection = db.collection('pset')
+        let queryFilter = getQueryFilterSet(query);
+        const data = await collection.find(queryFilter, projection).toArray()
+        return data
+    }catch(err){
+        console.log(err)
+        throw err
+    } 
+}
 
-    selectPSetByDOI: async function(doi, projection=null){
-        const db = await mongo.getDB();
-        try{
-            const form = await formdata.getFormData();
+const selectPSetByDOI = async function(doi, projection=null){
+    const db = await mongo.getDB();
+    try{
+        const form = await formdata.getFormData();
 
-            const psetCollection = db.collection('pset');
-            const pset = await psetCollection.findOne({'doi': doi, 'status' : 'complete'}, projection);
-            const psetObj = await buildPSetObject(pset, form);
+        const psetCollection = db.collection('pset');
+        const pset = await psetCollection.findOne({'doi': doi, 'status' : 'complete'}, projection);
+        const psetObj = await buildPSetObject(pset, form);
 
-            const reqConfigCollection = db.collection('req-config');
-            let pipelineConfig = {};
-            pipelineConfig = await reqConfigCollection.findOne({'_id': psetObj._id});
+        const reqConfigCollection = db.collection('req-config');
+        let pipelineConfig = {};
+        pipelineConfig = await reqConfigCollection.findOne({'_id': psetObj._id});
 
-            if(!pipelineConfig){
-                const masterConfigCollection = db.collection('req-config-master');
-                pipelineConfig = await masterConfigCollection.findOne({'pipeline.name': psetObj.dataset.versionInfo.pipeline});
-            }
-            psetObj.pipeline = pipelineConfig;
-            // add release notes metrics
-            const metrics = await metricData.getMetricDataVersion(psetObj.dataset.name, psetObj.dataset.versionInfo.version, 'molData');
-            console.log(metrics);
-            psetObj.releaseNotes = metrics;
-            return psetObj
-        }catch(err){
-            console.log(err)
-            throw err
+        if(!pipelineConfig){
+            const masterConfigCollection = db.collection('req-config-master');
+            pipelineConfig = await masterConfigCollection.findOne({'pipeline.name': psetObj.dataset.versionInfo.pipeline});
         }
-    },
+        psetObj.pipeline = pipelineConfig;
+        // add release notes metrics
+        const metrics = await metricData.getMetricDataVersion(psetObj.dataset.name, psetObj.dataset.versionInfo.version, 'molData');
+        console.log(metrics);
+        psetObj.releaseNotes = metrics;
+        return psetObj
+    }catch(err){
+        console.log(err)
+        throw err
+    }
+}
+
+module.exports = {
+    selectPSets,
+    selectPSetByDOI
 }

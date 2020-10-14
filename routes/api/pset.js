@@ -1,6 +1,8 @@
 /**
  * @fileoverview Contains API functions for PSet retrieval and modification.
  */
+const fs = require('fs');
+const path = require('path');
 const psetSelect = require('../../db/helper/pset-select');
 const psetUpdate = require('../../db/helper/pset-update');
 const psetCanonical = require('../../db/helper/pset-canonical');
@@ -99,12 +101,21 @@ const downloadPSets = async function(req, res){
 
 const getReleaseNotesData = async function(req, res){
     try{
+        let currentData;
         const data = await metricData.getMetricDataVersion(req.params.name, req.params.version, req.params.type);
+
+        if(req.params.type === 'experiments'){
+            const jsonstr = fs.readFileSync(path.join(__dirname, '../../db', 'current-experiments-csv', `${req.params.name}_${req.params.version}_current_experiments.json`), 'utf8');
+            currentData = JSON.parse(jsonstr);
+        }else{
+            currentData  = data[req.params.type].current.map(d => ({name: d}));
+        }
+
         let metrics = {
             name: data.name,
             version: data.version,
             [req.params.type]: {
-                current: req.params.type === 'experiments' ? data[req.params.type].current : data[req.params.type].current.map(d => ({name: d})),
+                current: currentData,
                 new: data[req.params.type].new.map(d => ({name: d})),
                 removed: data[req.params.type].removed.map(d => ({name: d}))
             }

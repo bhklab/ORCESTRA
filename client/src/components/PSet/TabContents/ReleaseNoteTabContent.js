@@ -3,15 +3,19 @@ import styled from 'styled-components';
 import ReleaseNoteTableGroup from './ReleaseNoteTableGroup';
 import ReleaseNoteExperimentTableGroup from './ReleaseNoteExperimentTableGroup';
 
-const StyledMetricsPanel = styled.div`
-    width: 90%;
+const StyledReleaseNotes = styled.div`
+    width: 95%;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 20px;
+`
+
+const StyledMetricsPanel = styled.div`
+    margin-bottom: 30px;
 `
 
 const StyledMetricGroupMenu = styled.div`
     display: flex;
+    margin-top: 15px;
     padding-top: 10px;
     padding-bottom: 10px;
     .menuItem {
@@ -21,7 +25,8 @@ const StyledMetricGroupMenu = styled.div`
             border: none;
             background: none;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
+            color: #3D405A;
         }
         button:focus {
             outline: none;
@@ -31,20 +36,21 @@ const StyledMetricGroupMenu = styled.div`
         button {
             font-weight: bold;
         }
-        border-bottom: 1px solid #000000;
+        border-bottom: 3px solid rgb(241, 144, 33);
     }
 `
 
 const StyledMolDataGroup = styled.div`
+    margin-top: 20px;    
     margin-bottom: 20px;
     table {
-        margin-left: 20px;
         td {
-            padding: 2px;
-            font-size: 12px;
+            padding: 0.2rem;
+            font-size: 14px;
         }
         .title {
             font-weight: bold;
+            color: #3D405A;
         }
     }
 `
@@ -52,33 +58,6 @@ const StyledMolDataGroup = styled.div`
 const ReleaseNoteTabContent = (props) => {
 
     const [display, setDisplay] = useState('cellLines');
-
-    const metricGroup = (name, data) => (
-        <div>
-            <h4>{name}</h4>
-            <div>Current: {data.current}</div>
-            <div>New: {data.new}</div>
-            <div>Removed: {data.removed}</div>
-        </div>
-    );
-
-    const molDataGroup = (data) => (
-        <StyledMolDataGroup>
-            <h3>Molecular Data</h3>
-            <table>
-                <tbody>
-                {
-                    Object.keys(data).map(key => (
-                        <tr key={key}>
-                            <td className='title'>{getMolDataName(key)}</td>
-                            <td>{data[key]}</td>
-                        </tr>
-                    ))
-                }
-                </tbody>
-            </table>
-        </StyledMolDataGroup>
-    );
 
     const getMolDataName = (key) => {
         switch(key){
@@ -99,9 +78,25 @@ const ReleaseNoteTabContent = (props) => {
         }
     }
 
+    const molDataGroup = (data) => (
+        <StyledMolDataGroup>
+            <table>
+                <tbody>
+                {
+                    Object.keys(data).map(key => (
+                        <tr key={key}>
+                            <td className='title'>{getMolDataName(key)}</td>
+                            <td>{data[key]}</td>
+                        </tr>
+                    ))
+                }
+                </tbody>
+            </table>
+        </StyledMolDataGroup>
+    );
+
     return(
-        <React.Fragment>
-            <h3>Number of Cell Lines, Drugs and Experiments</h3>
+        <StyledReleaseNotes>
             <StyledMetricsPanel>
                 <StyledMetricGroupMenu>
                     <div className={display === 'cellLines' ? 'menuItem selected' : 'menuItem'}>
@@ -113,13 +108,16 @@ const ReleaseNoteTabContent = (props) => {
                     <div className={display === 'experiments' ? 'menuItem selected' : 'menuItem'}>
                         <button type='button' onClick={() => setDisplay('experiments')}>Experiments</button>
                     </div>
+                    <div className={display === 'molData' ? 'menuItem selected' : 'menuItem'}>
+                        <button type='button' onClick={() => setDisplay('molData')}>Molecular Data</button>
+                    </div>
                 </StyledMetricGroupMenu>
                 {display === 'cellLines' && <ReleaseNoteTableGroup dataset={{name: props.data.name, version: props.data.version}} type='cellLines'/>}
                 {display === 'drugs' && <ReleaseNoteTableGroup dataset={{name: props.data.name, version: props.data.version}} type='drugs'/>}
                 {display === 'experiments' && <ReleaseNoteExperimentTableGroup dataset={{name: props.data.name, version: props.data.version}} type='experiments'/>}
+                {display === 'molData' && molDataGroup(props.data.molData)}
             </StyledMetricsPanel>
-            {molDataGroup(props.data.molData)}
-        </React.Fragment>
+        </StyledReleaseNotes>
     );
 }
 

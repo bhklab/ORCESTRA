@@ -64,12 +64,12 @@ module.exports = {
         const db = await mongo.getDB();
         const res = {status: 0, err: {}, form: {}, user: {}, pset: {}, dashboard: {}};
         try{
-            const user = db.collection('user');
+            //const user = db.collection('user');
             const pset = db.collection('pset');
 
             res.form = await formdata.getFormData();
 
-            res.user = await user.find({'registered': true}).count();
+            //res.user = await user.find({'registered': true}).count();
 
             const ranking = await psetCanonical.getCanonicalDownloadRanking();
             res.pset = ranking.splice(0,5);

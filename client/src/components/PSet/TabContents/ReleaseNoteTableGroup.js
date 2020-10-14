@@ -1,20 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import styled from 'styled-components';
+import ReactDataTable from '../../Shared/ReactDataTable/ReactDataTable';
 
 const StyledReleaseNoteTableGroup = styled.div`
+    margin-left: 10px;
     display: flex;
-    justify-content: space-between;
-`
-
-const StyledTable = styled.table`
-    width: ${props => props.width};
-    thead {
-        display:block;
+    .column {
+        width: 25%;
+        min-width: 270px;
+        margin-right: 30px;
     }
-    tbody {
-        height: 300px;
-        overflow-y:scroll; 
-        display:block;
+    .none {
+        margin-left: 10px;
+        font-weight: bold;
+        font-size: 20px;
+        color: #3D405A;
     }
 `
 
@@ -34,63 +34,93 @@ const ReleaseNoteTableGroup = (props) => {
         getData();
     }, []);
 
-    const getTable = (header, data, width='30%') => (
-        <StyledTable width={width}>
-            <thead>
-                <tr>
-                    <td>{header}</td>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    data.map(row => (
-                        <tr key={row.name}>
-                            <td>{row.name}</td>
-                        </tr>
-                    ))
-                }
-            </tbody>
-        </StyledTable>
+    const current = useMemo(
+        () => [
+            {
+                Header: ``,
+                accessor: 'name',
+                filterPlaceholder: '',
+                disableFilters: false,
+                disableSortBy: true
+            },
+        ],
+        []
     );
 
-    const getCurrentExperimentTable = (header, data) => (
-        <StyledTable width='100%'>
-            <thead>
-                <tr>
-                    <td>{header}</td>
-                </tr>
-                <tr>
-                    <td>Experiment ID</td>
-                    <td>Cell Line</td>
-                    <td>Drug</td>
-                    <td>Min. Concentration Range</td>
-                    <td>Max. Concentration Range</td>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    data.map(row => (
-                        <tr key={row.experimentID}>
-                            <td>{row.experimentID}</td>
-                        </tr>
-                    ))
+    const newData = useMemo(
+        () => [
+            {
+                Header: ``,
+                accessor: 'name',
+                filterPlaceholder: '',
+                disableFilters: false,
+                disableSortBy: true
+            },
+        ],
+        []
+    );
+
+    const removed = useMemo(
+        () => [
+            {
+                Header: ``,
+                accessor: 'name',
+                filterPlaceholder: '',
+                disableFilters: false,
+                disableSortBy: true
+            },
+        ],
+        []
+    );
+
+    const getTable = (columns, data) => (
+        <ReactDataTable 
+            columns={columns} 
+            data={data} 
+            pageSize={20} 
+            pageCounter={true} 
+            pageSkip={false} 
+            pageSizeChange={false}
+            hideHeader={true}
+            style={{
+                headerTextAlign: 'left',
+                cellPadding: '0.5rem 0rem',
+                cellTextAlign: 'left'
+            }}
+            filterStyle={{
+                margin: {
+                    left: '0',
+                    right: '0'
                 }
-            </tbody>
-        </StyledTable>
-    )
+            }}
+        />
+    );
 
     return(
         <StyledReleaseNoteTableGroup>
             {
                 ready &&
                 <React.Fragment>
-                    {
-                        props.type === 'experiments' ? 
-                        getCurrentExperimentTable(`Current (${data[props.type].current.length})`,data[props.type].current) : 
-                        getTable(`Current (${data[props.type].current.length})`, data[props.type].current)
-                    }
-                    {getTable(`New (${data[props.type].new.length})`, data[props.type].new, props.type === 'experiments' ? '50%' : '30%')}
-                    {getTable(`Removed (${data[props.type].removed.length})`, data[props.type].removed, props.type === 'experiments' ? '50%' : '30%')}
+                    <div className='column'>
+                        <h3>{`Current (${data[props.type].current.length})`}</h3>
+                        {getTable(current, data[props.type].current)}
+                    </div>
+                    <div className='column'>
+                        <h3>{`New${data[props.type].new.length ? ` (${data[props.type].new.length})` : ''}`}</h3>
+                        {
+                            data[props.type].new.length ? 
+                            getTable(newData, data[props.type].new) : 
+                            <div className='none'>N/A</div>
+                        }
+                    </div>
+                    <div className='column'>
+                        <h3>{`Removed${data[props.type].removed.length ? ` (${data[props.type].removed.length})` : ''}`}</h3>
+                        {
+                            data[props.type].removed.length ? 
+                            getTable(removed, data[props.type].removed) : 
+                            <div className='none'>N/A</div>
+                        }
+                    </div>
                 </React.Fragment>
             }
         </StyledReleaseNoteTableGroup>
