@@ -6,6 +6,7 @@
 
 .documentationNav {
     width: 17%;
+    min-width: 250px;
     margin-right: 20px;
 }
 
@@ -95,15 +96,6 @@
     color: #3D405A;
     line-height: 30px;
     font-size: 14px;
-}
-
-.documentation .docSection {
-    margin-top: 10px;
-    margin-bottom: 30px;
-}
-
-.documentation .docSection p {
-    margin-left: 20px;
 }
 
 .documentation ol{

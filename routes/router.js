@@ -50,6 +50,9 @@ router.post('/stats/metrics/data', formMetric.getMetricData);
 //landing data
 router.get('/landing/data', formMetric.getLandingData);
 
+// documentation
+router.get('/example-download/:file', public.downloadExampleFile);
+
 //public api
 router.get('/psets/:filter', public.getPSets);
 router.get('/pset/:doi1/:doi2', public.getPSet);

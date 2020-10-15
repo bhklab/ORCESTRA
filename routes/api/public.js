@@ -2,6 +2,7 @@ const formdata = require('../../db/helper/formdata');
 const psetSelect = require('../../db/helper/pset-select');
 const psetUpdate = require('../../db/helper/pset-update');
 const psetCanonical = require('../../db/helper/pset-canonical');
+const path = require('path');
 
 /**
  * Contains functions used for publically exposed API calls.
@@ -158,5 +159,10 @@ module.exports = {
             console.log(error);
             res.send({});
         }
+    },
+
+    downloadExampleFile: async (req, res) => {
+        let filePath = path.join(__dirname, '../../db/documentation-examples', req.params.file);
+        res.download(filePath, (err) => {if(err)console.log(err)});
     }
 }
