@@ -71,8 +71,8 @@ const insertMetricData = async function(connStr, dbName, metricsDir){
             }
     
             /**
-                *  parse molecular data section
-                */
+            *  parse molecular data section
+            */
             version.molData = {}
     
             let filePath = path.join(metricsDir, dirs[i], 'notes.txt');
@@ -166,7 +166,64 @@ const makeCurrentExpJsonFile = async function(metricsDir){
     }    
 }
 
+const addReleaseNotes = async function(connStr, dbName, metricsDir){
+    const metricsType = ['cellLines', 'drugs', 'experiments'];
+    let client;
+
+    try{
+        client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
+        const db = client.db(dbName)
+        const metricData = db.collection('metric-data');
+        let datasets = await metricData.find({}).toArray();
+        
+        for(let dataset of datasets){
+            for(let version of dataset.versions){
+                // let newMoldata = {rnaSeq: {}, microarray: {}, mutation: {}, mutationExome: {}, cnv: {}, fusion: {}, methylation: {}};
+                // for(const key of Object.keys(version.molData)){
+                //     let text = version.molData[key];
+                //     let num = parseInt(text.split(' ')[0]);
+                //     newMoldata[key].available = isNaN(num) ? false : true;
+                //     newMoldata[key].count = isNaN(num) ? 0 : num;
+                //     newMoldata[key].noUpdates = text.includes('no updates from previous version') ? true : false;
+                // }
+                //let releaseNotes = {cellLines: {}, drugs: {}, experiments: {}, molData: newMoldata};
+                let releaseNotes = version.releaseNotes;
+                for(const type of metricsType){
+                    let numbers = {current: 0, new: 0, removed: 0};
+                    for(const group of metricsGroup){
+                        if(type === 'experiments' && group === 'current'){
+                            const data = fs.readFileSync(path.join(__dirname, '../db', 'current-experiments-csv', `${dataset.name}_${version.version}_current_experiments.json`), 'utf8');
+                            numbers[group] = data.length
+                        }else{
+                            numbers[group] = version[type][group].length;
+                        }
+                        
+                    }
+                    releaseNotes[type] = numbers;
+                }
+                //delete version.molData;
+
+                if(dataset.name === 'GDSC'){
+                    releaseNotes.additional = {link: 'https://www.cancerrxgene.org/news'}
+                }
+
+                version.releaseNotes = releaseNotes;
+                console.log(version.releaseNotes);
+            }
+        }
+
+        await metricData.deleteMany({});
+        await metricData.insertMany(datasets); 
+
+        client.close();
+    }catch(error){
+        console.log(error);
+        client.close();
+    }
+}
+
 module.exports = {
     insertMetricData,
-    makeCurrentExpJsonFile
+    makeCurrentExpJsonFile,
+    addReleaseNotes
 }

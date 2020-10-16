@@ -128,7 +128,7 @@ const selectPSetByDOI = async function(doi, projection=null){
         }
         psetObj.pipeline = pipelineConfig;
         // add release notes metrics
-        const metrics = await metricData.getMetricDataVersion(psetObj.dataset.name, psetObj.dataset.versionInfo.version, 'molData');
+        const metrics = await metricData.getMetricDataVersion(psetObj.dataset.name, psetObj.dataset.versionInfo.version, 'releaseNotes');
         console.log(metrics);
         psetObj.releaseNotes = metrics;
         return psetObj
