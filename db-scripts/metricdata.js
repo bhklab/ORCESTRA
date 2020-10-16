@@ -178,16 +178,16 @@ const addReleaseNotes = async function(connStr, dbName, metricsDir){
         
         for(let dataset of datasets){
             for(let version of dataset.versions){
-                // let newMoldata = {rnaSeq: {}, microarray: {}, mutation: {}, mutationExome: {}, cnv: {}, fusion: {}, methylation: {}};
-                // for(const key of Object.keys(version.molData)){
-                //     let text = version.molData[key];
-                //     let num = parseInt(text.split(' ')[0]);
-                //     newMoldata[key].available = isNaN(num) ? false : true;
-                //     newMoldata[key].count = isNaN(num) ? 0 : num;
-                //     newMoldata[key].noUpdates = text.includes('no updates from previous version') ? true : false;
-                // }
-                //let releaseNotes = {cellLines: {}, drugs: {}, experiments: {}, molData: newMoldata};
-                let releaseNotes = version.releaseNotes;
+                let newMoldata = {rnaSeq: {}, microarray: {}, mutation: {}, mutationExome: {}, cnv: {}, fusion: {}, methylation: {}};
+                for(const key of Object.keys(version.molData)){
+                    let text = version.molData[key];
+                    let num = parseInt(text.split(' ')[0]);
+                    newMoldata[key].available = isNaN(num) ? false : true;
+                    newMoldata[key].count = isNaN(num) ? 0 : num;
+                    newMoldata[key].noUpdates = text.includes('no updates from previous version') ? true : false;
+                }
+                let releaseNotes = {cellLines: {}, drugs: {}, experiments: {}, molData: newMoldata};
+                //let releaseNotes = version.releaseNotes;
                 for(const type of metricsType){
                     let numbers = {current: 0, new: 0, removed: 0};
                     for(const group of metricsGroup){
@@ -201,7 +201,7 @@ const addReleaseNotes = async function(connStr, dbName, metricsDir){
                     }
                     releaseNotes[type] = numbers;
                 }
-                //delete version.molData;
+                delete version.molData;
 
                 if(dataset.name === 'GDSC'){
                     releaseNotes.additional = {link: 'https://www.cancerrxgene.org/news'}
