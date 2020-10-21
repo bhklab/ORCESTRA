@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import {InputSwitch} from 'primereact/inputswitch';
-import PSetDropdown from '../../Shared/PSetDropdown/PSetDropdown';
+import {Checkbox} from 'primereact/checkbox';
+import PSetDropdown from '../../Shared/PSetDropdown';
+import PSetCheckbox from '../../Shared/PSetCheckbox';
 import {SearchReqContext} from '../PSetSearch';
 import './PSetFilter.css';
 
@@ -22,7 +24,7 @@ const PSetFilter = () => {
             formRef.current.disableDrugSensOptions = true;
             formRef.current.disableToolRefOptions = false;
             formRef.current.hideDataTypeOptions = false;
-            paramRef.current = { dataset: [], drugSensitivity: [], genome: [], dataType: [], rnaTool: [], rnaRef: [], defaultData: [] }
+            paramRef.current = { dataset: [], drugSensitivity: [], filteredSensitivity: false, genome: [], dataType: [], rnaTool: [], rnaRef: [], defaultData: [] }
             setReady(true)
         }
         initialize();
@@ -292,6 +294,17 @@ const PSetFilter = () => {
                             paramRef.current.drugSensitivity = e.value;
                             context.setParameters({...paramRef.current, drugSensitivity: e.value, search: true});
                         }} />
+
+                    {
+                        (context.isRequest && !formRef.current.disableDrugSensOptions) &&
+                        <PSetCheckbox 
+                            label='Standardize drug dose range and filter noisy sensitivity curves?' 
+                            onChange={(e) => {
+                                paramRef.current.filteredSensitivity = e.checked;
+                                context.setParameters({...paramRef.current, filteredSensitivity: e.checked});
+                            }} 
+                            checked={paramRef.current.filteredSensitivity} />
+                    }
                     
                     <PSetDropdown id='genome' disabled={formRef.current.disableToolRefOptions} isHidden={false} parameterName='Genome:' selectOne={context.isRequest} 
                         parameterOptions={formRef.current.genome.filter(g => {return(!g.hide)})} selectedParameter={paramRef.current.genome} 

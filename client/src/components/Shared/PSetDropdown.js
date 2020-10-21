@@ -1,7 +1,17 @@
 import React from 'react';
-import './PSetDropdown.css';
 import {MultiSelect} from 'primereact/multiselect';
 import {Dropdown} from 'primereact/dropdown';
+import styled from 'styled-components';
+
+const FilterSet = styled.div`
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    .paramInput {
+        flex-grow: 1;
+    }
+`
 
 // props: id, className, isHidden, selectOne, parameterName, parameterOptions[], selecedParameter[], handleUpdateSelection()
 
@@ -10,7 +20,7 @@ class PSetDropdown extends React.Component {
     render(){
         const dataTemplate =  (option) => {
             return(
-                <div className="">
+                <div>
                     <span style={{fontSize:'1em',margin:'1em .5em 0 0'}}>{option.label}</span>
                 </div>
             );
@@ -34,7 +44,7 @@ class PSetDropdown extends React.Component {
         }
         if(this.props.selectOne){
             return(
-                <div className='filterSet'>
+                <FilterSet>
                     <label>{this.props.parameterName}</label>
                     <Dropdown 
                         id={this.props.id} 
@@ -48,11 +58,11 @@ class PSetDropdown extends React.Component {
                         placeholder="Select one..."
                         disabled={this.props.disabled}
                     />
-                </div>
+                </FilterSet>
             );
         }
         return(
-            <div className='filterSet'>
+            <FilterSet>
                 <label>{this.props.parameterName}</label>
                 <MultiSelect 
                     id={this.props.id}
@@ -66,7 +76,7 @@ class PSetDropdown extends React.Component {
                     selectedItemTemplate={selectedDataTemplate}
                     disabled={this.props.disabled}
                 />
-            </div>
+            </FilterSet>
         );
     }
     

@@ -38,6 +38,7 @@ const PSetSearch = () => {
     const [parameters, setParameters] = useState({
         dataset: [],
         drugSensitivity: [],
+        filteredSensitivity: false,
         genome: [],
         dataType: [],
         rnaTool: [],
@@ -110,7 +111,7 @@ const PSetSearch = () => {
 
     const submitRequest = async event => {
         event.preventDefault();
-        let dataset = {name: parameters.dataset.name, label: parameters.dataset.label, versionInfo: parameters.drugSensitivity.version}
+        let dataset = {name: parameters.dataset.name, label: parameters.dataset.label, versionInfo: parameters.drugSensitivity.version, filteredSensitivity: parameters.filteredSensitivity}
         let reqData = {...parameters};
         let dataType = parameters.defaultData.concat(parameters.dataType);
         let rnaRef = {...parameters.rnaRef};
@@ -121,6 +122,7 @@ const PSetSearch = () => {
         
         // delete any unnecessary fields for the database.
         delete reqData.drugSensitivity;
+        delete reqData.filteredSensitivity;
         delete reqData.defaultData;
         delete reqData.search;
         reqData.dataType.forEach(dt => {delete dt.hide});
@@ -128,13 +130,13 @@ const PSetSearch = () => {
 
         console.log(reqData);
         
-        const res = await trackPromise(fetch('/api/pset/request', {
-                method: 'POST',
-                body: JSON.stringify({reqData: reqData}),
-                headers: {'Content-type': 'application/json'}
-            }));
-        const resData = await res.json();
-        showMessage(res.ok, resData);
+        // const res = await trackPromise(fetch('/api/pset/request', {
+        //         method: 'POST',
+        //         body: JSON.stringify({reqData: reqData}),
+        //         headers: {'Content-type': 'application/json'}
+        //     }));
+        // const resData = await res.json();
+        // showMessage(res.ok, resData);
         initializeState();
     }
 
