@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import {InputSwitch} from 'primereact/inputswitch';
-import {Checkbox} from 'primereact/checkbox';
 import PSetDropdown from '../../Shared/PSetDropdown';
 import PSetCheckbox from '../../Shared/PSetCheckbox';
 import {SearchReqContext} from '../PSetSearch';

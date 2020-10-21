@@ -27,10 +27,6 @@
     margin-right: 70px;
 }
 
-.requestFormPanel {
-    width: 400px;
-}
-
 .pSetSelectionSummary h2 {
     margin: 0;
     padding-top: 0.65em;
@@ -70,20 +66,6 @@
 
 .downloadBtn.p-button {
     margin-right: 10px;
-}
-
-.reqFormInput {
-    display: flex;
-    align-items: center;
-    margin-top: 35px;
-}
-
-.loaderContainer {
-    height: 30px;
-    width: 100%;
-    display: flex;
-    justify-content: left;
-    align-items: center;
 }
 
 .tableLoaderContainer {

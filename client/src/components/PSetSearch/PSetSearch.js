@@ -1,13 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
 import './PSetSearch.css';
 import PSetFilter from './subcomponents/PSetFilter';
+import PSetRequestForm from './subcomponents/PSetRequestForm';
 import PSetTable from '../Shared/PSetTable';
 import SavePSetButton from '../Shared/Buttons/SavePSetButton';
-import {usePromiseTracker} from "react-promise-tracker";
-import {trackPromise} from 'react-promise-tracker';
 import Loader from 'react-loader-spinner';
-import {Button} from 'primereact/button';
-import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
 import * as Helper from '../Shared/Helper';
 import {AuthContext} from '../../context/auth';
@@ -108,49 +105,6 @@ const PSetSearch = () => {
         setSelectedPSets([]);
         setDisableSaveBtn(true);
     }
-
-    const submitRequest = async event => {
-        event.preventDefault();
-        let dataset = {name: parameters.dataset.name, label: parameters.dataset.label, versionInfo: parameters.drugSensitivity.version, filteredSensitivity: parameters.filteredSensitivity}
-        let reqData = {...parameters};
-        let dataType = parameters.defaultData.concat(parameters.dataType);
-        let rnaRef = {...parameters.rnaRef};
-
-        reqData.dataset = dataset;
-        reqData.dataType = dataType;
-        reqData.rnaRef = (Object.keys(rnaRef).length === 0 && rnaRef.constructor === Object ? [] : [rnaRef]);
-        
-        // delete any unnecessary fields for the database.
-        delete reqData.drugSensitivity;
-        delete reqData.filteredSensitivity;
-        delete reqData.defaultData;
-        delete reqData.search;
-        reqData.dataType.forEach(dt => {delete dt.hide});
-        reqData.rnaRef.forEach(ref => {delete ref.hide});
-
-        console.log(reqData);
-        
-        // const res = await trackPromise(fetch('/api/pset/request', {
-        //         method: 'POST',
-        //         body: JSON.stringify({reqData: reqData}),
-        //         headers: {'Content-type': 'application/json'}
-        //     }));
-        // const resData = await res.json();
-        // showMessage(res.ok, resData);
-        initializeState();
-    }
-
-    const SubmitRequestButton = () => {
-        const {promiseInProgress} = usePromiseTracker();
-        return(
-            promiseInProgress ? 
-                <div className='loaderContainer'>
-                    <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
-                </div>
-                :
-                <Button label='Submit Request' type='submit' disabled={!readyToSubmit} onClick={submitRequest}/>
-        );
-    }
         
     return(
         <SearchReqContext.Provider value={{ 
@@ -183,20 +137,7 @@ const PSetSearch = () => {
                             </div>
                             {
                                 isRequest &&
-                                <div className='requestFormPanel'>
-                                    <h2>Request PSet</h2>
-                                    <div className='reqFormInput'>
-                                        <label>PSet Name:</label>
-                                            <InputText id='name' className='paramInput' value={parameters.name || ''} onChange={(e) => {setParameters({...parameters, name: e.target.value, search: false})}} />
-                                    </div>
-                                    <div className='reqFormInput'>
-                                        <label>Email to receive DOI:</label>
-                                            <InputText id='email' className='paramInput' value={parameters.email || ''} onChange={(e) => {setParameters({...parameters, email: e.target.value, search: false})}} />
-                                    </div>
-                                    <div className='reqFormInput'>
-                                        <SubmitRequestButton />
-                                    </div>
-                                </div>
+                                <PSetRequestForm readyToSubmit={readyToSubmit} onRequestComplete={showMessage} />
                             }
                         </div>
                         {
