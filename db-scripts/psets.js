@@ -73,52 +73,58 @@ const updatePSets = async function(connStr, dbName){
     try{
         const db = client.db(dbName)
         
-        const form = await db.collection('formdata').find().toArray()
-        const psets = await db.collection('pset').find().toArray()
+        // const form = await db.collection('formdata').find().toArray()
+        // const psets = await db.collection('pset').find().toArray()
         
-        const accRNA = form[0].accompanyRNA
-        const accDNA = form[0].accompanyDNA
-        const molecular = form[0].molecularData
+        // const accRNA = form[0].accompanyRNA
+        // const accDNA = form[0].accompanyDNA
+        // const molecular = form[0].molecularData
 
-        for(let i = 0; i < psets.length; i++){
-            let molData = [];
+        // for(let i = 0; i < psets.length; i++){
+        //     let molData = [];
 
-            if(psets[i].rnaTool.length && psets[i].rnaRef.length){
-                molData.push(molecular.find(mol => {return mol.name === 'rnaseq'}))
-            }
+        //     if(psets[i].rnaTool.length && psets[i].rnaRef.length){
+        //         molData.push(molecular.find(mol => {return mol.name === 'rnaseq'}))
+        //     }
             
-            let rna = accRNA.filter(r => {
-                return r.dataset === psets[i].dataset.name
-            })
-            if(rna.length){
-                molecular.forEach(mol => {
-                    if(rna.find(r => {return r.name === mol.name})){
-                        molData.push(mol)
-                    }
-                })
-            }
+        //     let rna = accRNA.filter(r => {
+        //         return r.dataset === psets[i].dataset.name
+        //     })
+        //     if(rna.length){
+        //         molecular.forEach(mol => {
+        //             if(rna.find(r => {return r.name === mol.name})){
+        //                 molData.push(mol)
+        //             }
+        //         })
+        //     }
             
-            let dna = accDNA.filter(d => {
-                return d.dataset === psets[i].dataset.name
-            })
-            if(dna.length){
-                molecular.forEach(mol => {
-                    if(dna.find(d => {return d.name === mol.name})){
-                        molData.push(mol)
-                    }
-                })
-            }
+        //     let dna = accDNA.filter(d => {
+        //         return d.dataset === psets[i].dataset.name
+        //     })
+        //     if(dna.length){
+        //         molecular.forEach(mol => {
+        //             if(dna.find(d => {return d.name === mol.name})){
+        //                 molData.push(mol)
+        //             }
+        //         })
+        //     }
 
-            psets[i].dataType = molData;
-            delete psets[i].accompanyDNA;
-            delete psets[i].accompanyRNA;
+        //     psets[i].dataType = molData;
+        //     delete psets[i].accompanyDNA;
+        //     delete psets[i].accompanyRNA;
             
-            await db.collection('pset').updateOne(
-                {'_id': psets[i]._id}, 
-                {'$set': psets[i], '$unset': {'accompanyRNA': "", 'accompanyDNA': ""}}, 
-                {upsert: true}
-            )
-        }
+        //     await db.collection('pset').updateOne(
+        //         {'_id': psets[i]._id}, 
+        //         {'$set': psets[i], '$unset': {'accompanyRNA': "", 'accompanyDNA': ""}}, 
+        //         {upsert: true}
+        //     )
+        // }
+
+        await db.collection('pset').updateMany(
+            {'canonical': true}, 
+            {'$set': {'dataset.filtered' : true}}, 
+            {upsert: true}
+        );
 
         client.close()
         console.log('done')
