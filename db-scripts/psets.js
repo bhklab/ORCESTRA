@@ -122,8 +122,8 @@ const updatePSets = async function(connStr, dbName){
 
         await db.collection('pset').updateMany(
             {'canonical': true}, 
-            {'$set': {'dataset.filtered' : true}}, 
-            {upsert: true}
+            {'$set': {'dataset.filteredSensitivity' : true}}, 
+            {multi: true}
         );
 
         client.close()
