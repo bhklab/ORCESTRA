@@ -71,7 +71,10 @@ module.exports = {
                     config.transform.cmd.push(acc.name);
                 })
             }
-
+            if(pset.dataset.filteredSensitivity){
+                // push the filtered designation if dataset.filteredSensitivity is true
+                config.transform.cmd.push('filtered'); 
+            }
             config.transform.cmd.push(pset._id.toString()); // push id as the last element
             config.update = true;
             config.reprocess = true;
