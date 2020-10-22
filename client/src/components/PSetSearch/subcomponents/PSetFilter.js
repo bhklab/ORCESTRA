@@ -23,7 +23,7 @@ const PSetFilter = () => {
             formRef.current.disableDrugSensOptions = true;
             formRef.current.disableToolRefOptions = false;
             formRef.current.hideDataTypeOptions = false;
-            paramRef.current = { dataset: [], drugSensitivity: [], filteredSensitivity: false, genome: [], dataType: [], rnaTool: [], rnaRef: [], defaultData: [] }
+            paramRef.current = { dataset: [], drugSensitivity: [], filteredSensitivity: false, canonicalOnly: false, genome: [], dataType: [], rnaTool: [], rnaRef: [], defaultData: [] }
             setReady(true)
         }
         initialize();
@@ -147,6 +147,7 @@ const PSetFilter = () => {
         formRef.current.disableToolRefOptions = true;
         formRef.current.hideDataTypeOptions = true;
 
+        paramRef.current.canonicalOnly = false;
         paramRef.current.dataType = []
         if(paramRef.current.dataset.length){
             setParameterOptions('dataset');
@@ -248,7 +249,16 @@ const PSetFilter = () => {
                             }} 
                         />
                     </div>
-
+                    {
+                        !context.isRequest &&
+                        <PSetCheckbox 
+                        label='Canonical PSets only: '
+                        onChange={(e) => {
+                            paramRef.current.canonicalOnly = e.checked;
+                            context.setParameters({...paramRef.current, canonicalOnly: e.checked, search: true});
+                        }} 
+                        checked={paramRef.current.canonicalOnly} />
+                    }
                     <PSetDropdown id='dataset' isHidden={false} parameterName='Dataset:' selectOne={context.isRequest}  
                         parameterOptions={formRef.current.dataset.filter(ds => {return(!ds.hide)})} selectedParameter={paramRef.current.dataset} 
                         handleUpdateSelection={(e) => {
@@ -293,14 +303,23 @@ const PSetFilter = () => {
                             paramRef.current.drugSensitivity = e.value;
                             context.setParameters({...paramRef.current, drugSensitivity: e.value, search: true});
                         }} />
-
+                    
                     {
-                        (context.isRequest && !formRef.current.disableDrugSensOptions) &&
+                        context.isRequest ?
+                        !formRef.current.disableDrugSensOptions &&
                         <PSetCheckbox 
-                            label='Standardize drug dose range and filter noisy sensitivity curves?' 
+                            label='Standardize drug dose range and filter noisy sensitivity curves?'
                             onChange={(e) => {
                                 paramRef.current.filteredSensitivity = e.checked;
                                 context.setParameters({...paramRef.current, filteredSensitivity: e.checked});
+                            }} 
+                            checked={paramRef.current.filteredSensitivity} />
+                        :
+                        <PSetCheckbox 
+                            label='Filtered sensitivity data only: '
+                            onChange={(e) => {
+                                paramRef.current.filteredSensitivity = e.checked;
+                                context.setParameters({...paramRef.current, filteredSensitivity: e.checked, search: !context.isRequest});
                             }} 
                             checked={paramRef.current.filteredSensitivity} />
                     }

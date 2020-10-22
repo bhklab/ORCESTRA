@@ -35,56 +35,33 @@ const PSetTable = (props) => {
         document.body.removeChild(anchor);
     }
 
-    const toolsRefTemplate = (rowData, column) => {
-        let output ='';
-        if(rowData[column.field]){
-            output = rowData[column.field].map(item => <div key={item.name}>{item.label}</div>);
-        }
-        return(
-            <div>{output}</div>
-        );
-    }
+    const toolsRefTemplate = (rowData, column) => (
+        <div>{rowData[column.field] ? rowData[column.field].map(item => <div key={item.name}>{item.label}</div>) : ''}</div>
+    );
 
-    const dataTypeTemplate = (rowData, column) => {
-        let output ='';
-        if(rowData[column.field]){
-            output = rowData[column.field].map(item => <div key={item.name}>{item.name} ({item.type})</div>);
-        }
-        return(
-            <div>{output}</div>
-        );
-    }
+    const dataTypeTemplate = (rowData, column) => (
+        <div>{rowData[column.field] ? rowData[column.field].map(item => <div key={item.name}>{item.name} ({item.type})</div>) : ''}</div>
+    );
 
-    const nameColumnTemplate = (rowData, column) => {
-        let route = '/' + rowData.doi;
-        return(
-            <Link to={route} target="_blank">{rowData.name}</Link>
-        );
-    }
+    const nameColumnTemplate = (rowData, column) => (
+        <Link to={`/${rowData.doi}`} target="_blank">{rowData.name}</Link>
+    );
 
     const downloadTemplate = (rowData, column) => {
-        let link = 'Not Available';
-        if(rowData.downloadLink){
-            link = <a id={rowData._id} href='#' onClick={downloadPSet(rowData._id, rowData.downloadLink)}>Download</a>
-        }
-        return(
-            link
-        )
-    }
+        return(rowData.downloadLink ? <a id={rowData._id} href='#' onClick={downloadPSet(rowData._id, rowData.downloadLink)}>Download</a> : 'Not Available');
+    };
 
-    const canonicalTemplate = (rowData, column) => {
-        let output = ''
-        if(rowData[column.field]){
-            output = 'Yes'
-        }
-        return(
-            <div>{output}</div>
-        );
-    }
+    const filteredTemplate = (rowData, column) => (
+        <div>{rowData.dataset.filteredSensitivity ? 'Yes' : 'No'}</div>
+    );
+
+    const canonicalTemplate = (rowData, column) => (
+        <div>{rowData[column.field] ? 'Yes' : ''}</div>
+    );
 
     const updatePSetSelectionEvent = event => {
         props.updatePSetSelection(event.value);
-    }
+    };
 
     return(
         <DataTable 
@@ -97,7 +74,8 @@ const PSetTable = (props) => {
             {props.authenticated && <Column selectionMode="multiple" style={{width: '30px', textAlign: 'center'}} />}
             <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplate} sortable={true} />
             <Column className='textField' field='dataset.name' header='Dataset' style={{width:'100px'}} sortable={true} />
-            <Column className='textField' field='dataset.versionInfo' header='Drug Sensitivity' style={{width:'150px'}} sortable={true} />
+            <Column className='textField' field='dataset.versionInfo' header='Drug Sensitivity' style={{width:'120px'}} sortable={true} />
+            <Column field='dataset.filteredSensitivity' body={filteredTemplate} style={{width:'90px', textAlign: 'center'}} header='Filtered Drug Sensitivity' />
             <Column field='rnaTool' body={toolsRefTemplate} style={{width:'120px'}} header='RNA Tool' sortable={true}  />
             <Column field='rnaRef' body={toolsRefTemplate} style={{width:'120px'}} header='RNA Ref' sortable={true} />
             <Column field='dataType' body={dataTypeTemplate} style={{width:'125px'}} header='Molecular Data' />

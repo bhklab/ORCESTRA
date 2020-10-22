@@ -35,6 +35,7 @@ const PSetSearch = () => {
     const [parameters, setParameters] = useState({
         dataset: [],
         drugSensitivity: [],
+        canonicalOnly: false,
         filteredSensitivity: false,
         genome: [],
         dataType: [],
@@ -50,6 +51,7 @@ const PSetSearch = () => {
     useEffect(() => {
         const initializeView = async () => {
             const psets = await fetchData('/api/pset/search');
+            console.log(psets)
             setPSets(psets);
             setSearchAll(true);
             setReady(true);
@@ -67,7 +69,7 @@ const PSetSearch = () => {
             console.log(parameters);
             let copy = JSON.parse(JSON.stringify(parameters));
             Object.keys(copy).forEach(key => {
-                if(!Array.isArray(copy[key])){
+                if(!Array.isArray(copy[key]) && !(key === 'canonicalOnly' || key === 'filteredSensitivity')){
                     copy[key] = [copy[key]];
                 }
             });

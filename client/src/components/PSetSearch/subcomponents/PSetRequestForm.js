@@ -48,6 +48,7 @@ const PSetRequestForm = (props) => {
         reqData.rnaRef = (Object.keys(rnaRef).length === 0 && rnaRef.constructor === Object ? [] : [rnaRef]);
         
         // delete any unnecessary fields for the database.
+        delete reqData.canonicalOnly;
         delete reqData.drugSensitivity;
         delete reqData.filteredSensitivity;
         delete reqData.defaultData;

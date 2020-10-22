@@ -35,10 +35,7 @@ class DatasetTabContent extends React.Component{
                             }
                         </h4>
                         <h4 className='subContent'>Version: {this.props.metadata.dataset.versionInfo.drugSensitivity.version}</h4>
-                        {
-                            this.props.metadata.dataset.filteredSensitivity && 
-                            <h4 className='subContent'>Filtered Sensitivity Data: YES</h4>
-                        }
+                        <h4 className='subContent'>Filtered Sensitivity Data: {this.props.metadata.dataset.filteredSensitivity ? 'YES' : 'NO'}</h4>
                     </TabContentSection>
                     
                     <TabContentSection>

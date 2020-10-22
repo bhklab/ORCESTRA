@@ -38,6 +38,14 @@ function getQueryFilterSet(query){
         queryArray.push(getQueryFilter('status', query.status));
     }
 
+    if(query.canonicalOnly){
+        queryArray.push(getQueryFilter('canonical', true));
+    }
+
+    if(query.filteredSensitivity){
+        queryArray.push(getQueryFilter('dataset.filteredSensitivity', true));
+    }
+
     if(queryArray.length){
         querySet = {$and: queryArray};
     }
