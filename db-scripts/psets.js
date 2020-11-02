@@ -121,7 +121,7 @@ const updatePSets = async function(connStr, dbName){
         // }
 
         await db.collection('pset').updateMany(
-            {'canonical': true}, 
+            {'name': {'$ne':'gcsi_cnv'}}, 
             {'$set': {'dataset.filteredSensitivity' : true}}, 
             {multi: true}
         );

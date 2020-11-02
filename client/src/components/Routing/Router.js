@@ -6,11 +6,11 @@ import Footer from '../Footer/Footer';
 import PrivateRoute from './PrivateRoute';
 import AdminRoute from './AdminRoute';
 import Main from '../Main/Main';
+import DatasetMain from '../Main/DatasetMain';
 import PSetSearch from '../PSetSearch/PSetSearch';
 import Dashboard from '../Dashboard/Dashboard';
 import Stats from '../Stats/Stats';
 import Documentation from '../Documentation/Documentation';
-import Tutorial from '../Documentation/Support/Tutorial';
 import Profile from '../Profile/Profile';
 import Admin from '../Admin/Admin';
 import Login from '../Authentication/Login';
@@ -59,16 +59,16 @@ class Router extends React.Component{
                 <Navigation />
                 <Switch>
                     <Route exact path ='/' component={Main} /> 
-                    <Route exact path ='/PSetSearch' component={PSetSearch}/>
-                    <Route exact path ='/Dashboard' component={Dashboard}/>
-                    <Route exact path ='/Stats' component={Stats}/>
-                    <Route exact path ='/Documentation/:section' component={Documentation} />
-                    <Route exact path ='/Tutorial' component={Tutorial}/>
-                    <Route exact path='/Authentication' component={Login} />
-                    <Route path ='/Reset/:token' component={Reset} />
+                    <Route exact path ='/:datatype' component={DatasetMain} /> 
+                    <Route exact path ='/search' component={PSetSearch}/>
+                    <Route exact path ='/status' component={Dashboard}/>
+                    <Route exact path ='/stats' component={Stats}/>
+                    <Route exact path ='/documentation/:section' component={Documentation} />
+                    <Route exact path='/authentication' component={Login} />
+                    <Route path ='/reset/:token' component={Reset} />
                     <Route path='/:id1/:id2' component={PSet} />
-                    <Route path='/Canonical' component={CanonicalPSets} />
-                    <PrivateRoute path='/Profile' component={Profile} redirect='/Authentication' />
+                    <Route path='/canonical' component={CanonicalPSets} />
+                    <PrivateRoute path='/profile' component={Profile} redirect='/authentication' />
                     <AdminRoute path='/admin' component={Admin} redirect='/profile' />
                     <Route component={NotFound404}/>
                 </Switch>

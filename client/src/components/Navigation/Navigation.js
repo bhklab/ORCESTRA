@@ -23,7 +23,7 @@ const Navigation = (props) => {
 
     const onLoginClick = (event) => {
         event.preventDefault();
-        history.push({pathname: '/Authentication', state:{path: location.pathname}});
+        history.push({pathname: '/authentication', state:{path: location.pathname}});
     }
 
     const onLogoutClick = (event) => {
@@ -31,7 +31,7 @@ const Navigation = (props) => {
         fetch('/api/user/logout/:' + auth.username)
             .then(res => {
                 auth.resetAuthToken();
-                history.push({pathname: '/Authentication', state:{path: location.pathname, logoutMsg: 'You have logged out'}});
+                history.push({pathname: '/authentication', state:{path: location.pathname, logoutMsg: 'You have logged out'}});
             });            
     }
 
@@ -42,11 +42,11 @@ const Navigation = (props) => {
                 <div className='navBarContainer'>
                     <div className='navBar'>
                         <div><NavLink exact to='/' activeClassName='active-link'>Home</NavLink></div>
-                        <div><NavLink exact to="/PSetSearch" activeClassName='active-link'>Search and Request</NavLink></div>
-                        <div><NavLink exact to="/Dashboard" activeClassName='active-link'>Request Status</NavLink></div>
-                        <div><NavLink exact to="/Stats" activeClassName='active-link'>Statistics</NavLink></div>
-                        <div><NavLink exact to="/Documentation/overview" activeClassName='active-link'>Documentation</NavLink></div>
-                        { auth.authenticated && <div className='menu-item'><NavLink exact to="/Profile" activeClassName='active-link'>Profile</NavLink></div> }
+                        <div><NavLink exact to="/search" activeClassName='active-link'>Search and Request</NavLink></div>
+                        <div><NavLink exact to="/status" activeClassName='active-link'>Request Status</NavLink></div>
+                        <div><NavLink exact to="/stats" activeClassName='active-link'>Statistics</NavLink></div>
+                        <div><NavLink exact to="/documentation/overview" activeClassName='active-link'>Documentation</NavLink></div>
+                        { auth.authenticated && <div className='menu-item'><NavLink exact to="/profile" activeClassName='active-link'>Profile</NavLink></div> }
                         <div>
                             {
                                 auth.authenticated ? 

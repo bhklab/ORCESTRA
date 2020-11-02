@@ -2,15 +2,15 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Footer.css';
 
-const Footer = (props) => {
+const Footer = () => {
     return(
         <div className='appFooter'>
             <div className='footerContainer'>
                 <div className="footerMenu footerLinks">
                     <h3>Menu</h3>
-                    <NavLink exact to="/PSetSearch" >Search and Request</NavLink>
-                    <NavLink exact to="/Dashboard" >Request Status</NavLink>
-                    <NavLink exact to="/Stats" >Statistics</NavLink>
+                    <NavLink exact to="/search" >Search and Request</NavLink>
+                    <NavLink exact to="/dashboard" >Request Status</NavLink>
+                    <NavLink exact to="/stats" >Statistics</NavLink>
                 </div>
                 <div className="footerSupport footerLinks">
                     <h3>Support</h3>

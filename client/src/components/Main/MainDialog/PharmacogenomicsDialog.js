@@ -1,14 +1,22 @@
 import React from 'react';
 import {Dialog} from 'primereact/dialog';
 import {TabView,TabPanel} from 'primereact/tabview';
-import {PSetToolAccordion, RNARefAccordion, DNARefAccordion} from '../PSet/PSetAccordion';
 import {Accordion,AccordionTab} from 'primereact/accordion';
+import styled from 'styled-components';
+import {PSetToolAccordion, RNARefAccordion, DNARefAccordion} from '../../PSet/PSetAccordion';
+
+const TabContent = styled.div`
+    max-width: 700px;
+    max-height: 350px;
+    word-wrap: break-word;
+    overflow-y: scroll;
+`
 
 const DatasetDialog = (props) => {
     
     const datasetAccordionTabs = props.dataset.map((item) => 
         <TabPanel key={item.label} header={item.label}>
-            <div className='mainTabContent'>
+            <TabContent>
                 <Accordion multiple={true}>
                     {item.versions.map((version) => 
                         <AccordionTab key={version.version} header={version.version}>
@@ -40,12 +48,12 @@ const DatasetDialog = (props) => {
                         </AccordionTab>
                     )}     
                 </Accordion>
-            </div> 
+            </TabContent> 
         </TabPanel>
     );
     
     return(
-        <Dialog header="Dataset Overview" visible={props.visible} onHide={props.onHide} style={{minWidth: '50vw', minHeight: '30vh'}} >
+        <Dialog header="Dataset Overview" visible={props.visible} onHide={props.onHide} style={{minWidth: '50vw'}} >
             <TabView>
                 {datasetAccordionTabs}
             </TabView>
@@ -55,7 +63,7 @@ const DatasetDialog = (props) => {
 
 const RNADialog = (props) => {
     return(
-        <Dialog header="RNA Pipeline Overview" visible={props.visible} onHide={props.onHide} style={{minWidth: '50vw', minHeight: '30vh'}} >
+        <Dialog header="RNA Pipeline Overview" visible={props.visible} onHide={props.onHide} style={{minWidth: '50vw'}} >
             <TabView renderActiveOnly={false}>
                 <TabPanel key='rnaTools' header="RNA Tools">
                     <h3>Available RNA Pipeline Tools</h3>
@@ -72,7 +80,7 @@ const RNADialog = (props) => {
 
 const DNADialog = (props) => {
     return(
-        <Dialog header="DNA Sequence Alignment Overview" visible={props.visible} onHide={props.onHide} style={{minWidth: '50vw', minHeight: '30vh'}} >
+        <Dialog header="DNA Sequence Alignment Overview" visible={props.visible} onHide={props.onHide} style={{minWidth: '50vw'}} >
             <TabView renderActiveOnly={false}>
                 <TabPanel key='dnaTools' header="DNA Tools">
                     <h3>Available DNA Pipeline Tools</h3>
