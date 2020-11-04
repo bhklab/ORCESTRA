@@ -16,7 +16,7 @@ const Login = (props) => {
                     location.state && location.state.path !== '/' ? 
                     <Redirect to={location.state.path}/> 
                     :
-                    <Redirect to={'/Profile'}/> 
+                    <Redirect to={'/app/profile'}/> 
                 : 
                 <div className='pageContent'>
                     <div className="loginRegContent">
