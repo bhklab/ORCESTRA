@@ -26,6 +26,16 @@ export const HeaderGroup = styled.div`
         font-weight: bold;
         color: #3D405A;
     }
+
+    @media only screen and (max-width: 700px) {
+        h1 {
+            font-size: 60px
+        }
+        h2 {
+            font-size: 24px;
+            text-align: center;
+        }
+    }
 `
 
 export const DatasetHeaderGroup = styled.div`

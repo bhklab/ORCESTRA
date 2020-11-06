@@ -13,11 +13,23 @@ const StyledBox = styled.div`
     padding: 10px 30px 30px 30px;
     border-radius: 10px;
     width: 30%;
-    max-width: 370px;
-    min-height:200px;
+    height: 250px;
     min-width: 200px;
+    max-width: 370px;
+
+    .header {
+        height: 25%;
+        width: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
 
     button {
+        height: 75%;
         border: none;
         outline: none;
         cursor: pointer;
@@ -40,13 +52,14 @@ const StyledBox = styled.div`
     }
 
     img {
-        width: 45%;
+        width: ${props => (props.imgWidth)};
+        min-width: 130px;
         margin: 10px;
     }
 
     .hover-cover {
         position absolute;
-        width: 60%;
+        width: 100%;
         height: 100%;
         display: flex;
         justify-content: center;
@@ -63,6 +76,11 @@ const StyledBox = styled.div`
         font-weight: bold;
         color: #3D405A;
     }
+
+    @media only screen and (max-width: 1000px) {
+        width: 60%;
+        min-width: 360px;
+    }
 `;
 
 
@@ -76,18 +94,19 @@ const Main = (props) => {
     }, []);
 
     const DatatypeBox = (props) => (
-            <StyledBox>
-                <h2>{props.title}</h2>
+            <StyledBox imgWidth={props.imgWidth}>
+                <div className='header'>{props.title}</div>
                 <button 
                     onClick={() => {
                         path.setDatatype(props.datatype);
                         history.push({pathname: `/${props.datatype}`});
                     }}
+                    disabled={props.disabled}
                 >
                     <div className='btn-content'>
                         <img src={`/images/icons/${props.datatype}.png`} />
                         <div className='hover-cover'></div>
-                        <div className='hover-text'>GO</div>
+                        <div className='hover-text'>{props.text}</div>
                     </div>
                 </button>
             </StyledBox>
@@ -100,13 +119,13 @@ const Main = (props) => {
                 <h2>An orchestration platform for reproducing multimodal data</h2>
             </MainStyle.HeaderGroup>
             <MainStyle.Row>
-                <DatatypeBox title='Pharmacogenomics Data' datatype='pharmacogenomics'/>
-                <DatatypeBox title='Pharmacogenomics Data' datatype='pharmacogenomics'/>
-                <DatatypeBox title='Pharmacogenomics Data' datatype='pharmacogenomics'/>
+                <DatatypeBox title='Pharmacogenomics Data' datatype='pharmacogenomics' text='GO' imgWidth='45%' />
+                <DatatypeBox title='Toxicogenomics Data' datatype='toxicogenomics' text='Coming soon' disabled={true} imgWidth='70%'/>
+                <DatatypeBox title='Xenographic Pharmacogenomics Data' datatype='xenographt' text='Coming soon' disabled={true} imgWidth='80%'/>
             </MainStyle.Row>  
             <MainStyle.Row>
-                <DatatypeBox title='Pharmacogenomics Data' datatype='pharmacogenomics'/>
-                <DatatypeBox title='Pharmacogenomics Data' datatype='pharmacogenomics'/>
+                <DatatypeBox title='Metagenomics Data' datatype='metagenomics' text='Coming soon' disabled={true} imgWidth='45%'/>
+                <DatatypeBox title='Radiogenomics Data' datatype='radiogenomics' text='Coming soon' disabled={true} imgWidth='45%'/>
             </MainStyle.Row>
         </MainStyle.Wrapper>
     );
