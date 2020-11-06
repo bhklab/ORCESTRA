@@ -116,7 +116,7 @@ const Main = (props) => {
         <MainStyle.Wrapper>
             <MainStyle.HeaderGroup>
                 <h1>ORCESTRA</h1>   
-                <h2>An orchestration platform for reproducing multimodal data</h2>
+                <h2>Orchestration platform for reproducing multimodal data</h2>
             </MainStyle.HeaderGroup>
             <MainStyle.Row>
                 <DatatypeBox title='Pharmacogenomics Data' datatype='pharmacogenomics' text='GO' imgWidth='45%' />
