@@ -40,7 +40,7 @@ export const StyledHeader = styled.header`
     
     .navbar {
         margin-right: 100px;
-        width: ${props => (props.isMain ? '250px' : '890px')};
+        width: ${props => (props.isMain ? '300px' : '950px')};
         height: 100%;
         display: flex;
         align-items: center;

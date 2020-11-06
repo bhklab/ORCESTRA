@@ -40,7 +40,7 @@ const Pharmacogenomics = () => {
     }, [])
 
     const nameColumnTemplate = (rowData, column) => {
-        let route = '/' + rowData.doi;
+        let route = '/pharmacogenomics/' + rowData.doi;
         return(
             <Link to={route} >{rowData.name}</Link>
         );
@@ -103,7 +103,7 @@ const Pharmacogenomics = () => {
                                 <span>RNA pipelines.</span>
                             </div>
                             <div className='link'>
-                                <MainStyle.Button href="/search">Search and Request</MainStyle.Button>
+                                <MainStyle.Button href="/pharmacogenomics/search">Search and Request</MainStyle.Button>
                             </div>
                         </div>
                     </MainStyle.Item>
@@ -114,7 +114,7 @@ const Pharmacogenomics = () => {
                         <div className='content'>
                             <div>The latest version of PSets created by BHK Lab.</div>
                             <div className='link'>
-                                <MainStyle.Button href="/canonical">View Canonical PSets</MainStyle.Button>
+                                <MainStyle.Button href="/pharmacogenomics/canonical">View Canonical PSets</MainStyle.Button>
                             </div>
                         </div>
                     </MainStyle.Item>
@@ -131,7 +131,7 @@ const Pharmacogenomics = () => {
                                 <span >Requests in process.</span>
                             </div>
                             <div className='link'>
-                                <MainStyle.Button href="/status">View Request Status</MainStyle.Button>
+                                <MainStyle.Button href="/pharmacogenomics/status">View Request Status</MainStyle.Button>
                             </div>
                         </div>
                     </MainStyle.Item>
@@ -145,7 +145,7 @@ const Pharmacogenomics = () => {
                                 <Column className='textField' field='name' header='Name' body={nameColumnTemplate}/>
                             </DataTable>
                             <div className='link'>
-                                <MainStyle.Button href="/stats">View Statistics</MainStyle.Button>
+                                <MainStyle.Button href="/pharmacogenomics/stats">View Statistics</MainStyle.Button>
                             </div>
                         </div>
                     </MainStyle.Item> 
@@ -154,7 +154,7 @@ const Pharmacogenomics = () => {
                         <div className='content'>
                             <p>
                                 <b>You can generate PSets using your own datasets.</b> <br /> 
-                                For more information, please read about <a href='/documentation/datacontribution'>contributing your data</a>.
+                                For more information, please read about <a href='/pharmacogenomics/documentation/datacontribution'>contributing your data</a>.
                             </p>    
                         </div>
                     </MainStyle.Item> 

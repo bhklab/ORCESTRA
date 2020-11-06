@@ -24,7 +24,7 @@ const Stats = () => {
     }, [])
     
     const nameColumnTemplate = (rowData, column) => {
-        let route = '/' + rowData.doi;
+        let route = '/pharmacogenomics/' + rowData.doi;
         return(
             <Link to={route} target="_blank">{rowData.name}</Link>
         );

@@ -79,7 +79,7 @@ const CanonicalPSets = (props) => {
     }
 
     const nameColumnTemplate = (data) => {
-        let route = '/' + data.doi;
+        let route = '/pharmacogenomics/' + data.doi;
         return(
             <Link to={route} target="_blank">{data.name}</Link>
         );

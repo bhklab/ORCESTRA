@@ -22,6 +22,9 @@ const Navigation = (props) => {
             setIsOnline(json.isOnline);
         }
         checkStatus();
+        if(location.pathname !== '/' && path.datatype.length === 0){
+            path.setDatatype(location.pathname.split('/').filter((el) =>(el.length))[0]);
+        }
     }, []);
 
     const onLoginClick = (event) => {
@@ -38,6 +41,15 @@ const Navigation = (props) => {
             });            
     }
 
+    const getDatatype = (datatype) => {
+        switch(datatype){
+            case 'pharmacogenomics':
+                return 'Pharmacogenomics';
+            default:
+                return 'Pharmacogenomics';
+        }
+    }
+
     return(
         <StyledHeader isMain={path.datatype.length === 0} >
             <NavLink exact to='/'><img src={process.env.PUBLIC_URL + "/images/trumpet-orcestra.png"} alt='' /></NavLink>
@@ -46,7 +58,8 @@ const Navigation = (props) => {
                     {
                         path.datatype.length > 0 &&
                         <React.Fragment>
-                            <div><NavLink exact to={`/${path.datatype}`} activeClassName='active-link'>Home</NavLink></div>
+                            <div><NavLink exact to={`/`} activeClassName='active-link'>Home</NavLink></div>
+                            <div><NavLink exact to={`/${path.datatype}`} activeClassName='active-link'>{getDatatype(path.datatype)}</NavLink></div>
                             <div><NavLink exact to={`/${path.datatype}/search`} activeClassName='active-link'>Search and Request</NavLink></div>
                             <div><NavLink exact to={`/${path.datatype}/status`} activeClassName='active-link'>Request Status</NavLink></div>
                             <div><NavLink exact to={`/${path.datatype}/stats`} activeClassName='active-link'>Statistics</NavLink></div>
@@ -77,7 +90,8 @@ const Navigation = (props) => {
                         {
                             path.datatype.length > 0 &&
                             <React.Fragment>
-                                <div className='menu-item'><NavLink exact to={`/${path.datatype}`} activeClassName='active-link'>Home</NavLink></div>
+                                <div><NavLink exact to={`/`} activeClassName='active-link'>Home</NavLink></div>
+                                <div><NavLink exact to={`/${path.datatype}`} activeClassName='active-link'>{getDatatype(path.datatype)}</NavLink></div>
                                 <div className='menu-item'><NavLink exact to={`/${path.datatype}/search`} activeClassName='active-link'>Search and Request</NavLink></div>
                                 <div><NavLink exact to={`/${path.datatype}/status`} activeClassName='active-link'>Request Status</NavLink></div>
                                 <div><NavLink exact to={`/${path.datatype}/documentation/overview`} activeClassName='active-link'>Documentation</NavLink></div>

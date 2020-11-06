@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
     padding-top: 50px;
     color:#3D405A;
     min-height: 100vh;
-    padding-bottom: 170px;
+    padding-bottom: 200px;
 `
 
 export const HeaderGroup = styled.div`

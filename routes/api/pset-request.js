@@ -115,7 +115,7 @@ const completeRequest = async function(req, res){
     try{
         const result = await psetUpdate.updatePSetStatus(data.ORCESTRA_ID, update);
         console.log('update complete')
-        const url = process.env.BASE_URL + result.data.value.doi
+        const url = process.env.BASE_URL + 'pharmacogenomics/' + result.data.value.doi
         await mailer.sendMail(url, result.data.value.doi, result.data.value.email, req.body.download_link)
         res.send({status: 'OK'})
     }catch(error){

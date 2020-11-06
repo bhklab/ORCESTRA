@@ -1,23 +1,102 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { NavLink } from 'react-router-dom';
-import './Footer.css';
+import {PathContext} from '../../context/path';
+import styled from 'styled-components';
+
+const StyledFooter = styled.div`
+    position: relative;
+    clear: both;
+    bottom: 0%;
+    width:100%;
+    background-color:rgb(255,255,255, 0.7);
+    height: 230px;
+    font-size: calc(0.7em + 0.2vw);
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .footerContainer {
+        width: 70%;
+        display:flex;
+        align-items:flex-start;
+        align-content: flex-end;
+    }
+    
+    .footerLinks {
+        width:200px;
+        a, div {
+            display: block;
+            margin-bottom: 10px;
+            color: #3D405A;
+        }
+        a:hover {
+            color: #555975;
+        }
+    }
+
+    .footerMenu {
+        flex-grow: 1;
+        text-align: left;
+    }
+    
+    .footerSupport{
+        flex-grow: 1;
+        text-align: left;
+    }
+    
+    .footerContact {
+        flex-grow: 1;
+        text-align: left;
+    }
+    
+    .contactInfo{
+        font-size: calc(0.7em + 0.2vw);
+        line-height: 25px;
+        margin-top: -5px;
+    }
+`
 
 const Footer = () => {
+
+    const path = useContext(PathContext);
+
     return(
-        <div className='appFooter'>
+        <StyledFooter>
             <div className='footerContainer'>
                 <div className="footerMenu footerLinks">
                     <h3>Menu</h3>
-                    <NavLink exact to="/search" >Search and Request</NavLink>
-                    <NavLink exact to="/dashboard" >Request Status</NavLink>
-                    <NavLink exact to="/stats" >Statistics</NavLink>
+                    <NavLink exact to="/" onClick={() => {path.setDatatype('')}}>Home</NavLink>
+                    {
+                        path.datatype.length === 0 ? 
+                        <React.Fragment>
+                            <NavLink exact to="/pharamacogenomics" onClick={() => {path.setDatatype('pharmacogenomics')}}>Pharmacogenomics Data</NavLink>
+                            <div>Toxicogenomics Data (Coming soon)</div>
+                            <div>Xenographic Pharmacogenomics Data (Coming soon)</div>
+                            <div>Metagenomics Data (Coming soon)</div>
+                            <div>Radiogenomics Data (Coming soon)</div>
+                        </React.Fragment>
+                        :
+                        <React.Fragment>
+                            <NavLink exact to={`/${path.datatype}/canonical`} >Canonical PSets</NavLink>
+                            <NavLink exact to={`/${path.datatype}/search`} >Search and Request</NavLink>
+                            <NavLink exact to={`/${path.datatype}/status`} >Request Status</NavLink>
+                            <NavLink exact to={`/${path.datatype}/stats`} >Statistics</NavLink>
+                        </React.Fragment>
+                    }
                 </div>
                 <div className="footerSupport footerLinks">
                     <h3>Support</h3>
-                    <NavLink exact to="/Documentation/overview" >Documentation</NavLink>
-                    <NavLink exact to="/Documentation/datacontribution" >Contributing your data</NavLink>
+                    {
+                        path.datatype.length > 0 && 
+                        <React.Fragment>
+                            <NavLink exact to={`/${path.datatype}/documentation/overview`} >Documentation</NavLink>
+                            <NavLink exact to={`/${path.datatype}/documentation/datacontribution`} >Contributing your data</NavLink>
+                        </React.Fragment>
+                    }
                     <a href="https://github.com/bhklab">GitHub</a>
                     <a href="https://bhklab.ca/">BHKLab</a>
+                    <div>support@orcestra.ca</div>
                 </div>
                 <div className="footerContact">
                     <h3>BHKLab</h3>
@@ -31,7 +110,7 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-        </ div>
+        </StyledFooter>
     );
 } 
 

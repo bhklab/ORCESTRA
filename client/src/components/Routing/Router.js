@@ -60,7 +60,7 @@ const Router = () => {
                     <Route exact path ='/:datatype/documentation/:section' component={Documentation} />
                     <Route exact path='/app/authentication' component={Login} />
                     <Route path ='/reset/:token' component={Reset} />
-                    <Route path='/:id1/:id2' component={PSet} />
+                    <Route path='/:datatype/:id1/:id2' component={PSet} />
                     <Route path='/:datatype/canonical' component={CanonicalPSets} />
                     <PrivateRoute path='/app/profile' component={Profile} redirect='/app/authentication' />
                     <AdminRoute path='/admin' component={Admin} redirect='/app/profile' />
