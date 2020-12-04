@@ -3,7 +3,7 @@ import {Dialog} from 'primereact/dialog';
 import {TabView,TabPanel} from 'primereact/tabview';
 import {Accordion,AccordionTab} from 'primereact/accordion';
 import styled from 'styled-components';
-import {PSetToolAccordion, RNARefAccordion, DNARefAccordion} from '../../PSet/PSetAccordion';
+import {PSetToolAccordion, RNARefAccordion, DNARefAccordion} from '../../SingleDataset/PSet/PSetAccordion';
 
 const TabContent = styled.div`
     max-width: 700px;

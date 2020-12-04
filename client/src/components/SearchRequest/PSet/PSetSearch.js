@@ -1,13 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react';
-import './PSetSearch.css';
+import '../SearchRequest.css';
 import PSetFilter from './subcomponents/PSetFilter';
 import PSetRequestForm from './subcomponents/PSetRequestForm';
-import PSetTable from '../Shared/PSetTable';
-import SavePSetButton from '../Shared/Buttons/SavePSetButton';
+import PSetTable from '../../Shared/PSetTable';
+import SavePSetButton from '../../Shared/Buttons/SavePSetButton';
 import Loader from 'react-loader-spinner';
 import {Messages} from 'primereact/messages';
-import * as Helper from '../Shared/Helper';
-import {AuthContext} from '../../context/auth';
+import * as Helper from '../../Shared/Helper';
+import {AuthContext} from '../../../context/auth';
 
 export const SearchReqContext = React.createContext();
 

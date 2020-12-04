@@ -5,7 +5,8 @@ import {AuthContext} from '../../context/auth';
 import {PathContext} from '../../context/path';
 import { StyledHeader } from './StyledNavigation';
 import { slide as Menu } from 'react-burger-menu';
-import {withRouter} from 'react-router'
+import {withRouter} from 'react-router';
+import {dataTypes} from '../Shared/Enums';
 
 const Navigation = (props) => {
 
@@ -43,8 +44,16 @@ const Navigation = (props) => {
 
     const getDatatype = (datatype) => {
         switch(datatype){
-            case 'pharmacogenomics':
+            case dataTypes.pharmacogenomics:
                 return 'Pharmacogenomics';
+            case dataTypes.toxicogenomics:
+                return 'Toxicogenomics';
+            case dataTypes.xenographic:
+                return 'Xenographic Pharmacogenomics';
+            case dataTypes.clinicalgenomics:
+                return 'Clinical Genomics';
+            case dataTypes.radiogenomics:
+                return 'Radiogenomics';
             default:
                 return 'Pharmacogenomics';
         }
@@ -61,7 +70,10 @@ const Navigation = (props) => {
                             <div><NavLink exact to={`/`} activeClassName='active-link'>Home</NavLink></div>
                             <div><NavLink exact to={`/${path.datatype}`} activeClassName='active-link'>{getDatatype(path.datatype)}</NavLink></div>
                             <div><NavLink exact to={`/${path.datatype}/search`} activeClassName='active-link'>Search and Request</NavLink></div>
-                            <div><NavLink exact to={`/${path.datatype}/status`} activeClassName='active-link'>Request Status</NavLink></div>
+                            {
+                                path.datatype === dataTypes.pharmacogenomics && 
+                                <div><NavLink exact to={`/${path.datatype}/status`} activeClassName='active-link'>Request Status</NavLink></div>
+                            }
                             <div><NavLink exact to={`/${path.datatype}/stats`} activeClassName='active-link'>Statistics</NavLink></div>
                             <div><NavLink exact to={`/${path.datatype}/documentation/overview`} activeClassName='active-link'>Documentation</NavLink></div>
                         </React.Fragment>

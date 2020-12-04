@@ -6,7 +6,7 @@ import DNATabContent from './TabContents/DNATabContent';
 import PipelineTabContent from './TabContents/PipelineTabContent';
 import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';
 import {GeneralInfoAccordion} from './PSetAccordion';
-import DownloadPSetButton from '../Shared/Buttons/DownloadPSetButton';
+import DownloadPSetButton from '../../Shared/Buttons/DownloadPSetButton';
 import {TabContainer} from './PSetStyle';
 import styled from 'styled-components';
 
@@ -23,7 +23,7 @@ const PSet = (props) => {
     useEffect(() => {
         const getData = async () => {
             try{
-                const res = await fetch('/api/pset/one/' + props.match.params.id1 + '/' + props.match.params.id2)
+                const res = await fetch('/api/pset/one/' + props.params.id1 + '/' + props.params.id2)
                 if(res.ok){
                     const json = await res.json()
                     console.log(json)

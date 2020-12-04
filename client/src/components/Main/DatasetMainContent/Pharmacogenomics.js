@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {DataTable} from 'primereact/datatable';
-import {Column} from 'primereact/column';
-import { Link } from 'react-router-dom';
 import {DatasetDialog, RNADialog, DNADialog} from '../MainDialog/PharmacogenomicsDialog';
 import * as MainStyle from '../MainStyle';
+import CanonicalBox from '../MainBoxes/CanonicalBox';
+import RequestStatusBox from '../MainBoxes/RequestStatusBox';
+import PopularDatasetBox from '../MainBoxes/PopularDatasetBox';
+import YourOwnDataBox from '../MainBoxes/YourOwnDataBox';
+import {dataTypes} from '../../Shared/Enums';
 
 const Pharmacogenomics = () => {
     
@@ -37,14 +39,7 @@ const Pharmacogenomics = () => {
             setDashboard(json.dashboard);
         }
         fetchData('/api/landing/data');
-    }, [])
-
-    const nameColumnTemplate = (rowData, column) => {
-        let route = '/pharmacogenomics/' + rowData.doi;
-        return(
-            <Link to={route} >{rowData.name}</Link>
-        );
-    }
+    }, []);
 
     const showDialog = (type) => {
         switch(type){
@@ -103,61 +98,18 @@ const Pharmacogenomics = () => {
                                 <span>RNA pipelines.</span>
                             </div>
                             <div className='link'>
-                                <MainStyle.Button href="/pharmacogenomics/search">Search and Request</MainStyle.Button>
+                                <MainStyle.Button href={`/${dataTypes.pharmacogenomics}/search`}>Search and Request</MainStyle.Button>
                             </div>
                         </div>
                     </MainStyle.Item>
                 </MainStyle.Column>
                 <MainStyle.Column>
-                    <MainStyle.Item style={{ alignSelf: 'flex-start'}}>
-                        <h3>Canonical PSets</h3>
-                        <div className='content'>
-                            <div>The latest version of PSets created by BHK Lab.</div>
-                            <div className='link'>
-                                <MainStyle.Button href="/pharmacogenomics/canonical">View Canonical PSets</MainStyle.Button>
-                            </div>
-                        </div>
-                    </MainStyle.Item>
-                    <MainStyle.Item style={{ alignSelf: 'flex-start'}}>
-                        <h3>View PSet Request Status</h3>
-                        <div className='content'>
-                            <div>ORCESTRA is processing following requests:</div>
-                            <div className='line'>
-                                <MainStyle.Number>{dashboard.pending}</MainStyle.Number> 
-                                <span>Requests in queue.</span>
-                            </div>
-                            <div className='line'>
-                                <MainStyle.Number>{dashboard.inProcess}</MainStyle.Number> 
-                                <span >Requests in process.</span>
-                            </div>
-                            <div className='link'>
-                                <MainStyle.Button href="/pharmacogenomics/status">View Request Status</MainStyle.Button>
-                            </div>
-                        </div>
-                    </MainStyle.Item>
+                    <CanonicalBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} />
+                    <RequestStatusBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} dashboard={dashboard}/>
                 </MainStyle.Column> 
                 <MainStyle.Column>
-                    <MainStyle.Item>
-                        <h3>Top 5 Popular PSets</h3>
-                        <div className='content'>
-                            <DataTable value={statsData} >
-                                <Column className='textField' field='download' header='Download' />
-                                <Column className='textField' field='name' header='Name' body={nameColumnTemplate}/>
-                            </DataTable>
-                            <div className='link'>
-                                <MainStyle.Button href="/pharmacogenomics/stats">View Statistics</MainStyle.Button>
-                            </div>
-                        </div>
-                    </MainStyle.Item> 
-                    <MainStyle.Item>
-                        <h3>Generate PSets with Your Data</h3>
-                        <div className='content'>
-                            <p>
-                                <b>You can generate PSets using your own datasets.</b> <br /> 
-                                For more information, please read about <a href='/pharmacogenomics/documentation/datacontribution'>contributing your data</a>.
-                            </p>    
-                        </div>
-                    </MainStyle.Item> 
+                    <PopularDatasetBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} statsData={statsData} />
+                    <YourOwnDataBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} />
                 </MainStyle.Column>    
             </MainStyle.Row> 
             <DatasetDialog visible={datasetVisible} onHide={() => {hideDialog('dataset')}} dataset={formData.dataset} />

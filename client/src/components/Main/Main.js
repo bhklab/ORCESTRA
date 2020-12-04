@@ -2,6 +2,7 @@ import React, {useContext, useEffect} from 'react';
 import {PathContext} from '../../context/path';
 import * as MainStyle from './MainStyle';
 import styled from 'styled-components';
+import {dataTypes} from '../Shared/Enums';
 
 const StyledBox = styled.div`
     display: flex;
@@ -119,13 +120,13 @@ const Main = (props) => {
                 <h2>Orchestration platform for reproducing multimodal data</h2>
             </MainStyle.HeaderGroup>
             <MainStyle.Row>
-                <DatatypeBox title='Pharmacogenomics Data' datatype='pharmacogenomics' text='GO' imgWidth='45%' />
-                <DatatypeBox title='Toxicogenomics Data' datatype='toxicogenomics' text='Coming soon' disabled={true} imgWidth='70%'/>
-                <DatatypeBox title='Xenographic Pharmacogenomics Data' datatype='xenographt' text='Coming soon' disabled={true} imgWidth='80%'/>
+                <DatatypeBox title='Pharmacogenomics Data' datatype={dataTypes.pharmacogenomics} text='GO' imgWidth='45%' />
+                <DatatypeBox title='Toxicogenomics Data' datatype={dataTypes.toxicogenomics} text='GO' imgWidth='70%'/>
+                <DatatypeBox title='Xenographic Pharmacogenomics Data' datatype={dataTypes.xenographic} text='GO' imgWidth='80%'/>
             </MainStyle.Row>  
             <MainStyle.Row>
-                <DatatypeBox title='Clinical Genomics Data' datatype='clinicalgenomics' text='Coming soon' disabled={true} imgWidth='45%'/>
-                <DatatypeBox title='Radiogenomics Data' datatype='radiogenomics' text='Coming soon' disabled={true} imgWidth='45%'/>
+                <DatatypeBox title='Clinical Genomics Data' datatype={dataTypes.clinicalgenomics} text='Coming soon' disabled={true} imgWidth='45%'/>
+                <DatatypeBox title='Radiogenomics Data' datatype={dataTypes.radiogenomics} text='Coming soon' disabled={true} imgWidth='45%'/>
             </MainStyle.Row>
         </MainStyle.Wrapper>
     );

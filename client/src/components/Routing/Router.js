@@ -8,7 +8,8 @@ import PrivateRoute from './PrivateRoute';
 import AdminRoute from './AdminRoute';
 import Main from '../Main/Main';
 import DatasetMain from '../Main/DatasetMain';
-import PSetSearch from '../PSetSearch/PSetSearch';
+import SearchRequest from '../SearchRequest/SearchRequest';
+import SingleDataset from '../SingleDataset/SingleDataset';
 import Dashboard from '../Dashboard/Dashboard';
 import Stats from '../Stats/Stats';
 import Documentation from '../Documentation/Documentation';
@@ -16,7 +17,6 @@ import Profile from '../Profile/Profile';
 import Admin from '../Admin/Admin';
 import Login from '../Authentication/Login';
 import Reset from '../Authentication/Reset';
-import PSet from '../PSet/PSet';
 import CanonicalPSets from '../CanonicalPSets/CanonicalPSets';
 import NotFound404 from '../Shared/NotFound404';
 
@@ -53,15 +53,15 @@ const Router = () => {
                 <Navigation />
                 <Switch>
                     <Route exact path ='/' component={Main} /> 
-                    <Route exact path ='/:datatype' component={DatasetMain} /> 
-                    <Route exact path ='/:datatype/search' component={PSetSearch}/>
+                    <Route exact path ='/:datatype' render={(props) => (<DatasetMain {...props} />)} /> 
+                    <Route exact path ='/:datatype/search' render={(props) => (<SearchRequest {...props}  />)}/>
+                    <Route path='/:datatype/:id1/:id2' render={(props) => (<SingleDataset {...props} />)} />
+                    <Route path='/:datatype/canonical' component={CanonicalPSets} /> 
                     <Route exact path ='/:datatype/status' component={Dashboard}/>
                     <Route exact path ='/:datatype/stats' component={Stats}/>
                     <Route exact path ='/:datatype/documentation/:section' component={Documentation} />
                     <Route exact path='/app/authentication' component={Login} />
                     <Route path ='/reset/:token' component={Reset} />
-                    <Route path='/:datatype/:id1/:id2' component={PSet} />
-                    <Route path='/:datatype/canonical' component={CanonicalPSets} />
                     <PrivateRoute path='/app/profile' component={Profile} redirect='/app/authentication' />
                     <AdminRoute path='/admin' component={Admin} redirect='/app/profile' />
                     <Route component={NotFound404}/>

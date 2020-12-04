@@ -1,12 +1,16 @@
 import React from 'react';
+import {dataTypes} from '../Shared/Enums';
 import Pharmacogenomics from './DatasetMainContent/Pharmacogenomics';
+import Toxicogenomics from './DatasetMainContent/Toxicogenomics';
+import Xenographic from './DatasetMainContent/Xenographic';
 
 const DatasetMain = (props) => {
     return(
-        <>
-            {!props.match.datatype && <Pharmacogenomics />}
-            {props.match.datatype === 'pharmacogenomics' && <Pharmacogenomics />}
-        </>
+        <React.Fragment>
+            {props.match.params.datatype === dataTypes.pharmacogenomics && <Pharmacogenomics />}
+            {props.match.params.datatype === dataTypes.toxicogenomics && <Toxicogenomics />}
+            {props.match.params.datatype === dataTypes.xenographic && <Xenographic />}
+        </React.Fragment>
     );
 }
 

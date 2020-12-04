@@ -3,7 +3,7 @@ import {usePromiseTracker} from "react-promise-tracker";
 import {trackPromise} from 'react-promise-tracker';
 import Loader from 'react-loader-spinner';
 import styled from 'styled-components';
-import ReactDataTable from '../../Shared/ReactDataTable/ReactDataTable';
+import ReactDataTable from '../../../Shared/ReactDataTable/ReactDataTable';
 
 const StyledReleaseNoteTableGroup = styled.div`
     margin-left: 10px;
