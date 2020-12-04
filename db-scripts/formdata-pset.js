@@ -176,13 +176,14 @@ const dataset = [
 ]
 
 /**
- * Inserts form data into MongoDB database.
+ * Inserts form data for PSet into MongoDB database.
  * @param {string} connStr connection string for the db
  * @param {string} dbName name of the database.
  */
 const insertFormdata = async function(connStr, dbName){
     console.log('insertFormData')
     const form = {
+        datasetType: 'pset',
         dataType: [{label: 'RNA-seq', name: 'rnaseq'}, {label: 'DNA', name: 'DNA'}],
         dataset: dataset,
         genome: [{label: 'GRCh37', name: 'GRCh37'}, {label: 'GRCh38', name: 'GRCh38'}],
