@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 
 //api
-const pset = require('./api/pset');
+const dataset = require('./api/dataset');
 const psetRequest = require('./api/pset-request');
 const user = require('./api/user');
 const auth = require('./api/auth');
@@ -13,13 +13,13 @@ const formMetric = require('./api/form-metric');
 const pachyderm = require('./api/pachyderm');
 const public = require('./api/public');
 
-// pset
-router.post('/pset/search', pset.searchPSets);
-router.get('/pset/one/:id1/:id2', pset.getPSetByDOI);
-router.get('/pset/releasenotes/:name/:version/:type', pset.getReleaseNotesData);
-router.get('/pset/canonical', pset.getCanonicalPSets);
-router.post('/pset/canonical/update', pset.updateCanonicalPSets);
-router.post('/pset/download', pset.downloadPSets);
+// dataset
+router.post('/:datasetType/search', dataset.searchDatasets);
+router.get('/:datasetType/one/:id1/:id2', dataset.getDatasetByDOI);
+router.get('/pset/releasenotes/:name/:version/:type', dataset.getReleaseNotesData);
+router.get('/:datasetType/canonical', dataset.getCanonicalDatasets);
+router.post('/pset/canonical/update', dataset.updateCanonicalPSets);
+router.post('/:datasetType/download', dataset.downloadDatasets);
 router.get('/pachyderm/status', pachyderm.returnStatus);
 router.post('/pset/request', psetRequest.processOnlineRequest);
 router.post('/pset/process', psetRequest.processOfflineRequest);
@@ -42,21 +42,21 @@ router.get('/user/checkToken', auth.checkToken, user.checkToken);
 router.post('/user/reset', auth.checkToken, user.resetPwd);
 
 //formdata and stats
-router.get('/formdata', formMetric.getFormData);
-router.get('/stats/data', formMetric.getDataForStats);
+router.get('/:datasetType/formdata', formMetric.getFormData);
+router.get('/:datasetType/stats/data', formMetric.getDataForStats);
 router.get('/stats/metrics/options', formMetric.getMetricDataOptions);
 router.post('/stats/metrics/data', formMetric.getMetricData);
 
 //landing data
-router.get('/landing/data', formMetric.getLandingData);
+router.get('/:datasetType/landing/data', formMetric.getLandingData);
 
 // documentation
 router.get('/example-download/:file', public.downloadExampleFile);
 
 //public api
-router.get('/psets/:filter', public.getPSets);
-router.get('/pset/:doi1/:doi2', public.getPSet);
-router.get('/psets/statistics/:limit', public.getStatistics);
-router.get('/psets/update-download/:doi1/:doi2', public.updateDownloadCount);
+router.get('/:datasetType/:filter', public.getPSets);
+router.get('/:datasetType/:doi1/:doi2', public.getPSet);
+router.get('/:datasetType/statistics/download/:limit', public.getStatistics);
+router.get('/:datasetType/update-download/:doi1/:doi2', public.updateDownloadCount);
 
 module.exports = router;

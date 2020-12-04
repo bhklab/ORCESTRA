@@ -2,7 +2,7 @@
  * @fileoverview Includes functions that handles PSet request.
  */
 const psetRequest = require('../../db/helper/pset-request');
-const psetUpdate = require('../../db/helper/pset-update');
+const datasetUpdate = require('../../db/helper/dataset-update');
 const mailer = require('../../mailer/mailer');
 const request = require('./request');
 const pachyderm = require('./pachyderm');
@@ -31,7 +31,7 @@ const processOnlineRequest = async function(req, res){
             console.log('online process');
             await pachyderm.createPipeline(config.config);
             const update = {'dateProcessed': new Date(Date.now()), 'status': 'in-process'};
-            const result = await psetUpdate.updatePSetStatus(reqPset._id, update);
+            const result = await datasetUpdate.updatePSetStatus(reqPset._id, update);
             if(result.status){
                 resData = {
                     summary: 'Request Submitted', 
@@ -72,7 +72,7 @@ const processOfflineRequest = async function(req, res){
             const config = await request.getPachydermConfigJson(req.body.id);
             await pachyderm.createPipeline(config);
             const update = {'dateProcessed': new Date(Date.now()), 'status': 'in-process'};
-            const result = await psetUpdate.updatePSetStatus(req.body.id, update);
+            const result = await datasetUpdate.updatePSetStatus(req.body.id, update);
             if(result.status){
                 resData = {
                     summary: 'Request Submitted', 
@@ -113,7 +113,7 @@ const completeRequest = async function(req, res){
         'dateCreated': new Date(Date.now())
     }
     try{
-        const result = await psetUpdate.updatePSetStatus(data.ORCESTRA_ID, update);
+        const result = await datasetUpdate.updatePSetStatus(data.ORCESTRA_ID, update);
         console.log('update complete')
         const url = process.env.BASE_URL + 'pharmacogenomics/' + result.data.value.doi
         await mailer.sendMail(url, result.data.value.doi, result.data.value.email, req.body.download_link)

@@ -75,7 +75,7 @@ const Navigation = (props) => {
                                 <div><NavLink exact to={`/${path.datatype}/status`} activeClassName='active-link'>Request Status</NavLink></div>
                             }
                             <div><NavLink exact to={`/${path.datatype}/stats`} activeClassName='active-link'>Statistics</NavLink></div>
-                            <div><NavLink exact to={`/${path.datatype}/documentation/overview`} activeClassName='active-link'>Documentation</NavLink></div>
+                            <div><NavLink exact to={`/documentation/overview`} activeClassName='active-link'>Documentation</NavLink></div>
                         </React.Fragment>
                     }
                     { auth.authenticated && <div className='menu-item'><NavLink exact to="/app/profile" activeClassName='active-link'>Profile</NavLink></div> }

@@ -1,29 +1,29 @@
 import React from 'react';
 import {Button} from 'primereact/button';
 
-const DownloadPSetButton = props => {
+const DownloadDatasetButton = props => {
 
-    const downloadPSet = async (event) => {
+    const downloadDataset = async (event) => {
         event.preventDefault();
         
         const anchor = document.createElement('a');
         anchor.setAttribute('download', null);
         anchor.style.display = 'none';
-        anchor.setAttribute('href', props.pset.downloadLink)
+        anchor.setAttribute('href', props.dataset.downloadLink)
         document.body.appendChild(anchor);
         anchor.click();
         document.body.removeChild(anchor);
 
-        await fetch('/api/pset/download', {
+        await fetch(`/api/${props.datasetType}/download`, {
             method: 'POST',
-            body: JSON.stringify({psetID: props.pset.doi}),
+            body: JSON.stringify({datasetID: props.dataset.doi}),
             headers: {'Content-type': 'application/json'}
         })
     }
 
     return(
-        <Button label='Download' disabled={props.disabled} onClick={downloadPSet} style={{marginLeft: '30px'}}/>
+        <Button label='Download' disabled={props.disabled} onClick={downloadDataset} style={{marginLeft: '30px'}}/>
     );
 }
 
-export default DownloadPSetButton;
+export default DownloadDatasetButton;

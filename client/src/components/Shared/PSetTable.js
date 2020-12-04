@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import { Link } from 'react-router-dom';
+import {dataTypes} from '../Shared/Enums';
 
 const PSetTable = (props) => {
     
@@ -21,7 +22,7 @@ const PSetTable = (props) => {
     const downloadPSet = (id, link) => async (event) => {
         event.preventDefault();
         console.log('downloadOnePSet');
-        await fetch('/api/pset/download', {
+        await fetch(`/api/${dataTypes.pharmacogenomics}/download`, {
             method: 'POST',
             body: JSON.stringify({psetID: id}),
             headers: {'Content-type': 'application/json'}
@@ -44,7 +45,7 @@ const PSetTable = (props) => {
     );
 
     const nameColumnTemplate = (rowData, column) => (
-        <Link to={`/pharmacogenomics/${rowData.doi}`} target="_blank">{rowData.name}</Link>
+        <Link to={`/${dataTypes.pharmacogenomics}/${rowData.doi}`} target="_blank">{rowData.name}</Link>
     );
 
     const downloadTemplate = (rowData, column) => {

@@ -1,6 +1,6 @@
 const formdata = require('../../db/helper/formdata');
 const metricdata = require('../../db/helper/metricdata');
-const psetCanonical = require('../../db/helper/pset-canonical');
+const datasetCanonical = require('../../db/helper/dataset-canonical');
 const upset = require('../../helper/upset');
 
 /**
@@ -15,14 +15,14 @@ module.exports = {
     getFormData: async function(req, res){
         try{
             let form = {dataType: [], dataset: [], genome: [], rnaTool: [], rnaRef: [], accompanyRNA: [], accompanyDNA: [], dnaTool: [], dnaRef: []}
-            const meta = await formdata.getFormData();
+            const meta = await formdata.getFormData(req.params.datasetType);
 
             meta.dataset.forEach((ds) => {form.dataset.push({
                 label: ds.label,
                 name: ds.name,
                 versions: ds.versions.map(version => {return {version: version.version, label: version.label, disabled: version.disabled}}),
                 unavailable: ds.unavailable
-            })})
+            })});
             form.genome = meta.genome
             form.rnaTool = meta.rnaTool.map(tool => {return {label: tool.label, name: tool.name}})
             form.rnaRef = meta.rnaRef.map(ref => {return {label: ref.label, name: ref.name, genome: ref.genome}})
@@ -47,7 +47,7 @@ module.exports = {
     getDataForStats: async function(req, res){ 
         let data = {psets: [], chartData:[]}
         try{
-            const form = await formdata.getFormData()
+            const form = await formdata.getFormData(req.params.datasetType)
             const dataset = form.dataset
             for(let i = 0; i < dataset.length; i++){
                 let item = {
@@ -62,7 +62,7 @@ module.exports = {
                 }
                 data.chartData.push(item)
             }
-            data.psets = await psetCanonical.getCanonicalDownloadRanking();
+            data.psets = await datasetCanonical.getCanonicalDownloadRanking(req.params.datasetType);
             res.send(data);
         }catch(error){
             console.log(error)
@@ -172,7 +172,7 @@ module.exports = {
      * @param {*} res 
      */
     getLandingData: async function(req, res){
-        const result = await metricdata.getLandingData();
+        const result = await metricdata.getLandingData(req.params.datasetType);
         if(result.status){
             res.send(result);
         }else{

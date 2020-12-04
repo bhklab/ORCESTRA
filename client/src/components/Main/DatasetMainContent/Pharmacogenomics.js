@@ -38,7 +38,7 @@ const Pharmacogenomics = () => {
             setFormData({...json.form, versionCombo: versionCombo});
             setDashboard(json.dashboard);
         }
-        fetchData('/api/landing/data');
+        fetchData(`/api/${dataTypes.pharmacogenomics}/landing/data`);
     }, []);
 
     const showDialog = (type) => {

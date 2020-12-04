@@ -6,8 +6,9 @@ import DNATabContent from './TabContents/DNATabContent';
 import PipelineTabContent from './TabContents/PipelineTabContent';
 import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';
 import {GeneralInfoAccordion} from './PSetAccordion';
-import DownloadPSetButton from '../../Shared/Buttons/DownloadPSetButton';
+import DownloadDatasetButton from '../../Shared/Buttons/DownloadDatasetButton';
 import {TabContainer} from './PSetStyle';
+import {dataTypes} from '../../Shared/Enums';
 import styled from 'styled-components';
 
 const StyledTitle = styled.div`
@@ -23,7 +24,7 @@ const PSet = (props) => {
     useEffect(() => {
         const getData = async () => {
             try{
-                const res = await fetch('/api/pset/one/' + props.params.id1 + '/' + props.params.id2)
+                const res = await fetch(`/api/${dataTypes.pharmacogenomics}/one/${props.params.id1}/${props.params.id2}`);
                 if(res.ok){
                     const json = await res.json()
                     console.log(json)
@@ -47,7 +48,7 @@ const PSet = (props) => {
                 <React.Fragment>
                     <StyledTitle>
                         <h2>Explore PSet - {pset.name}</h2>
-                        <DownloadPSetButton disabled={false} pset={pset} />
+                        <DownloadDatasetButton disabled={false} datasetType={dataTypes.pharmacogenomics} dataset={pset} />
                     </StyledTitle>
                     <GeneralInfoAccordion data={pset.generalInfo}/>
                     <TabContainer>

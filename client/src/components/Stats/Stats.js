@@ -5,6 +5,7 @@ import {Column} from 'primereact/column';
 import { Link } from 'react-router-dom';
 import DatasetChart from './DatasetChart';
 import Loader from 'react-loader-spinner';
+import {dataTypes} from '../Shared/Enums';
 
 const Stats = () => {
 
@@ -14,7 +15,7 @@ const Stats = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const res = await fetch('/api/stats/data')
+            const res = await fetch(`/api/${dataTypes.pharmacogenomics}/stats/data`)
             const json = await res.json()
             console.log(json)
             setPSets(json.psets)
@@ -24,7 +25,7 @@ const Stats = () => {
     }, [])
     
     const nameColumnTemplate = (rowData, column) => {
-        let route = '/pharmacogenomics/' + rowData.doi;
+        let route = `/${dataTypes.pharmacogenomics}/${rowData.doi}`;
         return(
             <Link to={route} target="_blank">{rowData.name}</Link>
         );

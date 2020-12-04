@@ -8,6 +8,7 @@ import Loader from 'react-loader-spinner';
 import {Messages} from 'primereact/messages';
 import * as Helper from '../../Shared/Helper';
 import {AuthContext} from '../../../context/auth';
+import {dataTypes} from '../../Shared/Enums';
 
 export const SearchReqContext = React.createContext();
 
@@ -50,7 +51,7 @@ const PSetSearch = () => {
 
     useEffect(() => {
         const initializeView = async () => {
-            const psets = await fetchData('/api/pset/search');
+            const psets = await fetchData(`/api/${dataTypes.pharmacogenomics}/search`);
             console.log(psets)
             setPSets(psets);
             setSearchAll(true);
@@ -73,7 +74,7 @@ const PSetSearch = () => {
                     copy[key] = [copy[key]];
                 }
             });
-            const psets = await fetchData('/api/pset/search', copy);
+            const psets = await fetchData(`/api/${dataTypes.pharmacogenomics}/search`, copy);
             let all = true;
             Object.keys(parameters).forEach(key => {
                 if(Array.isArray(parameters[key]) && parameters[key].length){

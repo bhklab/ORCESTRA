@@ -104,10 +104,10 @@ async function buildPSetObject(pset, formdata){
     return psetObj
 }
 
-const selectPSets = async function(query, projection=null){       
+const selectDatasets = async function(datasetType, query, projection=null){     
     const db = await mongo.getDB();
     try{
-        const collection = db.collection('pset')
+        const collection = db.collection(datasetType);
         let queryFilter = getQueryFilterSet(query);
         const data = await collection.find(queryFilter, projection).toArray()
         return data
@@ -117,12 +117,12 @@ const selectPSets = async function(query, projection=null){
     } 
 }
 
-const selectPSetByDOI = async function(doi, projection=null){
+const selectDatasetByDOI = async function(datasetType, doi, projection=null){
     const db = await mongo.getDB();
     try{
-        const form = await formdata.getFormData();
+        const form = await formdata.getFormData(datasetType);
 
-        const psetCollection = db.collection('pset');
+        const psetCollection = db.collection(datasetType);
         const pset = await psetCollection.findOne({'doi': doi, 'status' : 'complete'}, projection);
         const psetObj = await buildPSetObject(pset, form);
 
@@ -147,6 +147,6 @@ const selectPSetByDOI = async function(doi, projection=null){
 }
 
 module.exports = {
-    selectPSets,
-    selectPSetByDOI
+    selectDatasets,
+    selectDatasetByDOI
 }

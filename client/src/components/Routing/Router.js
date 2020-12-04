@@ -59,7 +59,7 @@ const Router = () => {
                     <Route path='/:datatype/canonical' component={CanonicalPSets} /> 
                     <Route exact path ='/:datatype/status' component={Dashboard}/>
                     <Route exact path ='/:datatype/stats' component={Stats}/>
-                    <Route exact path ='/:datatype/documentation/:section' component={Documentation} />
+                    <Route exact path ='/documentation/:section' component={Documentation} />
                     <Route exact path='/app/authentication' component={Login} />
                     <Route path ='/reset/:token' component={Reset} />
                     <PrivateRoute path='/app/profile' component={Profile} redirect='/app/authentication' />

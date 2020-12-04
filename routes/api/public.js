@@ -1,7 +1,7 @@
 const formdata = require('../../db/helper/formdata');
-const psetSelect = require('../../db/helper/pset-select');
-const psetUpdate = require('../../db/helper/pset-update');
-const psetCanonical = require('../../db/helper/pset-canonical');
+const datasetSelect = require('../../db/helper/dataset-select');
+const datasetUpdate = require('../../db/helper/dataset-update');
+const datasetCanonical = require('../../db/helper/dataset-canonical');
 const path = require('path');
 
 /**
@@ -10,7 +10,8 @@ const path = require('path');
 module.exports = {
 
     getPSets: async (req, res) => {
-        console.log('getPSets')
+        console.log('getPSets');
+        let datasetType = req.params.datasetType.replace(/s([^s]*)$/, '$1');
 
         const filter = {'status': 'complete'}
 
@@ -31,13 +32,13 @@ module.exports = {
         let psets = []
 
         try{
-            const form = await formdata.getFormData()
+            const form = await formdata.getFormData(datasetType);
             
             if(req.params.filter === 'canonical'){
-                let datasets = await psetCanonical.getCanonicalPSets(filter, projection)
+                let datasets = await datasetCanonical.getCanonicalDatasets(datasetType, filter, projection)
                 datasets.forEach(data => data.canonicals.forEach(c => psets.push(c)))
             }else{
-                psets = await psetSelect.selectPSets(filter, projection)
+                psets = await datasetSelect.selectDatasets(datasetType, filter, projection)
             }
 
             for(let i = 0; i < psets.length; i++){
@@ -91,7 +92,7 @@ module.exports = {
         try{
             const doi = req.params.doi1 + '/' + req.params.doi2;
             console.log(doi)
-            const result = await psetSelect.selectPSetByDOI(doi, {'projection': {
+            const result = await datasetSelect.selectDatasetByDOI(req.params.datasetType, doi, {'projection': {
                 '_id': false,
                 'status': false,
                 'email': false, 
@@ -119,9 +120,10 @@ module.exports = {
     },
 
     getStatistics: async (req, res) => {
-        console.log('getStatistics')
+        console.log('getStatistics');
+        let datasetType = req.params.datasetType.replace(/s([^s]*)$/, '$1');
         try{
-            let result = await psetSelect.selectPSets({}, {'projection': {
+            let result = await datasetSelect.selectDatasets(datasetType, {}, {'projection': {
                 '_id': false,
                 'status': false,
                 'email': false, 
@@ -151,9 +153,10 @@ module.exports = {
      */
     updateDownloadCount: async (req, res) => {
         console.log('updateDownloadCount');
+        let datasetType = req.params.datasetType.replace(/s([^s]*)$/, '$1');
         try{
             const doi = req.params.doi1 + '/' + req.params.doi2;
-            await psetUpdate.updateDownloadCount(doi);
+            await datasetUpdate.updateDownloadCount(datasetType, doi);
             res.send({});
         }catch(error){
             console.log(error);

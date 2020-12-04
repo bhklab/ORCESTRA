@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components'
+import styled from 'styled-components';
+import {dataTypes} from '../Shared/Enums';
 
 const StyledContainer = styled.div`
     margin-bottom: 20px;
@@ -79,7 +80,7 @@ const CanonicalPSets = (props) => {
     }
 
     const nameColumnTemplate = (data) => {
-        let route = '/pharmacogenomics/' + data.doi;
+        let route = `/${dataTypes.pharmacogenomics}/${data.doi}`;
         return(
             <Link to={route} target="_blank">{data.name}</Link>
         );

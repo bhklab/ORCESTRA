@@ -3,6 +3,7 @@ import {InputSwitch} from 'primereact/inputswitch';
 import PSetDropdown from '../../../Shared/PSetDropdown';
 import PSetCheckbox from '../../../Shared/PSetCheckbox';
 import {SearchReqContext} from '../PSetSearch';
+import {dataTypes} from '../../../Shared/Enums';
 import './PSetFilter.css';
 
 const PSetFilter = () => {
@@ -15,7 +16,7 @@ const PSetFilter = () => {
     
     useEffect(() => {
         const initialize = async () => {
-            const res = await fetch('/api/formData');
+            const res = await fetch(`/api/${dataTypes.pharmacogenomics}/formData`);
             const json = await res.json();
             console.log(json)
             formRef.current = json;

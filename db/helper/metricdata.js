@@ -1,6 +1,6 @@
 const mongo = require('../mongo');
 const formdata = require('./formdata');
-const psetCanonical = require('./pset-canonical');
+const datasetCanonical = require('./dataset-canonical');
 
 module.exports = {
 
@@ -60,18 +60,18 @@ module.exports = {
      * For Main (landing) page
      * Returns an object containing dataset metric data to be rendered on the landing page.
      */
-    getLandingData: async function(){
+    getLandingData: async function(datasetType){
         const db = await mongo.getDB();
         const res = {status: 0, err: {}, form: {}, user: {}, pset: {}, dashboard: {}};
         try{
             //const user = db.collection('user');
-            const pset = db.collection('pset');
+            const pset = db.collection(datasetType);
 
-            res.form = await formdata.getFormData();
+            res.form = await formdata.getFormData(datasetType);
 
             //res.user = await user.find({'registered': true}).count();
 
-            const ranking = await psetCanonical.getCanonicalDownloadRanking();
+            const ranking = await datasetCanonical.getCanonicalDownloadRanking(datasetType);
             res.pset = ranking.splice(0,5);
 
             const array = await pset.find().toArray();

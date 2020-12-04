@@ -19,10 +19,10 @@ module.exports = {
         }         
     },
     
-    updateDownloadCount: async function(doi){
+    updateDownloadCount: async function(datasetType, doi){
         const db = await mongo.getDB();
         try{
-            const collection = db.collection('pset');
+            const collection = db.collection(datasetType);
             await collection.updateOne({'doi': doi}, {'$inc': {'download': 1}});
         }catch(error){
             console.log(error);

@@ -1,17 +1,16 @@
 const formdata = require('./formdata');
-const psetSelect = require('./pset-select');
 const mongo = require('../mongo');
 
 /**
- * For Canonical PSets and API.
- * Returns an array of objects containing canonical and non-canonical PSets for a particular dataset.
+ * For Canonical Datasets and API.
+ * Returns an array of objects containing canonical and non-canonical datasets for a particular dataset.
  * @param {*} query 
  * @param {*} projection 
  */
-const getCanonicalPSets = async function(query={}, projection=null){
+const getCanonicalDatasets = async function(datasetType, query={}, projection=null){
     try{
         let canonical = []
-        const form = await formdata.getFormData();
+        const form = await formdata.getFormData(datasetType);
         const datasets = form.dataset.filter(ds => {return !ds.unavailable});
 
         let datasetVersion = [];
@@ -25,14 +24,14 @@ const getCanonicalPSets = async function(query={}, projection=null){
         }
 
         /**
-         * Line 30 was the original code. 
+         * Line 33 was the original code. 
          * It was throwing TypeError which stated that psetSelect.selectPSets was not a function.
-         * Did not have this error in production, but the line was replaced with a direct cacll to the database, and it works.
+         * Did not have this error in production, but the line was replaced with a direct call to the database, and it works.
          */
         // const result = await psetSelect.selectPSets({}, projection)
         const db = await mongo.getDB();
-        const psets = db.collection('pset')
-        const result = await psets.find({}, projection).toArray()
+        const psets = db.collection(datasetType);
+        const result = await psets.find({}, projection).toArray();
 
         const bhkPSets = result.filter(data => data.createdBy === 'BHK Lab')
 
@@ -69,9 +68,9 @@ const getCanonicalPSets = async function(query={}, projection=null){
  * For Stats and Main pages.
  * Obtains the download rankings of the canonical PSets
  */
-const getCanonicalDownloadRanking = async function(){
+const getCanonicalDownloadRanking = async function(datasetType){
     try{
-        const canDataset = await getCanonicalPSets();
+        const canDataset = await getCanonicalDatasets(datasetType);
         let psets = []
         for(let i = 0; i < canDataset.length; i++){
             if(canDataset[i].dataset === 'GDSC'){
@@ -122,6 +121,6 @@ const getCanonicalDownloadRanking = async function(){
 }
 
 module.exports = {
-    getCanonicalPSets,
+    getCanonicalDatasets,
     getCanonicalDownloadRanking
 }

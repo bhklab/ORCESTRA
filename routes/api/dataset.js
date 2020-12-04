@@ -1,24 +1,24 @@
 /**
- * @fileoverview Contains API functions for PSet retrieval and modification.
+ * @fileoverview Contains API functions for dataset retrieval and modification.
  */
 const fs = require('fs');
 const path = require('path');
-const psetSelect = require('../../db/helper/pset-select');
-const psetUpdate = require('../../db/helper/pset-update');
-const psetCanonical = require('../../db/helper/pset-canonical');
+const datasetSelect = require('../../db/helper/dataset-select');
+const datasetUpdate = require('../../db/helper/dataset-update');
+const datasetCanonical = require('../../db/helper/dataset-canonical');
 const metricData = require('../../db/helper/metricdata');
 
 /**
- * Retrives PSet by DOI and parses it into an object form to be used for the single PSet page.
+ * Retrives a dataset by datasettype, DOI and parses it into an object form to be used for the single dataset page.
  * @param {*} req 
  * @param {*} res 
  */
-const getPSetByDOI = async function(req, res){
-    console.log('getPSetByDOI')
+const getDatasetByDOI = async function(req, res){
+    console.log(`getDatasetByDOI: ${req.params.datasetType}`);
     const doi = req.params.id1 + '/' + req.params.id2;
     console.log(doi)
     try{
-        const result = await psetSelect.selectPSetByDOI(doi)
+        const result = await datasetSelect.selectDatasetByDOI(req.params.datasetType, doi)
         let pset = {}  
         pset._id = result._id;
         pset.name = result.name;
@@ -56,14 +56,14 @@ const getPSetByDOI = async function(req, res){
 }
 
 /**
- * Retrieves filtered PSets.
+ * Retrieves filtered datasets.
  * @param {*} req 
  * @param {*} res 
  */
-const searchPSets = async function(req, res){
-    console.log('searchPSets');
+const searchDatasets = async function(req, res){
+    console.log(`searchDatasets: ${req.params.datasetType}`);
     try{
-        const result = await psetSelect.selectPSets(req.body.parameters);
+        const result = await datasetSelect.selectDatasets(req.params.datasetType, req.body.parameters);
         res.send(result);
     }catch(error){
         console.log(error);
@@ -71,9 +71,9 @@ const searchPSets = async function(req, res){
     }
 }
 
-const getCanonicalPSets = async function(req, res){
+const getCanonicalDatasets = async function(req, res){
     try{
-        const canonical = await psetCanonical.getCanonicalPSets()
+        const canonical = await datasetCanonical.getCanonicalDatasets(req.params.datasetType);
         res.send(canonical)
     }catch(error){
         res.status(500).send(error);
@@ -82,17 +82,17 @@ const getCanonicalPSets = async function(req, res){
 
 const updateCanonicalPSets = async function(req, res){
     try{
-        await psetUpdate.updateCanonicalStatus(req.body.selected.map(s => {return(s._id)}))
+        await datasetUpdate.updateCanonicalStatus(req.body.selected.map(s => {return(s._id)}))
         res.send();
     }catch(error){
         res.status(500).send(error);
     }
 }
 
-const downloadPSets = async function(req, res){
+const downloadDatasets = async function(req, res){
     try{
         console.log(req.body);
-        await psetUpdate.updateDownloadCount(req.body.psetID);
+        await datasetUpdate.updateDownloadCount(req.body.psetID);
         res.send({});
     }catch(error){
         res.status(500).send(error);
@@ -136,10 +136,10 @@ const getReleaseNotesData = async function(req, res){
 }
 
 module.exports = {
-    getPSetByDOI,
-    searchPSets,
-    getCanonicalPSets,
+    getDatasetByDOI,
+    searchDatasets,
+    getCanonicalDatasets,
     updateCanonicalPSets,
-    downloadPSets,
+    downloadDatasets,
     getReleaseNotesData
 };
