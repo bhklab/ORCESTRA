@@ -36,7 +36,7 @@ function getTabDataForToxicoSet(result){
 
 function getTabDataForXevaSet(result){
     let tabData = [];
-
+    tabData.push({header: 'Dataset', data: {dataset: result.dataset}});
     return tabData;
 }
 
@@ -120,6 +120,7 @@ const updateCanonicalPSets = async function(req, res){
 const downloadDatasets = async function(req, res){
     try{
         console.log(req.body);
+        console.log(req.params.datasetType);
         await datasetUpdate.updateDownloadCount(req.params.datasetType, req.body.datasetDOI);
         res.send({});
     }catch(error){

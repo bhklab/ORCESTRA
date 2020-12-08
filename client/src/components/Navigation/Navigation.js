@@ -60,20 +60,19 @@ const Navigation = (props) => {
     }
 
     return(
-        <StyledHeader isMain={path.datatype.length === 0} >
+        <StyledHeader datasetType={path.datatype} >
             <NavLink exact to='/'><img src={process.env.PUBLIC_URL + "/images/trumpet-orcestra.png"} alt='' /></NavLink>
             <div className='navBarContainer'>
                 <div className='navbar'>
+                    <div><NavLink exact to={`/`} activeClassName='active-link'>Home</NavLink></div>
                     {
                         path.datatype.length > 0 &&
                         <React.Fragment>
-                            <div><NavLink exact to={`/`} activeClassName='active-link'>Home</NavLink></div>
                             <div><NavLink exact to={`/${path.datatype}`} activeClassName='active-link'>{getDatatype(path.datatype)}</NavLink></div>
-                            <div>
-                                <NavLink exact to={`/${path.datatype}/search`} activeClassName='active-link'>
-                                    Search and Request
-                                </NavLink>
-                            </div>
+                            {
+                                path.datatype === dataTypes.pharmacogenomics && 
+                                <div><NavLink exact to={`/${path.datatype}/search`} activeClassName='active-link'>Search and Request</NavLink></div>
+                            }
                             {
                                 path.datatype === dataTypes.pharmacogenomics && 
                                 <div><NavLink exact to={`/${path.datatype}/status`} activeClassName='active-link'>Request Status</NavLink></div>
@@ -82,9 +81,12 @@ const Navigation = (props) => {
                                 path.datatype === dataTypes.pharmacogenomics && 
                                 <div><NavLink exact to={`/${path.datatype}/stats`} activeClassName='active-link'>Statistics</NavLink></div>
                             }
-                            <div><NavLink exact to={`/documentation/overview`} activeClassName='active-link'>Documentation</NavLink></div>
+                            
                         </React.Fragment>
                     }
+                    <div className='menu-item'>
+                        <NavLink exact to={`/documentation/overview`} activeClassName='active-link'>Documentation</NavLink>
+                    </div>
                     { auth.authenticated && <div className='menu-item'><NavLink exact to="/app/profile" activeClassName='active-link'>Profile</NavLink></div> }
                     <div>
                         {

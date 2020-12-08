@@ -4,7 +4,7 @@ import {Column} from 'primereact/column';
 import { Link } from 'react-router-dom';
 import {dataTypes} from '../../Shared/Enums';
 
-const ToxicoSetTable = (props) => {
+const XevaSetTable = (props) => {
     
     const [state, setState] = useState({
         rows: 10,
@@ -21,8 +21,8 @@ const ToxicoSetTable = (props) => {
 
     const downloadPSet = (doi, link) => async (event) => {
         event.preventDefault();
-        console.log('downloadOnePSet');
-        await fetch(`/api/${dataTypes.toxicogenomics}/download`, {
+        console.log('downloadOneXevaSet');
+        await fetch(`/api/${dataTypes.xenographic}/download`, {
             method: 'POST',
             body: JSON.stringify({datasetDOI: doi}),
             headers: {'Content-type': 'application/json'}
@@ -43,7 +43,7 @@ const ToxicoSetTable = (props) => {
     );
 
     const nameColumnTemplate = (rowData, column) => (
-        <Link to={`/${dataTypes.toxicogenomics}/${rowData.doi}`} target="_blank">{rowData.name}</Link>
+        <Link to={`/${dataTypes.xenographic}/${rowData.doi}`} target="_blank">{rowData.name}</Link>
     );
 
     const downloadTemplate = (rowData, column) => {
@@ -56,9 +56,9 @@ const ToxicoSetTable = (props) => {
 
     return(
         <DataTable 
-            value={props.tsets} 
-            selection={props.selectedTSets} onSelectionChange={event => {props.updatePSetSelection(event.value)}} 
-            paginator={props.tsets.length > 10} rows={state.rows} 
+            value={props.xevasets} 
+            selection={props.selectedTSets} onSelectionChange={event => {props.updateXevaSetSelection(event.value)}} 
+            paginator={props.xevasets.length > 10} rows={state.rows} 
             resizableColumns={true} columnResizeMode="fit"
             scrollable={true} scrollHeight={props.scrollHeight }
         >
@@ -74,4 +74,4 @@ const ToxicoSetTable = (props) => {
 
 }
 
-export default ToxicoSetTable;
+export default XevaSetTable;

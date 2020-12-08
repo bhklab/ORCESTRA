@@ -90,7 +90,8 @@ const ToxicoSetSearch = () => {
             }}
         >
             <div className='pageContent'>
-                <h2>Search or Request Toxicogenomic Datasets</h2>
+                <h1>ORCESTRA for Toxicogenomics</h1>   
+                <h3>Explore multimodal Toxicogenomic Datasets (ToxicoSets)</h3>
                 <div className='pSetListContainer'>
                     <ToxicoSetFilter />
                     <div className='pSetTable'>

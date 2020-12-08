@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {dataTypes} from '../Shared/Enums';
 
 export const StyledHeader = styled.header`
     top: 0%;
@@ -40,7 +41,7 @@ export const StyledHeader = styled.header`
     
     .navbar {
         margin-right: 100px;
-        width: ${props => (props.isMain ? '300px' : '950px')};
+        width: ${props => (props.datasetType.length === 0 ? '500px' : props.datasetType === dataTypes.pharmacogenomics ? '950px' : '700px')};
         height: 100%;
         display: flex;
         align-items: center;

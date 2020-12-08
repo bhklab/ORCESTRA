@@ -19,6 +19,9 @@ export const TabContentSection = styled.div`
     h3 {
         font-size: 16px;
     }
+    .pubList {
+        margin-bottom: 10px;
+    }
     .subContent {
         margin-left: 20px;
         font-size: 14px;

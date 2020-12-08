@@ -46,7 +46,7 @@ const ToxicoSet = (props) => {
                 <React.Fragment>
                     <StyledTitle>
                         <h2>Explore ToxicoSet - {toxicoSet.name}</h2>
-                        <DownloadDataSetButton disabled={false} dataset={toxicoSet} />
+                        <DownloadDataSetButton disabled={false} datasetType={dataTypes.toxicogenomics} dataset={toxicoSet} />
                     </StyledTitle>
                     <GeneralInfoAccordion datasetType='ToxicoSet' data={toxicoSet.generalInfo}/>
                     <TabContainer>
