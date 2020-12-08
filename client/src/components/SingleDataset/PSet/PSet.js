@@ -7,7 +7,7 @@ import PipelineTabContent from './TabContents/PipelineTabContent';
 import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';
 import {GeneralInfoAccordion} from './PSetAccordion';
 import DownloadDatasetButton from '../../Shared/Buttons/DownloadDatasetButton';
-import {TabContainer} from './PSetStyle';
+import {TabContainer} from '../SingleDatasetStyle';
 import {dataTypes} from '../../Shared/Enums';
 import styled from 'styled-components';
 
@@ -50,7 +50,7 @@ const PSet = (props) => {
                         <h2>Explore PSet - {pset.name}</h2>
                         <DownloadDatasetButton disabled={false} datasetType={dataTypes.pharmacogenomics} dataset={pset} />
                     </StyledTitle>
-                    <GeneralInfoAccordion data={pset.generalInfo}/>
+                    <GeneralInfoAccordion datasetType='PSet' data={pset.generalInfo}/>
                     <TabContainer>
                         <TabView renderActiveOnly={false}>
                             {

@@ -69,12 +69,19 @@ const Navigation = (props) => {
                         <React.Fragment>
                             <div><NavLink exact to={`/`} activeClassName='active-link'>Home</NavLink></div>
                             <div><NavLink exact to={`/${path.datatype}`} activeClassName='active-link'>{getDatatype(path.datatype)}</NavLink></div>
-                            <div><NavLink exact to={`/${path.datatype}/search`} activeClassName='active-link'>Search and Request</NavLink></div>
+                            <div>
+                                <NavLink exact to={`/${path.datatype}/search`} activeClassName='active-link'>
+                                    Search and Request
+                                </NavLink>
+                            </div>
                             {
                                 path.datatype === dataTypes.pharmacogenomics && 
                                 <div><NavLink exact to={`/${path.datatype}/status`} activeClassName='active-link'>Request Status</NavLink></div>
                             }
-                            <div><NavLink exact to={`/${path.datatype}/stats`} activeClassName='active-link'>Statistics</NavLink></div>
+                            {
+                                path.datatype === dataTypes.pharmacogenomics && 
+                                <div><NavLink exact to={`/${path.datatype}/stats`} activeClassName='active-link'>Statistics</NavLink></div>
+                            }
                             <div><NavLink exact to={`/documentation/overview`} activeClassName='active-link'>Documentation</NavLink></div>
                         </React.Fragment>
                     }

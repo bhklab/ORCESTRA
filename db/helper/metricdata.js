@@ -62,24 +62,24 @@ module.exports = {
      */
     getLandingData: async function(datasetType){
         const db = await mongo.getDB();
-        const res = {status: 0, err: {}, form: {}, user: {}, pset: {}, dashboard: {}};
+        const res = {status: 0, err: {}, form: {}, user: {}, dataset: {}, dashboard: {}};
         try{
             //const user = db.collection('user');
-            const pset = db.collection(datasetType);
+            const dataset = db.collection(datasetType);
 
             res.form = await formdata.getFormData(datasetType);
 
             //res.user = await user.find({'registered': true}).count();
 
             const ranking = await datasetCanonical.getCanonicalDownloadRanking(datasetType);
-            res.pset = ranking.splice(0,5);
+            res.dataset = ranking.splice(0,5);
 
-            const array = await pset.find().toArray();
-            const pending = await array.filter(pset => {
-                return pset.status === 'pending'
+            const array = await dataset.find().toArray();
+            const pending = await array.filter(dataset => {
+                return dataset.status === 'pending'
             });
-            const inProcess = await array.filter(pset => {
-                return pset.status === 'in-process'
+            const inProcess = await array.filter(dataset => {
+                return dataset.status === 'in-process'
             })
             res.dashboard.pending = pending ? pending.length : 0;
             res.dashboard.inProcess = inProcess? inProcess.length: 0;
@@ -98,14 +98,15 @@ module.exports = {
      * @param name string value for the name of the dataset
      * @param version string value for the dataset version
      */
-    getMetricDataVersion: async function(name, version, projectedField){
+    getMetricDataVersion: async function(datasetType, name, version, projectedField){
         try{
-            console.log(`${name} ${version}`);
+            console.log(`${datasetType} ${name} ${version}`);
             const db = await mongo.getDB();
             const metricData = db.collection('metric-data');
             let data = await metricData.aggregate([
                 {
                     '$match': {
+                        'datasetType': datasetType,
                         'name': name
                     }
                 },

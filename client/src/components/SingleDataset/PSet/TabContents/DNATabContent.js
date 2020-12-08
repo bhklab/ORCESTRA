@@ -1,7 +1,7 @@
 import React from 'react';
 import {PSetToolAccordion, DNARefAccordion} from '../PSetAccordion';
 import AccompanyDataTabContent from './AccompanyDataTabContent';
-import { TabHeader, TabContent, TabContentSection} from '../PSetStyle';
+import { TabHeader, TabContent, TabContentSection} from '../../SingleDatasetStyle';
 
 const DNATabContent = props => {
     const rawSeqDataDNA = props.metadata.find(x => x.name === 'rawSeqDataDNA')

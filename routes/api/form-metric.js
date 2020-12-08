@@ -2,6 +2,7 @@ const formdata = require('../../db/helper/formdata');
 const metricdata = require('../../db/helper/metricdata');
 const datasetCanonical = require('../../db/helper/dataset-canonical');
 const upset = require('../../helper/upset');
+const datasetType = require('../../helper/enum');
 
 /**
  * Module that includes functions to get formdata and PSet metric data for various usage in the web app.
@@ -23,15 +24,16 @@ module.exports = {
                 versions: ds.versions.map(version => {return {version: version.version, label: version.label, disabled: version.disabled}}),
                 unavailable: ds.unavailable
             })});
-            form.genome = meta.genome
-            form.rnaTool = meta.rnaTool.map(tool => {return {label: tool.label, name: tool.name}})
-            form.rnaRef = meta.rnaRef.map(ref => {return {label: ref.label, name: ref.name, genome: ref.genome}})
-            form.dnaTool = meta.dnaTool.map(tool => {return {label: tool.label, name: tool.name}})
-            form.dnaRef = meta.dnaRef.map(ref => {return {label: ref.label, name: ref.name, genome: ref.genome}})
-            form.dataType = meta.molecularData
-            form.accompanyRNA = meta.accompanyRNA.map(acc => {return({label: acc.label, name: acc.name, dataset: acc.dataset})})
-            form.accompanyDNA = meta.accompanyDNA.map(acc => {return({label: acc.label, name: acc.name, dataset: acc.dataset})})
-
+            if(req.params.datasetType === datasetType.pset){
+                form.genome = meta.genome
+                form.rnaTool = meta.rnaTool.map(tool => {return {label: tool.label, name: tool.name}})
+                form.rnaRef = meta.rnaRef.map(ref => {return {label: ref.label, name: ref.name, genome: ref.genome}})
+                form.dnaTool = meta.dnaTool.map(tool => {return {label: tool.label, name: tool.name}})
+                form.dnaRef = meta.dnaRef.map(ref => {return {label: ref.label, name: ref.name, genome: ref.genome}})
+                form.dataType = meta.molecularData
+                form.accompanyRNA = meta.accompanyRNA.map(acc => {return({label: acc.label, name: acc.name, dataset: acc.dataset})})
+                form.accompanyDNA = meta.accompanyDNA.map(acc => {return({label: acc.label, name: acc.name, dataset: acc.dataset})})
+            }
             res.send(form);
         }catch(error){
             console.log(error)

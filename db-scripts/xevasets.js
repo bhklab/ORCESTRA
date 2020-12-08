@@ -17,7 +17,7 @@ const buildInsertXevaSetObjects = async function(connStr, dbName){
             download: 0,
             doi: '10.5281/zenodo.4302463',
             commitID: '701326a68abe4a27a3e9a10597a6fda7',
-            downloadLink: '',
+            downloadLink: 'https://zenodo.org/record/4302463/files/Xeva_PDXE.rds?download=1',
             dataType: [
                 {
                     label: 'RNA Sequence',
@@ -46,7 +46,7 @@ const buildInsertXevaSetObjects = async function(connStr, dbName){
             ],
             dataset: {},
             createdBy: 'BHK Lab',
-            dateCreated: Date.now().toString(),
+            dateCreated: new Date(Date.now()),
             canonical: true
         }
     ];
@@ -55,7 +55,7 @@ const buildInsertXevaSetObjects = async function(connStr, dbName){
         let dataset = formdata.dataset.find(d => (d.name === set.name));
         set.dataset.name = dataset.name;
         set.dataset.label = dataset.label;
-        set.dataset.version = dataset.versions[0].version;
+        set.dataset.versionInfo = dataset.versions[0].version;
     });
 
     xevasets.sort((a, b) => {

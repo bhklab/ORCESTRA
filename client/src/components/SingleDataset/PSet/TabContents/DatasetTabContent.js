@@ -1,5 +1,5 @@
 import React from 'react';
-import { TabHeader, TabContent, TabContentSection} from '../PSetStyle';
+import { TabHeader, TabContent, TabContentSection} from '../../SingleDatasetStyle';
 
 class DatasetTabContent extends React.Component{
 

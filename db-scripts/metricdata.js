@@ -222,8 +222,102 @@ const addReleaseNotes = async function(connStr, dbName, metricsDir){
     }
 }
 
+const updateMetricDataType = async (connStr, dbName) => {
+    let client;
+    try{
+        client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
+        const db = client.db(dbName)
+        const metricData = db.collection('metric-data');
+        await metricData.updateMany({}, {'$set': {'datasetType': 'pset'}}, false, true);
+        client.close();
+    }catch(error){
+        console.log(error);
+        client.close();
+    }
+}
+
+const insertToxicoAndXevaSetMetricData = async (connStr, dbName) => {
+    let client;
+    try{
+        let data = [
+            {
+                name: 'EMEXP2458',
+                versions: [{
+                    version: '1.0',
+                    releaseNotes: {
+                        cellLines: {current: 2, new: 0, removed: 0},
+                        drugs: {current: 6, new: 0, removed: 0},
+                        experiments: undefined
+                    }
+                }],
+                datasetType: 'toxicoset'
+            },
+            {
+                name: 'DrugMatrix',
+                versions: [{
+                    version: '1.0',
+                    releaseNotes: {
+                        cellLines: {current: 1, new: 0, removed: 0},
+                        drugs: {current: 126, new: 0, removed: 0},
+                        experiments: undefined
+                    }
+                }],
+                datasetType: 'toxicoset'
+            },
+            {
+                name: 'TGGATE-Rat',
+                versions: [{
+                    version: '1.0',
+                    releaseNotes: {
+                        cellLines: {current: 1, new: 0, removed: 0},
+                        drugs: {current: 140, new: 0, removed: 0},
+                        experiments: {current: 824, new: 0, removed: 0}
+                    }
+                }],
+                datasetType: 'toxicoset'
+            },
+            {
+                name: 'TGGATE-Human',
+                versions: [{
+                    version: '1.0',
+                    releaseNotes: {
+                        cellLines: {current: 1, new: 0, removed: 0},
+                        drugs: {current: 146, new: 0, removed: 0},
+                        experiments: {current: 670, new: 0, removed: 0}
+                    }
+                }],
+                datasetType: 'toxicoset'
+            },
+            {
+                name: 'PDXE',
+                versions: [{
+                    version: '1.0',
+                    releaseNotes: {
+                        patients: {current: 277, new: 0, removed: 0},
+                        models: {current: 4706, new: 0, removed: 0},
+                        drugs: {current: 62, new: 0, removed: 0},
+                        experiments: undefined
+                    }
+                }],
+                datasetType: 'xevaset'
+            }
+        ];
+
+        client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
+        const db = client.db(dbName)
+        const metricData = db.collection('metric-data');
+        await metricData.insertMany(data);
+        client.close();
+    }catch(error){
+        console.log(error);
+        client.close();
+    }
+}
+
 module.exports = {
     insertMetricData,
     makeCurrentExpJsonFile,
-    addReleaseNotes
+    addReleaseNotes,
+    updateMetricDataType,
+    insertToxicoAndXevaSetMetricData
 }

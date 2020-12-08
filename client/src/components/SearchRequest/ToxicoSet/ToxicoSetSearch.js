@@ -1,107 +1,80 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import '../SearchRequest.css';
-// import PSetFilter from './subcomponents/PSetFilter';
-// import PSetRequestForm from './subcomponents/PSetRequestForm';
-// import PSetTable from '../../Shared/PSetTable';
-// import SavePSetButton from '../../Shared/Buttons/SavePSetButton';
-// import Loader from 'react-loader-spinner';
-// import {Messages} from 'primereact/messages';
-// import * as Helper from '../../Shared/Helper';
-// import {AuthContext} from '../../../context/auth';
+import Loader from 'react-loader-spinner';
+import ToxicoSetFilter from './ToxicoSetFilter';
+import ToxicoSetTable from './ToxicoSetTable';
+import {AuthContext} from '../../../context/auth';
+import {dataTypes} from '../../Shared/Enums';
 
 export const SearchReqContext = React.createContext();
 
-// async function fetchData(url, parameters) {
-//     const response = await fetch(url, {
-//         method: 'POST',
-//         body: JSON.stringify({parameters: {...parameters, status: 'complete'}}),
-//         headers: {'Content-type': 'application/json'}
-//     });
-//     const json = await response.json();
-//     return(json);
-// }
+async function fetchData(url, parameters) {
+    const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({parameters: {...parameters, status: 'complete'}}),
+        headers: {'Content-type': 'application/json'}
+    });
+    const json = await response.json();
+    return(json);
+}
 
 const ToxicoSetSearch = () => {
     
-    // const auth = useContext(AuthContext);
+    const auth = useContext(AuthContext);
     
-    // const [psets, setPSets] = useState([]);
-    // const [searchAll, setSearchAll] = useState(true);
-    // const [selectedPSets, setSelectedPSets] = useState([]);
+    const [toxicoSets, setToxicoSets] = useState([]);
+    const [searchAll, setSearchAll] = useState(true);
+    const [selectedTSets, setSelectedTSets] = useState([]);
     // const [disableSaveBtn, setDisableSaveBtn] = useState(true);
     const [isRequest, setIsRequest] = useState(false);
-    // const [readyToSubmit, setReadyToSubmit] = useState(true);
     
     const [parameters, setParameters] = useState({
         dataset: [],
-        drugSensitivity: [],
-        canonicalOnly: false,
-        filteredSensitivity: false,
-        genome: [],
-        dataType: [],
-        rnaTool: [],
-        rnaRef: [],
         name: '',
         email: '',
         search: false
     });
 
-    // const [ready, setReady] = useState(false)
+    const [ready, setReady] = useState(false);
 
-    // useEffect(() => {
-    //     const initializeView = async () => {
-    //         const psets = await fetchData('/api/pset/search');
-    //         console.log(psets)
-    //         setPSets(psets);
-    //         setSearchAll(true);
-    //         setReady(true);
-    //     }
-    //     initializeView();
-    // }, []);
+    useEffect(() => {
+        const initializeView = async () => {
+            const tsets = await fetchData(`/api/${dataTypes.toxicogenomics}/search`);
+            console.log(tsets)
+            setToxicoSets(tsets);
+            setSearchAll(true);
+            setReady(true);
+        }
+        initializeView();
+    }, []);
 
     // useEffect(() => {
     //     setDisableSaveBtn(Helper.isSelected(selectedPSets) ? false : true)
     // }, [selectedPSets]);
 
-    // useEffect(() => {   
-    //     async function search() {
-    //         console.log('search');
-    //         console.log(parameters);
-    //         let copy = JSON.parse(JSON.stringify(parameters));
-    //         Object.keys(copy).forEach(key => {
-    //             if(!Array.isArray(copy[key]) && !(key === 'canonicalOnly' || key === 'filteredSensitivity')){
-    //                 copy[key] = [copy[key]];
-    //             }
-    //         });
-    //         const psets = await fetchData('/api/pset/search', copy);
-    //         let all = true;
-    //         Object.keys(parameters).forEach(key => {
-    //             if(Array.isArray(parameters[key]) && parameters[key].length){
-    //                 all = false;
-    //             }
-    //         });
-    //         setPSets(psets);
-    //         setSearchAll(all);
-    //     }
+    useEffect(() => {   
+        async function search() {
+            console.log('search');
+            console.log(parameters);
+            const toxicoSets = await fetchData(`/api/${dataTypes.toxicogenomics}/search`, parameters);
+            let all = true;
+            Object.keys(parameters).forEach(key => {
+                if(Array.isArray(parameters[key]) && parameters[key].length){
+                    all = false;
+                }
+            });
+            setToxicoSets(toxicoSets);
+            setSearchAll(all);
+        }
 
-    //     if(parameters.search){
-    //         search();
-    //     }
-        
-    //     if(isRequest){
-    //         setReadyToSubmit(Helper.isReadyToSubmit(parameters));
-    //     }
-    // }, [parameters]);
+        if(parameters.search){
+            search();
+        }
+    }, [parameters]);
 
-    // const showMessage = (status, data) => {
-    //     let severity = status ? 'success' : 'error';
-    //     PSetSearch.messages.show({severity: severity, summary: data.summary, detail: data.message, sticky: true});
-    //     initializeState();
-    // }
-
-    // const updatePSetSelection = (selected) => {
-    //     setSelectedPSets(selected);
-    // }
+    const updateTSetSelection = (selected) => {
+        setSelectedTSets(selected);
+    }
 
     // const initializeState = () => {
     //     setSelectedPSets([]);
@@ -119,10 +92,9 @@ const ToxicoSetSearch = () => {
             <div className='pageContent'>
                 <h2>Search or Request Toxicogenomic Datasets</h2>
                 <div className='pSetListContainer'>
-                    <h3>Coming soon</h3>
-                    {/* <PSetFilter />
+                    <ToxicoSetFilter />
                     <div className='pSetTable'>
-                        <Messages ref={(el) => PSetSearch.messages = el} />
+                        {/* <Messages ref={(el) => PSetSearch.messages = el} /> */}
                         <div className='pSetSelectionSummary'>
                             <div className='summaryPanel'>
                                 <h2>Summary</h2>
@@ -130,24 +102,20 @@ const ToxicoSetSearch = () => {
                                     <div className='pSetSummaryItem'>
                                         {
                                             searchAll ? 
-                                            <span><span className='pSetSummaryNum'>{psets.length ? psets.length : 0}</span> <span>dataset(s) available.</span></span>
+                                            <span><span className='pSetSummaryNum'>{toxicoSets.length ? toxicoSets.length : 0}</span> <span>dataset(s) available.</span></span>
                                             :
-                                            <span><span className='pSetSummaryNum'>{psets.length}</span> <span>{psets.length === 1 ? ' match' : ' matches'}</span> found.</span>
+                                            <span><span className='pSetSummaryNum'>{toxicoSets.length}</span> <span>{toxicoSets.length === 1 ? ' match' : ' matches'}</span> found.</span>
                                         }
                                     </div>
                                 </div>
-                                <SavePSetButton selectedPSets={selectedPSets} disabled={disableSaveBtn} onSaveComplete={showMessage} />
+                                {/* <SavePSetButton selectedPSets={selectedPSets} disabled={disableSaveBtn} onSaveComplete={showMessage} /> */}
                             </div>
-                            {
-                                isRequest &&
-                                <PSetRequestForm readyToSubmit={readyToSubmit} onRequestComplete={showMessage} />
-                            }
                         </div>
                         {
                             ready ?
-                            <PSetTable 
-                                psets={psets} selectedPSets={selectedPSets} 
-                                updatePSetSelection={updatePSetSelection} scrollHeight='600px'
+                            <ToxicoSetTable 
+                                tsets={toxicoSets} selectedTSets={selectedTSets} 
+                                updateTSetSelection={updateTSetSelection} scrollHeight='600px'
                                 authenticated={auth.authenticated} download={true}
                             /> 
                             :
@@ -155,7 +123,7 @@ const ToxicoSetSearch = () => {
                                 <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
                             </div>
                         }  
-                    </div> */}
+                    </div>
                 </div>
             </div>
         </SearchReqContext.Provider>

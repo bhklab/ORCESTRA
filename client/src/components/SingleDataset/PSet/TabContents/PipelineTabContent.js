@@ -1,5 +1,5 @@
 import React from 'react';
-import { TabHeader, TabContent, StyledAccordion} from '../PSetStyle';
+import { TabHeader, TabContent, StyledAccordion} from '../../SingleDatasetStyle';
 import {Accordion,AccordionTab} from 'primereact/accordion';
 import styled from 'styled-components';
 

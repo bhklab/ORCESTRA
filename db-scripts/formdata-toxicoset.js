@@ -6,7 +6,7 @@ const dataset = [
         label: 'EMEXP2458', name: 'EMEXP2458', 
         versions: [
             {
-                version: '1.0', pipeline: "", label: '1.0(EMEXP2458)',
+                version: '1.0', pipeline: "get_EXP2458", label: '1.0(EMEXP2458)',
                 publication: [
                     {
                         citation: 'Jennen DG, Magkoufopoulou C, Ketelslegers HB, van Herwijnen MH, Kleinjans JC, van Delft JH. Comparison of HepG2 and HepaRG by whole-genome gene expression analysis for the purpose of chemical hazard identification. Toxicol Sci. 2010 May;115(1):66-79. doi: 10.1093/toxsci/kfq026. Epub 2010 Jan 27. PMID: 20106945.', 
@@ -25,7 +25,7 @@ const dataset = [
         label: 'DrugMatrix', name: 'DrugMatrix', 
         versions: [
             {
-                version: '1.0', pipeline: "", label: '1.0(DrugMatrix)',
+                version: '1.0', pipeline: "getDrugMat", label: '1.0(DrugMatrix)',
                 publication: [
                     {
                         citation: 'Svoboda D.L., Saddler T., Auerbach S.S. (2019) An Overview of National Toxicology Program’s Toxicogenomic Applications: DrugMatrix and ToxFX. In: Hong H. (eds) Advances in Computational Toxicology. Challenges and Advances in Computational Chemistry and Physics, vol 30. Springer, Cham. https://doi.org/10.1007/978-3-030-16443-0_8', 
@@ -43,7 +43,7 @@ const dataset = [
         label: 'TGGATE-Rat', name: 'TGGATE-Rat', 
         versions: [
             {
-                version: '1.0', pipeline: "", label: '1.0(TGGATE-Rat)',
+                version: '1.0', pipeline: "getTG_rat", label: '1.0(TGGATE-Rat)',
                 publication: [
                     {
                         citation: 'Igarashi Y, Nakatsu N, Yamashita T, Ono A, Ohno Y, Urushidani T, Yamada H. Open TG-GATEs: a large-scale toxicogenomics database. Nucleic Acids Res. 2015 Jan;43(Database issue):D921-7. doi: 10.1093/nar/gku955. Epub 2014 Oct 13. PMID: 25313160; PMCID: PMC4384023.', 
@@ -61,7 +61,7 @@ const dataset = [
         label: 'TGGATE-Human', name: 'TGGATE-Human', 
         versions: [
             {
-                version: '1.0', pipeline: "", label: '1.0(TGGATE-Human)',
+                version: '1.0', pipeline: "getTG_human", label: '1.0(TGGATE-Human)',
                 publication: [
                     {
                         citation: 'Igarashi Y, Nakatsu N, Yamashita T, Ono A, Ohno Y, Urushidani T, Yamada H. Open TG-GATEs: a large-scale toxicogenomics database. Nucleic Acids Res. 2015 Jan;43(Database issue):D921-7. doi: 10.1093/nar/gku955. Epub 2014 Oct 13. PMID: 25313160; PMCID: PMC4384023.', 
@@ -95,6 +95,7 @@ const insertFormdata = async function(connStr, dbName){
         client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true});
         const db = client.db(dbName);
         const formdata = db.collection('formdata');
+        await formdata.deleteOne({'datasetType': 'toxicoset'});
         await formdata.insertOne(form);
         client.close();
     }catch(error){

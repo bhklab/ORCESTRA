@@ -1,7 +1,7 @@
 import React from 'react';
 import {PSetToolAccordion, RNARefAccordion} from '../PSetAccordion';
 import AccompanyDataTabContent from './AccompanyDataTabContent';
-import { TabHeader, TabContent, TabContentSection} from '../PSetStyle';
+import { TabHeader, TabContent, TabContentSection} from '../../SingleDatasetStyle';
 
 const RNATabContent = props => {
     const rawSeqDataRNA = props.metadata.find(x => x.name === 'rawSeqDataRNA')

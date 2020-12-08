@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import { NavLink } from 'react-router-dom';
 import {PathContext} from '../../context/path';
 import styled from 'styled-components';
+import {dataTypes} from '../Shared/Enums';
 
 const StyledFooter = styled.div`
     position: relative;
@@ -70,18 +71,18 @@ const Footer = () => {
                     {
                         path.datatype.length === 0 ? 
                         <React.Fragment>
-                            <NavLink exact to="/pharamacogenomics" onClick={() => {path.setDatatype('pharmacogenomics')}}>Pharmacogenomics Data</NavLink>
-                            <div>Toxicogenomics Data (Coming soon)</div>
-                            <div>Xenographic Pharmacogenomics Data (Coming soon)</div>
-                            <div>Metagenomics Data (Coming soon)</div>
+                            <NavLink exact to={`/${dataTypes.pharmacogenomics}`} onClick={() => {path.setDatatype(dataTypes.pharmacogenomics)}}>Pharmacogenomics Data</NavLink>
+                            <NavLink exact to={`/${dataTypes.toxicogenomics}`} onClick={() => {path.setDatatype(dataTypes.toxicogenomics)}}>Toxicogenomics Data</NavLink>
+                            <NavLink exact to={`/${dataTypes.xenographic}`} onClick={() => {path.setDatatype(dataTypes.xenographic)}}>Xenographic Pharmacogenomics Data</NavLink>
+                            <div>Clinical Genomics Data (Coming soon)</div>
                             <div>Radiogenomics Data (Coming soon)</div>
                         </React.Fragment>
                         :
                         <React.Fragment>
-                            <NavLink exact to={`/${path.datatype}/canonical`} >Canonical PSets</NavLink>
+                            {/* <NavLink exact to={`/${path.datatype}/canonical`} >Canonical PSets</NavLink> */}
                             <NavLink exact to={`/${path.datatype}/search`} >Search and Request</NavLink>
-                            <NavLink exact to={`/${path.datatype}/status`} >Request Status</NavLink>
-                            <NavLink exact to={`/${path.datatype}/stats`} >Statistics</NavLink>
+                            {/* <NavLink exact to={`/${path.datatype}/status`} >Request Status</NavLink> */}
+                            {/* <NavLink exact to={`/${path.datatype}/stats`} >Statistics</NavLink> */}
                         </React.Fragment>
                     }
                 </div>

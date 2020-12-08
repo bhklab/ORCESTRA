@@ -16,7 +16,7 @@ const DownloadDatasetButton = props => {
 
         await fetch(`/api/${props.datasetType}/download`, {
             method: 'POST',
-            body: JSON.stringify({datasetID: props.dataset.doi}),
+            body: JSON.stringify({datasetDOI: props.dataset.doi}),
             headers: {'Content-type': 'application/json'}
         })
     }

@@ -7,6 +7,38 @@ const datasetSelect = require('../../db/helper/dataset-select');
 const datasetUpdate = require('../../db/helper/dataset-update');
 const datasetCanonical = require('../../db/helper/dataset-canonical');
 const metricData = require('../../db/helper/metricdata');
+const enums = require('../../helper/enum');
+
+function getTabDataForPSet(result){
+    let tabData = [];
+    tabData.push({header: 'Dataset', data: {dataset: result.dataset, genome: result.genome}})
+    let rnaData = [];
+    let dnaData = [];
+
+    if(result.rnaTool.length) {rnaData.push({name: 'rnaTool', value: result.rnaTool});}
+    if(result.rnaRef.length) {rnaData.push({name: 'rnaRef', value: result.rnaRef});}
+    if(result.dataset.versionInfo.rawSeqDataRNA.length) {rnaData.push({name: 'rawSeqDataRNA', value: result.dataset.versionInfo.rawSeqDataRNA});}
+    if(result.accompanyRNA.length) {rnaData.push({name: 'accRNA', value: result.accompanyRNA});}
+    if(rnaData.length) {tabData.push({header: 'RNA', data: rnaData})}
+
+    if(result.dataset.versionInfo.rawSeqDataDNA.length) {dnaData.push({name: 'rawSeqDataDNA', value: result.dataset.versionInfo.rawSeqDataDNA});}
+    if(result.accompanyDNA.length) {dnaData.push({name: 'accDNA', value: result.accompanyDNA});}
+    if(dnaData.length) {tabData.push({header: 'DNA', data: dnaData})}
+
+    return tabData;
+} 
+
+function getTabDataForToxicoSet(result){
+    let tabData = [];
+    tabData.push({header: 'Dataset', data: {dataset: result.dataset}});
+    return tabData;
+}
+
+function getTabDataForXevaSet(result){
+    let tabData = [];
+
+    return tabData;
+}
 
 /**
  * Retrives a dataset by datasettype, DOI and parses it into an object form to be used for the single dataset page.
@@ -19,36 +51,32 @@ const getDatasetByDOI = async function(req, res){
     console.log(doi)
     try{
         const result = await datasetSelect.selectDatasetByDOI(req.params.datasetType, doi)
-        let pset = {}  
-        pset._id = result._id;
-        pset.name = result.name;
-        pset.downloadLink = result.downloadLink;
-        pset.doi = result.doi;
-        pset.generalInfo = {name: result.name, doi: result.doi, createdBy: result.createdBy, dateCreated: result.dateCreated};
-        pset.tabData = []
+        let dataset = {}  
+        dataset._id = result._id;
+        dataset.name = result.name;
+        dataset.downloadLink = result.downloadLink;
+        dataset.doi = result.doi;
+        dataset.generalInfo = {name: result.name, doi: result.doi, createdBy: result.createdBy, dateCreated: result.dateCreated};
+        dataset.tabData = []
 
-        // insert tab data
-        pset.tabData.push({header: 'Dataset', data: {dataset: result.dataset, genome: result.genome}})
-        let rnaData = [];
-        let dnaData = [];
+        // get molecular tab data for each dataset type
+        switch(req.params.datasetType){
+            case enums.dataTypes.pharmacogenomics:
+                dataset.tabData = getTabDataForPSet(result);
+                break;
+            case enums.dataTypes.toxicogenomics:
+                dataset.tabData = getTabDataForToxicoSet(result);
+                break;
+            case enums.dataTypes.xenographic:
+                dataset.tabData = getTabDataForXevaSet(result);
+            default:
+                break;
+        }
 
-        if(result.rnaTool.length) {rnaData.push({name: 'rnaTool', value: result.rnaTool});}
-        if(result.rnaRef.length) {rnaData.push({name: 'rnaRef', value: result.rnaRef});}
-        if(result.dataset.versionInfo.rawSeqDataRNA.length) {rnaData.push({name: 'rawSeqDataRNA', value: result.dataset.versionInfo.rawSeqDataRNA});}
-        if(result.accompanyRNA.length) {rnaData.push({name: 'accRNA', value: result.accompanyRNA});}
-        if(rnaData.length) {pset.tabData.push({header: 'RNA', data: rnaData})}
-        
-        //if(result.dnaTool.length) {dnaData.push({name: 'dnaTool', value: result.dnaTool});}
-        //if(result.dnaRef.length) {dnaData.push({name: 'dnaRef', value: result.dnaRef});}
-        if(result.dataset.versionInfo.rawSeqDataDNA.length) {dnaData.push({name: 'rawSeqDataDNA', value: result.dataset.versionInfo.rawSeqDataDNA});}
-        if(result.accompanyDNA.length) {dnaData.push({name: 'accDNA', value: result.accompanyDNA});}
-        if(dnaData.length) {pset.tabData.push({header: 'DNA', data: dnaData})}
+        if(result.pipeline) {dataset.tabData.push({header: 'Pipeline', data: {commitID: result.commitID, config: result.pipeline}})}
+        dataset.tabData.push({header: 'Release Notes', data: result.releaseNotes});
 
-        if(result.pipeline) {pset.tabData.push({header: 'Pipeline', data: {commitID: result.commitID, config: result.pipeline}})}
-
-        pset.tabData.push({header: 'Release Notes', data: result.releaseNotes});
-
-        res.send(pset)
+        res.send(dataset);
     }catch(error){
         console.log(error);
         res.status(500).send(error);
@@ -92,7 +120,7 @@ const updateCanonicalPSets = async function(req, res){
 const downloadDatasets = async function(req, res){
     try{
         console.log(req.body);
-        await datasetUpdate.updateDownloadCount(req.body.psetID);
+        await datasetUpdate.updateDownloadCount(req.params.datasetType, req.body.datasetDOI);
         res.send({});
     }catch(error){
         res.status(500).send(error);

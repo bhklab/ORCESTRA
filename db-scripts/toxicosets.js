@@ -26,7 +26,7 @@ const buildInsertToxicoSetObjects = async function(connStr, dbName){
             ],
             dataset: {},
             createdBy: 'BHK Lab',
-            dateCreated: Date.now().toString(),
+            dateCreated: new Date(Date.now()),
             canonical: true
         },
         {
@@ -44,7 +44,7 @@ const buildInsertToxicoSetObjects = async function(connStr, dbName){
             ],
             dataset: {},
             createdBy: 'BHK Lab',
-            dateCreated: Date.now().toString(),
+            dateCreated: new Date(Date.now()),
             canonical: true
         },
         {
@@ -66,7 +66,7 @@ const buildInsertToxicoSetObjects = async function(connStr, dbName){
             ],
             dataset: {},
             createdBy: 'BHK Lab',
-            dateCreated: Date.now().toString(),
+            dateCreated: new Date(Date.now()),
             canonical: true
         },
         {
@@ -88,7 +88,7 @@ const buildInsertToxicoSetObjects = async function(connStr, dbName){
             ],
             dataset: {},
             createdBy: 'BHK Lab',
-            dateCreated: Date.now().toString(),
+            dateCreated: new Date(Date.now()),
             canonical: true
         },
     ];
@@ -97,7 +97,7 @@ const buildInsertToxicoSetObjects = async function(connStr, dbName){
         let dataset = formdata.dataset.find(d => (d.name === set.name));
         set.dataset.name = dataset.name;
         set.dataset.label = dataset.label;
-        set.dataset.version = dataset.versions[0].version;
+        set.dataset.versionInfo = dataset.versions[0].version;
     });
 
     toxicosets.sort((a, b) => {

@@ -29,12 +29,12 @@ const Pharmacogenomics = () => {
         const fetchData = async (api) => {
             const res = await fetch(api);
             const json = await res.json();
-            const dataset = json.form.dataset 
+            const dataset = json.form.dataset; 
             let versionCombo = 0
             for(let i = 0; i < dataset.length; i++){
                 versionCombo += dataset[i].versions.length
             }
-            setStatsData(json.pset);
+            setStatsData(json.dataset);
             setFormData({...json.form, versionCombo: versionCombo});
             setDashboard(json.dashboard);
         }

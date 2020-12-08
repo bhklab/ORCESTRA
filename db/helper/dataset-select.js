@@ -1,8 +1,9 @@
 const mongo = require('../mongo');
 const formdata = require('./formdata');
 const metricData = require('./metricdata');
+const enums = require('../../helper/enum');
 
-function getQueryFilterSet(query){
+function getQuerySetForPSet(query){
     let querySet = {}
     let queryArray = [];
 
@@ -44,6 +45,45 @@ function getQueryFilterSet(query){
 
     if(query.filteredSensitivity){
         queryArray.push(getQueryFilter('dataset.filteredSensitivity', true));
+    }
+
+    if(queryArray.length){
+        querySet = {$and: queryArray};
+    }
+
+    return(querySet);
+}
+
+function getQuerySetForTSet(query){
+    let querySet = {}
+    let queryArray = [];
+
+    if(!query){
+        return(querySet);
+    } 
+    
+    if(query.dataset && query.dataset.length){
+        console.log('get filter')
+        queryArray.push(getQueryFilter('dataset.name', query.dataset.map(ds => {return(ds.name)})));
+    }
+
+    if(queryArray.length){
+        querySet = {$and: queryArray};
+    }
+
+    return(querySet);
+}
+
+function getQuerySetForXevaSet(query){
+    let querySet = {}
+    let queryArray = [];
+
+    if(!query){
+        return(querySet);
+    } 
+    
+    if(query.dataset && query.dataset.length){
+        queryArray.push(getQueryFilter('dataset.name', query.dataset.map(ds => {return(ds.name)})));
     }
 
     if(queryArray.length){
@@ -104,11 +144,50 @@ async function buildPSetObject(pset, formdata){
     return psetObj
 }
 
+async function buildToxicoSetObject(tset, formdata){
+    let tsetObj = await JSON.parse(JSON.stringify(tset))
+    const dataset = await formdata.dataset.find(data => {return data.name === tset.dataset.name})
+    
+    // assign versionInfo metadata
+    tsetObj.dataset.versionInfo = await dataset.versions.find(version => {return version.version === tset.dataset.versionInfo});
+
+    return tsetObj
+}
+
+async function buildXevaSetObject(tset, formdata){
+    let tsetObj = await JSON.parse(JSON.stringify(tset))
+    const dataset = await formdata.dataset.find(data => {return data.name === tset.dataset.name})
+    
+    // assign versionInfo metadata
+    tsetObj.dataset.versionInfo = await dataset.versions.find(version => {return version.version === tset.dataset.versionInfo});
+
+    return tsetObj
+}
+
 const selectDatasets = async function(datasetType, query, projection=null){     
+    console.log(datasetType);
+    console.log(query);
     const db = await mongo.getDB();
+
     try{
         const collection = db.collection(datasetType);
-        let queryFilter = getQueryFilterSet(query);
+        
+        let queryFilter = {}
+        switch(datasetType){
+            case enums.dataTypes.pharmacogenomics:
+                queryFilter = getQuerySetForPSet(query);
+                break;
+            case enums.dataTypes.toxicogenomics:
+                queryFilter = getQuerySetForTSet(query);
+                break;
+            case enums.dataTypes.xenographic:
+                queryFilter = getQuerySetForXevaSet(query);
+            default:
+                break;
+        }
+
+        console.log(queryFilter);
+
         const data = await collection.find(queryFilter, projection).toArray()
         return data
     }catch(err){
@@ -122,24 +201,39 @@ const selectDatasetByDOI = async function(datasetType, doi, projection=null){
     try{
         const form = await formdata.getFormData(datasetType);
 
-        const psetCollection = db.collection(datasetType);
-        const pset = await psetCollection.findOne({'doi': doi, 'status' : 'complete'}, projection);
-        const psetObj = await buildPSetObject(pset, form);
+        const datasetCollection = db.collection(datasetType);
+        const dataset = await datasetCollection.findOne({'doi': doi, 'status' : 'complete'}, projection);
+        let datasetObj = {};
+        switch(datasetType){
+            case enums.dataTypes.pharmacogenomics:
+                datasetObj = await buildPSetObject(dataset, form);
+                break;
+            case enums.dataTypes.toxicogenomics:
+                datasetObj = await buildToxicoSetObject(dataset, form);
+                break;
+            case enums.dataTypes.xenographic:
+                datasetObj = await buildXevaSetObject(dataset, form);
+            default:
+                break;
+        }
+        console.log(datasetObj);
 
+        // add pipeline config json
         const reqConfigCollection = db.collection('req-config');
         let pipelineConfig = {};
-        pipelineConfig = await reqConfigCollection.findOne({'_id': psetObj._id});
-
+        pipelineConfig = await reqConfigCollection.findOne({'_id': datasetObj._id});
         if(!pipelineConfig){
             const masterConfigCollection = db.collection('req-config-master');
-            pipelineConfig = await masterConfigCollection.findOne({'pipeline.name': psetObj.dataset.versionInfo.pipeline});
+            pipelineConfig = await masterConfigCollection.findOne({'pipeline.name': datasetObj.dataset.versionInfo.pipeline});
         }
-        psetObj.pipeline = pipelineConfig;
+        datasetObj.pipeline = pipelineConfig;
+        
         // add release notes metrics
-        const metrics = await metricData.getMetricDataVersion(psetObj.dataset.name, psetObj.dataset.versionInfo.version, 'releaseNotes');
+        const metrics = await metricData.getMetricDataVersion(datasetType, datasetObj.dataset.name, datasetObj.dataset.versionInfo.version, 'releaseNotes');
         console.log(metrics);
-        psetObj.releaseNotes = metrics;
-        return psetObj
+        datasetObj.releaseNotes = metrics;
+
+        return datasetObj
     }catch(err){
         console.log(err)
         throw err

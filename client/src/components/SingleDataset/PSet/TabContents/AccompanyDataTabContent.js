@@ -1,5 +1,5 @@
 import React from 'react';
-import { TabContentSection} from '../PSetStyle';
+import { TabContentSection} from '../../SingleDatasetStyle';
 
 const getType = function(type){
     switch(type){
