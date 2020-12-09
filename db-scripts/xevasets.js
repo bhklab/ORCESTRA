@@ -41,7 +41,8 @@ const buildInsertXevaSetObjects = async function(connStr, dbName){
                 },
                 {
                     label: 'Drug Response',
-                    name: 'drugResponse'
+                    name: 'drugResponse',
+                    version: '2015'
                 }
             ],
             dataset: {},

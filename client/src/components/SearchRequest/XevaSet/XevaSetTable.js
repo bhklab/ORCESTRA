@@ -36,11 +36,19 @@ const XevaSetTable = (props) => {
         document.body.removeChild(anchor);
     }
 
-    const dataTypeTemplate = (rowData, column) => (
-        <div>
-            {rowData[column.field] ? rowData[column.field].map(item => <div key={item.name}>{item.label}</div>) : ''}
-        </div>
-    );
+    const drugSensitivityTemplate = (rowData, column) => {
+        const drugSensitivity = rowData[column.field].find(item => (item.name === 'drugResponse'));
+        return(
+            <div>{drugSensitivity ? drugSensitivity.version : 'Not Available'}</div>
+        );
+    }
+
+    const dataTypeTemplate = (rowData, column) => {
+        const dataTypes = rowData[column.field].filter(item => (item.name !== 'drugResponse'));
+        return(
+            <div>{dataTypes.map(item => <div key={item.name}>{item.label}</div>)}</div>
+        );
+    }
 
     const nameColumnTemplate = (rowData, column) => (
         <Link to={`/${dataTypes.xenographic}/${rowData.doi}`} target="_blank">{rowData.name}</Link>
@@ -65,7 +73,8 @@ const XevaSetTable = (props) => {
             {props.authenticated && <Column selectionMode="multiple" style={{width: '30px', textAlign: 'center'}} />}
             <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplate} sortable={true} />
             <Column className='textField' field='dataset.name' header='Dataset' style={{width:'100px'}} sortable={true} />
-            <Column field='dataType' body={dataTypeTemplate} style={{width:'125px'}} header='Molecular Data' />
+            <Column field='dataType' body={drugSensitivityTemplate} style={{width:'100px'}} header='Drug Response' />
+            <Column field='dataType' body={dataTypeTemplate} style={{width:'100px'}} header='Molecular Data' />
             <Column field='canonical' body={canonicalTemplate} style={{width:'90px', textAlign: 'center'}} header='Canonical' />
             <Column field='download' style={{width:'100px', textAlign: 'center'}} header='Number of Downloads' sortable={true} />
             {props.download && <Column field='downloadLink' body={downloadTemplate} style={{width:'60px', textAlign: 'center'}} header='Download' /> }

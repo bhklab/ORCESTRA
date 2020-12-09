@@ -6,6 +6,9 @@ const DatasetTabContent = (props) => {
     const dataListDrugResponse = (data) => (
         <div>     
             <li key={data} className='pubList'>
+            <div className='subContent'>
+                    Version: {data.version}
+                </div>
                 <div className='subContent'>
                     Source: <a href={data.source}>{data.source}</a>
                 </div>

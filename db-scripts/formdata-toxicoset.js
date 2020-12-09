@@ -15,7 +15,7 @@ const dataset = [
                 ], 
                 data: {
                     rawMicroarrayData: 'https://www.ebi.ac.uk/arrayexpress/experiments/E-MEXP-2458/', 
-                    drugResponseData: ''
+                    drugResponseData: undefined
                 }
                 
             }
@@ -34,7 +34,7 @@ const dataset = [
                 ], 
                 data: {
                     rawMicroarrayData: 'ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/dixa/DrugMatrix/archive/hepatocyte/', 
-                    drugResponseData: ''
+                    drugResponseData: undefined
                 }
             }
         ]
@@ -52,7 +52,10 @@ const dataset = [
                 ], 
                 data: {
                     rawMicroarrayData: 'ftp://ftp.biosciencedbc.jp/archive/open-tggates/LATEST/Rat/in_vitro/', 
-                    drugResponseData: 'ftp://ftp.biosciencedbc.jp/archive/open-tggates/LATEST/Open-tggates_AllAttribute.zip'
+                    drugResponseData: {
+                        version: '2015',
+                        sournce: 'ftp://ftp.biosciencedbc.jp/archive/open-tggates/LATEST/Open-tggates_AllAttribute.zip'
+                    }
                 }
             }
         ] 
@@ -70,7 +73,10 @@ const dataset = [
                 ],
                 data: {
                     rawMicroarrayData: 'ftp://ftp.biosciencedbc.jp/archive/open-tggates/LATEST/Human/in_vitro/', 
-                    drugResponseData: 'ftp://ftp.biosciencedbc.jp/archive/open-tggates/LATEST/Open-tggates_AllAttribute.zip'
+                    drugResponseData: {
+                        version: '2015',
+                        source: 'ftp://ftp.biosciencedbc.jp/archive/open-tggates/LATEST/Open-tggates_AllAttribute.zip'
+                    }
                 } 
                 
             }

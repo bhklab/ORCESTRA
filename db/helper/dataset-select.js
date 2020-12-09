@@ -186,10 +186,8 @@ const selectDatasets = async function(datasetType, query, projection=null){
                 break;
         }
 
-        console.log(queryFilter);
-
-        const data = await collection.find(queryFilter, projection).toArray()
-        return data
+        const data = await collection.find(queryFilter, projection).toArray();
+        return data;
     }catch(err){
         console.log(err)
         throw err
