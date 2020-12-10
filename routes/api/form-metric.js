@@ -2,7 +2,7 @@ const formdata = require('../../db/helper/formdata');
 const metricdata = require('../../db/helper/metricdata');
 const datasetCanonical = require('../../db/helper/dataset-canonical');
 const upset = require('../../helper/upset');
-const datasetType = require('../../helper/enum');
+const enums = require('../../helper/enum');
 
 /**
  * Module that includes functions to get formdata and PSet metric data for various usage in the web app.
@@ -14,6 +14,7 @@ module.exports = {
      * @param {*} res 
      */
     getFormData: async function(req, res){
+        console.log(req.params.datasetType)
         try{
             let form = {dataType: [], dataset: [], genome: [], rnaTool: [], rnaRef: [], accompanyRNA: [], accompanyDNA: [], dnaTool: [], dnaRef: []}
             const meta = await formdata.getFormData(req.params.datasetType);
@@ -24,7 +25,7 @@ module.exports = {
                 versions: ds.versions.map(version => {return {version: version.version, label: version.label, disabled: version.disabled}}),
                 unavailable: ds.unavailable
             })});
-            if(req.params.datasetType === datasetType.pset){
+            if(req.params.datasetType === enums.dataTypes.pharmacogenomics){
                 form.genome = meta.genome
                 form.rnaTool = meta.rnaTool.map(tool => {return {label: tool.label, name: tool.name}})
                 form.rnaRef = meta.rnaRef.map(ref => {return {label: ref.label, name: ref.name, genome: ref.genome}})
