@@ -36,10 +36,10 @@ module.exports = {
         }
     },
 
-    getMasterConfig: async function(dataset){
+    getMasterConfig: async function(datasetType, dataset){
         const db = await mongo.getDB();
         try{
-            const form = await formdata.getFormData()
+            const form = await formdata.getFormData(datasetType)
             const versions = form.dataset.find(data => {return data.name === dataset.name}).versions
             const versionInfo = versions.find(version => {return version.version === dataset.versionInfo})
             const collection = db.collection('req-config-master')

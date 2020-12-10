@@ -28,54 +28,54 @@ module.exports = {
      * Builds Pachyderm config json object from a PSet object.
      * @param {*} pset 
      */
-    buildPachydermConfigJson: async function(pset){
+    buildPachydermConfigJson: async function(datasetType, dataset){
         console.log("buildPachydermReqJson");
-        console.log(pset)
+        console.log(dataset)
         try{
-            const config  = await psetRequest.getMasterConfig(pset.dataset)
+            const config  = await psetRequest.getMasterConfig(datasetType, dataset.dataset)
 
             // input tool/ref config data if necessary.
-            if(pset.rnaTool.length){
+            if(dataset.rnaTool.length){
                 
                 let cmdIndex = 2
                 
-                config.transform.cmd[cmdIndex] = pset.rnaTool[0].label
+                config.transform.cmd[cmdIndex] = dataset.rnaTool[0].label
                 cmdIndex++
                 
-                if(pset.rnaTool.length > 1){
-                    config.transform.cmd.splice(cmdIndex, 0, pset.rnaTool[1].label)
+                if(dataset.rnaTool.length > 1){
+                    config.transform.cmd.splice(cmdIndex, 0, dataset.rnaTool[1].label)
                     cmdIndex++
                 }
 
                 // replace cmd[3] with reference name
-                config.transform.cmd[cmdIndex] = pset.rnaRef[0].name
+                config.transform.cmd[cmdIndex] = dataset.rnaRef[0].name
                 
-                const defaultDataType = pset.dataType.find(dt => {return dt.default});
+                const defaultDataType = dataset.dataType.find(dt => {return dt.default});
                 
                 // push RNA tool(s) into input.cross[] - maximum 2
-                const toolPrefix = pset.dataset.name.toLowerCase() + '_' + (defaultDataType.name == 'rnaseq' ? 'rnaseq' : 'dnaseq')
-                for(let i = 0; i < pset.rnaTool.length; i++){
-                    let toolName = toolPrefix + '_' + pset.rnaTool[i].name
+                const toolPrefix = dataset.dataset.name.toLowerCase() + '_' + (defaultDataType.name == 'rnaseq' ? 'rnaseq' : 'dnaseq')
+                for(let i = 0; i < dataset.rnaTool.length; i++){
+                    let toolName = toolPrefix + '_' + dataset.rnaTool[i].name
                     config.input.cross.push({pfs:{repo: toolName, glob: "/"}})
                 }
             }
 
-            if(pset.dataset.name === 'GDSC'){
-                const ver = pset.dataset.versionInfo.split('-')[1].slice(0, -1)
+            if(dataset.dataset.name === 'GDSC'){
+                const ver = dataset.dataset.versionInfo.split('-')[1].slice(0, -1)
                 config.transform.cmd.push(ver)
             }
 
-            const accompanyData = pset.dataType.filter(dt => {return !dt.default})
+            const accompanyData = dataset.dataType.filter(dt => {return !dt.default})
             if(accompanyData.length){
                 accompanyData.forEach(acc => {
                     config.transform.cmd.push(acc.name);
                 })
             }
-            if(pset.dataset.filteredSensitivity){
+            if(dataset.dataset.filteredSensitivity){
                 // push the filtered designation if dataset.filteredSensitivity is true
                 config.transform.cmd.push('filtered'); 
             }
-            config.transform.cmd.push(pset._id.toString()); // push id as the last element
+            config.transform.cmd.push(dataset._id.toString()); // push id as the last element
             config.update = true;
             config.reprocess = true;
             return({config: config, configDir: null, configPath: null});

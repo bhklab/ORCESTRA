@@ -23,10 +23,10 @@ const processOnlineRequest = async function(req, res){
     let resData = {}; 
     try{
         const reqPset = await request.receivePSetRequest(req.body.reqData);
-        const config = await request.buildPachydermConfigJson(reqPset);
+        const config = await request.buildPachydermConfigJson('pset', reqPset);
         await psetRequest.insertPSetRequest(reqPset, reqPset.email, config);
         const online = await pachyderm.checkOnline();
-        //const online = false
+        // const online = false
         if(online){
             console.log('online process');
             await pachyderm.createPipeline(config.config);
