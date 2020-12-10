@@ -236,70 +236,92 @@ const updateMetricDataType = async (connStr, dbName) => {
     }
 }
 
-const insertToxicoAndXevaSetMetricData = async (connStr, dbName) => {
+const insertAdditionalDatasetSetMetricData = async (connStr, dbName) => {
     let client;
     try{
         let data = [
+            // {
+            //     name: 'EMEXP2458',
+            //     versions: [{
+            //         version: '1.0',
+            //         releaseNotes: {
+            //             cellLines: {current: 2, new: 0, removed: 0},
+            //             drugs: {current: 6, new: 0, removed: 0},
+            //             experiments: undefined
+            //         }
+            //     }],
+            //     datasetType: 'toxicoset'
+            // },
+            // {
+            //     name: 'DrugMatrix',
+            //     versions: [{
+            //         version: '1.0',
+            //         releaseNotes: {
+            //             cellLines: {current: 1, new: 0, removed: 0},
+            //             drugs: {current: 126, new: 0, removed: 0},
+            //             experiments: undefined
+            //         }
+            //     }],
+            //     datasetType: 'toxicoset'
+            // },
+            // {
+            //     name: 'TGGATE-Rat',
+            //     versions: [{
+            //         version: '1.0',
+            //         releaseNotes: {
+            //             cellLines: {current: 1, new: 0, removed: 0},
+            //             drugs: {current: 140, new: 0, removed: 0},
+            //             experiments: {current: 824, new: 0, removed: 0}
+            //         }
+            //     }],
+            //     datasetType: 'toxicoset'
+            // },
+            // {
+            //     name: 'TGGATE-Human',
+            //     versions: [{
+            //         version: '1.0',
+            //         releaseNotes: {
+            //             cellLines: {current: 1, new: 0, removed: 0},
+            //             drugs: {current: 146, new: 0, removed: 0},
+            //             experiments: {current: 670, new: 0, removed: 0}
+            //         }
+            //     }],
+            //     datasetType: 'toxicoset'
+            // },
+            // {
+            //     name: 'PDXE',
+            //     versions: [{
+            //         version: '1.0',
+            //         releaseNotes: {
+            //             patients: {current: 277, new: 0, removed: 0},
+            //             models: {current: 4706, new: 0, removed: 0},
+            //             drugs: {current: 62, new: 0, removed: 0},
+            //             experiments: undefined
+            //         }
+            //     }],
+            //     datasetType: 'xevaset'
+            // },
             {
-                name: 'EMEXP2458',
+                name: 'MetaGxPancreas',
                 versions: [{
                     version: '1.0',
                     releaseNotes: {
-                        cellLines: {current: 2, new: 0, removed: 0},
-                        drugs: {current: 6, new: 0, removed: 0},
-                        experiments: undefined
+                        samples: {current: 1729, new: 0, removed: 0},
+                        datasets: {current: 21, new: 0, removed: 0}
                     }
                 }],
-                datasetType: 'toxicoset'
+                datasetType: 'clinicalgenomics'
             },
             {
-                name: 'DrugMatrix',
+                name: 'Cleveland',
                 versions: [{
                     version: '1.0',
                     releaseNotes: {
-                        cellLines: {current: 1, new: 0, removed: 0},
-                        drugs: {current: 126, new: 0, removed: 0},
-                        experiments: undefined
+                        samples: {current: 540, new: 0, removed: 0},
+                        radiationTypes: {current: 1, new: 0, removed: 0}
                     }
                 }],
-                datasetType: 'toxicoset'
-            },
-            {
-                name: 'TGGATE-Rat',
-                versions: [{
-                    version: '1.0',
-                    releaseNotes: {
-                        cellLines: {current: 1, new: 0, removed: 0},
-                        drugs: {current: 140, new: 0, removed: 0},
-                        experiments: {current: 824, new: 0, removed: 0}
-                    }
-                }],
-                datasetType: 'toxicoset'
-            },
-            {
-                name: 'TGGATE-Human',
-                versions: [{
-                    version: '1.0',
-                    releaseNotes: {
-                        cellLines: {current: 1, new: 0, removed: 0},
-                        drugs: {current: 146, new: 0, removed: 0},
-                        experiments: {current: 670, new: 0, removed: 0}
-                    }
-                }],
-                datasetType: 'toxicoset'
-            },
-            {
-                name: 'PDXE',
-                versions: [{
-                    version: '1.0',
-                    releaseNotes: {
-                        patients: {current: 277, new: 0, removed: 0},
-                        models: {current: 4706, new: 0, removed: 0},
-                        drugs: {current: 62, new: 0, removed: 0},
-                        experiments: undefined
-                    }
-                }],
-                datasetType: 'xevaset'
+                datasetType: 'radioset'
             }
         ];
 
@@ -319,5 +341,5 @@ module.exports = {
     makeCurrentExpJsonFile,
     addReleaseNotes,
     updateMetricDataType,
-    insertToxicoAndXevaSetMetricData
+    insertAdditionalDatasetSetMetricData
 }
