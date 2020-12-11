@@ -39,6 +39,11 @@ const buildInsertDataSetObjects = async function(connStr, dbName){
                     label: "Mutation",
                     name: "mutation",
                     type: "DNA"
+                },
+                {
+                    label: "Radiation Sensitivity",
+                    name: "radiationSensitivity",
+                    version: "2015"
                 }
             ],
             dataset: {},
