@@ -59,6 +59,8 @@ const getDatasetByDOI = async function(req, res){
         dataset.generalInfo = {name: result.name, doi: result.doi, createdBy: result.createdBy, dateCreated: result.dateCreated};
         dataset.tabData = []
 
+        console.log(result);
+
         // get molecular tab data for each dataset type
         switch(req.params.datasetType){
             case enums.dataTypes.pharmacogenomics:
