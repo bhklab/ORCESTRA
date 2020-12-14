@@ -103,74 +103,46 @@ function getQueryFilter(keyName, filterValue, all=false){
     return(filterObj);
 }
 
-async function buildPSetObject(pset, formdata){
-    let psetObj = await JSON.parse(JSON.stringify(pset))
-    const dataset = await formdata.dataset.find(data => {return data.name === pset.dataset.name})
+async function buildDataSetObject(dset, formdata, withMolData=false){
+    let datasetObj = await JSON.parse(JSON.stringify(dset))
+    const dataset = await formdata.dataset.find(data => {return data.name === dset.dataset.name})
     
     // assign versionInfo metadata
-    psetObj.dataset.versionInfo = await dataset.versions.find(version => {return version.version === pset.dataset.versionInfo})
+    datasetObj.dataset.versionInfo = await dataset.versions.find(version => {return version.version === dset.dataset.versionInfo})
     
-    // assign rnaTool commands
-    for(let i = 0; i < psetObj.rnaTool.length; i++){
-        psetObj.rnaTool[i].commands = await formdata.rnaTool.find(tool => {return tool.name === psetObj.rnaTool[i].name}).commands
+    if(withMolData){
+        // assign rnaTool commands
+        for(let i = 0; i < datasetObj.rnaTool.length; i++){
+            datasetObj.rnaTool[i].commands = await formdata.rnaTool.find(tool => {return tool.name === datasetObj.rnaTool[i].name}).commands
+        }
+
+        //assign rnaRef commands
+        for(let i = 0; i < datasetObj.rnaRef.length; i++){
+            const ref = await formdata.rnaRef.find(ref=> {return ref.name === datasetObj.rnaRef[i].name})
+            datasetObj.rnaRef[i].genome = ref.genome
+            datasetObj.rnaRef[i].source = ref.source
+        }
+        
+        datasetObj.accompanyRNA = []
+        datasetObj.accompanyDNA = []
+        let accRNA = datasetObj.dataType.filter(dt => {return dt.type === 'RNA' && !dt.default})
+        let accDNA = datasetObj.dataType.filter(dt => {return dt.type === 'DNA' && !dt.default})
+
+        // assign accompanying RNA and DNA metadata
+        if(accRNA.length){
+            accRNA.forEach(rna => {
+                const data = formdata.accompanyRNA.find(acc => {return (datasetObj.dataset.name === acc.dataset && rna.name === acc.name)})
+                datasetObj.accompanyRNA.push(data)
+            })
+        }
+        if(accDNA.length){
+            accDNA.forEach(dna => {
+                const data = formdata.accompanyDNA.find(acc => {return (datasetObj.dataset.name === acc.dataset && dna.name === acc.name)})
+                datasetObj.accompanyDNA.push(data)
+            })
+        }
     }
-
-    //assign rnaRef commands
-    for(let i = 0; i < psetObj.rnaRef.length; i++){
-        const ref = await formdata.rnaRef.find(ref=> {return ref.name === psetObj.rnaRef[i].name})
-        psetObj.rnaRef[i].genome = ref.genome
-        psetObj.rnaRef[i].source = ref.source
-    }
     
-    psetObj.accompanyRNA = []
-    psetObj.accompanyDNA = []
-    let accRNA = psetObj.dataType.filter(dt => {return dt.type === 'RNA' && !dt.default})
-    let accDNA = psetObj.dataType.filter(dt => {return dt.type === 'DNA' && !dt.default})
-
-    // assign accompanying RNA and DNA metadata
-    if(accRNA.length){
-        accRNA.forEach(rna => {
-            const data = formdata.accompanyRNA.find(acc => {return (psetObj.dataset.name === acc.dataset && rna.name === acc.name)})
-            psetObj.accompanyRNA.push(data)
-        })
-    }
-    if(accDNA.length){
-        accDNA.forEach(dna => {
-            const data = formdata.accompanyDNA.find(acc => {return (psetObj.dataset.name === acc.dataset && dna.name === acc.name)})
-            psetObj.accompanyDNA.push(data)
-        })
-    }
-
-    return psetObj
-}
-
-async function buildToxicoSetObject(tset, formdata){
-    let tsetObj = await JSON.parse(JSON.stringify(tset))
-    const dataset = await formdata.dataset.find(data => {return data.name === tset.dataset.name})
-    
-    // assign versionInfo metadata
-    tsetObj.dataset.versionInfo = await dataset.versions.find(version => {return version.version === tset.dataset.versionInfo});
-
-    return tsetObj
-}
-
-async function buildXevaSetObject(tset, formdata){
-    let tsetObj = await JSON.parse(JSON.stringify(tset))
-    const dataset = await formdata.dataset.find(data => {return data.name === tset.dataset.name})
-    
-    // assign versionInfo metadata
-    tsetObj.dataset.versionInfo = await dataset.versions.find(version => {return version.version === tset.dataset.versionInfo});
-
-    return tsetObj
-}
-
-async function buildClinGenSetObject(clingendata, formdata){
-    let datasetObj = await JSON.parse(JSON.stringify(clingendata));
-    const dataset = await formdata.dataset.find(data => {return data.name === datasetObj.dataset.name});
-    
-    // assign versionInfo metadata
-    datasetObj.dataset.versionInfo = await dataset.versions.find(version => {return version.version === clingendata.dataset.versionInfo});
-
     return datasetObj
 }
 
@@ -214,15 +186,20 @@ const selectDatasetByDOI = async function(datasetType, doi, projection=null){
         let datasetObj = {};
         switch(datasetType){
             case enums.dataTypes.pharmacogenomics:
-                datasetObj = await buildPSetObject(dataset, form);
+                datasetObj = await buildDataSetObject(dataset, form, true);
                 break;
             case enums.dataTypes.toxicogenomics:
-                datasetObj = await buildToxicoSetObject(dataset, form);
+                datasetObj = await buildDataSetObject(dataset, form);
                 break;
             case enums.dataTypes.xenographic:
-                datasetObj = await buildXevaSetObject(dataset, form);
+                datasetObj = await buildDataSetObject(dataset, form);
+                break;
             case enums.dataTypes.clinicalgenomics:
-                datasetObj = await buildClinGenSetObject(dataset, form);
+                datasetObj = await buildDataSetObject(dataset, form);
+                break;
+            case enums.dataTypes.radiogenomics:
+                datasetObj = await buildDataSetObject(dataset, form, true);
+                break;
             default:
                 break;
         }

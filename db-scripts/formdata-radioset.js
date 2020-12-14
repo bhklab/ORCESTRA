@@ -13,10 +13,11 @@ const dataset = [
                         link: 'https://www.nature.com/articles/ncomms11428'
                     }
                 ], 
-                data: {
-                    rawSeqDataRNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f', 
-                    rawSeqDataDNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f', 
-                    raditationSensitivity: 'https://ctd2.nci.nih.gov/dataPortal/'
+                rawSeqDataRNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f', 
+                rawSeqDataDNA: 'https://portal.gdc.cancer.gov/legacy-archive/search/f', 
+                radiationSensitivity: {
+                    source: 'https://ctd2.nci.nih.gov/dataPortal/',
+                    version: ""
                 }
             }
         ]
@@ -40,11 +41,11 @@ const insertFormdata = async function(connStr, dbName){
             {label: 'Gencode v33 Transcriptome', name: 'Gencode_v33', genome: 'GRCh38', source: 'ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_33/gencode.v33.transcripts.fa.gz'}
         ],
         accompanyRNA: [
-            {label: 'CCLE (microarray)', name: 'microarray', dataset: 'CCLE', type: 'rna', source: 'https://data.broadinstitute.org/ccle_legacy_data/mRNA_expression/CCLE_Expression.Arrays_2013-03-18.tar.gz'}
+            {label: 'Cleveland (microarray)', name: 'microarray', dataset: 'Cleveland', type: 'rna', source: 'https://data.broadinstitute.org/ccle_legacy_data/mRNA_expression/CCLE_Expression.Arrays_2013-03-18.tar.gz'}
         ],
         accompanyDNA: [
-            {label: 'CCLE (cnv)', name: 'cnv', dataset: 'CCLE', type: 'cnv', source: 'https://data.broadinstitute.org/ccle_legacy_data'},
-            {label: 'CCLE (mutation)', name: 'mutation', dataset: 'CCLE', type: 'mut', source: 'https://data.broadinstitute.org/ccle_legacy_data/hybrid_capture_sequencing/CCLE_hybrid_capture1650_hg19_NoCommonSNPs_NoNeutralVariants_CDS_2012.05.07.maf'}
+            {label: 'Cleveland (cnv)', name: 'cnv', dataset: 'Cleveland', type: 'cnv', source: 'https://data.broadinstitute.org/ccle_legacy_data'},
+            {label: 'Cleveland (mutation)', name: 'mutation', dataset: 'Cleveland', type: 'mut', source: 'https://data.broadinstitute.org/ccle_legacy_data/hybrid_capture_sequencing/CCLE_hybrid_capture1650_hg19_NoCommonSNPs_NoNeutralVariants_CDS_2012.05.07.maf'}
         ],
     };
 

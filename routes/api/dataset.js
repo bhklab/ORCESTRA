@@ -9,42 +9,27 @@ const datasetCanonical = require('../../db/helper/dataset-canonical');
 const metricData = require('../../db/helper/metricdata');
 const enums = require('../../helper/enum');
 
-function getTabDataForPSet(result){
+function getTabData(result, withMolData){
     let tabData = [];
     tabData.push({header: 'Dataset', data: {dataset: result.dataset, genome: result.genome}})
-    let rnaData = [];
-    let dnaData = [];
 
-    if(result.rnaTool.length) {rnaData.push({name: 'rnaTool', value: result.rnaTool});}
-    if(result.rnaRef.length) {rnaData.push({name: 'rnaRef', value: result.rnaRef});}
-    if(result.dataset.versionInfo.rawSeqDataRNA.length) {rnaData.push({name: 'rawSeqDataRNA', value: result.dataset.versionInfo.rawSeqDataRNA});}
-    if(result.accompanyRNA.length) {rnaData.push({name: 'accRNA', value: result.accompanyRNA});}
-    if(rnaData.length) {tabData.push({header: 'RNA', data: rnaData})}
+    if(withMolData){
+        let rnaData = [];
+        let dnaData = [];
 
-    if(result.dataset.versionInfo.rawSeqDataDNA.length) {dnaData.push({name: 'rawSeqDataDNA', value: result.dataset.versionInfo.rawSeqDataDNA});}
-    if(result.accompanyDNA.length) {dnaData.push({name: 'accDNA', value: result.accompanyDNA});}
-    if(dnaData.length) {tabData.push({header: 'DNA', data: dnaData})}
+        if(result.rnaTool.length) {rnaData.push({name: 'rnaTool', value: result.rnaTool});}
+        if(result.rnaRef.length) {rnaData.push({name: 'rnaRef', value: result.rnaRef});}
+        if(result.dataset.versionInfo.rawSeqDataRNA.length) {rnaData.push({name: 'rawSeqDataRNA', value: result.dataset.versionInfo.rawSeqDataRNA});}
+        if(result.accompanyRNA.length) {rnaData.push({name: 'accRNA', value: result.accompanyRNA});}
+        if(rnaData.length) {tabData.push({header: 'RNA', data: rnaData})}
+
+        if(result.dataset.versionInfo.rawSeqDataDNA.length) {dnaData.push({name: 'rawSeqDataDNA', value: result.dataset.versionInfo.rawSeqDataDNA});}
+        if(result.accompanyDNA.length) {dnaData.push({name: 'accDNA', value: result.accompanyDNA});}
+        if(dnaData.length) {tabData.push({header: 'DNA', data: dnaData})}
+    }
 
     return tabData;
 } 
-
-function getTabDataForToxicoSet(result){
-    let tabData = [];
-    tabData.push({header: 'Dataset', data: {dataset: result.dataset}});
-    return tabData;
-}
-
-function getTabDataForXevaSet(result){
-    let tabData = [];
-    tabData.push({header: 'Dataset', data: {dataset: result.dataset}});
-    return tabData;
-}
-
-function getTabDataForClinicalGenomics(result){
-    let tabData = [];
-    tabData.push({header: 'Dataset', data: {dataset: result.dataset}});
-    return tabData;
-}
 
 /**
  * Retrives a dataset by datasettype, DOI and parses it into an object form to be used for the single dataset page.
@@ -63,22 +48,24 @@ const getDatasetByDOI = async function(req, res){
         dataset.downloadLink = result.downloadLink;
         dataset.doi = result.doi;
         dataset.generalInfo = {name: result.name, doi: result.doi, createdBy: result.createdBy, dateCreated: result.dateCreated};
-        dataset.tabData = []
-
-        console.log(result);
+        dataset.tabData = [];
 
         // get molecular tab data for each dataset type
         switch(req.params.datasetType){
             case enums.dataTypes.pharmacogenomics:
-                dataset.tabData = getTabDataForPSet(result);
+                dataset.tabData = getTabData(result, true);
                 break;
             case enums.dataTypes.toxicogenomics:
-                dataset.tabData = getTabDataForToxicoSet(result);
+                dataset.tabData = getTabData(result);
                 break;
             case enums.dataTypes.xenographic:
-                dataset.tabData = getTabDataForXevaSet(result);
+                dataset.tabData = getTabData(result);
+                break;
             case enums.dataTypes.clinicalgenomics:
-                dataset.tabData = getTabDataForClinicalGenomics(result);
+                dataset.tabData = getTabData(result);
+                break;
+            case enums.dataTypes.radiogenomics:
+                dataset.tabData = getTabData(result, true);
             default:
                 break;
         }
