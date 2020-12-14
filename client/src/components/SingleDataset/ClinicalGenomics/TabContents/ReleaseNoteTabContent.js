@@ -30,38 +30,43 @@ const StyledMetricDataGroup = styled.div`
 
 const ReleaseNoteTabContent = (props) => {
 
-    const getMetricDataText = (key, label, count) => {
+    const getMetricDataRowText = (key) => {
         switch(key){
             case 'current':
-                return `${label}${count > 1 ? 's' : ''} in this dataset.`;
+                return('Currently Available:');
             case 'new':
-                return `newly added ${label}${count > 1 ? 's' : ''}.`;
+                return('Newly Added:');
             case 'removed':
-                return `${label}${count > 1 ? 's' : ''} ${count > 1 ? 'were' : 'was'} removed from previous version.`;
+                return('Removed from Previous Version:');
         }
     }
 
-    const metricDataGroup = (title, label, data, renderRow) => (
+    const metricDataGroup = (title, data, renderRow) => (
         <StyledMetricDataGroup>
             <h2>{title}</h2>
             <table>
                 <tbody>
-                    { renderRow(data, label) }
+                    { renderRow(data) }
                 </tbody>
             </table>
         </StyledMetricDataGroup>
     );
 
-    const renderDataRow = (data, label) => {
+    const renderDataRow = (data) => {
         if(data){
             return(
-                Object.keys(data).map(key => (
-                    data[key] > 0 &&
-                    <tr key={key}>
-                        <td><span className='number'>{ data[key] }</span></td>
-                        <td className='text'>{ getMetricDataText(key, label, data[key]) }</td>
-                    </tr>
-                ))
+                    Object.keys(data).map(key => (
+                        data[key] !== null &&
+                        <tr key={key}>
+                            <td>
+                                {getMetricDataRowText(key)}
+                            </td>
+                            <td>
+                                <span className='number'>{ data[key].samples }</span> samples in <span className='number'>{ data[key].datasets }</span> datasets
+                            </td>
+                        </tr>
+                    )
+                )
             );
         }else{
             return(
@@ -76,13 +81,7 @@ const ReleaseNoteTabContent = (props) => {
     return(
         <StyledReleaseNotes>
             {
-                metricDataGroup('Cell Lines', 'cell line', props.data.releaseNotes.cellLines, renderDataRow)
-            } 
-            {
-                metricDataGroup('Drugs', 'drug', props.data.releaseNotes.drugs, renderDataRow)
-            } 
-            {
-                metricDataGroup('Drug Sensitivity Experiments', 'experiment', props.data.releaseNotes.experiments, renderDataRow)
+                metricDataGroup('Number of Samples', props.data.releaseNotes.samples, renderDataRow)
             } 
         </StyledReleaseNotes>
     );

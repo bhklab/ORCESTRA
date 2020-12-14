@@ -14,19 +14,19 @@ const StyledTitle = styled.div`
     align-items: baseline;
 `
 
-const ToxicoSet = (props) => {
-    const [toxicoSet, setToxicoSet] = useState({});
+const ClinicalGenomics = (props) => {
+    const [clinGenSet, setClinGenSet] = useState({});
     const [ready, setReady] = useState(false);
     const [error, setError] = useState(false)
 
     useEffect(() => {
         const getData = async () => {
             try{
-                const res = await fetch(`/api/${dataTypes.toxicogenomics}/one/${props.params.id1}/${props.params.id2}`);
+                const res = await fetch(`/api/${dataTypes.clinicalgenomics}/one/${props.params.id1}/${props.params.id2}`);
                 if(res.ok){
                     const json = await res.json();
                     console.log(json);
-                    setToxicoSet(json);
+                    setClinGenSet(json);
                     setReady(true);
                 }else{
                     setError(true);
@@ -45,14 +45,14 @@ const ToxicoSet = (props) => {
                 ready &&
                 <React.Fragment>
                     <StyledTitle>
-                        <h2>Explore ToxicoSet - {toxicoSet.name}</h2>
-                        <DownloadDataSetButton disabled={false} datasetType={dataTypes.toxicogenomics} dataset={toxicoSet} />
+                        <h2>Explore Clinical Genomics Dataset - {clinGenSet.name}</h2>
+                        <DownloadDataSetButton disabled={false} datasetType={dataTypes.clinicalgenomics} dataset={clinGenSet} />
                     </StyledTitle>
-                    <GeneralInfoAccordion datasetType='ToxicoSet' data={toxicoSet.generalInfo}/>
+                    <GeneralInfoAccordion datasetType='Clinical Genomics' data={clinGenSet.generalInfo}/>
                     <TabContainer>
                         <TabView renderActiveOnly={false}>
                             {
-                                toxicoSet.tabData.map(td => (
+                                clinGenSet.tabData.map(td => (
                                     <TabPanel key={Math.random()} header={td.header}>
                                         {td.header === 'Dataset' && <DatasetTabContent metadata={td.data} />}
                                         {td.header === 'Pipeline' && <PipelineTabContent data={td.data} />}
@@ -64,9 +64,9 @@ const ToxicoSet = (props) => {
                     </TabContainer>
                 </React.Fragment>
             } 
-            { error && <h3>ToxicoSet with the specified DOI could not be found</h3>}
+            { error && <h3>Clinical Genomics Data with the specified DOI could not be found</h3>}
         </div>
     );
 }
 
-export default ToxicoSet;
+export default ClinicalGenomics;

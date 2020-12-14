@@ -40,6 +40,12 @@ function getTabDataForXevaSet(result){
     return tabData;
 }
 
+function getTabDataForClinicalGenomics(result){
+    let tabData = [];
+    tabData.push({header: 'Dataset', data: {dataset: result.dataset}});
+    return tabData;
+}
+
 /**
  * Retrives a dataset by datasettype, DOI and parses it into an object form to be used for the single dataset page.
  * @param {*} req 
@@ -48,7 +54,7 @@ function getTabDataForXevaSet(result){
 const getDatasetByDOI = async function(req, res){
     console.log(`getDatasetByDOI: ${req.params.datasetType}`);
     const doi = req.params.id1 + '/' + req.params.id2;
-    console.log(doi)
+    console.log(doi);
     try{
         const result = await datasetSelect.selectDatasetByDOI(req.params.datasetType, doi)
         let dataset = {}  
@@ -71,6 +77,8 @@ const getDatasetByDOI = async function(req, res){
                 break;
             case enums.dataTypes.xenographic:
                 dataset.tabData = getTabDataForXevaSet(result);
+            case enums.dataTypes.clinicalgenomics:
+                dataset.tabData = getTabDataForClinicalGenomics(result);
             default:
                 break;
         }

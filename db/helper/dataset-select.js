@@ -164,6 +164,16 @@ async function buildXevaSetObject(tset, formdata){
     return tsetObj
 }
 
+async function buildClinGenSetObject(clingendata, formdata){
+    let datasetObj = await JSON.parse(JSON.stringify(clingendata));
+    const dataset = await formdata.dataset.find(data => {return data.name === datasetObj.dataset.name});
+    
+    // assign versionInfo metadata
+    datasetObj.dataset.versionInfo = await dataset.versions.find(version => {return version.version === clingendata.dataset.versionInfo});
+
+    return datasetObj
+}
+
 const selectDatasets = async function(datasetType, query, projection=null){     
     console.log(datasetType);
     console.log(query);
@@ -211,10 +221,11 @@ const selectDatasetByDOI = async function(datasetType, doi, projection=null){
                 break;
             case enums.dataTypes.xenographic:
                 datasetObj = await buildXevaSetObject(dataset, form);
+            case enums.dataTypes.clinicalgenomics:
+                datasetObj = await buildClinGenSetObject(dataset, form);
             default:
                 break;
         }
-        console.log(datasetObj);
 
         // add pipeline config json
         const reqConfigCollection = db.collection('req-config');
@@ -228,7 +239,6 @@ const selectDatasetByDOI = async function(datasetType, doi, projection=null){
         
         // add release notes metrics
         const metrics = await metricData.getMetricDataVersion(datasetType, datasetObj.dataset.name, datasetObj.dataset.versionInfo.version, 'releaseNotes');
-        console.log(metrics);
         datasetObj.releaseNotes = metrics;
 
         return datasetObj
