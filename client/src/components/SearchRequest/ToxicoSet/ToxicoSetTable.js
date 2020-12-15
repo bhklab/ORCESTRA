@@ -39,7 +39,7 @@ const ToxicoSetTable = (props) => {
     const drugSensitivityTemplate = (rowData, column) => {
         const drugSensitivity = rowData[column.field].find(item => (item.name === 'drugResponse'));
         return(
-            <div>{drugSensitivity ? drugSensitivity.version : 'Not Available'}</div>
+            <div>{drugSensitivity ? drugSensitivity.version : 'None'}</div>
         );
     }
 

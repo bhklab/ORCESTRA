@@ -54,7 +54,7 @@ const dataset = [
                     rawMicroarrayData: 'ftp://ftp.biosciencedbc.jp/archive/open-tggates/LATEST/Rat/in_vitro/', 
                     drugResponseData: {
                         version: '2015',
-                        sournce: 'ftp://ftp.biosciencedbc.jp/archive/open-tggates/LATEST/Open-tggates_AllAttribute.zip'
+                        source: 'ftp://ftp.biosciencedbc.jp/archive/open-tggates/LATEST/Open-tggates_AllAttribute.zip'
                     }
                 }
             }
