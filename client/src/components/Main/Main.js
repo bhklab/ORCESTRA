@@ -125,8 +125,8 @@ const Main = (props) => {
                 <DatatypeBox title='Xenographic Pharmacogenomics Data' datatype={dataTypes.xenographic} text='GO' imgWidth='70%'/>
             </MainStyle.Row>  
             <MainStyle.Row>
-                <DatatypeBox title='Clinical Genomics Data' datatype={dataTypes.clinicalgenomics} text='GO'  imgWidth='45%'/>
                 <DatatypeBox title='Radiogenomics Data' datatype={dataTypes.radiogenomics} text='GO' imgWidth='45%'/>
+                <DatatypeBox title='Clinical Genomics Data' datatype={dataTypes.clinicalgenomics} text='GO'  imgWidth='45%'/>
             </MainStyle.Row>
         </MainStyle.Wrapper>
     );
