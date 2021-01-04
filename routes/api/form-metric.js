@@ -99,10 +99,10 @@ module.exports = {
                         const name = `${metric.name}_${version.version}`;
                         if(queryDatasetNames.indexOf(name) > -1){
                             let dset = datasets.find(item => {return item.name === name})
-                            if(metricType === 'cellLineDrugPairs' || metricType === 'genes' || metricType === 'experiments'){
+                            if(metricType === 'genes' || metricType === 'experiments'){
                                 barData.push({
                                     name: name,
-                                    value: metricType === 'experiments' ? version[metricType].current.length : version[metricType],
+                                    value: metricType === 'experiments' ? version.releaseNotes[metricType].current : version[metricType],
                                     color: dset.color
                                 });
                             }else{

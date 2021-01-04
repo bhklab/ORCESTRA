@@ -70,8 +70,16 @@ const getDatasetByDOI = async function(req, res){
                 break;
         }
 
-        if(result.pipeline) {dataset.tabData.push({header: 'Pipeline', data: {commitID: result.commitID, config: result.pipeline}})}
-        dataset.tabData.push({header: 'Release Notes', data: result.releaseNotes});
+        if(result.pipeline){
+            dataset.tabData.push({
+                header: 'Pipeline', 
+                data: {commitID: result.commitID, config: result.pipeline}
+            });
+        }
+        
+        dataset.tabData.push({
+            header: 'Release Notes', data: result.releaseNotes
+        });
 
         res.send(dataset);
     }catch(error){

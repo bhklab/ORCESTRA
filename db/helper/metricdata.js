@@ -18,7 +18,8 @@ module.exports = {
                     'projection': {
                     'name': true,
                     'versions.version': true,
-                    [field]: true
+                    [field]: true,
+                    'versions.releaseNotes': true
                 }
             } : {};
             
