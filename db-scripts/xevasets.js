@@ -20,11 +20,6 @@ const buildInsertXevaSetObjects = async function(connStr, dbName){
             downloadLink: 'https://zenodo.org/record/4302463/files/Xeva_PDXE.rds?download=1',
             dataType: [
                 {
-                    label: 'RNA Sequence',
-                    name: 'rnaseq',
-                    type: 'RNA'
-                },
-                {
                     label: 'Microarray',
                     name: 'microarray',
                     type: 'RNA'
