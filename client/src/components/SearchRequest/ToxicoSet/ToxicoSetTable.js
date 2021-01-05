@@ -46,7 +46,7 @@ const ToxicoSetTable = (props) => {
     const dataTypeTemplate = (rowData, column) => {
         const dataTypes = rowData[column.field].filter(item => (item.name !== 'drugResponse'));
         return(
-            <div>{dataTypes.map(item => <div key={item.name}>{item.label}</div>)}</div>
+            <div>{dataTypes.map(item => <div key={item.name}>{item.name} ({item.type})</div>)}</div>
         );
     }
 

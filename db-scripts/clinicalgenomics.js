@@ -20,6 +20,11 @@ const buildInsertClinicalSetObjects = async function(connStr, dbName){
             downloadLink: 'https://zenodo.org/record/4312144/files/metagxpancreas.rds?download=1',
             dataType: [
                 {
+                    label: 'RNA Sequence',
+                    name: 'rnaseq',
+                    type: 'RNA'
+                },
+                {
                     label: 'Microarray',
                     name: 'microarray',
                     type: 'RNA'

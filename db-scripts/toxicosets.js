@@ -21,7 +21,8 @@ const buildInsertToxicoSetObjects = async function(connStr, dbName){
             dataType: [
                 {
                     label: 'Microarray',
-                    name: 'microarray'
+                    name: 'microarray',
+                    type: 'RNA'
                 }
             ],
             dataset: {},
@@ -39,7 +40,8 @@ const buildInsertToxicoSetObjects = async function(connStr, dbName){
             dataType: [
                 {
                     label: 'Microarray',
-                    name: 'microarray'
+                    name: 'microarray',
+                    type: 'RNA'
                 }
             ],
             dataset: {},
@@ -57,7 +59,8 @@ const buildInsertToxicoSetObjects = async function(connStr, dbName){
             dataType: [
                 {
                     label: 'Microarray',
-                    name: 'microarray'
+                    name: 'microarray',
+                    type: 'RNA'
                 },
                 {
                     label: 'Drug Response',
@@ -80,7 +83,8 @@ const buildInsertToxicoSetObjects = async function(connStr, dbName){
             dataType: [
                 {
                     label: 'Microarray',
-                    name: 'microarray'
+                    name: 'microarray',
+                    type: 'RNA'
                 },
                 {
                     label: 'Drug Response',
