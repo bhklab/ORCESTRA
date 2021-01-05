@@ -4,7 +4,7 @@ import DatasetTabContent from './TabContents/DatasetTabContent';
 import RNATabContent from './TabContents/RNATabContent';
 import DNATabContent from './TabContents/DNATabContent';
 import PipelineTabContent from '../PSet/TabContents/PipelineTabContent';
-import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';
+import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';    
 import {GeneralInfoAccordion} from '../PSet/PSetAccordion';
 import DownloadDataSetButton from '../../Shared/Buttons/DownloadDatasetButton';
 import {TabContainer} from '../SingleDatasetStyle';
