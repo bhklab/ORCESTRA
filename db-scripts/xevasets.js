@@ -46,6 +46,8 @@ const buildInsertXevaSetObjects = async function(connStr, dbName){
                 }
             ],
             dataset: {},
+            rnaTool: [],
+            rnaRef: [],
             createdBy: 'BHK Lab',
             dateCreated: new Date(Date.now()),
             canonical: true

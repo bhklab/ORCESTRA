@@ -192,7 +192,7 @@ const selectDatasetByDOI = async function(datasetType, doi, projection=null){
                 datasetObj = await buildDataSetObject(dataset, form);
                 break;
             case enums.dataTypes.xenographic:
-                datasetObj = await buildDataSetObject(dataset, form);
+                datasetObj = await buildDataSetObject(dataset, form, true);
                 break;
             case enums.dataTypes.clinicalgenomics:
                 datasetObj = await buildDataSetObject(dataset, form);

@@ -19,23 +19,6 @@ const DatasetTabContent = (props) => {
         </div> 
     );
 
-    const dataList = (data) => (
-        <div>    
-            {
-                data.length ? 
-                <li key={data} className='pubList'>
-                    <div className='subContent'>
-                        <a href={data}>{data}</a>
-                    </div>
-                </li>
-                :
-                <div className="subContent">
-                    Not available.
-                </div>
-            }  
-        </div> 
-    );
-
     const publication = (
         <div>    
         {props.metadata.dataset.versionInfo.publication.length ? 
@@ -61,25 +44,7 @@ const DatasetTabContent = (props) => {
                 <TabContentSection>
                     <h3>Drug Response Data: </h3>
                     <ul>
-                        {dataListDrugResponse(props.metadata.dataset.versionInfo.data.drugResponseData)}
-                    </ul> 
-                </TabContentSection>
-                <TabContentSection>
-                    <h3>CNV: </h3>
-                    <ul>
-                        {dataList(props.metadata.dataset.versionInfo.data.cnv)}
-                    </ul> 
-                </TabContentSection>
-                <TabContentSection>
-                    <h3>Mutation: </h3>
-                    <ul>
-                        {dataList(props.metadata.dataset.versionInfo.data.mutation)}
-                    </ul> 
-                </TabContentSection>
-                <TabContentSection>
-                    <h3>RNA Sequence: </h3>
-                    <ul>
-                        {dataList(props.metadata.dataset.versionInfo.data.rnaseq)}
+                        {dataListDrugResponse(props.metadata.dataset.versionInfo.drugSensitivity)}
                     </ul> 
                 </TabContentSection>
                 <TabContentSection>

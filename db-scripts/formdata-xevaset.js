@@ -17,15 +17,12 @@ const dataset = [
                         link: 'https://cancerres.aacrjournals.org/content/79/17/4539'
                     }
                 ], 
-                data: {
-                    cnv: 'https://static-content.springer.com/esm/art%3A10.1038%2Fnm.3954/MediaObjects/41591_2015_BFnm3954_MOESM10_ESM.xlsx',
-                    rnaseq: 'https://static-content.springer.com/esm/art%3A10.1038%2Fnm.3954/MediaObjects/41591_2015_BFnm3954_MOESM10_ESM.xlsx',
-                    mutation: 'https://static-content.springer.com/esm/art%3A10.1038%2Fnm.3954/MediaObjects/41591_2015_BFnm3954_MOESM10_ESM.xlsx', 
-                    drugResponseData: {
-                        version: '2015',
-                        source: 'https://pubmed.ncbi.nlm.nih.gov/26479923/',
-                        data: 'https://static-content.springer.com/esm/art%3A10.1038%2Fnm.3954/MediaObjects/41591_2015_BFnm3954_MOESM10_ESM.xlsx'
-                    }
+                rawSeqDataRNA: '', 
+                rawSeqDataDNA: '', 
+                drugSensitivity: {
+                    version: '2015',
+                    source: 'https://pubmed.ncbi.nlm.nih.gov/26479923/',
+                    data: 'https://static-content.springer.com/esm/art%3A10.1038%2Fnm.3954/MediaObjects/41591_2015_BFnm3954_MOESM10_ESM.xlsx'
                 }
             }
         ]
@@ -41,7 +38,41 @@ const insertFormdata = async function(connStr, dbName){
     console.log('insertFormData')
     const form = {
         datasetType: 'xevaset',
-        dataset: dataset
+        dataset: dataset,
+        rnaTool: [],
+        rnaRef: [],
+        accompanyRNA: [
+            {
+                label: 'PDXE (rnaseq)', 
+                name: 'rnaseq', 
+                dataset: 'PDXE', 
+                type: 'rnaseq', 
+                source: 'https://static-content.springer.com/esm/art%3A10.1038%2Fnm.3954/MediaObjects/41591_2015_BFnm3954_MOESM10_ESM.xlsx'
+            },
+            {
+                label: 'PDXE (microarray)', 
+                name: 'microarray', 
+                dataset: 'PDXE', 
+                type: 'rna', 
+                source: 'https://static-content.springer.com/esm/art%3A10.1038%2Fnm.3954/MediaObjects/41591_2015_BFnm3954_MOESM10_ESM.xlsx'
+            }
+        ],
+        accompanyDNA: [
+            {
+                label: 'PDXE (cnv)', 
+                name: 'cnv', 
+                dataset: 'PDXE', 
+                type: 'cnv', 
+                source: 'https://static-content.springer.com/esm/art%3A10.1038%2Fnm.3954/MediaObjects/41591_2015_BFnm3954_MOESM10_ESM.xlsx'
+            },
+            {
+                label: 'PDXE (mutation)', 
+                name: 'mutation', 
+                dataset: 'PDXE', 
+                type: 'mut', 
+                source: 'https://static-content.springer.com/esm/art%3A10.1038%2Fnm.3954/MediaObjects/41591_2015_BFnm3954_MOESM10_ESM.xlsx'
+            }
+        ],
     };
 
     let client = {}

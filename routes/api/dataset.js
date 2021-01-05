@@ -17,15 +17,31 @@ function getTabData(result, withMolData){
         let rnaData = [];
         let dnaData = [];
 
-        if(result.rnaTool.length) {rnaData.push({name: 'rnaTool', value: result.rnaTool});}
-        if(result.rnaRef.length) {rnaData.push({name: 'rnaRef', value: result.rnaRef});}
-        if(result.dataset.versionInfo.rawSeqDataRNA.length) {rnaData.push({name: 'rawSeqDataRNA', value: result.dataset.versionInfo.rawSeqDataRNA});}
-        if(result.accompanyRNA.length) {rnaData.push({name: 'accRNA', value: result.accompanyRNA});}
-        if(rnaData.length) {tabData.push({header: 'RNA', data: rnaData})}
+        if(result.rnaTool.length) {
+            rnaData.push({name: 'rnaTool', value: result.rnaTool});
+        }
+        if(result.rnaRef.length) {
+            rnaData.push({name: 'rnaRef', value: result.rnaRef});
+        }
+        if(result.dataset.versionInfo.rawSeqDataRNA.length) {
+            rnaData.push({name: 'rawSeqDataRNA', value: result.dataset.versionInfo.rawSeqDataRNA});
+        }
+        if(result.accompanyRNA.length) {
+            rnaData.push({name: 'accRNA', value: result.accompanyRNA});
+        }
+        if(rnaData.length) {
+            tabData.push({header: 'RNA', data: rnaData});
+        }
 
-        if(result.dataset.versionInfo.rawSeqDataDNA.length) {dnaData.push({name: 'rawSeqDataDNA', value: result.dataset.versionInfo.rawSeqDataDNA});}
-        if(result.accompanyDNA.length) {dnaData.push({name: 'accDNA', value: result.accompanyDNA});}
-        if(dnaData.length) {tabData.push({header: 'DNA', data: dnaData})}
+        if(result.dataset.versionInfo.rawSeqDataDNA.length) {
+            dnaData.push({name: 'rawSeqDataDNA', value: result.dataset.versionInfo.rawSeqDataDNA});
+        }
+        if(result.accompanyDNA.length) {
+            dnaData.push({name: 'accDNA', value: result.accompanyDNA});
+        }
+        if(dnaData.length) {
+            tabData.push({header: 'DNA', data: dnaData});
+        }
     }
 
     return tabData;
@@ -59,7 +75,7 @@ const getDatasetByDOI = async function(req, res){
                 dataset.tabData = getTabData(result);
                 break;
             case enums.dataTypes.xenographic:
-                dataset.tabData = getTabData(result);
+                dataset.tabData = getTabData(result, true);
                 break;
             case enums.dataTypes.clinicalgenomics:
                 dataset.tabData = getTabData(result);
@@ -69,6 +85,8 @@ const getDatasetByDOI = async function(req, res){
             default:
                 break;
         }
+
+        console.log(dataset.tabData);
 
         if(result.pipeline){
             dataset.tabData.push({
