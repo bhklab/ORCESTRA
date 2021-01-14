@@ -33,7 +33,6 @@ module.exports = {
 
         try{
             const form = await formdata.getFormData(datasetType);
-            
             if(req.params.filter === 'canonical'){
                 let datasets = await datasetCanonical.getCanonicalDatasets(datasetType, filter, projection)
                 datasets.forEach(data => data.canonicals.forEach(c => psets.push(c)))
@@ -79,7 +78,7 @@ module.exports = {
                 delete psets[i].pipeline;
             }
 
-            res.send(psets)
+            res.send(psets);
 
         }catch(error){
             console.log(error)

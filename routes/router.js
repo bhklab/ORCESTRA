@@ -17,7 +17,7 @@ const public = require('./api/public');
 router.post('/:datasetType/search', dataset.searchDatasets);
 router.get('/:datasetType/one/:id1/:id2', dataset.getDatasetByDOI);
 router.get('/pset/releasenotes/:name/:version/:type', dataset.getReleaseNotesData);
-router.get('/:datasetType/canonical', dataset.getCanonicalDatasets);
+router.get('/canonical/:datasetType', dataset.getCanonicalDatasets);
 router.post('/pset/canonical/update', dataset.updateCanonicalPSets);
 router.post('/:datasetType/download', dataset.downloadDatasets);
 router.get('/pachyderm/status', pachyderm.returnStatus);

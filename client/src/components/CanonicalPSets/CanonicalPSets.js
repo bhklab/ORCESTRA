@@ -61,7 +61,7 @@ const CanonicalPSets = (props) => {
     
     useEffect(() => {
         const getData = async () => {
-            const res = await fetch('/api/pset/canonical')
+            const res = await fetch('/api/canonical/pset')
             const json = await res.json()
             console.log(json)
             setCanonPSets(json)
