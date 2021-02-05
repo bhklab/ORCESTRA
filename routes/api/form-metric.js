@@ -80,14 +80,14 @@ module.exports = {
      */
     getMetricData: async function(req, res){
         try{
-            console.log(req.body.parameters.metricName);
+            console.log(`form-metric.getMetricData: ${req.body.parameters.metricName}`);
             
             const metricType = req.body.parameters.metricName;
             const datasets = req.body.parameters.datasets;
             const queryDatasets = [...new Set(datasets.map((item) => (item.dataset)))];
             const queryDatasetNames = datasets.map((item) => {if(item.checked){return item.name}});
 
-            const metricData = await metricdata.getMetricData(metricType, queryDatasets);
+            const metricData = await metricdata.getMetricData('pset', metricType, queryDatasets, false);
             
             let barData = [];
             let sets = [];

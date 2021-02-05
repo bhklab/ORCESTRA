@@ -10,18 +10,31 @@ module.exports = {
      * @param {*} metricType // type of metric data to be returned: drugs, cellLines, cellLineDrugPairs, genes, or tissues
      * @param {*} datasets // list of datasets to fetch the metric data from
      */
-    getMetricData: async function(metricType, datasets){
+    getMetricData: async function(datasetType, metricType, datasets, isAPI){
         try{
-            let querySet = datasets.length ? {'name':{$in: datasets}} : {};
+            let querySet = datasets.length ? {'name':{$in: datasets}, 'datasetType': datasetType} : {'datasetType': datasetType};
             let field = 'versions.' + metricType;
-            let projection = metricType.length ? {
-                    'projection': {
-                    'name': true,
-                    'versions.version': true,
-                    [field]: true,
-                    'versions.releaseNotes': true
+            let projection = {};
+
+            if(isAPI){
+                projection = {
+                        'projection': {
+                        'name': true,
+                        'versions.version': true,
+                        'versions.genes': true,
+                        'versions.releaseNotes': true,
+                    }
                 }
-            } : {};
+            }else{
+                projection = metricType.length ? {
+                        'projection': {
+                        'name': true,
+                        'versions.version': true,
+                        [field]: true,
+                        'versions.releaseNotes': true
+                    }
+                } : {};
+            }
             
             const db = await mongo.getDB();
             const metricData = db.collection('metric-data');

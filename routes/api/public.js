@@ -2,6 +2,7 @@ const formdata = require('../../db/helper/formdata');
 const datasetSelect = require('../../db/helper/dataset-select');
 const datasetUpdate = require('../../db/helper/dataset-update');
 const datasetCanonical = require('../../db/helper/dataset-canonical');
+const metricData = require('../../db/helper/metricdata');
 const path = require('path');
 
 /**
@@ -118,7 +119,7 @@ module.exports = {
         }
     },
 
-    getStatistics: async (req, res) => {
+    getDownloadStatistics: async (req, res) => {
         console.log('getStatistics');
         let datasetType = req.params.datasetType.replace(/s([^s]*)$/, '$1');
         try{
@@ -145,6 +146,48 @@ module.exports = {
             console.log(error)
             res.status(500).send(error);
         }
+    },
+
+    /**
+     * Returns metric data statistics
+     * @param {*} req 
+     * @param {*} res 
+     */
+    getMetricDataStatistics: async (req, res) => {
+        console.log('getMetricDataStatistics');
+
+        let datasetType = req.params.datasetType.replace(/s([^s]*)$/, '$1');
+        try{
+            let datasetVersions = [];
+            let datasets = await datasetCanonical.getCanonicalDatasets(datasetType, {}, {});
+            if(req.params.dataset !== 'all'){
+                datasets = datasets.find(item => item.dataset === req.params.dataset);
+                datasetVersions = datasets.canonicals.map(item => ({name: item.dataset.name, version: item.dataset.versionInfo}));
+            }else{
+                datasets.forEach(dataset => {
+                    let canonicals = dataset.canonicals.map(item => ({name: item.dataset.name, version: item.dataset.versionInfo}));
+                    datasetVersions = datasetVersions.concat(canonicals);
+                })
+            }
+
+            let metrics = await metricData.getMetricData(datasetType, '', [...new Set(datasetVersions.map(item => item.name))], true);
+
+            datasetVersions.forEach(dataset => {
+                let found = metrics.find(metric => metric.name === dataset.name);
+                let metricData = found.versions.find(version => version.version === dataset.version);
+                dataset.genes = metricData.genes;
+                dataset.cellLines = metricData.releaseNotes.cellLines;
+                dataset.drugs = metricData.releaseNotes.drugs;
+                dataset.experiments = metricData.releaseNotes.experiments;
+                dataset.molData = metricData.releaseNotes.molData;
+            });
+            // console.log(datasetVersions);
+            res.send(datasetVersions);
+        }catch(error){
+            console.log(error);
+            res.status(500).send(error);
+        }
+        
     },
 
     /**
