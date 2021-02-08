@@ -128,7 +128,9 @@ const insertMetricData = async function(connStr, dbName, metricsDir){
                     }
                 });
             }
-        })
+        });
+
+        dataset.datasetType = 'pset';
     
         await metricData.deleteMany({});
         await metricData.insertMany(datasets);   
@@ -156,7 +158,7 @@ const makeCurrentExpJsonFile = async function(metricsDir){
                 concRangeMin: parseFloat(row['concentration_range(min)']),
                 concRangeMax: parseFloat(row['concentration_range(max)'])
             }));
-            fs.writeFileSync(path.join(__dirname, '../db', 'current-experiments-csv', `${dataset.name}_${dataset.version}_current_experiments.json`), JSON.stringify(json));
+            fs.writeFileSync(path.join(__dirname, './data', 'current-experiments-csv', `${dataset.name}_${dataset.version}_current_experiments.json`), JSON.stringify(json));
         }
 
         // const data = fs.readFileSync(path.join(__dirname, '../db', 'current-experiments-csv', `${dataset.name}_${dataset.version}_current_experiments.json`), 'utf8');
@@ -174,34 +176,34 @@ const addReleaseNotes = async function(connStr, dbName, metricsDir){
         client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
         const db = client.db(dbName)
         const metricData = db.collection('metric-data');
-        let datasets = await metricData.find({}).toArray();
-        
+        let datasets = await metricData.find({'datasetType': 'pset'}).toArray();
+
         for(let dataset of datasets){
             for(let version of dataset.versions){
-                let newMoldata = {rnaSeq: {}, microarray: {}, mutation: {}, mutationExome: {}, cnv: {}, fusion: {}, methylation: {}};
-                for(const key of Object.keys(version.molData)){
-                    let text = version.molData[key];
-                    let num = parseInt(text.split(' ')[0]);
-                    newMoldata[key].available = isNaN(num) ? false : true;
-                    newMoldata[key].count = isNaN(num) ? 0 : num;
-                    newMoldata[key].noUpdates = text.includes('no updates from previous version') ? true : false;
-                }
-                let releaseNotes = {cellLines: {}, drugs: {}, experiments: {}, molData: newMoldata};
+                console.log(`${dataset.name} - ${version.version}`);
+                // let newMoldata = {rnaSeq: {}, microarray: {}, mutation: {}, mutationExome: {}, cnv: {}, fusion: {}, methylation: {}};
+                // for(const key of Object.keys(version.molData)){
+                //     let text = version.molData[key];
+                //     let num = parseInt(text.split(' ')[0]);
+                //     newMoldata[key].available = isNaN(num) ? false : true;
+                //     newMoldata[key].count = isNaN(num) ? 0 : num;
+                //     newMoldata[key].noUpdates = text.includes('no updates from previous version') ? true : false;
+                // }
+                let releaseNotes = {cellLines: {}, drugs: {}, experiments: {}, molData: version.releaseNotes.molData};
                 //let releaseNotes = version.releaseNotes;
                 for(const type of metricsType){
                     let numbers = {current: 0, new: 0, removed: 0};
                     for(const group of metricsGroup){
                         if(type === 'experiments' && group === 'current'){
-                            const data = fs.readFileSync(path.join(__dirname, '../db', 'current-experiments-csv', `${dataset.name}_${version.version}_current_experiments.json`), 'utf8');
-                            numbers[group] = data.length
+                            const data = fs.readFileSync(path.join(__dirname, 'data', 'current-experiments-csv', `${dataset.name}_${version.version}_current_experiments.json`), 'utf8');
+                            numbers[group] = JSON.parse(data).length;
                         }else{
                             numbers[group] = version[type][group].length;
                         }
-                        
                     }
                     releaseNotes[type] = numbers;
                 }
-                delete version.molData;
+                // delete version.molData;
 
                 if(dataset.name === 'GDSC'){
                     releaseNotes.additional = {link: 'https://www.cancerrxgene.org/news'}
@@ -212,7 +214,7 @@ const addReleaseNotes = async function(connStr, dbName, metricsDir){
             }
         }
 
-        await metricData.deleteMany({});
+        await metricData.deleteMany({'datasetType': 'pset'});
         await metricData.insertMany(datasets); 
 
         client.close();
