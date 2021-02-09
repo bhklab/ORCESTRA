@@ -26,6 +26,14 @@ export const TabContentSection = styled.div`
         margin-left: 20px;
         font-size: 14px;
         max-width: 90%;
+        .subContentHeader {
+            color: #3D405A;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        td {
+            padding: 10px;
+        }
     }
 `
 

@@ -98,7 +98,7 @@ class GeneralInfoAccordion extends React.Component {
     render(){   
         const doi = 'http://doi.org/' + this.props.data.doi
         return(
-            <StyledAccordion className='generalInfoAccordion'>
+            <StyledAccordion className='generalInfoAccordion' activeIndex={0}>
                 <AccordionTab header="General Information">
                     <h4>{this.props.datasetType} Name: {this.props.data.name}</h4>
                     <h4>DOI:  <a href={doi} target="_blank">{this.props.data.doi}</a></h4>
