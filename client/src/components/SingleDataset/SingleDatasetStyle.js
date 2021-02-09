@@ -34,6 +34,10 @@ export const TabContentSection = styled.div`
         td {
             padding: 10px;
         }
+        .code {
+            font-family: courier new;
+            font-weight: bold;
+        }
     }
 `
 

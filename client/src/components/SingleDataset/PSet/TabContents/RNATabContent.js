@@ -45,11 +45,11 @@ const RNATabContent = props => {
                                 <tbody>
                                     <tr className='subContentSection'>
                                         <td><span className='subContentHeader'>Gene TPM Values:</span></td>
-                                        <td>After estimation by the tool detailed above, gene TPM values are transformed by `log2(x + 0.001)`.</td>
+                                        <td>After estimation by the tool detailed above, gene TPM values are transformed by <span className='code'>log2(x + 0.001)</span>.</td>
                                     </tr>
                                     <tr className='subContentSection'>
                                         <td><span className='subContentHeader'>Gene Count Values:</span></td>
-                                        <td>After estimation by the tool detailed above, gene count values are transformed by `log2(x + 1)`.</td>
+                                        <td>After estimation by the tool detailed above, gene count values are transformed by <span className='code'>log2(x + 1)</span>.</td>
                                     </tr>
                                 </tbody>
                             </table>
