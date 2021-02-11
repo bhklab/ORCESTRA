@@ -10,8 +10,8 @@ const path = require('path');
  */
 module.exports = {
 
-    getPSets: async (req, res) => {
-        console.log('getPSets');
+    getDatasets: async (req, res) => {
+        console.log('getDataSets');
         let datasetType = req.params.datasetType.replace(/s([^s]*)$/, '$1');
 
         const filter = {'status': 'complete'}
@@ -30,56 +30,61 @@ module.exports = {
             'dataset.unavailable': false
         }}
 
-        let psets = []
+        let datasetResults = []
 
         try{
             const form = await formdata.getFormData(datasetType);
             if(req.params.filter === 'canonical'){
                 let datasets = await datasetCanonical.getCanonicalDatasets(datasetType, filter, projection)
-                datasets.forEach(data => data.canonicals.forEach(c => psets.push(c)))
+                datasets.forEach(data => data.canonicals.forEach(c => datasetResults.push(c)))
             }else{
-                psets = await datasetSelect.selectDatasets(datasetType, filter, projection)
+                datasetResults = await datasetSelect.selectDatasets(datasetType, filter, projection)
             }
 
-            for(let i = 0; i < psets.length; i++){
+            for(let i = 0; i < datasetResults.length; i++){
                 const version = form.dataset.find(
-                    d => {return d.name === psets[i].dataset.name}
+                    d => {return d.name === datasetResults[i].dataset.name}
                 ).versions.find(
-                    version => {return(version.version === psets[i].dataset.versionInfo)}
-                )
-                psets[i].dataset.versionInfo = {
-                    version: version.version, 
-                    type: version.type,
-                    publication: version.publication, 
-                    rawSeqDataRNA: version.rawSeqDataRNA, 
-                    drugSensitivity: version.drugSensitiviry
-                }
+                    version => {return(version.version === datasetResults[i].dataset.versionInfo)}
+                );
 
-                psets[i].accompanyRNA = []
-                psets[i].accompanyDNA = []
-                let accRNA = psets[i].dataType.filter(dt => {return dt.type === 'RNA' && !dt.default})
-                let accDNA = psets[i].dataType.filter(dt => {return dt.type === 'DNA' && !dt.default})
-
-                // assign accompanying RNA and DNA metadata
-                if(accRNA.length){
-                    accRNA.forEach(rna => {
-                        const data = form.accompanyRNA.find(acc => {return (psets[i].dataset.name === acc.dataset && rna.name === acc.name)})
-                        psets[i].accompanyRNA.push(data)
-                    })
+                if(datasetType === 'pset' || datasetType === 'radioset' || datasetType === 'xevaset'){
+                    datasetResults[i].dataset.versionInfo = {
+                        version: version.version, 
+                        type: version.type,
+                        publication: version.publication, 
+                        rawSeqDataRNA: version.rawSeqDataRNA, 
+                        drugSensitivity: version.drugSensitiviry
+                    }
+    
+                    datasetResults[i].accompanyRNA = []
+                    datasetResults[i].accompanyDNA = []
+                    let accRNA = datasetResults[i].dataType.filter(dt => {return dt.type === 'RNA' && !dt.default})
+                    let accDNA = datasetResults[i].dataType.filter(dt => {return dt.type === 'DNA' && !dt.default})
+    
+                    // assign accompanying RNA and DNA metadata
+                    if(accRNA.length){
+                        accRNA.forEach(rna => {
+                            const data = form.accompanyRNA.find(acc => {return (datasetResults[i].dataset.name === acc.dataset && rna.name === acc.name)})
+                            datasetResults[i].accompanyRNA.push(data)
+                        })
+                    }
+                    if(accDNA.length){
+                        accDNA.forEach(dna => {
+                            const data = form.accompanyDNA.find(acc => {return (datasetResults[i].dataset.name === acc.dataset && dna.name === acc.name)})
+                            datasetResults[i].accompanyDNA.push(data)
+                        })
+                    }
+                }else{
+                    datasetResults[i].dataset.versionInfo = version;
                 }
-                if(accDNA.length){
-                    accDNA.forEach(dna => {
-                        const data = form.accompanyDNA.find(acc => {return (psets[i].dataset.name === acc.dataset && dna.name === acc.name)})
-                        psets[i].accompanyDNA.push(data)
-                    })
-                }
-
+                
                 // delete unnecessary fields
-                delete psets[i].dataType;
-                delete psets[i].pipeline;
+                delete datasetResults[i].dataType;
+                delete datasetResults[i].pipeline;
             }
 
-            res.send(psets);
+            res.send(datasetResults);
 
         }catch(error){
             console.log(error)
@@ -87,8 +92,8 @@ module.exports = {
         }
     },
 
-    getPSet: async (req, res) => {
-        console.log('getPSet')
+    getDataset: async (req, res) => {
+        console.log('getDataset')
         try{
             const doi = req.params.doi1 + '/' + req.params.doi2;
             console.log(doi)

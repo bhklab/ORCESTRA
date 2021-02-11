@@ -54,8 +54,8 @@ router.get('/:datasetType/landing/data', formMetric.getLandingData);
 router.get('/example-download/:file', public.downloadExampleFile);
 
 //public api
-router.get('/:datasetType/:filter', public.getPSets);
-router.get('/:datasetType/:doi1/:doi2', public.getPSet);
+router.get('/:datasetType/:filter', public.getDatasets);
+router.get('/:datasetType/:doi1/:doi2', public.getDataset);
 router.get('/:datasetType/statistics/download/:limit', public.getDownloadStatistics);
 router.get('/:datasetType/statistics/metrics/:dataset', public.getMetricDataStatistics);
 router.get('/:datasetType/update-download/:doi1/:doi2', public.updateDownloadCount);
