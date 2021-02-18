@@ -242,54 +242,54 @@ const insertAdditionalDatasetSetMetricData = async (connStr, dbName) => {
     let client;
     try{
         let data = [
-            // {
-            //     name: 'EMEXP2458',
-            //     versions: [{
-            //         version: '1.0',
-            //         releaseNotes: {
-            //             cellLines: {current: 2, new: 0, removed: 0},
-            //             drugs: {current: 6, new: 0, removed: 0},
-            //             experiments: undefined
-            //         }
-            //     }],
-            //     datasetType: 'toxicoset'
-            // },
-            // {
-            //     name: 'DrugMatrix',
-            //     versions: [{
-            //         version: '1.0',
-            //         releaseNotes: {
-            //             cellLines: {current: 1, new: 0, removed: 0},
-            //             drugs: {current: 126, new: 0, removed: 0},
-            //             experiments: undefined
-            //         }
-            //     }],
-            //     datasetType: 'toxicoset'
-            // },
-            // {
-            //     name: 'TGGATE-Rat',
-            //     versions: [{
-            //         version: '1.0',
-            //         releaseNotes: {
-            //             cellLines: {current: 1, new: 0, removed: 0},
-            //             drugs: {current: 140, new: 0, removed: 0},
-            //             experiments: {current: 824, new: 0, removed: 0}
-            //         }
-            //     }],
-            //     datasetType: 'toxicoset'
-            // },
-            // {
-            //     name: 'TGGATE-Human',
-            //     versions: [{
-            //         version: '1.0',
-            //         releaseNotes: {
-            //             cellLines: {current: 1, new: 0, removed: 0},
-            //             drugs: {current: 146, new: 0, removed: 0},
-            //             experiments: {current: 670, new: 0, removed: 0}
-            //         }
-            //     }],
-            //     datasetType: 'toxicoset'
-            // },
+            {
+                name: 'EMEXP2458',
+                versions: [{
+                    version: '1.0',
+                    releaseNotes: {
+                        cellLines: {current: 2, new: 0, removed: 0},
+                        drugs: {current: 6, new: 0, removed: 0},
+                        experiments: undefined
+                    }
+                }],
+                datasetType: 'toxicoset'
+            },
+            {
+                name: 'DrugMatrix Rat',
+                versions: [{
+                    version: '1.0',
+                    releaseNotes: {
+                        cellLines: {current: 1, new: 0, removed: 0},
+                        drugs: {current: 126, new: 0, removed: 0},
+                        experiments: undefined
+                    }
+                }],
+                datasetType: 'toxicoset'
+            },
+            {
+                name: 'Open TG-GATEs Rat',
+                versions: [{
+                    version: '1.0',
+                    releaseNotes: {
+                        cellLines: {current: 1, new: 0, removed: 0},
+                        drugs: {current: 140, new: 0, removed: 0},
+                        experiments: {current: 824, new: 0, removed: 0}
+                    }
+                }],
+                datasetType: 'toxicoset'
+            },
+            {
+                name: 'Open TG-GATEs Human',
+                versions: [{
+                    version: '1.0',
+                    releaseNotes: {
+                        cellLines: {current: 1, new: 0, removed: 0},
+                        drugs: {current: 146, new: 0, removed: 0},
+                        experiments: {current: 670, new: 0, removed: 0}
+                    }
+                }],
+                datasetType: 'toxicoset'
+            }
             // {
             //     name: 'PDXE',
             //     versions: [{
@@ -303,33 +303,34 @@ const insertAdditionalDatasetSetMetricData = async (connStr, dbName) => {
             //     }],
             //     datasetType: 'xevaset'
             // },
-            {
-                name: 'MetaGxPancreas',
-                versions: [{
-                    version: '1.0',
-                    releaseNotes: {
-                        samples: {current: 1729, new: 0, removed: 0},
-                        datasets: {current: 21, new: 0, removed: 0}
-                    }
-                }],
-                datasetType: 'clinicalgenomics'
-            },
-            {
-                name: 'Cleveland',
-                versions: [{
-                    version: '1.0',
-                    releaseNotes: {
-                        samples: {current: 540, new: 0, removed: 0},
-                        radiationTypes: {current: 1, new: 0, removed: 0}
-                    }
-                }],
-                datasetType: 'radioset'
-            }
+            // {
+            //     name: 'MetaGxPancreas',
+            //     versions: [{
+            //         version: '1.0',
+            //         releaseNotes: {
+            //             samples: {current: 1729, new: 0, removed: 0},
+            //             datasets: {current: 21, new: 0, removed: 0}
+            //         }
+            //     }],
+            //     datasetType: 'clinicalgenomics'
+            // },
+            // {
+            //     name: 'Cleveland',
+            //     versions: [{
+            //         version: '1.0',
+            //         releaseNotes: {
+            //             samples: {current: 540, new: 0, removed: 0},
+            //             radiationTypes: {current: 1, new: 0, removed: 0}
+            //         }
+            //     }],
+            //     datasetType: 'radioset'
+            // }
         ];
 
         client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
         const db = client.db(dbName)
         const metricData = db.collection('metric-data');
+        await metricData.deleteMany({'datasetType': 'toxicoset'});
         await metricData.insertMany(data);
         client.close();
     }catch(error){

@@ -32,7 +32,7 @@ const buildInsertToxicoSetObjects = async function(connStr, dbName){
         },
         {
             status: 'complete',
-            name: 'DrugMatrix',
+            name: 'DrugMatrix Rat',
             download: 0,
             doi: '10.5281/zenodo.4302202',
             commitID: '780b1fd9afc942ab93226fbde07bd0e9',
@@ -51,7 +51,7 @@ const buildInsertToxicoSetObjects = async function(connStr, dbName){
         },
         {
             status: 'complete',
-            name: 'TGGATE-Rat',
+            name: 'Open TG-GATEs Rat',
             download: 0,
             doi: '10.5281/zenodo.4302230',
             commitID: 'de889018574445aea2c8ab81e1bb1953',
@@ -75,7 +75,7 @@ const buildInsertToxicoSetObjects = async function(connStr, dbName){
         },
         {
             status: 'complete',
-            name: 'TGGATE-Human',
+            name: 'Open TG-GATEs Human',
             download: 0,
             doi: '10.5281/zenodo.4302218',
             commitID: '14ea976c3d0d48c68222bf9a7b138504',
