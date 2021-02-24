@@ -42,10 +42,10 @@ const Documentation = (props) => {
                     <h2>API</h2>
                     <ul>
                         <li className={display === 'api-psets-available' ? 'selected' : undefined}>
-                            <button type='button' onClick={() => setDisplay('api-psets-available')}>Available PSets</button>
+                            <button type='button' onClick={() => setDisplay('api-psets-available')}>Available Datasets</button>
                         </li>
                         <li className={display === 'api-pset-single' ? 'selected' : undefined}>
-                            <button type='button' onClick={() => setDisplay('api-pset-single')} >Single PSet</button>
+                            <button type='button' onClick={() => setDisplay('api-pset-single')} >Single Dataset</button>
                         </li>
                         <li className={display === 'api-statistics' ? 'selected' : undefined}>
                             <button type='button' onClick={() => setDisplay('api-statistics')}>Statistics</button>

@@ -21,7 +21,7 @@ const UserProfile = () => {
             <div>
                 <h3>Usage Statistics</h3>
                 <p>
-                    <b>ORCESTRA</b>'s usage metrics can be viewed at <a href='http://orcestra.ca/Stats'>Statistics</a> page.<br />
+                    <b>ORCESTRA</b>'s usage metrics can be viewed at <a href='http://orcestra.ca/pset/stats'>Statistics</a> page.<br />
                     <b>ORCESTRA</b> currently provides the download ranking of the existing PSets.
                 </p>   
             </div>

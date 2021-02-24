@@ -7,7 +7,7 @@ const Search = () => {
                 <div>
                     <h3>How to search existing PSets</h3>
                     <p>
-                        Existing PSets can be searched on <a href='/PSetSearch'>Search and Request</a> page.<br />
+                        Existing PSets can be searched on <a href='/pset/search'>Search and Request</a> page.<br />
                         User can select different pipeline parameters uder PSet Parameters pane. Each selection of parameters triggers a database search. The search result is displayed on the data table as shown in the figure below.
                     </p> 
                     <div className='img-full'>

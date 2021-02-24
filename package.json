@@ -16,6 +16,7 @@
   "dependencies": {
     "@grpc/proto-loader": "^0.5.3",
     "@sendgrid/mail": "^7.0.0",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.4",
