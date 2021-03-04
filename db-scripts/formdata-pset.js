@@ -8,7 +8,7 @@ const data = require('./seed-data/form-pset');
  * @param {string} connStr connection string for the db
  * @param {string} dbName name of the database.
  */
-const insertFormdata = async function(connStr, dbName){
+const insertFormdata = async function(connStr, dbName, datasetType){
     console.log('insertFormData')
 
     let client = {}
@@ -16,6 +16,7 @@ const insertFormdata = async function(connStr, dbName){
         client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
         const db = client.db(dbName);
         const formdata = db.collection('formdata');
+        await formdata.deleteOne({'datasetType': datasetType});
         await formdata.insertOne(data.form);
         client.close();
         console.log('done')

@@ -40,8 +40,8 @@ const insertOneMetricData = async (connStr, dbName) => {
                     molData: {
                         rnaSeq: {available: true, count: 0, noUpdates: false},
                         microarray: {available: false, count: 0, noUpdates: false},
-                        mutation: {available: false, count: 0, noUpdates: false},
-                        mutationExome: {available: true, count: 0, noUpdates: false},
+                        mutation: {available: true, count: 0, noUpdates: false},
+                        mutationExome: {available: false, count: 0, noUpdates: false},
                         cnv: {available: false, count: 0, noUpdates: false},
                         fusion: {available: false, count: 0, noUpdates: false},
                         methylation: {available: false, count: 0, noUpdates: false}

@@ -178,9 +178,9 @@ const dataset = [
                 publication: [
                     {citation: 'Tyner, J.W., Tognon, C.E., Bottomly, D. et al. Functional genomic landscape of acute myeloid leukaemia. Nature 562, 526–531 (2018). https://doi.org/10.1038/s41586-018-0623-z', link: 'https://www.nature.com/articles/s41586-018-0623-z#citeas'}
                 ], 
-                rawSeqDataRNA: 'dbGAP (Confidential data)', 
+                rawSeqDataRNA: '', 
                 rawSeqDataDNA: '',
-                drugSensitivity: {version: '2018', source: 'Downloaded from Synapse; confidential data'}
+                drugSensitivity: {version: '2018', source: null}
             }
         ]
     },

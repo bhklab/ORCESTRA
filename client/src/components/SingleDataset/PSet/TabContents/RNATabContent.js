@@ -18,7 +18,12 @@ const RNATabContent = props => {
                     <TabContentSection>
                         <h3>Raw Data Source: </h3>
                         <div className='subContent'>
+                        {
+                            rawSeqDataRNA.value ? 
                             <a href={rawSeqDataRNA.value}>{rawSeqDataRNA.value}</a>
+                            :
+                            'Not Available'
+                        }
                         </div>
                     </TabContentSection>
                 }
