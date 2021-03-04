@@ -3,6 +3,55 @@ const mongo  = require('mongodb');
 const mongoClient = mongo.MongoClient;
 
 /**
+ * Accespts a JSON object that represents a PSet and inserts it into the database
+ * @param {string} filePath path to the csv file.
+ */
+const buildAndInsertPSet = async function(connStr, dbName, pset){
+
+    const client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
+    const db = client.db(dbName)
+    const form = db.collection('formdata')
+    const formresult = await form.find({'datasetType': 'pset'}).toArray();
+    const formdata = formresult[0];
+
+    const formdataset = formdata.dataset.find(data => {
+        return data.name === pset.dataset.name;
+    });
+
+    let dataset = {
+        label: pset.dataset.name, 
+        name: pset.dataset.name, 
+        versionInfo: formdataset.versions.find(version => version.version === pset.dataset.version).version
+    }
+
+    pset.dataset = dataset;
+
+    const genome = formdata.genome.find(g => g.name === pset.genome);
+    pset.genome = typeof genome === 'undefined' ? {name: '', label: ''} : genome
+    
+    const tool = formdata.rnaTool.find(tool => {return tool.label === pset.rnaTool});
+    pset.rnaTool = typeof tool === 'undefined' ? [] : [{name: tool.name, label: tool.label}]
+    const ref = formdata.rnaRef.find(ref => {return ref.name === pset.rnaRef})
+    pset.rnaRef = typeof ref === 'undefined' ? [] : [{name: ref.name, label: ref.label}]
+    
+    pset.dnaTool = [];
+    pset.dnaRef = [];
+
+    pset.createdBy = 'BHK Lab';
+    pset.dateCreated = new Date(Date.now());
+    pset.canonical = true;
+
+    console.log(pset);
+
+    const pset_collection = db.collection('pset')
+    await pset_collection.insertOne(pset)
+    
+    client.close()
+    console.log('done')
+}
+
+
+/**
  * Reads a csv file that contains PSet information, and builds PSet objects using formdata.
  * Inserts all the PSets into pset collection of MongoDB database.
  * @param {string} filePath path to the csv file.
@@ -135,6 +184,7 @@ const updatePSets = async function(connStr, dbName){
 }
 
 module.exports = {
+    buildAndInsertPSet,
     buildInsertPSetObjects,
     updatePSets
 }

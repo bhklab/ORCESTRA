@@ -21,6 +21,48 @@ const conversion = {
 const metricsType = ['cells', 'drugs', 'experiments'];
 const metricsGroup = ['current', 'new', 'removed'];
 
+
+const insertOneMetricData = async (connStr, dbName) => {
+    let metric = {
+        name: 'BeatAML', 
+        versions: [
+            {
+                version: '2018',
+                cellLines: {current: [], new: [], removed: []},
+                drugs: {current: [], new: [], removed: []},
+                experiments: {current: [], new: [], removed: []},
+                genes: 0,
+                tissues: [],
+                releaseNotes: {
+                    cellLines: {current: 0, new: 0, removed: 0},
+                    drugs: {current: 0, new: 0, removed: 0},
+                    experiments: {current: 0, new: 0, removed: 0},
+                    molData: {
+                        rnaSeq: {available: true, count: 0, noUpdates: false},
+                        microarray: {available: false, count: 0, noUpdates: false},
+                        mutation: {available: false, count: 0, noUpdates: false},
+                        mutationExome: {available: true, count: 0, noUpdates: false},
+                        cnv: {available: false, count: 0, noUpdates: false},
+                        fusion: {available: false, count: 0, noUpdates: false},
+                        methylation: {available: false, count: 0, noUpdates: false}
+                    }
+                }
+            }
+        ],
+        datasetType: 'pset'
+    }
+
+
+    client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
+    const db = client.db(dbName)
+    const metricData = db.collection('metric-data');
+
+    await metricData.insertOne(metric);   
+        
+    client.close();
+
+}
+
 /**
  * Reads metrics files for each PSet.
  * Converts them to metrics objects.
@@ -340,6 +382,7 @@ const insertAdditionalDatasetSetMetricData = async (connStr, dbName) => {
 }
 
 module.exports = {
+    insertOneMetricData,
     insertMetricData,
     makeCurrentExpJsonFile,
     addReleaseNotes,
