@@ -10,11 +10,11 @@ const Plot = createPlotlyComponent(Plotly);
 const DatasetChart = () => {
 
     const metricSet = [
-        {name: 'Numer of Cell Lines', value: 'cellLines'},
-        {name: 'Numer of Drugs', value: 'drugs'},
+        {name: 'Number of Cell Lines', value: 'cellLines'},
+        {name: 'Number of Drugs', value: 'drugs'},
         {name: 'Number of Tissue Types', value: 'tissues'},
-        {name: 'Numer of Drug Experiments ', value: 'experiments'},
-        {name: 'Numer of Genes', value: 'genes'}
+        {name: 'Number of Drug Experiments ', value: 'experiments'},
+        {name: 'Number of Genes', value: 'genes'}
     ]
     const [upsetData, setUpsetData] = useState({})
     const [barData, setBarData] = useState([])
