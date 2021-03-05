@@ -30,14 +30,14 @@ const AccompanyDataTabContent = props => {
                                 return(
                                     <TabContentSection key={Math.random()}>
                                         <h3>{s.label}</h3>
-                                        <h4 className='subContent'>Source: {<a href={s.source}>{s.source}</a>}</h4>
+                                        <h4 className='subContent'>Source: {s.source.length > 0 ? <a href={s.source}>{s.source}</a> : 'Not available'}</h4>
                                     </TabContentSection>
                                 )
                             })
                             :
                             <TabContentSection key={Math.random()}>
                                 <h3>{getType(d.type)}</h3>
-                                <h4 className='subContent'>Source: {<a href={d.source}>{d.source}</a>}</h4>
+                                <h4 className='subContent'>Source: {d.source.length > 0 ? <a href={d.source}>{d.source}</a> : 'Not available'}</h4>
                             </TabContentSection>
                         }
                         </div>

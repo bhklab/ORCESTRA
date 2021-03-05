@@ -22,12 +22,12 @@ const metricsType = ['cells', 'drugs', 'experiments'];
 const metricsGroup = ['current', 'new', 'removed'];
 
 
-const insertOneMetricData = async (connStr, dbName) => {
+const insertOneMetricData = async (connStr, dbName, datasetName) => {
     let metric = {
-        name: 'BeatAML', 
+        name: datasetName, 
         versions: [
             {
-                version: '2018',
+                version: '2020',
                 cellLines: {current: [], new: [], removed: []},
                 drugs: {current: [], new: [], removed: []},
                 experiments: {current: [], new: [], removed: []},
@@ -40,7 +40,7 @@ const insertOneMetricData = async (connStr, dbName) => {
                     molData: {
                         rnaSeq: {available: true, count: 0, noUpdates: false},
                         microarray: {available: false, count: 0, noUpdates: false},
-                        mutation: {available: true, count: 0, noUpdates: false},
+                        mutation: {available: false, count: 0, noUpdates: false},
                         mutationExome: {available: false, count: 0, noUpdates: false},
                         cnv: {available: false, count: 0, noUpdates: false},
                         fusion: {available: false, count: 0, noUpdates: false},
@@ -52,11 +52,23 @@ const insertOneMetricData = async (connStr, dbName) => {
         datasetType: 'pset'
     }
 
+    // process list of cells, drugs, tissues and genes - this needs to be modified depending on the data format you receive.
+    // let cells = await csv().fromFile(path.join(__dirname, 'data/release_notes_updated', 'BeatAML', 'current_cells.csv'));
+    //     cells = cells.map(cell => cell.x);
+        
+    // let drugs = await csv().fromFile(path.join(__dirname, 'data/release_notes_updated', 'BeatAML', 'current_drugs.csv'));
+    // drugs = drugs.map(drug => drug.x);
 
+    // let version = metric.versions.find(v => v.version === '2018');
+    
+    // version.cellLines.current = cells;
+    // version.drugs.current = drugs;
+
+    // insert or replace metric data in the database
     client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
     const db = client.db(dbName)
     const metricData = db.collection('metric-data');
-
+    await metricData.deleteOne({"name": datasetName}); 
     await metricData.insertOne(metric);   
         
     client.close();

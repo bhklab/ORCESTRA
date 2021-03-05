@@ -180,7 +180,21 @@ const dataset = [
                 ], 
                 rawSeqDataRNA: '', 
                 rawSeqDataDNA: '',
-                drugSensitivity: {version: '2018', source: null}
+                drugSensitivity: {version: '2018', source: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6280667/bin/NIHMS1504008-supplement-Supplementary_Tables_S1-S22.xlsx'}
+            }
+        ]
+    },
+    {
+        label: 'Tavor', name: 'Tavor', 
+        versions: [
+            {
+                version: '2020', pipeline: '', label: '2020(Tavor)', type: 'sensitivity',
+                publication: [
+                    {citation: 'Sigal Tavor, Tali Shalit, Noa Chapal Ilani, Yoni Moskovitz, Nir Livnat, Yoram Groner, Haim Barr, Mark D. Minden, Alexander Plotnikov, Michael W. Deininger, Nathali Kaushansky, Liran I. Shlush. Dasatinib response in acute myeloid leukemia is correlated with FLT3/ITD, PTPN11 mutations and a unique gene expression signature. Haematologica 2020;105(12):2795-2804; https://doi.org/10.3324/haematol.2019.240705.', link: 'https://haematologica.org/article/view/9762'}
+                ], 
+                rawSeqDataRNA: 'https://www.synapse.org/#!Synapse:syn24986182', 
+                rawSeqDataDNA: '',
+                drugSensitivity: {version: '2020', source: 'https://www.synapse.org/#!Synapse:syn24986182'}
             }
         ]
     },
@@ -208,6 +222,7 @@ const form = {
         {label: 'GDSC (microarray)', name: 'microarray', dataset: 'GDSC', type: 'rna', source: 'ftp://ftp.ebi.ac.uk//pub/databases/microarray/data/experiment/MTAB/E-MTAB-783'},
     ],
     accompanyDNA: [
+        {label: 'BeatAML (mutation)', name: 'mutation', dataset: 'BeatAML', type: 'mut', source: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6280667/bin/NIHMS1504008-supplement-Supplementary_Tables_S1-S22.xlsx'},
         {label: 'CCLE (cnv)', name: 'cnv', dataset: 'CCLE', type: 'cnv', source: 'https://data.broadinstitute.org/ccle_legacy_data'},
         {label: 'CCLE (mutation)', name: 'mutation', dataset: 'CCLE', type: 'mut', source: 'https://data.broadinstitute.org/ccle_legacy_data/hybrid_capture_sequencing/CCLE_hybrid_capture1650_hg19_NoCommonSNPs_NoNeutralVariants_CDS_2012.05.07.maf'},
         {label: 'gCSI (cnv)', name: 'cnv', dataset: 'gCSI', type: 'cnv', source: 'https://www.ebi.ac.uk/ega/datasets/EGAD00010000951'},
