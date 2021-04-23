@@ -1,24 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { AuthContext } from "../../context/auth";
-import { PathContext } from "../../context/path";
-import Navigation from '../Navigation/Navigation';
-import Footer from '../Footer/Footer';
+import { AuthContext } from "../context/auth";
+import { PathContext } from "../context/path";
+import Navigation from '../components/Navigation/Navigation';
+import Footer from '../components/Footer/Footer';
 import PrivateRoute from './PrivateRoute';
 import AdminRoute from './AdminRoute';
-import Main from '../Main/Main';
-import DatasetMain from '../Main/DatasetMain';
-import SearchRequest from '../SearchRequest/SearchRequest';
-import SingleDataset from '../SingleDataset/SingleDataset';
-import Dashboard from '../Dashboard/Dashboard';
-import Stats from '../Stats/Stats';
-import Documentation from '../Documentation/Documentation';
-import Profile from '../Profile/Profile';
-import Admin from '../Admin/Admin';
-import Login from '../Authentication/Login';
-import Reset from '../Authentication/Reset';
-import CanonicalPSets from '../CanonicalPSets/CanonicalPSets';
-import NotFound404 from '../Shared/NotFound404';
+import Main from '../components/Main/Main';
+import DatasetMain from '../components/Main/DatasetMain';
+import SearchRequest from '../components/SearchRequest/SearchRequest';
+import SingleDataset from '../components/SingleDataset/SingleDataset';
+import Dashboard from '../components/Dashboard/Dashboard';
+import Stats from '../components/Stats/Stats';
+import Documentation from '../components/Documentation/Documentation';
+import Profile from '../components/Profile/Profile';
+import Admin from '../components/Admin/Admin';
+import Login from '../components/Authentication/Login';
+import Reset from '../components/Authentication/Reset';
+import CanonicalPSets from '../components/CanonicalPSets/CanonicalPSets';
+import NotFound404 from '../components/Shared/NotFound404';
 
 const Router = () => {
     const [authToken, setAuthToken] = useState({

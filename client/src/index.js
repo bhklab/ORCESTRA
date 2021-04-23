@@ -4,7 +4,7 @@ import './index.css';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import App from './components/App/App';
+import App from './App/App';
 import { BrowserRouter } from 'react-router-dom';
 import * as serviceWorker from './components/serviceWorker';
 

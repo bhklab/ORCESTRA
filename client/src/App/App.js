@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import ReactGA from 'react-ga';
 import './App.css';
 import './PrimeStyle.css';
-import Router from '../Routing/Router';
+import Router from '../Routes/Router';
 
 const App = () => {
 	
