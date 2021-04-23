@@ -34,11 +34,11 @@ const insertOneMetricData = async (connStr, dbName, datasetName) => {
                 genes: 0,
                 tissues: [],
                 releaseNotes: {
-                    cellLines: {current: 0, new: 0, removed: 0},
-                    drugs: {current: 0, new: 0, removed: 0},
-                    experiments: {current: 0, new: 0, removed: 0},
+                    cellLines: {current: 53, new: 0, removed: 0},
+                    drugs: {current: 46, new: 0, removed: 0},
+                    experiments: {current: 2668, new: 0, removed: 0},
                     molData: {
-                        rnaSeq: {available: true, count: 0, noUpdates: false},
+                        rnaSeq: {available: true, count: 43, noUpdates: false},
                         microarray: {available: false, count: 0, noUpdates: false},
                         mutation: {available: false, count: 0, noUpdates: false},
                         mutationExome: {available: false, count: 0, noUpdates: false},

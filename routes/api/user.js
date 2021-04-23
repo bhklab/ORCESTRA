@@ -6,6 +6,7 @@
  */
 const userdata = require('../../db/helper/userdata');
 const userPSet = require('../../db/helper/user-pset');
+const User = require('../../db/models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mailer = require('../../mailer/mailer');
@@ -42,6 +43,56 @@ async function checkUser(req, res){
     }catch(error){
         res.status(500).send({});
     }
+}
+
+const submit = async (req, res) => {
+    const user = req.body.user;
+    let data = null;
+    try{
+        switch(user.action){
+            case 'signin':
+                const found = await User.findOne({'email': user.email});
+                const match = bcrypt.compareSync(user.password1, found.password);
+                if(match){
+                    data = { email: found.email, admin: found.admin };
+                    const token = jwt.sign(data, process.env.TOKEN, {expiresIn: '8h'});
+                    res.cookie('cobetoken', token, {httpOnly: true});
+                }
+                break;
+
+            case 'register':
+                const hash = bcrypt.hashSync(user.password1, saltRounds);
+                await User.create({'email': user.email, 'password': hash, 'admin': false});
+                data = { email: user.email, admin: false };
+                const token = jwt.sign(data, process.env.TOKEN, {expiresIn: '1h'});
+                res.cookie('cobetoken', token, {httpOnly: true});
+                break;
+
+            default:
+                break;
+        }
+    }catch(err){
+        console.log(err);
+        res.status(500);
+    }finally{
+        res.send(data);
+    } 
+}
+
+const signout = async (req, res) => {
+    const token = jwt.sign({}, 'tempauthenticationstring', {expiresIn: '0'});
+    res.cookie('cobetoken', token, {httpOnly: true}).status(200).send();
+}
+
+const getSession = async (req, res) => {
+    let data = null;
+    if(req.decoded){
+        data = { 
+            email: req.decoded.email, 
+            admin: req.decoded.admin 
+        };
+    }
+    res.send(data);
 }
 
 async function registerUser(req, res){
@@ -86,6 +137,15 @@ async function loginUser(req, res){
         console.log(error)
         res.status(500).send({authenticated: false});
     }
+}
+
+function checkToken(req, res){
+    res.status(200).send({authenticated: true, username: req.username, isAdmin: req.isAdmin});
+}
+
+function logoutUser(req, res){
+    const token = jwt.sign({username: req.params.username}, 'orcestraauthenticationtokenstring', {expiresIn: '0'});
+    res.cookie('token', token, {httpOnly: true}).status(200).send();
 }
 
 async function resetPwd(req, res){
@@ -184,26 +244,20 @@ async function removeUserPSet(req, res){
     }
 }
 
-function checkToken(req, res){
-    res.status(200).send({authenticated: true, username: req.username, isAdmin: req.isAdmin});
-}
-
-function logoutUser(req, res){
-    const token = jwt.sign({username: req.params.username}, 'orcestraauthenticationtokenstring', {expiresIn: '0'});
-    res.cookie('token', token, {httpOnly: true}).status(200).send();
-}
-
 module.exports = {
     getUser,
     checkUser,
+    submit,
+    signout,
+    getSession,
     registerUser,
     loginUser,
+    checkToken,
+    logoutUser,
     resetPwd,
     sendResetPwdEmail,
     resetPwdWithToken,
     getUserPSet,
     addToUserPset,
-    removeUserPSet,
-    checkToken,
-    logoutUser
+    removeUserPSet
 }

@@ -5,7 +5,7 @@
   "dependencies": {
     "@upsetjs/react": "^0.6.0",
     "ajv": "^6.10.2",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "d3": "^5.14.2",
     "downloadjs": "^1.4.7",
@@ -23,7 +23,7 @@
     "react-promise-tracker": "^2.0.5",
     "react-router-dom": "^5.1.2",
     "react-router-prop-types": "^1.0.4",
-    "react-scripts": "^3.4.0",
+    "react-scripts": "^4.0.3",
     "react-select": "^3.1.0",
     "react-table": "^7.6.0",
     "react-transition-group": "^4.3.0",
