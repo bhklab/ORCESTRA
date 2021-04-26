@@ -24,6 +24,7 @@ const processOnlineRequest = async function(req, res){
     try{
         const reqPset = await request.receivePSetRequest(req.body.reqData);
         const config = await request.buildPachydermConfigJson('pset', reqPset);
+        console.log(JSON.stringify(config, null, 2));
         await psetRequest.insertPSetRequest(reqPset, reqPset.email, config);
         const online = await pachyderm.checkOnline();
         // const online = false

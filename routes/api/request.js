@@ -53,7 +53,7 @@ module.exports = {
                 const defaultDataType = dataset.dataType.find(dt => {return dt.default});
                 
                 // push RNA tool(s) into input.cross[] - maximum 2
-                const toolPrefix = dataset.dataset.name.toLowerCase() + '_' + (defaultDataType.name == 'rnaseq' ? 'rnaseq' : 'dnaseq')
+                const toolPrefix = (dataset.dataset.name.toLowerCase() === 'uhnbreast' ? 'uhn' : dataset.dataset.name.toLowerCase()) + '_' + (defaultDataType.name === 'rnaseq' ? 'rnaseq' : 'dnaseq')
                 for(let i = 0; i < dataset.rnaTool.length; i++){
                     let toolName = toolPrefix + '_' + dataset.rnaTool[i].name
                     config.input.cross.push({pfs:{repo: toolName, glob: "/"}})

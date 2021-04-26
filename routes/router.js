@@ -26,9 +26,9 @@ router.post('/pset/process', psetRequest.processOfflineRequest);
 router.post('/pset/complete', psetRequest.completeRequest);
 
 // user
-router.post('/user/submit', user.submit);
-router.get('/user/signout', user.signout);
-router.get('/user/session', auth.verifyToken, user.getSession);
+// router.post('/user/submit', user.submit);
+// router.get('/user/signout', user.signout);
+// router.get('/user/session', auth.verifyToken, user.getSession);
 
 router.get('/user', user.getUser);
 router.get('/user/check', user.checkUser);
