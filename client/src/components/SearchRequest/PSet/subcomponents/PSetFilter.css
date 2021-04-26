@@ -6,7 +6,7 @@
 .pSetFilter {
     color: #3D405A;
     background-color: rgba(255, 255, 255, 0.8);
-    font-size: 14px;
+    font-size: 12px;
     width: 100%;
     padding-top: 5px;
     padding-left: 30px;
@@ -28,7 +28,7 @@ label {
 
 .bold {
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 /* Input filter styling */

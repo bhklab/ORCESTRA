@@ -45,7 +45,10 @@ const PSetTable = (props) => {
     );
 
     const nameColumnTemplate = (rowData, column) => (
+        rowData.doi.length > 0 ? 
         <Link to={`/${dataTypes.pharmacogenomics}/${rowData.doi}`} target="_blank">{rowData.name}</Link>
+        :
+        rowData.name
     );
 
     const downloadTemplate = (rowData, column) => {

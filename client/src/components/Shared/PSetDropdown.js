@@ -14,7 +14,6 @@ const FilterSet = styled.div`
 `
 
 // props: id, className, isHidden, selectOne, parameterName, parameterOptions[], selecedParameter[], handleUpdateSelection()
-
 class PSetDropdown extends React.Component {
     
     render(){

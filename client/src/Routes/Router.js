@@ -38,12 +38,13 @@ const Router = () => {
     }
 
     useEffect(() => {
+        const check = async () => {
+            const res = await fetch('/api/user/check');
+            const json = await res.json();
+            setAuthToken(json);
+        }
         if(!authToken.authenticated){
-            fetch('/api/user/checkToken')
-            .then(res => {
-                return(res.json());
-            })
-            .then(data => {setAuthToken(data)});
+            check();
         }
     }, []);
 
