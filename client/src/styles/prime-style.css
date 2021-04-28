@@ -87,21 +87,7 @@ body .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus {
     border-color: #ffffff;
     box-shadow: 0 0 0 0.1em #ffffff;
 
-}
-
-.my-multiselected-item-token {
-    padding-left: 3px;
-    padding-right: 3px;
-    margin-top: 2px;
-    margin-left: 2px;
-    margin-right: 2px;
-    border-radius: 2px;
-    background-color: #3D405A;
-    color: #ffffff;
-    font-weight: bold;
-    font-size: 12px;
-    display: inline-block;
-}
+} 
 
 body .p-radiobutton .p-radiobutton-box.p-highlight {
     border-color: #3D405A;
@@ -128,7 +114,7 @@ body .p-radiobutton .p-radiobutton-box:not(.p-disabled).p-focus {
 body .p-button {
     background-color: #3D405A;
     border: 1px solid #3D405A;
-    font-size: 14px;
+    font-size: 12px;
     padding: 0em 0.5em;
 }
 

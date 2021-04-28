@@ -5,7 +5,7 @@ import Loader from 'react-loader-spinner';
 import {usePromiseTracker} from "react-promise-tracker";
 import {trackPromise} from 'react-promise-tracker';
 import styled from 'styled-components';
-import {SearchReqContext} from '../PSetSearch';
+import {SearchReqContext} from './PSetSearch';
 
 const RequestForm = styled.div`
     width: 400px;

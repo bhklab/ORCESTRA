@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import '../SearchRequest.css';
-import PSetFilter from './subcomponents/PSetFilter';
-import PSetRequestForm from './subcomponents/PSetRequestForm';
+import PSetFilter from './PSetFilter2';
+import PSetRequestForm from './PSetRequestForm';
 import PSetTable from '../../Shared/PSetTable';
 import SavePSetButton from '../../Shared/Buttons/SavePSetButton';
 import Loader from 'react-loader-spinner';
@@ -40,6 +40,7 @@ const PSetSearch = () => {
         filteredSensitivity: false,
         genome: [],
         dataType: [],
+        defaultData: [],
         rnaTool: [],
         rnaRef: [],
         name: '',

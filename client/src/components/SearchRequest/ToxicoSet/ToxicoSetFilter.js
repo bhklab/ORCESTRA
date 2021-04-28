@@ -1,9 +1,8 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
-import {InputSwitch} from 'primereact/inputswitch';
-import PSetDropdown from '../../Shared/PSetDropdown';
+import FilterInputSwitch from '../../Shared/FilterInputSwitch';
+import FilterDropdown from '../../Shared/FilterDropdown';
 import {SearchReqContext} from './ToxicoSetSearch';
 import {dataTypes} from '../../Shared/Enums';
-import '../PSet/subcomponents/PSetFilter.css';
 
 const ToxicoSetFilter = () => {
     
@@ -32,16 +31,25 @@ const ToxicoSetFilter = () => {
             <div className='pSetFilterContainer'>
                 <div className='pSetFilter'>
                     <h2>ToxicoSet Parameters</h2>
-                    <div className='filterSet'>
-                        <label className='bold'>Request ToxicoSet: </label> 
-                        <InputSwitch checked={context.isRequest} tooltip="Currently unavailable" onChange={(e) => {}} disabled={true} />
-                    </div>
-                    <PSetDropdown id='dataset' isHidden={false} parameterName='Dataset:' selectOne={context.isRequest}  
-                        parameterOptions={formRef.current.dataset.filter(ds => {return(!ds.hide)})} selectedParameter={paramRef.current.dataset} 
-                        handleUpdateSelection={(e) => { 
+                    <FilterInputSwitch 
+                        label='Request ToxicoSet:'
+                        checked={context.isRequest}
+                        tooltip='Currently unavailable'
+                        onChange={(e) => {}}
+                        disabled={true}
+                    />
+                    <FilterDropdown 
+                        id='dataset' 
+                        hidden={false} 
+                        label='Dataset:' 
+                        selectOne={context.isRequest}  
+                        options={formRef.current.dataset.filter(ds => {return(!ds.hide)})} 
+                        selected={paramRef.current.dataset} 
+                        onChange={(e) => { 
                             paramRef.current.dataset = e.value;
                             context.setParameters({...paramRef.current, search: true});
-                        }} />
+                        }} 
+                    />
                 </div>
             </div>
         }   

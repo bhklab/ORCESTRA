@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import ReactGA from 'react-ga';
-import './App.css';
-import './PrimeStyle.css';
-import Router from '../Routes/Router';
+import './styles/prime-style.css';
+import GlobalStyles from './styles/GlobalStyles';
+import Router from './Routes/Router';
 
 const App = () => {
 	
@@ -13,9 +13,10 @@ const App = () => {
 	}, [])
 	
 	return (
-		<div className="App">
+		<React.Fragment>
+			<GlobalStyles />
 			<Router />
-		</div>
+		</React.Fragment>
 	)
 }
 

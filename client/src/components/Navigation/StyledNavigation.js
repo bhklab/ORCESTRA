@@ -5,18 +5,18 @@ export const StyledHeader = styled.header`
     top: 0%;
     width:100%;
     background-color:rgb(255,255,255, 0.7);
-    height:70px;
+    height: 70px;
     position: fixed;
     z-index: 999;
     img {
         max-width: 100%;
         max-height: 100%;
-        float: left;
+        // float: left;
         margin-left: 100px;
     }
     a {
         color:rgb(61, 64, 90);
-        font-size:14px;
+        font-size:12px;
         padding-bottom:3px;
         font-weight:bold;
         transition: .2s ease-out;

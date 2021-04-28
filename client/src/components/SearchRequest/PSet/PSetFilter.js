@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import {InputSwitch} from 'primereact/inputswitch';
 import PSetDropdown from '../../../Shared/PSetDropdown';
-import PSetCheckbox from '../../../Shared/PSetCheckbox';
-import {SearchReqContext} from '../PSetSearch';
-import {dataTypes} from '../../../Shared/Enums';
+import PSetCheckbox from '../../Shared/PSetCheckbox';
+import {SearchReqContext} from './PSetSearch';
+import {dataTypes} from '../../Shared/Enums';
 import './PSetFilter.css';
 
 const PSetFilter = () => {
@@ -12,42 +12,44 @@ const PSetFilter = () => {
     const formRef = useRef();
     const paramRef = useRef();
 
-    const [params, setParams] = useState({ 
-        dataset: [], 
-        drugSensitivity: [], 
-        filteredSensitivity: false, 
-        canonicalOnly: false, 
-        genome: [], 
-        dataType: [], 
-        rnaTool: [], 
-        rnaRef: [], 
-        defaultData: [] 
-    });
-
-    const [datasetSelect, setDatasetSelect] = useState({options: [], hidden: false});
-    const [dataTypeSelect, setDataTypeSelect] = useState({options: [], hidden: false});
-    const [drugSensSelect, setDrugSensSelect] = useState({options: [], hidden: false, disabled: true});
-    const [genomeSelect, setGenomeSelect] = useState({options: [], hidden: false});
-    const [rnaToolSelect, setRNAToolSelect] = useState({options: [], hidden: false});
-    const [rnaRefSelect, setRNARefSelect] = useState({options: [], hidden: false});
-    
-    const [toolRefDisabled, setToolRefDisabled] = useState(false);
     const [ready, setReady] = useState(false);
     
     useEffect(() => {
         const initialize = async () => {
             const res = await fetch(`/api/${dataTypes.pharmacogenomics}/formData`);
-            const form = await res.json();
-            console.log(form);
-            setDatasetSelect({...datasetSelect, options: form.dataset});
-            setDataTypeSelect({...dataTypeSelect, options: form.dataType});
-            setGenomeSelect({...genomeSelect, options: form.genome});
-            setRNAToolSelect({...rnaToolSelect, options: form.rnaTool});
-            setRNARefSelect({...rnaRefSelect, options: form.rnaRef});
-            setReady(true);
+            const json = await res.json();
+            console.log(json)
+            formRef.current = json;
+            formRef.current.drugSensOptions = [];
+            formRef.current.disableDrugSensOptions = true;
+            formRef.current.disableToolRefOptions = false;
+            formRef.current.hideDataTypeOptions = false;
+            paramRef.current = { dataset: [], drugSensitivity: [], filteredSensitivity: false, canonicalOnly: false, genome: [], dataType: [], rnaTool: [], rnaRef: [], defaultData: [] }
+            setReady(true)
         }
         initialize();
     }, []);
+
+
+    //function to show rnaRef options that belong to a selected genome(s), and hide others.
+    const onGenomeSelection = (genome) => {
+        console.log(genome)
+        // if genomes are not selected, show all rnaRef options
+        if(genome.length === 0){
+            formRef.current.rnaRef.forEach(ref => {ref.hide = false})
+        // if one or more genome is selected, show rnaRef options that belong to the selected genome(s)
+        }else{
+            if(Array.isArray(genome)){
+                formRef.current.rnaRef.forEach(ref => {
+                    ref.hide = (genome.find(g => {return ref.genome === g.name})) ? false : true;
+                })
+            }else{
+                formRef.current.rnaRef.forEach(ref => {
+                    ref.hide = (ref.genome === genome.name) ? false : true;
+                })
+            }
+        }
+    }
 
     const onDatasetSelectionRequest = (dataset) => {
         console.log('onDatasetSelectionRequest')
@@ -66,7 +68,7 @@ const PSetFilter = () => {
     //show drug sensitivity options available for selected dataset(s)
     const onDatasetSelectionSearch = (dataset) => {
         // empty current options
-        // formRef.current.drugSensOptions = [];
+        formRef.current.drugSensOptions = [];
         // enable the drug sensitivity options only if at least one dataset is selected.
         if(dataset.length){
             formRef.current.disableDrugSensOptions = false;
@@ -75,28 +77,8 @@ const PSetFilter = () => {
         }
         // set drug sensitivity options
         dataset.forEach(ds => {
-            // setDrugSensParamOptions(ds);
+            setDrugSensParamOptions(ds);
         })
-    }
-
-    //function to show rnaRef options that belong to a selected genome(s), and hide others.
-    const onGenomeSelection = (genome) => {
-        console.log(genome);
-        // if genomes are not selected, show all rnaRef options
-        if(genome.length === 0){
-            formRef.current.rnaRef.forEach(ref => {ref.hide = false})
-        // if one or more genome is selected, show rnaRef options that belong to the selected genome(s)
-        }else{
-            if(Array.isArray(genome)){
-                formRef.current.rnaRef.forEach(ref => {
-                    ref.hide = (genome.find(g => {return ref.genome === g.name})) ? false : true;
-                })
-            }else{
-                formRef.current.rnaRef.forEach(ref => {
-                    ref.hide = (ref.genome === genome.name) ? false : true;
-                })
-            }
-        }
     }
 
     const setOptionsOnDatasetSelection = (dataset) => {
@@ -246,7 +228,7 @@ const PSetFilter = () => {
             if(!formRef.current.drugSensOptions.some(drug => drug.label === v.label)){
                 formRef.current.drugSensOptions.push(v);
             }
-        });
+        })
     }
     
     return(
@@ -271,42 +253,36 @@ const PSetFilter = () => {
                     {
                         !context.isRequest &&
                         <PSetCheckbox 
-                            label='Canonical PSets only: '
-                            onChange={(e) => {
-                                setParams({...params, canonicalOnly: e.checked});
-                                context.setParameters({...params, canonicalOnly: e.checked, search: true});
-                            }} 
-                            checked={params.canonicalOnly} 
-                        />
-                    }
-                    <PSetDropdown 
-                        id='dataset' 
-                        isHidden={false} 
-                        parameterName='Dataset:' 
-                        selectOne={context.isRequest}  
-                        parameterOptions={datasetSelect.options.filter(item => !item.unavailable)} 
-                        selectedParameter={params.dataset} 
-                        handleUpdateSelection={(e) => {
-                            setParams({...params, dataset: e.value});
-                            // if(context.isRequest){
-                            //     onDatasetSelectionRequest(e.value)
-                            // }else{
-                            //     onDatasetSelectionSearch(e.value)
-                            // }
-                            // context.setParameters({...paramRef.current, search: true});
+                        label='Canonical PSets only: '
+                        onChange={(e) => {
+                            paramRef.current.canonicalOnly = e.checked;
+                            context.setParameters({...paramRef.current, canonicalOnly: e.checked, search: true});
                         }} 
-                    />
+                        checked={paramRef.current.canonicalOnly} />
+                    }
+                    <PSetDropdown id='dataset' isHidden={false} parameterName='Dataset:' selectOne={context.isRequest}  
+                        parameterOptions={formRef.current.dataset.filter(ds => {return(!ds.hide)})} selectedParameter={paramRef.current.dataset} 
+                        handleUpdateSelection={(e) => {
+                            if(context.isRequest){
+                                onDatasetSelectionRequest(e.value)
+                            }else{
+                                onDatasetSelectionSearch(e.value)
+                            }
+                            paramRef.current.dataset = e.value;
+                            context.setParameters({...paramRef.current, search: true});
+                        }} />
+                    
                     {
-                        (context.isRequest && !toolRefDisabled) && 
+                        (context.isRequest && !formRef.current.disableToolRefOptions) && 
                         <div>
                             Molecular Data: 
                             {
-                                params.defaultData.length === 1 ?
-                                <span style={{marginLeft: '10px', fontWeight: 'bold'}}>{params.defaultData[0].label}</span>
+                                paramRef.current.defaultData.length === 1 ?
+                                <span style={{marginLeft: '10px', fontWeight: 'bold'}}>{paramRef.current.defaultData[0].label}</span>
                                 :
                                 <ul>
                                 {
-                                    params.defaultData.map(data => {
+                                    paramRef.current.defaultData.map(data => {
                                         return(<li key={Math.random()}>{data.label}</li>);
                                     })
                                 }
@@ -314,96 +290,65 @@ const PSetFilter = () => {
                             } 
                         </div>
                     }
-                    <PSetDropdown 
-                        id='dataType' 
-                        isHidden={dataTypeSelect.hidden} 
-                        parameterName={ context.isRequest ? 'Optional Molecular Data:' : 'Molecular Data Type:'}
-                        parameterOptions={dataTypeSelect.options.filter(item => !item.hidden)} 
-                        selectedParameter={params.dataType} 
+                    <PSetDropdown id='dataType' isHidden={formRef.current.hideDataTypeOptions} parameterName={ context.isRequest ? 'Optional Molecular Data:' : 'Molecular Data Type:'}
+                        parameterOptions={formRef.current.dataType.filter(dt => {return(!dt.hide)})} selectedParameter={paramRef.current.dataType} 
                         handleUpdateSelection={(e) => {
-                            setParams({...params, dataType: e.value});
-                            // context.setParameters({...paramRef.current, dataType: e.value, search: true});
-                        }} 
-                    />
+                            paramRef.current.dataType = e.value;
+                            context.setParameters({...paramRef.current, dataType: e.value, search: true});
+                        }} />
 
-                    <PSetDropdown 
-                        id='drugSensitivity' 
-                        isHidden={drugSensSelect.hidden} 
-                        parameterName='Drug Sensitivity:' 
-                        selectOne={context.isRequest} 
-                        disabled={drugSensSelect.disabled}
-                        parameterOptions={drugSensSelect.options} 
-                        selectedParameter={params.drugSensitivity} 
+                    <PSetDropdown id='drugSensitivity' isHidden={false} parameterName='Drug Sensitivity:' selectOne={context.isRequest} 
+                        disabled={formRef.current.disableDrugSensOptions}
+                        parameterOptions={formRef.current.drugSensOptions} selectedParameter={paramRef.current.drugSensitivity} 
                         handleUpdateSelection={(e) => {
-                            setParams({...params, drugSensitivity: e.value});
-                            // context.setParameters({...paramRef.current, drugSensitivity: e.value, search: true});
-                        }} 
-                    />
+                            paramRef.current.drugSensitivity = e.value;
+                            context.setParameters({...paramRef.current, drugSensitivity: e.value, search: true});
+                        }} />
                     
                     {
                         context.isRequest ?
-                        !drugSensSelect.disabled &&
+                        !formRef.current.disableDrugSensOptions &&
                         <PSetCheckbox 
                             label='Standardize drug dose range and filter noisy sensitivity curves?'
                             onChange={(e) => {
-                                setParams({...params, filteredSensitivity: e.checked});
+                                paramRef.current.filteredSensitivity = e.checked;
                                 context.setParameters({...paramRef.current, filteredSensitivity: e.checked});
                             }} 
-                            checked={params.filteredSensitivity} 
-                        />
+                            checked={paramRef.current.filteredSensitivity} />
                         :
                         <PSetCheckbox 
                             label='Filtered sensitivity data only: '
                             onChange={(e) => {
-                                setParams({...params, filteredSensitivity: e.checked});
-                                // context.setParameters({...paramRef.current, filteredSensitivity: e.checked, search: !context.isRequest});
+                                paramRef.current.filteredSensitivity = e.checked;
+                                context.setParameters({...paramRef.current, filteredSensitivity: e.checked, search: !context.isRequest});
                             }} 
-                            checked={params.filteredSensitivity} 
-                        />
+                            checked={paramRef.current.filteredSensitivity} />
                     }
                     
-                    <PSetDropdown 
-                        id='genome' 
-                        disabled={toolRefDisabled} 
-                        isHidden={false} 
-                        parameterName='Genome:' 
-                        selectOne={context.isRequest} 
-                        parameterOptions={genomeSelect.options.filter(item => !item.hidden)} 
-                        selectedParameter={params.genome} 
+                    <PSetDropdown id='genome' disabled={formRef.current.disableToolRefOptions} isHidden={false} parameterName='Genome:' selectOne={context.isRequest} 
+                        parameterOptions={formRef.current.genome.filter(g => {return(!g.hide)})} selectedParameter={paramRef.current.genome} 
                         handleUpdateSelection={(e) => {
-                            setParams({...params, genome: e.value});
-                            // onGenomeSelection(e.value)
-                            // context.setParameters({...paramRef.current, genome: e.value, search: true});
-                        }} 
-                    />
+                            onGenomeSelection(e.value)
+                            paramRef.current.genome = e.value;
+                            context.setParameters({...paramRef.current, genome: e.value, search: true});
+                        }} />
 
-                    <PSetDropdown 
-                        id='rnaTool' 
-                        disabled={toolRefDisabled} 
-                        parameterName='RNA Tool:' 
-                        parameterOptions={rnaToolSelect.options} 
-                        selectedParameter={params.rnaTool} 
+                    <PSetDropdown id='rnaTool' disabled={formRef.current.disableToolRefOptions} parameterName='RNA Tool:' 
+                        parameterOptions={formRef.current.rnaTool} selectedParameter={paramRef.current.rnaTool} 
                         handleUpdateSelection={(e) => {
                             if(context.isRequest && e.value.length > 2){
                                 while(e.value.length > 2){ e.value.shift() }
                             }
-                            setParams({...params, rnaTool: e.value});
-                            // context.setParameters({...paramRef.current, rnaTool: e.value, search: true});
-                        }} 
-                    />
+                            paramRef.current.rnaTool = e.value;
+                            context.setParameters({...paramRef.current, rnaTool: e.value, search: true});
+                        }} />
 
-                    <PSetDropdown 
-                        id='rnaRef' 
-                        disabled={toolRefDisabled} 
-                        parameterName='RNA Ref:' 
-                        selectOne={context.isRequest} 
-                        parameterOptions={rnaRefSelect.options.filter(item => !item.hidden)} 
-                        selectedParameter={params.rnaRef} 
+                    <PSetDropdown id='rnaRef' disabled={formRef.current.disableToolRefOptions} parameterName='RNA Ref:' selectOne={context.isRequest} 
+                        parameterOptions={formRef.current.rnaRef.filter(ref => {return(!ref.hide)})} selectedParameter={paramRef.current.rnaRef} 
                         handleUpdateSelection={(e) => {
-                            setParams({...params, rnaRef: e.value});
-                            // context.setParameters({...paramRef.current, rnaRef: e.value, search: true});
-                        }} 
-                    />
+                            paramRef.current.rnaRef = e.value;
+                            context.setParameters({...paramRef.current, rnaRef: e.value, search: true});
+                        }} />
                 </div>
             </div>
         }   

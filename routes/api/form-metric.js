@@ -13,17 +13,23 @@ const enums = require('../../helper/enum');
  * @param {*} res 
  */
  const getFormData = async (req, res) => {
-    console.log(req.params.datasetType)
-    try{
-        let form = {dataType: [], dataset: [], genome: [], rnaTool: [], rnaRef: [], accompanyRNA: [], accompanyDNA: [], dnaTool: [], dnaRef: []}
-        const meta = await formdata.getFormData(req.params.datasetType);
+    console.log(req.params.datasetType);
 
-        meta.dataset.forEach((ds) => {form.dataset.push({
-            label: ds.label,
-            name: ds.name,
-            versions: ds.versions.map(version => {return {version: version.version, label: version.label, disabled: version.disabled}}),
-            unavailable: ds.unavailable
-        })});
+    try{
+        let form = {dataType: [], dataset: [], genome: [], rnaTool: [], rnaRef: [], dnaTool: [], dnaRef: []}
+        const meta = await formdata.getFormData(req.params.datasetType);
+        meta.dataset.forEach((ds) => {
+            let accompanyRNA = meta.accompanyRNA.filter(item => item.dataset === ds.name);
+            let accompanyDNA = meta.accompanyDNA.filter(item => item.dataset === ds.name);
+            let accompanyData = accompanyRNA.concat(accompanyDNA);
+            form.dataset.push({
+                label: ds.label,
+                name: ds.name,
+                versions: ds.versions.map(version => {return {version: version.version, label: version.label, disabled: version.disabled}}),
+                accompanyData: accompanyData.map(item => ({label: item.label, name: item.name, dataset: item.dataset, hide: false})),
+                unavailable: ds.unavailable
+            });
+        });
         if(req.params.datasetType === enums.dataTypes.pharmacogenomics){
             form.genome = meta.genome.map(genome => ({...genome, hide: false}));
             form.rnaTool = meta.rnaTool.map(tool => ({label: tool.label, name: tool.name, hide: false}));
@@ -31,8 +37,6 @@ const enums = require('../../helper/enum');
             form.dnaTool = meta.dnaTool.map(tool => ({label: tool.label, name: tool.name, hide: false}));
             form.dnaRef = meta.dnaRef.map(ref => ({label: ref.label, name: ref.name, genome: ref.genome, hide: false}));
             form.dataType = meta.molecularData.map(moldata => ({...moldata, hide: false}));
-            form.accompanyRNA = meta.accompanyRNA.map(acc => ({label: acc.label, name: acc.name, dataset: acc.dataset, hide: false}));
-            form.accompanyDNA = meta.accompanyDNA.map(acc => (({label: acc.label, name: acc.name, dataset: acc.dataset, hide: false})));
         }
         res.send(form);
     }catch(error){
