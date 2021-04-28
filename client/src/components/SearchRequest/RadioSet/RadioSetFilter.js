@@ -1,24 +1,22 @@
-import React, {useState, useEffect, useContext, useRef} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import SearchReqContext from '../SearchReqContext';
+
+import {Filter} from '../SearchReqStyle';
 import FilterInputSwitch from '../../Shared/FilterInputSwitch';
 import FilterDropdown from '../../Shared/FilterDropdown';
-import {SearchReqContext} from './RadioSetSearch';
 import {dataTypes} from '../../Shared/Enums';
 
 const RadioSetFilter = () => {
-    
     const context = useContext(SearchReqContext);
-    const formRef = useRef();
-    const paramRef = useRef();
-
+    
+    const [datasetSelect, setDatasetSelect] = useState({selected: [], options: [], hidden: false});
     const [ready, setReady] = useState(false);
     
     useEffect(() => {
         const initialize = async () => {
             const res = await fetch(`/api/${dataTypes.radiogenomics}/formData`);
-            const json = await res.json();
-            console.log(json);
-            formRef.current = json;
-            paramRef.current = { dataset: [] };
+            const form = await res.json();
+            setDatasetSelect({...datasetSelect, options: form.dataset});
             setReady(true);
         }
         initialize();
@@ -28,30 +26,27 @@ const RadioSetFilter = () => {
         <React.Fragment>
         {
             ready&&
-            <div className='pSetFilterContainer'>
-                <div className='pSetFilter'>
-                    <h2>RadioSet Parameters</h2>
-                    <FilterInputSwitch 
-                        label='Request RadioSet:'
-                        checked={context.isRequest}
-                        tooltip='Currently unavailable'
-                        onChange={(e) => {}}
-                        disabled={true}
-                    />
-                    <FilterDropdown 
-                        id='dataset' 
-                        hidden={false} 
-                        label='Dataset:' 
-                        selectOne={context.isRequest}  
-                        options={formRef.current.dataset.filter(ds => {return(!ds.hide)})} 
-                        selected={paramRef.current.dataset} 
-                        onChange={(e) => { 
-                            paramRef.current.dataset = e.value;
-                            context.setParameters({...paramRef.current, search: true});
-                        }} 
-                    />
-                </div>
-            </div>
+            <Filter>
+                <h2>RadioSet Parameters</h2>
+                <FilterInputSwitch 
+                    label='Request RadioSet:'
+                    checked={context.isRequest}
+                    tooltip='Currently unavailable'
+                    disabled={true}
+                />
+                <FilterDropdown 
+                    id='dataset' 
+                    hidden={false} 
+                    label='Dataset:' 
+                    selectOne={context.isRequest}  
+                    options={datasetSelect.options} 
+                    selected={datasetSelect.selected} 
+                    onChange={(e) => {
+                        setDatasetSelect({...datasetSelect, selected: e.value}); 
+                        context.setParameters(prev => ({...prev, dataset: e.value, search: true}));
+                    }} 
+                />
+            </Filter>
         }   
         </React.Fragment>
     );

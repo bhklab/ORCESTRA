@@ -1,12 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react';
-import '../SearchRequest.css';
-import Loader from 'react-loader-spinner';
+import {AuthContext} from '../../../context/auth';
+import SearchReqContext from '../SearchReqContext';
+
+import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
+import SearchTableLoader from '../SearchTableLoader';
+import SearchSummary from '../SearchSummary';
 import RadioSetFilter from './RadioSetFilter';
 import RadioSetTable from './RadioSetTable';
-import {AuthContext} from '../../../context/auth';
 import {dataTypes} from '../../Shared/Enums';
-
-export const SearchReqContext = React.createContext();
 
 async function fetchData(url, parameters) {
     const response = await fetch(url, {
@@ -22,9 +23,9 @@ const RadioSetSearch = () => {
     
     const auth = useContext(AuthContext);
     
-    const [toxicoSets, setToxicoSets] = useState([]);
+    const [datasets, setDatasets] = useState([]);
     const [searchAll, setSearchAll] = useState(true);
-    const [selectedTSets, setSelectedTSets] = useState([]);
+    const [selectedDatasets, setSelectedDatasets] = useState([]);
     // const [disableSaveBtn, setDisableSaveBtn] = useState(true);
     const [isRequest, setIsRequest] = useState(false);
     
@@ -39,9 +40,9 @@ const RadioSetSearch = () => {
 
     useEffect(() => {
         const initializeView = async () => {
-            const tsets = await fetchData(`/api/${dataTypes.radiogenomics}/search`);
-            console.log(tsets)
-            setToxicoSets(tsets);
+            const res = await fetchData(`/api/${dataTypes.radiogenomics}/search`);
+            console.log(res)
+            setDatasets(res);
             setSearchAll(true);
             setReady(true);
         }
@@ -56,14 +57,14 @@ const RadioSetSearch = () => {
         async function search() {
             console.log('search');
             console.log(parameters);
-            const toxicoSets = await fetchData(`/api/${dataTypes.radiogenomics}/search`, parameters);
+            const result = await fetchData(`/api/${dataTypes.radiogenomics}/search`, parameters);
             let all = true;
             Object.keys(parameters).forEach(key => {
                 if(Array.isArray(parameters[key]) && parameters[key].length){
                     all = false;
                 }
             });
-            setToxicoSets(toxicoSets);
+            setDatasets(result);
             setSearchAll(all);
         }
 
@@ -72,8 +73,8 @@ const RadioSetSearch = () => {
         }
     }, [parameters]);
 
-    const updateTSetSelection = (selected) => {
-        setSelectedTSets(selected);
+    const updateDatasetSelection = (selected) => {
+        setSelectedDatasets(selected);
     }
 
     // const initializeState = () => {
@@ -82,7 +83,8 @@ const RadioSetSearch = () => {
     // }
         
     return(
-        <SearchReqContext.Provider value={{ 
+        <SearchReqContext.Provider 
+            value={{ 
                 parameters: parameters, 
                 setParameters: setParameters, 
                 isRequest: isRequest, 
@@ -90,42 +92,26 @@ const RadioSetSearch = () => {
             }}
         >
             <div className='pageContent'>
-                <h1>ORCESTRA for Radiogenomics</h1>   
-                <h3>Explore multimodal Radiogenomic Datasets (RadioSets)</h3>
-                <div className='pSetListContainer'>
+                <h2>ORCESTRA for Radiogenomics - Explore multimodal Radiogenomic Datasets (RadioSets)</h2>  
+                <SearchReqWrapper>
                     <RadioSetFilter />
-                    <div className='pSetTable'>
+                    <MainPanel>
                         {/* <Messages ref={(el) => PSetSearch.messages = el} /> */}
-                        <div className='pSetSelectionSummary'>
-                            <div className='summaryPanel'>
-                                <h2>Summary</h2>
-                                <div className='pSetSummaryContainer'>
-                                    <div className='pSetSummaryItem'>
-                                        {
-                                            searchAll ? 
-                                            <span><span className='pSetSummaryNum'>{toxicoSets.length ? toxicoSets.length : 0}</span> <span>dataset(s) available.</span></span>
-                                            :
-                                            <span><span className='pSetSummaryNum'>{toxicoSets.length}</span> <span>{toxicoSets.length === 1 ? ' match' : ' matches'}</span> found.</span>
-                                        }
-                                    </div>
-                                </div>
-                                {/* <SavePSetButton selectedPSets={selectedPSets} disabled={disableSaveBtn} onSaveComplete={showMessage} /> */}
-                            </div>
-                        </div>
+                        <SearchReqPanel>
+                            <SearchSummary searchAll={searchAll} matchNum={datasets.length} />
+                        </SearchReqPanel>
                         {
                             ready ?
                             <RadioSetTable 
-                                tsets={toxicoSets} selectedTSets={selectedTSets} 
-                                updateTSetSelection={updateTSetSelection} scrollHeight='600px'
+                                datasets={datasets} selectedDatasets={selectedDatasets} 
+                                updateDatasetSelection={updateDatasetSelection} scrollHeight='600px'
                                 authenticated={auth.authenticated} download={true}
-                            /> 
+                            />
                             :
-                            <div className='tableLoaderContainer'>
-                                <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
-                            </div>
+                            <SearchTableLoader />
                         }  
-                    </div>
-                </div>
+                    </MainPanel>
+                </SearchReqWrapper>
             </div>
         </SearchReqContext.Provider>
     );

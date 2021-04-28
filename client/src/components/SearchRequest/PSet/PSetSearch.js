@@ -1,16 +1,17 @@
 import React, {useState, useEffect, useContext} from 'react';
-import '../SearchRequest.css';
-import PSetFilter from './PSetFilter2';
+import {AuthContext} from '../../../context/auth';
+import SearchReqContext from '../SearchReqContext';
+
+import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
+import PSetFilter from './PSetFilter';
 import PSetRequestForm from './PSetRequestForm';
 import PSetTable from '../../Shared/PSetTable';
-import SavePSetButton from '../../Shared/Buttons/SavePSetButton';
-import Loader from 'react-loader-spinner';
+import SearchSummary from '../SearchSummary';
+import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
+import SearchTableLoader from '../SearchTableLoader';
 import {Messages} from 'primereact/messages';
 import * as Helper from '../../Shared/Helper';
-import {AuthContext} from '../../../context/auth';
 import {dataTypes} from '../../Shared/Enums';
-
-export const SearchReqContext = React.createContext();
 
 async function fetchData(url, parameters) {
     const response = await fetch(url, {
@@ -111,7 +112,8 @@ const PSetSearch = () => {
     }
         
     return(
-        <SearchReqContext.Provider value={{ 
+        <SearchReqContext.Provider 
+            value={{ 
                 parameters: parameters, 
                 setParameters: setParameters, 
                 isRequest: isRequest, 
@@ -120,30 +122,25 @@ const PSetSearch = () => {
         >
             <div className='pageContent'>
                 <h2>Search or Request Pharmacogenomic Datasets</h2>
-                <div className='pSetListContainer'>
+                <SearchReqWrapper>
                     <PSetFilter />
-                    <div className='pSetTable'>
+                    <MainPanel>
                         <Messages ref={(el) => PSetSearch.messages = el} />
-                        <div className='pSetSelectionSummary'>
-                            <div className='summaryPanel'>
-                                <h2>Summary</h2>
-                                <div className='pSetSummaryContainer'>
-                                    <div className='pSetSummaryItem'>
-                                        {
-                                            searchAll ? 
-                                            <span><span className='pSetSummaryNum'>{psets.length ? psets.length : 0}</span> <span>dataset(s) available.</span></span>
-                                            :
-                                            <span><span className='pSetSummaryNum'>{psets.length}</span> <span>{psets.length === 1 ? ' match' : ' matches'}</span> found.</span>
-                                        }
-                                    </div>
-                                </div>
-                                <SavePSetButton selectedPSets={selectedPSets} disabled={disableSaveBtn} onSaveComplete={showMessage} />
+                        <SearchReqPanel>
+                            <div>
+                                <SearchSummary searchAll={searchAll} matchNum={psets.length} />
+                                {
+                                    auth.authenticated ?
+                                    <SaveDatasetButton selectedPSets={selectedPSets} disabled={disableSaveBtn} onSaveComplete={showMessage} />
+                                    :
+                                    '*Login or register to save existing PSets to your profile.'
+                                }
                             </div>
                             {
                                 isRequest &&
                                 <PSetRequestForm readyToSubmit={readyToSubmit} onRequestComplete={showMessage} />
                             }
-                        </div>
+                        </SearchReqPanel>
                         {
                             ready ?
                             <PSetTable 
@@ -152,12 +149,10 @@ const PSetSearch = () => {
                                 authenticated={auth.authenticated} download={true}
                             /> 
                             :
-                            <div className='tableLoaderContainer'>
-                                <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
-                            </div>
+                            <SearchTableLoader />
                         }  
-                    </div>
-                </div>
+                    </MainPanel>
+                </SearchReqWrapper>
             </div>
         </SearchReqContext.Provider>
     );

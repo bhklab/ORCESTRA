@@ -1,12 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react';
-import '../SearchRequest.css';
-import Loader from 'react-loader-spinner';
+import {AuthContext} from '../../../context/auth';
+import SearchReqContext from '../SearchReqContext';
+
+import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
+import SearchTableLoader from '../SearchTableLoader';
+import SearchSummary from '../SearchSummary';
 import XevaSetFilter from './XevaSetFilter';
 import XevaSetTable from './XevaSetTable';
-import {AuthContext} from '../../../context/auth';
 import {dataTypes} from '../../Shared/Enums';
-
-export const SearchReqContext = React.createContext();
 
 async function fetchData(url, parameters) {
     const response = await fetch(url, {
@@ -82,7 +83,8 @@ const XevaSetSearch = () => {
     // }
         
     return(
-        <SearchReqContext.Provider value={{ 
+        <SearchReqContext.Provider 
+            value={{ 
                 parameters: parameters, 
                 setParameters: setParameters, 
                 isRequest: isRequest, 
@@ -90,28 +92,14 @@ const XevaSetSearch = () => {
             }}
         >
             <div className='pageContent'>
-                <h1>ORCESTRA for Xenographic Pharmacogenomics</h1>   
-                <h3>Explore Xenographic Pharmacogenomics Datasets</h3>
-                <div className='pSetListContainer'>
+                <h2>ORCESTRA for Xenographic Pharmacogenomics - Explore Xenographic Pharmacogenomics Datasets</h2>   
+                <SearchReqWrapper>
                     <XevaSetFilter />
-                    <div className='pSetTable'>
+                    <MainPanel>
                         {/* <Messages ref={(el) => PSetSearch.messages = el} /> */}
-                        <div className='pSetSelectionSummary'>
-                            <div className='summaryPanel'>
-                                <h2>Summary</h2>
-                                <div className='pSetSummaryContainer'>
-                                    <div className='pSetSummaryItem'>
-                                        {
-                                            searchAll ? 
-                                            <span><span className='pSetSummaryNum'>{xevaSets.length ? xevaSets.length : 0}</span> <span>dataset(s) available.</span></span>
-                                            :
-                                            <span><span className='pSetSummaryNum'>{xevaSets.length}</span> <span>{xevaSets.length === 1 ? ' match' : ' matches'}</span> found.</span>
-                                        }
-                                    </div>
-                                </div>
-                                {/* <SavePSetButton selectedPSets={selectedPSets} disabled={disableSaveBtn} onSaveComplete={showMessage} /> */}
-                            </div>
-                        </div>
+                        <SearchReqPanel>
+                            <SearchSummary searchAll={searchAll} matchNum={xevaSets.length} />
+                        </SearchReqPanel>
                         {
                             ready ?
                             <XevaSetTable
@@ -120,12 +108,10 @@ const XevaSetSearch = () => {
                                 authenticated={auth.authenticated} download={true}
                             /> 
                             :
-                            <div className='tableLoaderContainer'>
-                                <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
-                            </div>
+                            <SearchTableLoader />
                         }  
-                    </div>
-                </div>
+                    </MainPanel>
+                </SearchReqWrapper>
             </div>
         </SearchReqContext.Provider>
     );

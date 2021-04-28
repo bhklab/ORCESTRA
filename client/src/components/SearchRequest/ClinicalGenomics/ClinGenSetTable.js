@@ -19,7 +19,7 @@ const ClinGenSetTable = (props) => {
         setState({...state, loading: false})
     }, []);
 
-    const downloadPSet = (doi, link) => async (event) => {
+    const downloadDataset = (doi, link) => async (event) => {
         event.preventDefault();
         console.log('downloadOnePSet');
         await fetch(`/api/${dataTypes.clinicalgenomics}/download`, {
@@ -55,7 +55,7 @@ const ClinGenSetTable = (props) => {
     );
 
     const downloadTemplate = (rowData, column) => {
-        return(rowData.downloadLink ? <a id={rowData._id} href='#' onClick={downloadPSet(rowData.doi, rowData.downloadLink)}>Download</a> : 'Not Available');
+        return(rowData.downloadLink ? <a id={rowData._id} href='#' onClick={downloadDataset(rowData.doi, rowData.downloadLink)}>Download</a> : 'Not Available');
     };
 
     const canonicalTemplate = (rowData, column) => (
@@ -64,9 +64,9 @@ const ClinGenSetTable = (props) => {
 
     return(
         <DataTable 
-            value={props.tsets} 
-            selection={props.selectedTSets} onSelectionChange={event => {props.updatePSetSelection(event.value)}} 
-            paginator={props.tsets.length > 10} rows={state.rows} 
+            value={props.datasets} 
+            selection={props.selectedDatasets} onSelectionChange={event => {props.updateDatasetSelection(event.value)}} 
+            paginator={props.datasets.length > 10} rows={state.rows} 
             resizableColumns={true} columnResizeMode="fit"
             scrollable={true} scrollHeight={props.scrollHeight }
         >

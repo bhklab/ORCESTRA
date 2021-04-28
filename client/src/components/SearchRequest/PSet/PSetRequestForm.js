@@ -1,21 +1,17 @@
 import React, {useContext} from 'react';
-import {InputText} from 'primereact/inputtext';
+import SearchReqContext from '../SearchReqContext';
+
+import CustomInputText from '../../Shared/CustomInputText';
 import {Button} from 'primereact/button';
 import Loader from 'react-loader-spinner';
 import {usePromiseTracker} from "react-promise-tracker";
 import {trackPromise} from 'react-promise-tracker';
 import styled from 'styled-components';
-import {SearchReqContext} from './PSetSearch';
 
 const RequestForm = styled.div`
     width: 400px;
-    .reqFormInput {
-        display: flex;
-        align-items: center;
-        margin-top: 35px;
-    }
-    .paramInput {
-        flex-grow: 1;
+    div {
+        margin-top: 25px;
     }
 `
 
@@ -53,8 +49,8 @@ const PSetRequestForm = (props) => {
         delete reqData.filteredSensitivity;
         delete reqData.defaultData;
         delete reqData.search;
-        reqData.dataType.forEach(dt => {delete dt.hide});
-        reqData.rnaRef.forEach(ref => {delete ref.hide});
+        reqData.dataType.forEach(dt => {delete dt.hidden});
+        reqData.rnaRef.forEach(ref => {delete ref.hidden});
 
         console.log(reqData);
         
@@ -81,18 +77,18 @@ const PSetRequestForm = (props) => {
 
     return(
         <RequestForm>
-            <h2>Request PSet</h2>
-            <div className='reqFormInput'>
-                <label>PSet Name:</label>
-                <InputText id='name' className='paramInput' value={context.parameters.name || ''} 
-                    onChange={(e) => {context.setParameters({...context.parameters, name: e.target.value, search: false})}} />
-            </div>
-            <div className='reqFormInput'>
-                <label>Email to receive DOI:</label>
-                <InputText id='email' className='paramInput' value={context.parameters.email || ''} 
-                    onChange={(e) => {context.setParameters({...context.parameters, email: e.target.value, search: false})}} />
-            </div>
-            <div className='reqFormInput'>
+            <h3>Request PSet</h3>
+            <CustomInputText 
+                label='PSet Name:'
+                value={context.parameters.name || ''} 
+                onChange={(e) => {context.setParameters({...context.parameters, name: e.target.value, search: false})}}
+            />
+            <CustomInputText 
+                label='Email to receive DOI:'
+                value={context.parameters.email || ''} 
+                onChange={(e) => {context.setParameters({...context.parameters, email: e.target.value, search: false})}}
+            />
+            <div>
                 <SubmitRequestButton />
             </div>
         </RequestForm>

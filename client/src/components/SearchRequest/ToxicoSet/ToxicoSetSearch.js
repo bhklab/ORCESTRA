@@ -1,12 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react';
-import '../SearchRequest.css';
-import Loader from 'react-loader-spinner';
+import {AuthContext} from '../../../context/auth';
+import SearchReqContext from '../SearchReqContext';
+
+import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
+import SearchTableLoader from '../SearchTableLoader';
+import SearchSummary from '../SearchSummary';
 import ToxicoSetFilter from './ToxicoSetFilter';
 import ToxicoSetTable from './ToxicoSetTable';
-import {AuthContext} from '../../../context/auth';
 import {dataTypes} from '../../Shared/Enums';
-
-export const SearchReqContext = React.createContext();
 
 async function fetchData(url, parameters) {
     const response = await fetch(url, {
@@ -82,7 +83,8 @@ const ToxicoSetSearch = () => {
     // }
         
     return(
-        <SearchReqContext.Provider value={{ 
+        <SearchReqContext.Provider 
+            value={{ 
                 parameters: parameters, 
                 setParameters: setParameters, 
                 isRequest: isRequest, 
@@ -90,28 +92,14 @@ const ToxicoSetSearch = () => {
             }}
         >
             <div className='pageContent'>
-                <h1>ORCESTRA for Toxicogenomics</h1>   
-                <h3>Explore multimodal Toxicogenomic Datasets (ToxicoSets)</h3>
-                <div className='pSetListContainer'>
+                <h2>ORCESTRA for Toxicogenomics - Explore multimodal Toxicogenomic Datasets (ToxicoSets)</h2>  
+                <SearchReqWrapper>
                     <ToxicoSetFilter />
-                    <div className='pSetTable'>
+                    <MainPanel>
                         {/* <Messages ref={(el) => PSetSearch.messages = el} /> */}
-                        <div className='pSetSelectionSummary'>
-                            <div className='summaryPanel'>
-                                <h2>Summary</h2>
-                                <div className='pSetSummaryContainer'>
-                                    <div className='pSetSummaryItem'>
-                                        {
-                                            searchAll ? 
-                                            <span><span className='pSetSummaryNum'>{toxicoSets.length ? toxicoSets.length : 0}</span> <span>dataset(s) available.</span></span>
-                                            :
-                                            <span><span className='pSetSummaryNum'>{toxicoSets.length}</span> <span>{toxicoSets.length === 1 ? ' match' : ' matches'}</span> found.</span>
-                                        }
-                                    </div>
-                                </div>
-                                {/* <SavePSetButton selectedPSets={selectedPSets} disabled={disableSaveBtn} onSaveComplete={showMessage} /> */}
-                            </div>
-                        </div>
+                        <SearchReqPanel>
+                            <SearchSummary searchAll={searchAll} matchNum={toxicoSets.length} />  
+                        </SearchReqPanel>
                         {
                             ready ?
                             <ToxicoSetTable 
@@ -120,12 +108,10 @@ const ToxicoSetSearch = () => {
                                 authenticated={auth.authenticated} download={true}
                             /> 
                             :
-                            <div className='tableLoaderContainer'>
-                                <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
-                            </div>
+                            <SearchTableLoader />
                         }  
-                    </div>
-                </div>
+                    </MainPanel>
+                </SearchReqWrapper>
             </div>
         </SearchReqContext.Provider>
     );
