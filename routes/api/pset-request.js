@@ -4,6 +4,7 @@
 const psetRequest = require('../../db/helper/pset-request');
 const datasetUpdate = require('../../db/helper/dataset-update');
 const mailer = require('../../mailer/mailer');
+const mongo = require('../../db/mongo');
 const request = require('./request');
 const pachyderm = require('./pachyderm');
 
@@ -22,17 +23,27 @@ const processOnlineRequest = async function(req, res){
     console.log("completeRequest");
     let resData = {}; 
     try{
-        const reqPset = await request.receivePSetRequest(req.body.reqData);
-        const config = await request.buildPachydermConfigJson('pset', reqPset);
-        console.log(JSON.stringify(config, null, 2));
-        await psetRequest.insertPSetRequest(reqPset, reqPset.email, config);
+        let reqPSet = req.body.reqData;
+        reqPSet._id = mongo.getObjectID();
+        reqPSet.status = 'pending';
+        reqPSet.download = 0;
+        reqPSet.doi = '';
+        reqPSet.downloadLink = '';
+        reqPSet.commitID = '';
+        reqPSet.dateSubmitted = new Date(Date.now());
+        reqPSet.dateProcessed = '';
+        reqPSet.dateCreated = '';
+
+        const config = await request.buildPachydermConfigJson('pset', reqPSet);
+        // console.log(JSON.stringify(config, null, 2));
+        await psetRequest.insertPSetRequest(reqPSet, reqPSet.email, config);
         const online = await pachyderm.checkOnline();
-        // const online = false
+        // const online = false;
         if(online){
             console.log('online process');
             await pachyderm.createPipeline(config.config);
             const update = {'dateProcessed': new Date(Date.now()), 'status': 'in-process'};
-            const result = await datasetUpdate.updatePSetStatus(reqPset._id, update);
+            const result = await datasetUpdate.updatePSetStatus(reqPSet._id, update);
             if(result.status){
                 resData = {
                     summary: 'Request Submitted', 
@@ -41,7 +52,7 @@ const processOnlineRequest = async function(req, res){
             }
         }else{
             console.log('offline process');
-            await mailer.sendPSetReqEmail(reqPset._id, reqPset.name, reqPset.dateSubmitted);
+            await mailer.sendPSetReqEmail(reqPSet._id, reqPSet.name, reqPSet.dateSubmitted);
             resData = {
                 summary: 'Request Submitted', 
                 message: 'PSet request has been submitted. Your request will be processed when Pachyderm is online. You will receive an email when ORCESTRA completes your request.'

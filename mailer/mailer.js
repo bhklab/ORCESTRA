@@ -1,7 +1,8 @@
 const sgMail = require('@sendgrid/mail');
-//const nodemailer = require('nodemailer');
 
-// var transport = nodemailer.createTransport({
+// used for test only
+// const nodemailer = require('nodemailer');
+// const transport = nodemailer.createTransport({
 //     host: "smtp.mailtrap.io",
 //     port: 2525,
 //     auth: {
@@ -109,7 +110,7 @@ const sendPSetReqEmail = async function(id, name, submittedDate){
                     `PSet Name: ${name} <br />` + 
                     `Submitted Date: ${submittedDate.toString()}` +
                 '</p>' +
-                '<p class="content">Please manually push the request to Pachyderm by starting Pachyderm, and sign in to ORCESTRA as an administrator.</p>' + 
+                '<p class="content">Please manually push the request to Pachyderm by starting Pachyderm, and signing in to ORCESTRA as an administrator.</p>' + 
                  '<p class="signature">' + 
                     'ORCESTRA powered by BHK Lab' + 
                     '<br />The MaRS center' +
@@ -127,7 +128,7 @@ const sendPSetReqEmail = async function(id, name, submittedDate){
 
     try{
         await sgMail.send(message);
-        //await transport.sendMail(message);
+        // await transport.sendMail(message);
         console.log('request notification email sent');
     }catch(error){
         console.log(error);

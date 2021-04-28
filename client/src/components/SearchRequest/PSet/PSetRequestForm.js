@@ -9,7 +9,7 @@ import {trackPromise} from 'react-promise-tracker';
 import styled from 'styled-components';
 
 const RequestForm = styled.div`
-    width: 400px;
+    width: 300px;
     div {
         margin-top: 25px;
     }

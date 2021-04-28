@@ -148,7 +148,7 @@ async function buildDataSetObject(dset, formdata, withMolData=false){
 
 const selectDatasets = async function(datasetType, query, projection=null){     
     console.log(datasetType);
-    console.log(query);
+    // console.log(query);
     const db = await mongo.getDB();
 
     try{

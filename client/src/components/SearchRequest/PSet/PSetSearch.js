@@ -121,14 +121,13 @@ const PSetSearch = () => {
             }}
         >
             <div className='pageContent'>
-                <h2>Search or Request Pharmacogenomic Datasets</h2>
                 <SearchReqWrapper>
                     <PSetFilter />
                     <MainPanel>
                         <Messages ref={(el) => PSetSearch.messages = el} />
                         <SearchReqPanel>
                             <div>
-                                <SearchSummary searchAll={searchAll} matchNum={psets.length} />
+                                <SearchSummary title='Search or Request Pharmacogenomic Datasets (PSets)' searchAll={searchAll} matchNum={psets.length} />
                                 {
                                     auth.authenticated ?
                                     <SaveDatasetButton selectedPSets={selectedPSets} disabled={disableSaveBtn} onSaveComplete={showMessage} />

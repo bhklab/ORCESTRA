@@ -21,10 +21,10 @@ const StyledSearchSummary = styled.div`
 `;
 
 const SearchSummary = (props) => {
-    const { searchAll, matchNum } = props;
+    const { title, searchAll, matchNum } = props;
     return(
         <StyledSearchSummary>
-            <h3>Summary</h3>
+            <h3>{title}</h3>
             <div className='wrapper'>
                 <span className='number'>
                     {matchNum}

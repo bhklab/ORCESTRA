@@ -40,8 +40,8 @@ const enums = require('../../helper/enum');
                     hidden: false
                 }));
             });
-            form.genome = result.genome.map(genome => ({...genome, hidden: false}));
-            form.rnaTool = result.rnaTool.map(tool => ({label: tool.label, name: tool.name, hidden: false}));
+            form.genome = result.genome;
+            form.rnaTool = result.rnaTool.map(tool => ({label: tool.label, name: tool.name}));
             form.rnaRef = result.rnaRef.map(ref => ({label: ref.label, name: ref.name, genome: ref.genome, hidden: false}));
             form.dnaTool = result.dnaTool.map(tool => ({label: tool.label, name: tool.name, hidden: false}));
             form.dnaRef = result.dnaRef.map(ref => ({label: ref.label, name: ref.name, genome: ref.genome, hidden: false}));

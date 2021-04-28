@@ -84,8 +84,8 @@ const PSetFilter = () => {
             setDataTypeDisabled(false);
             setToolRefDisabled(false);
         }
-        setGenomeSelect({selected: [], hidden: false, options: genomeSelect.options.map(option => ({...option, hidden: false}))});
-        setRNAToolSelect({selected: [], hidden: false, options: rnaToolSelect.options.map(option => ({...option, hiddent: false}))});
+        setGenomeSelect({selected: [], hidden: false, options: genomeSelect.options});
+        setRNAToolSelect({selected: [], hidden: false, options: rnaToolSelect.options});
         setRNARefSelect({selected: [], hidden: false, options: rnaRefSelect.options.map(option => ({...option, hidden: false}))});
         setCheckBoxes({canonicalOnly: false, filteredSensitivity: false});
         context.setParameters({
@@ -328,7 +328,7 @@ const PSetFilter = () => {
                     hidden={false} 
                     label='Genome:' 
                     selectOne={context.isRequest} 
-                    options={genomeSelect.options.filter(item => !item.hidden)} 
+                    options={genomeSelect.options} 
                     selected={genomeSelect.selected} 
                     onChange={(e) => {
                         setGenomeSelect({...genomeSelect, selected: e.value});
