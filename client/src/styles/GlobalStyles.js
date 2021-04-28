@@ -38,6 +38,12 @@ const GlobalStyles = createGlobalStyle`
         min-height: 100vh;
         padding-bottom: 200px;
         color: #3D405A;
+        .title {
+            margin-top: -5px;
+            font-weight: bold;
+            font-size: 25px;
+            padding-bottom: 10px;
+        }
     }
 `;
 

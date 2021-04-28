@@ -92,13 +92,13 @@ const RadioSetSearch = () => {
             }}
         >
             <div className='pageContent'>
-                <h2>ORCESTRA for Radiogenomics - Explore multimodal Radiogenomic Datasets (RadioSets)</h2>  
+                <div className='title'>ORCESTRA for Radiogenomics</div>  
                 <SearchReqWrapper>
                     <RadioSetFilter />
                     <MainPanel>
                         {/* <Messages ref={(el) => PSetSearch.messages = el} /> */}
                         <SearchReqPanel>
-                            <SearchSummary searchAll={searchAll} matchNum={datasets.length} />
+                            <SearchSummary title='Explore multimodal Radiogenomic Datasets (RadioSets)' searchAll={searchAll} matchNum={datasets.length} />
                         </SearchReqPanel>
                         {
                             ready ?

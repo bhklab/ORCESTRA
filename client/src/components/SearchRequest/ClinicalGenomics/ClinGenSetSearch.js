@@ -91,13 +91,13 @@ const ClinGenSetSearch = () => {
             }}
         >
             <div className='pageContent'>
-                <h2>ORCESTRA for Clinical Genomics - Explore multimodal Clinical Genomics Datasets</h2>  
+                <div className='title'>ORCESTRA for Clinical Genomics</div>  
                 <SearchReqWrapper>
                     <ClinGenSetFilter />
                     <MainPanel>
                         {/* <Messages ref={(el) => PSetSearch.messages = el} /> */}
                         <SearchReqPanel>
-                            <SearchSummary searchAll={searchAll} matchNum={datasets.length} />
+                            <SearchSummary title='Explore multimodal Clinical Genomics Datasets' searchAll={searchAll} matchNum={datasets.length} />
                         </SearchReqPanel>
                         {
                             ready ?

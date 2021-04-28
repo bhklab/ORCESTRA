@@ -91,14 +91,14 @@ const ToxicoSetSearch = () => {
                 setIsRequest: setIsRequest
             }}
         >
-            <div className='pageContent'>
-                <h2>ORCESTRA for Toxicogenomics - Explore multimodal Toxicogenomic Datasets (ToxicoSets)</h2>  
+            <div className='pageContent'> 
+                <div className='title'>ORCESTRA for Toxicogenomics</div>
                 <SearchReqWrapper>
                     <ToxicoSetFilter />
                     <MainPanel>
                         {/* <Messages ref={(el) => PSetSearch.messages = el} /> */}
                         <SearchReqPanel>
-                            <SearchSummary searchAll={searchAll} matchNum={toxicoSets.length} />  
+                            <SearchSummary title='Explore multimodal Toxicogenomic Datasets (ToxicoSets)' searchAll={searchAll} matchNum={toxicoSets.length} />  
                         </SearchReqPanel>
                         {
                             ready ?

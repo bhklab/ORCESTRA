@@ -92,13 +92,13 @@ const XevaSetSearch = () => {
             }}
         >
             <div className='pageContent'>
-                <h2>ORCESTRA for Xenographic Pharmacogenomics - Explore Xenographic Pharmacogenomics Datasets</h2>   
+                <div className='title'>ORCESTRA for Xenographic Pharmacogenomics</div>   
                 <SearchReqWrapper>
                     <XevaSetFilter />
                     <MainPanel>
                         {/* <Messages ref={(el) => PSetSearch.messages = el} /> */}
                         <SearchReqPanel>
-                            <SearchSummary searchAll={searchAll} matchNum={xevaSets.length} />
+                            <SearchSummary title='Explore Xenographic Pharmacogenomics Datasets (XevaSets)' searchAll={searchAll} matchNum={xevaSets.length} />
                         </SearchReqPanel>
                         {
                             ready ?
