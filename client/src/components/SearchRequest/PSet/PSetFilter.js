@@ -13,11 +13,13 @@ const PSetFilter = () => {
 
     const [datasetSelect, setDatasetSelect] = useState({selected: [], options: [], hidden: false});
     const [dataTypeSelect, setDataTypeSelect] = useState({selected: [], options: [], hidden: false, searchOptions: []});
+    const [miArraySelect, setMiArraySelect] = useState({selected: [], options: [], hidden: true});
     const [drugSensSelect, setDrugSensSelect] = useState({selected: [], options: [], hidden: false, disabled: true});
     const [genomeSelect, setGenomeSelect] = useState({selected: [], options: [], hidden: false});
     const [rnaToolSelect, setRNAToolSelect] = useState({selected: [], options: [], hidden: false});
     const [rnaRefSelect, setRNARefSelect] = useState({selected: [], options: [], hidden: false});
     const [checkBoxes, setCheckBoxes] = useState({canonicalOnly: false, filteredSensitivity: false});
+    
     const [toolRefDisabled, setToolRefDisabled] = useState(false);
     const [dataTypeDisabled, setDataTypeDisabled] = useState(false);
     const [ready, setReady] = useState(false);
@@ -26,6 +28,7 @@ const PSetFilter = () => {
         const initialize = async () => {
             const res = await fetch(`/api/${dataTypes.pharmacogenomics}/formData`);
             const form = await res.json();
+            console.log(form);
             setDatasetSelect({...datasetSelect, options: form.dataset});
             setDataTypeSelect({...dataTypeSelect, options: form.dataType, searchOptions: form.dataType});
             setGenomeSelect({...genomeSelect, options: form.genome});
@@ -119,6 +122,20 @@ const PSetFilter = () => {
         }
         setRNARefSelect({...rnaRefSelect, options: rnaRefOptions});
     }, [genomeSelect.selected]);
+
+    useEffect(() => {
+        if(context.isRequest && typeof datasetSelect.selected !== 'undefined' && datasetSelect.selected.name === 'GDSC'){
+            let found = dataTypeSelect.selected.find(item => (item.name === 'microarray'));
+            if(miArraySelect.hidden && found){
+                setMiArraySelect({...miArraySelect, options: found.options, hidden: false});
+            }else if(!found){
+                setMiArraySelect({...miArraySelect, selected: undefined, options: [], hidden: true});
+                
+            }
+        }else{
+            setMiArraySelect({...miArraySelect, selected: undefined, options: [], hidden: true});
+        }
+    }, [dataTypeSelect.selected]);
 
     const onDatasetSelection = (dataset) => {
         // Handle form options depending on a selected dataset.
@@ -254,7 +271,21 @@ const PSetFilter = () => {
                         context.setParameters(prev => ({...prev, dataType: e.value, search: true}));
                     }} 
                 />
-
+                <FilterDropdown 
+                    id='microarrayOptions' 
+                    hidden={miArraySelect.hidden} 
+                    label='Microarray Type:'
+                    selectOne={true}
+                    options={miArraySelect.options} 
+                    disabled={miArraySelect.disabled}
+                    selected={miArraySelect.selected} 
+                    onChange={(e) => {
+                        setMiArraySelect({...miArraySelect, selected: e.value});
+                        let dataType = JSON.parse(JSON.stringify(context.parameters.dataType));
+                        dataType.find(item => (item.name === 'microarray')).type = e.value
+                        context.setParameters(prev => ({...prev, dataType: dataType, search: false}));
+                    }} 
+                />
                 <FilterDropdown 
                     id='drugSensitivity' 
                     hidden={drugSensSelect.hidden} 

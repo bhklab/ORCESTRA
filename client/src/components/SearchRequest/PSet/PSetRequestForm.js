@@ -49,7 +49,10 @@ const PSetRequestForm = (props) => {
         delete reqData.filteredSensitivity;
         delete reqData.defaultData;
         delete reqData.search;
-        reqData.dataType.forEach(dt => {delete dt.hidden});
+        reqData.dataType.forEach(dt => {
+            delete dt.hidden;
+            delete dt.options;
+        });
         reqData.rnaRef.forEach(ref => {delete ref.hidden});
 
         console.log(reqData);

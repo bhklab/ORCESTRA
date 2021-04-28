@@ -32,7 +32,13 @@ const enums = require('../../helper/enum');
                 let accompanyRNA = result.accompanyRNA.filter(item => item.dataset === dataset.name);
                 let accompanyDNA = result.accompanyDNA.filter(item => item.dataset === dataset.name);
                 let accompanyData = accompanyRNA.concat(accompanyDNA);
-                dataset.accompanyData = accompanyData.map(item => ({label: item.label, name: item.name, dataset: item.dataset, hidden: false}))
+                dataset.accompanyData = accompanyData.map(item => ({ 
+                    label: item.label, 
+                    name: item.name, 
+                    dataset: item.dataset, 
+                    options: item.options,
+                    hidden: false
+                }));
             });
             form.genome = result.genome.map(genome => ({...genome, hidden: false}));
             form.rnaTool = result.rnaTool.map(tool => ({label: tool.label, name: tool.name, hidden: false}));
