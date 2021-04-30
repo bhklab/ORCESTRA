@@ -99,9 +99,9 @@ const Navigation = (props) => {
                         label={auth.authenticated ? 'Logout' : 'Login/Register'} 
                         onClick={auth.authenticated ? onLogoutClick : onLoginClick}
                     /> 
-                    <PachydermStatus isOnline={isOnline}>
-                        <div className='icon'><i className='pi pi-check'></i></div>
-                        <div className='text'>Pachyderm is <br />online</div>
+                    <PachydermStatus className='status' isOnline={isOnline}>
+                        <div className='icon'><i className={`pi ${ isOnline ? 'pi-check' : 'pi-ban'}`}></i></div>
+                        <div className='text'>Pachyderm is <br />{isOnline ? 'online' : 'offline'}</div>
                     </PachydermStatus> 
                     {
                         auth.authenticated ?
@@ -128,8 +128,8 @@ const Navigation = (props) => {
                         onClick={auth.authenticated ? onLogoutClick : onLoginClick}
                     />
                     <PachydermStatus className='status' isOnline={isOnline}>
-                        <div className='icon'><i className='pi pi-check'></i></div>
-                        <div className='text'>Pachyderm is <br />online</div>
+                        <div className='icon'><i className={`pi ${ isOnline ? 'pi-check' : 'pi-ban'}`}></i></div>
+                        <div className='text'>Pachyderm is <br />{isOnline ? 'online' : 'offline'}</div>
                     </PachydermStatus> 
                 </Menu>
             </BurgerNav> 
