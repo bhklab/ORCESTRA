@@ -5,8 +5,8 @@ module.exports = {
         try{
             const db = await mongo.getDB();
             const collection = db.collection('formdata');
-            const form = await collection.find({'datasetType': datasetType}).toArray();
-            return form[0];
+            const form = await collection.findOne({'datasetType': datasetType});
+            return form;
         }catch(err){
             console.log(err)
             throw err

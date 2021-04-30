@@ -18,7 +18,7 @@ const Documentation = (props) => {
         <div className='pageContent'>
             <div className='documentationContent'>
                 <nav className='documentationNav'>
-                    <h2>Functionality</h2>
+                    <h3>Functionality</h3>
                     <ul>
                         <li className={display === 'overview' ? 'selected' : undefined}>
                             <button type='button' onClick={() => setDisplay('overview')}>Overview</button>
@@ -33,13 +33,13 @@ const Documentation = (props) => {
                             <button type='button' onClick={() => setDisplay('userProfile')}>Profile/Statistics</button>
                         </li>
                     </ul> 
-                    <h2>Support</h2>
+                    <h3>Support</h3>
                     <ul>
                         <li className={display === 'datacontribution' ? 'selected' : undefined}>
                             <button type='button' onClick={() => setDisplay('datacontribution')}>Contributing Your Data</button>
                         </li>   
                     </ul>
-                    <h2>API</h2>
+                    <h3>API</h3>
                     <ul>
                         <li className={display === 'api-psets-available' ? 'selected' : undefined}>
                             <button type='button' onClick={() => setDisplay('api-psets-available')}>Available Datasets</button>

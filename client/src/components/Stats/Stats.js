@@ -33,12 +33,11 @@ const Stats = () => {
         
     return(
         <div className='pageContent'>
-            <h2>Dataset Metrics and PSet Usage Statistics</h2>
             {
                 isReady ?
                 <div className='statContainer'>
                     <div className='container downloadHistogram'>
-                        <h3>Dataset Metrics</h3>
+                        <h3>Dataset Metrics and Usage Statistics</h3>
                         <DatasetChart chartData={chartData} />
                     </div>
                     <div className='container rankingTable'>

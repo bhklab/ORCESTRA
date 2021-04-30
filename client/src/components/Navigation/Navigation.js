@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import {Button} from 'primereact/button';
 import {AuthContext} from '../../context/auth';
 import {PathContext} from '../../context/path';
-import { StyledHeader } from './StyledNavigation';
+import { StyledHeader, NavigationWrapper, BurgerNav, PachydermStatus } from './StyledNavigation';
 import { slide as Menu } from 'react-burger-menu';
 import {withRouter} from 'react-router';
 import {dataTypes} from '../Shared/Enums';
@@ -60,86 +60,79 @@ const Navigation = (props) => {
     }
 
     return(
-        <StyledHeader datasetType={path.datatype} >
-            <NavLink exact to='/'><img src={process.env.PUBLIC_URL + "/images/trumpet-orcestra.png"} alt='' /></NavLink>
-            <div className='navBarContainer'>
-                <div className='navbar'>
-                    <div><NavLink exact to={`/`} activeClassName='active-link'>Home</NavLink></div>
+        <StyledHeader>
+            <NavigationWrapper datasetType={path.datatype}>
+                <div className='left'>
+                    <div className='logo'>
+                        <NavLink exact to='/'>
+                            <img src={process.env.PUBLIC_URL + "/images/trumpet-orcestra.png"} alt='' />
+                        </NavLink>
+                    </div>
+                    <NavLink exact to={`/`} className='link' activeClassName='active-link'>Home</NavLink>
                     {
                         path.datatype.length > 0 &&
                         <React.Fragment>
-                            <div><NavLink exact to={`/${path.datatype}`} activeClassName='active-link'>{getDatatype(path.datatype)}</NavLink></div>
+                            <NavLink exact to={`/${path.datatype}`} className='link' activeClassName='active-link'>{getDatatype(path.datatype)}</NavLink>
                             {
                                 path.datatype === dataTypes.pharmacogenomics && 
-                                <div><NavLink exact to={`/${path.datatype}/search`} activeClassName='active-link'>Search and Request</NavLink></div>
+                                <NavLink exact to={`/${path.datatype}/search`} className='link' activeClassName='active-link'>Search and Request</NavLink>
                             }
                             {
                                 path.datatype === dataTypes.pharmacogenomics && 
-                                <div><NavLink exact to={`/${path.datatype}/status`} activeClassName='active-link'>Request Status</NavLink></div>
+                                <NavLink exact to={`/${path.datatype}/status`} className='link' activeClassName='active-link'>Request Status</NavLink>
                             }
                             {
                                 path.datatype === dataTypes.pharmacogenomics && 
-                                <div><NavLink exact to={`/${path.datatype}/stats`} activeClassName='active-link'>Statistics</NavLink></div>
-                            }
-                            
+                                <NavLink exact to={`/${path.datatype}/stats`} className='link' activeClassName='active-link'>Statistics</NavLink>
+                            } 
                         </React.Fragment>
                     }
-                    <div className='menu-item'>
-                        <NavLink exact to={`/documentation/overview`} activeClassName='active-link'>Documentation</NavLink>
-                    </div>
-                    { auth.authenticated && <div className='menu-item'><NavLink exact to="/app/profile" activeClassName='active-link'>Profile</NavLink></div> }
-                    <div>
-                        {
-                            auth.authenticated ? <Button label='Logout' onClick={onLogoutClick}/> : <Button label='Login/Register' onClick={onLoginClick}/>
-                        }
-                    </div> 
-                    <div>
-                        {
-                            isOnline ? 
-                            <div className='pachydermStatus isOnline'>
-                                <div className='icon'><i className='pi pi-check'></i></div><div className='text'>Pachyderm is <br />online</div>
-                            </div> 
-                            : 
-                            <span className='pachydermStatus isOffline'>
-                                <div className='icon'><i className='pi pi-ban'></i></div><div className='text'>Pachyderm is <br />offline</div>
-                            </span>
-                        }
-                    </div>
+                    <NavLink exact to={`/documentation/overview`} className='link' activeClassName='active-link'>Documentation</NavLink>
+                    { 
+                        auth.authenticated && 
+                        <NavLink exact to="/app/profile" className='link' activeClassName='active-link'>Profile</NavLink>
+                    }
                 </div>
-                <div className='burgerNav'>
-                    <Menu width={ 200 } isOpen={true} > 
-                        {
-                            path.datatype.length > 0 &&
-                            <React.Fragment>
-                                <div><NavLink exact to={`/`} activeClassName='active-link'>Home</NavLink></div>
-                                <div><NavLink exact to={`/${path.datatype}`} activeClassName='active-link'>{getDatatype(path.datatype)}</NavLink></div>
-                                <div className='menu-item'><NavLink exact to={`/${path.datatype}/search`} activeClassName='active-link'>Search and Request</NavLink></div>
-                                <div><NavLink exact to={`/${path.datatype}/status`} activeClassName='active-link'>Request Status</NavLink></div>
-                                <div><NavLink exact to={`/${path.datatype}/documentation/overview`} activeClassName='active-link'>Documentation</NavLink></div>
-                            </React.Fragment>
-                        }
-                        { auth.authenticated && <div className='menu-item'><NavLink exact to="/app/profile" activeClassName='active-link'>Profile</NavLink></div> }
-                        <div className='menu-item'>
-                            {
-                                auth.authenticated ? 
-                                <Button label='Logout' onClick={onLogoutClick}/> : <Button label='Login/Register' onClick={onLoginClick}/>
-                            }
-                        </div>
-                        <div>
-                            {isOnline ? 
-                                <div className='pachydermStatus isOnline'>
-                                    <div className='icon'><i className='pi pi-check'></i></div><div className='text'>Pachyderm is <br />online</div>
-                                </div> 
-                                : 
-                                <span className='pachydermStatus isOffline'>
-                                    <div className='icon'><i className='pi pi-ban'></i></div><div className='text'>Pachyderm is <br />offline</div>
-                                </span>
-                            }
-                        </div>
-                    </Menu>
-                </div>   
-            </div>
-            <div className='loggedIn'>{auth.authenticated ? 'Logged in as: ' + auth.username : ''}</div> 
+                <div className='right'>
+                    <Button 
+                        className='button' 
+                        label={auth.authenticated ? 'Logout' : 'Login/Register'} 
+                        onClick={auth.authenticated ? onLogoutClick : onLoginClick}
+                    /> 
+                    <PachydermStatus isOnline={isOnline}>
+                        <div className='icon'><i className='pi pi-check'></i></div>
+                        <div className='text'>Pachyderm is <br />online</div>
+                    </PachydermStatus> 
+                    {
+                        auth.authenticated ?
+                        <div className='loggedIn'>{`Logged in as: ${auth.username}`}</div> : ''
+                    }  
+                </div> 
+            </NavigationWrapper>
+            <BurgerNav>
+                <Menu width={ 200 } isOpen={true} > 
+                    {
+                        path.datatype.length > 0 &&
+                        <React.Fragment>
+                            <NavLink exact to={`/`} activeClassName='active-link'>Home</NavLink>
+                            <NavLink exact to={`/${path.datatype}`} activeClassName='active-link'>{getDatatype(path.datatype)}</NavLink>
+                            <NavLink exact to={`/${path.datatype}/search`} activeClassName='active-link'>Search and Request</NavLink>
+                            <NavLink exact to={`/${path.datatype}/status`} activeClassName='active-link'>Request Status</NavLink>
+                            <NavLink exact to={`/${path.datatype}/documentation/overview`} activeClassName='active-link'>Documentation</NavLink>
+                        </React.Fragment>
+                    }
+                    { auth.authenticated && <NavLink exact to="/app/profile" activeClassName='active-link'>Profile</NavLink>}
+                    <Button 
+                        className='button' 
+                        label={auth.authenticated ? 'Logout' : 'Login/Register'} 
+                        onClick={auth.authenticated ? onLogoutClick : onLoginClick}
+                    />
+                    <PachydermStatus className='status' isOnline={isOnline}>
+                        <div className='icon'><i className='pi pi-check'></i></div>
+                        <div className='text'>Pachyderm is <br />online</div>
+                    </PachydermStatus> 
+                </Menu>
+            </BurgerNav> 
         </StyledHeader>
     );
 }

@@ -1,51 +1,72 @@
 import styled from 'styled-components';
-import {dataTypes} from '../Shared/Enums';
 
 export const StyledHeader = styled.header`
     top: 0%;
     width:100%;
     background-color:rgb(255,255,255, 0.7);
-    height: 70px;
+    height: 60px;
     position: fixed;
     z-index: 999;
-    img {
-        max-width: 100%;
-        max-height: 100%;
-        // float: left;
-        margin-left: 100px;
+`;
+
+export const NavigationWrapper = styled.div`
+    position: relative;
+    height: 100%;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-between;
+    aling-items: center;
+
+    .left {
+        display: flex;
+        align-items: center;
     }
-    a {
-        color:rgb(61, 64, 90);
-        font-size:12px;
-        padding-bottom:3px;
-        font-weight:bold;
+
+    .right {
+        position: relative;
+        display: flex;
+        align-items: center;
+        .button {
+            margin-right: 10px;
+        }
+        .loggedIn{
+            position: absolute;
+            right: 0;
+            top: 1px;
+            font-size: 11px;
+            color: red;
+        }
+    }
+
+    .logo {
+        height: 90%;
+        margin-right: 40px;
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+
+    .link {
+        margin-right: 20px;
+        padding-bottom: 2px;
+        color: rgb(61, 64, 90);
+        font-size: 12px;
+        font-weight: bold;
         transition: .2s ease-out;
         :hover {
-            text-decoration:none;
+            text-decoration: none;
             color: #555975;
-            border-bottom:3px solid rgb(241, 144, 33);
+            border-bottom: 2px solid rgb(241, 144, 33);
             transition: .2s ease-out;
         }
     }
     .active-link{
-        text-decoration:none;
+        text-decoration: none;
         color: #555975;
-        border-bottom:3px solid rgb(241, 144, 33);
-    }
-    
-    .navBarContainer {
-        height: 100%;
-        float: right;
-        display: flex;
-    }
-    
-    .navbar {
-        margin-right: 100px;
-        width: ${props => (props.datasetType.length === 0 ? '500px' : props.datasetType === dataTypes.pharmacogenomics ? '950px' : '700px')};
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        border-bottom: 2px solid rgb(241, 144, 33);
     }
     
     .home-button {
@@ -56,44 +77,31 @@ export const StyledHeader = styled.header`
     .home-button:hover {
         cursor:pointer;
     }
-    
-    .loggedIn{
-        position: absolute;
-        right: 0;
-        top: 2px;
-        z-index: 999;
-        margin-right: 100px;
-        font-size: 12px;
-        color: red;
-    }
-    
-    .loginGrowl .p-growl.p-growl-topright {
-        top: 90px;
-        right: 100px;
-    }
-    
-    .pachydermStatus {
-      display: flex;
-      align-items: center;
-      font-weight: bold;
-    }
-    
-    .pachydermStatus > .icon {
-      font-size: 25px;
-    }
-    
-    .pachydermStatus > .text {
-      font-size: 12px;
-    }
-    
-    .isOnline {
-      color: #0ea353;
-    }
-    
-    .isOffline {
-      color: #bb2003;
+
+    @media only screen and (max-width: 900px) {
+        .link, .right {
+            display: none;
+        }
     }
 
+`;
+
+export const PachydermStatus = styled.div`
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: ${props => props.isOnline ? '#0ea353' : '#bb2003'};
+    .icon {
+        font-size: 20px;
+    }
+    .text {
+        font-size: 11px;
+    }
+`;
+
+export const BurgerNav = styled.div`
+    position: fixed;
+    right: 0;
     /*react-burger-nav style*/
 
     /* Position and sizing of burger button */
@@ -102,30 +110,30 @@ export const StyledHeader = styled.header`
         width: 36px;
         height: 30px;
         right: 36px;
-        top: 25px;
+        top: 15px;
     }
-    
+
     /* Color/shape of burger icon bars */
     .bm-burger-bars {
         background: #3D405A;
     }
-    
+
     /* Color/shape of burger icon bars on hover*/
     .bm-burger-bars-hover {
         background: #555975;
     }
-    
+
     /* Position and sizing of clickable cross button */
     .bm-cross-button {
         height: 24px;
         width: 24px;
     }
-    
+
     /* Color/shape of close button cross */
     .bm-cross {
         background: #3D405A;
     }
-    
+
     /*
     Sidebar wrapper styles
     Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
@@ -134,51 +142,53 @@ export const StyledHeader = styled.header`
         position: fixed;
         height: 100%;
     }
-    
+
     /* General sidebar styles */
     .bm-menu {
         background: rgba(255, 255, 255, 0.7);
-        padding: 2.5em 1.5em 0;
-        font-size: 1.15em;
+        padding: 30px 10px 20px 10px;
+        font-size: 16px;
+        nav {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            a {
+                margin-bottom: 15px;
+                color: rgb(61, 64, 90);
+            }
+            button {
+                text-align: center;
+            }
+            .status {
+                display: flex;
+            }
+        }
     }
-    
+
     /* Morph shape necessary with bubble or elastic */
     .bm-morph-shape {
         fill: #373a47;
     }
-    
+
     /* Wrapper for item list */
     .bm-item-list {
-        /* color: #b8b7ad; */
+        color: #b8b7ad;
         padding: 0.8em;
     }
-    
+
     /* Individual item */
     .bm-item {
-        display: inline-block;
         margin-bottom: 20px;
         text-align: left;
     }
-    
+
     /* Styling of overlay */
     .bm-overlay {
         background: rgba(61, 64, 90, 0.5);
     }
 
-    @media only screen and (max-width: 1200px) {
-        .navbar {
-            display: none;
-        }
-
-        img {
-            margin-top: 10px;
-            margin-left: 30px;
-            max-width: 60px;
-            max-height: 60px;
-        }
-    }
-
-    @media only screen and (min-width: 1200px) {
+    @media only screen and (min-width: 900px) {
+        display: none;
         .bm-burger-button {
             display: none;
         }
@@ -191,4 +201,4 @@ export const StyledHeader = styled.header`
             display: none;
         }
     }
-`
+`;

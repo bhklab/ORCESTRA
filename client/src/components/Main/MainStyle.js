@@ -5,7 +5,6 @@ export const Wrapper = styled.div`
     margin-left: auto;
     margin-right: auto;
     max-width: 1700px;
-    padding-top: 50px;
     color:#3D405A;
     min-height: 100vh;
     padding-bottom: 200px;
@@ -75,7 +74,7 @@ export const Button = styled.a`
 `
 
 export const Row = styled.div`
-    margin-top: 60px;
+    margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -97,7 +96,7 @@ export const Column = styled.div`
 export const Item = styled.div`
     background-color:rgb(255, 255, 255,0.5);
     margin: 0px 10px 10px 10px;
-    padding: 10px 30px 30px 30px;
+    padding: 0px 20px 30px 20px;
     border-radius: 10px;
     width: 95%;
     min-height:200px;
@@ -116,11 +115,11 @@ export const Item = styled.div`
         margin-bottom: 10px;
         font-size: 16px;
         height: 20%;
-        width: 95%;
-        margin-left: auto;
-        margin-right: auto;
         display: flex;
         align-items: center;
+        span {
+            margin-left: 5px;
+        }
     }
 
     .link {

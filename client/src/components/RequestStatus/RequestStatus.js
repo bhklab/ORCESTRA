@@ -1,12 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react';
-import './Dashboard.css';
+import './RequestStatus.css';
 import Loader from 'react-loader-spinner';
 import {Messages} from 'primereact/messages';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import {AuthContext} from '../../context/auth';
 
-const Dashboard = () => {
+const RequestStatus = () => {
     
     const auth = useContext(AuthContext);
     const [data, setData] = useState([]);
@@ -28,7 +28,7 @@ const Dashboard = () => {
     }, []);
 
     const show = (message) => {
-        Dashboard.messages.show(message);
+        RequestStatus.messages.show(message);
     }
 
     const submitRequest = async (id) => {
@@ -82,10 +82,9 @@ const Dashboard = () => {
     return(
         <div className='pageContent'>
             <div className='dashboardWrapper'>
-                <h2>PSet Request Status Board</h2>
-                <Messages ref={(el) => Dashboard.messages = el }></Messages>
+                <Messages ref={(el) => RequestStatus.messages = el }></Messages>
                 <div className='dashboardSummary'>
-                    <h2>Request Status Summary</h2>
+                    <h2>Request Status</h2>
                     <div className='dashboardSummaryContainer'>
                         <div className='dashboardSummarySection'>
                             <span className='number'>{ data.filter(d => d.status === 'pending').length }</span> pending request(s).
@@ -119,4 +118,4 @@ const Dashboard = () => {
     );
 }
 
-export default Dashboard;
+export default RequestStatus;

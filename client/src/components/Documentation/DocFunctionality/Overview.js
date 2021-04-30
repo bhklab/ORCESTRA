@@ -3,7 +3,7 @@ import React from 'react';
 const Overview = () => {
     return(
         <div className='documentation'>
-            <h1>Overview</h1>
+            <h2>Overview</h2>
 
                 <div>
                     <h3>Introduction</h3>

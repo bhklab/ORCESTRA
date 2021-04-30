@@ -8,27 +8,28 @@ const StyledFooter = styled.div`
     position: relative;
     clear: both;
     bottom: 0%;
-    width:100%;
-    background-color:rgb(255,255,255, 0.7);
-    height: 230px;
+    width: 100%;
+    background-color: rgb(255,255,255, 0.7);
+    height: 150px;
     font-size: calc(0.7em + 0.2vw);
     padding: 10px 0;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-;
 
     .footerContainer {
-        width: 70%;
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
         display:flex;
-        align-items:flex-start;
-        align-content: flex-end;
+        font-size: 12px;
     }
     
     .footerLinks {
         width:200px;
         a, div {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             color: #3D405A;
         }
         a:hover {
@@ -53,7 +54,7 @@ const StyledFooter = styled.div`
     
     .contactInfo{
         font-size: calc(0.7em + 0.2vw);
-        line-height: 25px;
+        line-height: 20px;
         margin-top: -5px;
     }
 `

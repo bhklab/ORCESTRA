@@ -3,7 +3,7 @@ import React from 'react';
 const Request = () => {
     return(
         <div className='documentation'>
-            <h1>Request</h1> 
+            <h2>Request</h2> 
                 <div>
                     <h3>How to request a PSet</h3>
                     <p>

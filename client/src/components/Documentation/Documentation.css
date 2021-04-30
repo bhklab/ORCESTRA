@@ -1,5 +1,4 @@
 .documentationContent {
-    margin-top: 50px;
     display: flex;
     height: 100%;
 }
@@ -33,7 +32,7 @@
     font-family: "Raleway", "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     color: #3D405A;
 }

@@ -3,7 +3,7 @@ import React from 'react';
 const Search = () => {
     return(
         <div className='documentation'>
-            <h1>Search</h1>
+            <h2>Search</h2>
                 <div>
                     <h3>How to search existing PSets</h3>
                     <p>

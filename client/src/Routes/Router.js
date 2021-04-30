@@ -10,7 +10,7 @@ import Main from '../components/Main/Main';
 import DatasetMain from '../components/Main/DatasetMain';
 import SearchRequest from '../components/SearchRequest/SearchRequest';
 import SingleDataset from '../components/SingleDataset/SingleDataset';
-import Dashboard from '../components/Dashboard/Dashboard';
+import RequestStatus from '../components/RequestStatus/RequestStatus';
 import Stats from '../components/Stats/Stats';
 import Documentation from '../components/Documentation/Documentation';
 import Profile from '../components/Profile/Profile';
@@ -58,7 +58,7 @@ const Router = () => {
                     <Route exact path ='/:datatype/search' render={(props) => (<SearchRequest {...props}  />)}/>
                     <Route path='/:datatype/:id1/:id2' render={(props) => (<SingleDataset {...props} />)} />
                     <Route path='/:datatype/canonical' component={CanonicalPSets} /> 
-                    <Route exact path ='/:datatype/status' component={Dashboard}/>
+                    <Route exact path ='/:datatype/status' component={RequestStatus}/>
                     <Route exact path ='/:datatype/stats' component={Stats}/>
                     <Route exact path ='/documentation/:section' component={Documentation} />
                     <Route exact path='/app/authentication' component={Login} />
