@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { AuthContext } from './AuthContext';
+import { AuthContext } from './Context';
 
 /**
  * Custom hook to handle authentication.
@@ -18,12 +18,13 @@ const useAuth = () => {
      */ 
     const setUserContext = async (location) => {
         const res = await axios.get('/api/user/session');
+        console.log(res.data);
         setUser(res.data);
         if(res.data){
             if(location.state && location.state.from){
                 history.push(location.state.from);
             }else{
-                history.push('/');
+                history.push('/app/profile');
             }
         }else{
             console.log('authentication failed');
@@ -45,11 +46,11 @@ const useAuth = () => {
         }
     }
 
-    const signoutUser = async () => {
+    const logoutUser = async () => {
         try{
-            await axios.get(`/api/user/signout`); // call API to reset cookie token
+            await axios.get(`/api/user/logout`); // call API to reset cookie token
             setUser(null); // reset user in UserContext to null
-            history.push('/signin'); // push to signin page
+            history.push('/app/authentication'); // push to signin page
         }catch(err){
             console.log(err);
         }
@@ -57,7 +58,7 @@ const useAuth = () => {
 
     return {
         submitUser,
-        signoutUser,
+        logoutUser,
         error
     }
 }

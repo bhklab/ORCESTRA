@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import { NavLink } from 'react-router-dom';
-import {PathContext} from '../../context/path';
+import { PathContext } from '../../hooks/Context';
 import styled from 'styled-components';
 import {dataTypes} from '../Shared/Enums';
 

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {AuthContext} from '../../../context/auth';
+import { AuthContext } from '../../../hooks/Context';
 import SearchReqContext from '../SearchReqContext';
 
 import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
@@ -105,7 +105,8 @@ const XevaSetSearch = () => {
                             <XevaSetTable
                                 xevasets={xevaSets} selectedXevaSets={selectedXevaSets} 
                                 updateXevaSetSelection={updateXevaSetSelection} scrollHeight='600px'
-                                authenticated={auth.authenticated} download={true}
+                                authenticated={auth.user ? true : false} 
+                                download={true}
                             /> 
                             :
                             <SearchTableLoader />

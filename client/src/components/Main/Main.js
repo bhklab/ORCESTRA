@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react';
-import {PathContext} from '../../context/path';
+import { PathContext } from '../../hooks/Context';
 import * as MainStyle from './MainStyle';
 import styled from 'styled-components';
 import {dataTypes} from '../Shared/Enums';

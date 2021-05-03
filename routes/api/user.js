@@ -28,17 +28,17 @@ async function getUser(req, res){
  * @param {*} req 
  * @param {*} res 
  */
-async function checkUser(req, res){
+const find = async (req, res) => {
     try{
-        const user = await userdata.selectUser(req.query.username)
+        const user = await userdata.selectUser(req.query.username);
         if(user){
             if(user.registered){
-                res.send({exists: true, registered: true});
+                res.send({action: 'login'});
             }else{
-                res.send({exists: true, registered: false});
+                res.send({action: 'register'});
             }   
         }else{
-            res.send({exists: false, registered: false});
+            res.send({action: 'register'});
         }
     }catch(error){
         res.status(500).send({});
@@ -46,26 +46,32 @@ async function checkUser(req, res){
 }
 
 const submit = async (req, res) => {
-    const user = req.body.user;
+    const user = req.body;
     let data = null;
     try{
+        const found = await userdata.selectUser(user.username);
         switch(user.action){
-            case 'signin':
-                const found = await User.findOne({'email': user.email});
+            case 'login':
                 const match = bcrypt.compareSync(user.password1, found.password);
                 if(match){
-                    data = { email: found.email, admin: found.admin };
-                    const token = jwt.sign(data, process.env.TOKEN, {expiresIn: '8h'});
-                    res.cookie('cobetoken', token, {httpOnly: true});
+                    data = { username: found.username, isAdmin: found.isAdmin };
+                    const token = jwt.sign(data, process.env.TOKEN, {expiresIn: '1h'});
+                    res.cookie('orcestratoken', token, {httpOnly: true});
                 }
                 break;
 
             case 'register':
                 const hash = bcrypt.hashSync(user.password1, saltRounds);
-                await User.create({'email': user.email, 'password': hash, 'admin': false});
-                data = { email: user.email, admin: false };
-                const token = jwt.sign(data, process.env.TOKEN, {expiresIn: '1h'});
-                res.cookie('cobetoken', token, {httpOnly: true});
+                if(!found){
+                    await userdata.addUser({ username: user.username, password: hash });
+                }else if(!found.registered){
+                    await userdata.registerUser({ username: user.username, password: hash });
+                }
+                if(!found || !found.registered){
+                    data = { username: user.username, isAdmin: false };
+                    const token = jwt.sign(data, process.env.TOKEN, {expiresIn: '1h'});
+                    res.cookie('orcestratoken', token, {httpOnly: true});
+                }
                 break;
 
             default:
@@ -79,73 +85,20 @@ const submit = async (req, res) => {
     } 
 }
 
-const signout = async (req, res) => {
+const logout = async (req, res) => {
     const token = jwt.sign({}, 'tempauthenticationstring', {expiresIn: '0'});
-    res.cookie('cobetoken', token, {httpOnly: true}).status(200).send();
+    res.cookie('orcestratoken', token, {httpOnly: true}).status(200).send();
 }
 
 const getSession = async (req, res) => {
     let data = null;
     if(req.decoded){
         data = { 
-            email: req.decoded.email, 
-            admin: req.decoded.admin 
+            username: req.decoded.username, 
+            isAdmin: req.decoded.isAdmin 
         };
     }
     res.send(data);
-}
-
-async function registerUser(req, res){
-    const reqUser = req.body.user
-    // double check if the user is registered (if yes, return, if not proceed)
-    try{
-        const user = await userdata.selectUser(reqUser.username)
-        if(user && user.registered){
-            res.send({status: 0, authenticated: false, username: user.username, message: 'The email is already used.'})
-        }else if(user && !user.registered){ 
-            user.password = bcrypt.hashSync(reqUser.password, saltRounds)
-            await userdata.registerUser(user)
-            const token = jwt.sign({username: user.username}, process.env.KEY, {expiresIn: '1h'})
-            res.cookie('token', token, {httpOnly: true}).send({status: 1, authenticated: true, username: user.username})
-        }else{
-            reqUser.password = bcrypt.hashSync(reqUser.password, saltRounds)
-            await userdata.addUser(reqUser)
-            const token = jwt.sign({username: reqUser.username}, process.env.KEY, {expiresIn: '1h'})
-            res.cookie('token', token, {httpOnly: true}).send({status: 1, authenticated: true, username: reqUser.username})
-        }
-    }catch(error){
-        console.log(error)
-        res.status(500).send({status: 0, authenticated: false, username: reqUser.username, message: 'Please try again.'});
-    }
-}
-
-async function loginUser(req, res){
-    try{
-        const user = await userdata.selectUser(req.body.user.username)
-        if(user){
-            const match =  await bcrypt.compare(req.body.user.password, user.password)
-            if(match){
-                const token = jwt.sign({username: user.username, isAdmin: user.isAdmin}, process.env.KEY, {expiresIn: '1h'});
-                res.cookie('token', token, {httpOnly: true}).send({authenticated: true, username: req.body.user.username, isAdmin: user.isAdmin});
-            }else{
-                res.send({authenticated: false});
-            }
-        }else{
-            res.send({authenticated: false});
-        }   
-    }catch(error){
-        console.log(error)
-        res.status(500).send({authenticated: false});
-    }
-}
-
-function checkToken(req, res){
-    res.status(200).send({authenticated: true, username: req.username, isAdmin: req.isAdmin});
-}
-
-function logoutUser(req, res){
-    const token = jwt.sign({username: req.params.username}, 'orcestraauthenticationtokenstring', {expiresIn: '0'});
-    res.cookie('token', token, {httpOnly: true}).status(200).send();
 }
 
 async function resetPwd(req, res){
@@ -246,14 +199,10 @@ async function removeUserPSet(req, res){
 
 module.exports = {
     getUser,
-    checkUser,
+    find,
     submit,
-    signout,
+    logout,
     getSession,
-    registerUser,
-    loginUser,
-    checkToken,
-    logoutUser,
     resetPwd,
     sendResetPwdEmail,
     resetPwdWithToken,

@@ -26,15 +26,12 @@ router.post('/pset/process', psetRequest.processOfflineRequest);
 router.post('/pset/complete', psetRequest.completeRequest);
 
 // user
-// router.post('/user/submit', user.submit);
-// router.get('/user/signout', user.signout);
-// router.get('/user/session', auth.verifyToken, user.getSession);
+router.get('/user/find', user.find);
+router.post('/user/submit', user.submit);
+router.get('/user/logout', user.logout);
+router.get('/user/session', auth.verifyToken, user.getSession);
 
 router.get('/user', user.getUser);
-router.get('/user/check', user.checkUser);
-router.post('/user/login', user.loginUser);
-router.post('/user/register', user.registerUser);
-router.get('/user/logout/:username', user.logoutUser);
 router.post('/user/reset/email', user.sendResetPwdEmail);
 router.post('/user/reset/token', user.resetPwdWithToken);
 
@@ -42,7 +39,6 @@ router.post('/user/reset/token', user.resetPwdWithToken);
 router.get('/user/pset', auth.verifyToken, user.getUserPSet);
 router.post('/user/pset/add', auth.verifyToken, user.addToUserPset);
 router.post('/user/pset/remove', auth.verifyToken, user.removeUserPSet);
-router.get('/user/checkToken', auth.verifyToken, user.checkToken);
 router.post('/user/reset', auth.verifyToken, user.resetPwd);
 
 //formdata and stats

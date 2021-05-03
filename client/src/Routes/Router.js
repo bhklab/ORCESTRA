@@ -1,11 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { AuthContext } from "../context/auth";
-import { PathContext } from "../context/path";
-import Navigation from '../components/Navigation/Navigation';
-import Footer from '../components/Footer/Footer';
+import { AuthContext, PathContext } from "../hooks/Context";
+import useFindUser from '../hooks/useFindUser';
+
+// routes 
 import PrivateRoute from './PrivateRoute';
 import AdminRoute from './AdminRoute';
+
+// navigation and footer
+import Navigation from '../components/Navigation/Navigation';
+import Footer from '../components/Footer/Footer';
+
+// views
 import Main from '../components/Main/Main';
 import DatasetMain from '../components/Main/DatasetMain';
 import SearchRequest from '../components/SearchRequest/SearchRequest';
@@ -15,41 +21,22 @@ import Stats from '../components/Stats/Stats';
 import Documentation from '../components/Documentation/Documentation';
 import Profile from '../components/Profile/Profile';
 import Admin from '../components/Admin/Admin';
-import Login from '../components/Authentication/Login';
+import Authentication from '../components/Authentication/Authentication';
 import Reset from '../components/Authentication/Reset';
 import CanonicalPSets from '../components/CanonicalPSets/CanonicalPSets';
 import NotFound404 from '../components/Shared/NotFound404';
 
 const Router = () => {
-    const [authToken, setAuthToken] = useState({
-        authenticated: false,
-        isAdmin: false,
-        username: ''
-    });
-
+    /**
+     * Loads user data to AuthContext.
+     * Call find user hook as soon as the app is loaded, and routes are rendered. 
+     * User is null if token is invalid, or not logged in.
+     */
+    const { user, setUser, loading } = useFindUser();
     const [datatype, setDatatype] = useState('');
 
-    const resetAuthToken = () => {
-        setAuthToken({
-            authenticated: false,
-            isAdmin: false,
-            user: ''
-        });
-    }
-
-    useEffect(() => {
-        const check = async () => {
-            const res = await fetch('/api/user/check');
-            const json = await res.json();
-            setAuthToken(json);
-        }
-        if(!authToken.authenticated){
-            check();
-        }
-    }, []);
-
     return(
-        <AuthContext.Provider value={{...authToken, setAuthToken: setAuthToken, resetAuthToken: resetAuthToken}}>
+        <AuthContext.Provider value={{user, setUser, loading}}>
             <PathContext.Provider value={{datatype: datatype, setDatatype: setDatatype}}>
                 <Navigation />
                 <Switch>
@@ -61,7 +48,7 @@ const Router = () => {
                     <Route exact path ='/:datatype/status' component={RequestStatus}/>
                     <Route exact path ='/:datatype/stats' component={Stats}/>
                     <Route exact path ='/documentation/:section' component={Documentation} />
-                    <Route exact path='/app/authentication' component={Login} />
+                    <Route exact path='/app/authentication' component={Authentication} />
                     <Route path ='/reset/:token' component={Reset} />
                     <PrivateRoute path='/app/profile' component={Profile} redirect='/app/authentication' />
                     <AdminRoute path='/admin' component={Admin} redirect='/app/profile' />

@@ -1,20 +1,21 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { NavLink } from 'react-router-dom';
 import {Button} from 'primereact/button';
-import {AuthContext} from '../../context/auth';
-import {PathContext} from '../../context/path';
+
+import { PathContext, AuthContext } from '../../hooks/Context';
+import useAuth from '../../hooks/useAuth';
 import { StyledHeader, NavigationWrapper, BurgerNav, PachydermStatus } from './StyledNavigation';
 import { slide as Menu } from 'react-burger-menu';
 import {withRouter} from 'react-router';
 import {dataTypes} from '../Shared/Enums';
 
 const Navigation = (props) => {
-
-    const auth = useContext(AuthContext);
+    const { location, history } = props;
     const path = useContext(PathContext);
+    const auth = useContext(AuthContext);
+    const { logoutUser } = useAuth();
 
     const [isOnline, setIsOnline] = useState(false);
-    const { location, history } = props
 
     useEffect(() => {
         const checkStatus = async () => {
@@ -33,13 +34,9 @@ const Navigation = (props) => {
         history.push({pathname: '/app/authentication', state:{path: location.pathname}});
     }
 
-    const onLogoutClick = (event) => {
+    const onLogoutClick = async (event) => {
         event.preventDefault();
-        fetch('/api/user/logout/:' + auth.username)
-            .then(res => {
-                auth.resetAuthToken();
-                history.push({pathname: '/app/authentication', state:{path: location.pathname, logoutMsg: 'You have logged out'}});
-            });            
+        await logoutUser();            
     }
 
     const getDatatype = (datatype) => {
@@ -89,23 +86,23 @@ const Navigation = (props) => {
                     }
                     <NavLink exact to={`/documentation/overview`} className='link' activeClassName='active-link'>Documentation</NavLink>
                     { 
-                        auth.authenticated && 
+                        auth.user && 
                         <NavLink exact to="/app/profile" className='link' activeClassName='active-link'>Profile</NavLink>
                     }
                 </div>
                 <div className='right'>
                     <Button 
                         className='button' 
-                        label={auth.authenticated ? 'Logout' : 'Login/Register'} 
-                        onClick={auth.authenticated ? onLogoutClick : onLoginClick}
+                        label={auth.user ? 'Logout' : 'Login/Register'} 
+                        onClick={auth.user ? onLogoutClick : onLoginClick}
                     /> 
                     <PachydermStatus className='status' isOnline={isOnline}>
                         <div className='icon'><i className={`pi ${ isOnline ? 'pi-check' : 'pi-ban'}`}></i></div>
                         <div className='text'>Pachyderm is <br />{isOnline ? 'online' : 'offline'}</div>
                     </PachydermStatus> 
                     {
-                        auth.authenticated ?
-                        <div className='loggedIn'>{`Logged in as: ${auth.username}`}</div> : ''
+                        auth.user ?
+                        <div className='loggedIn'>{`Logged in as: ${auth.user.username}`}</div> : ''
                     }  
                 </div> 
             </NavigationWrapper>
@@ -121,11 +118,11 @@ const Navigation = (props) => {
                             <NavLink exact to={`/${path.datatype}/documentation/overview`} activeClassName='active-link'>Documentation</NavLink>
                         </React.Fragment>
                     }
-                    { auth.authenticated && <NavLink exact to="/app/profile" activeClassName='active-link'>Profile</NavLink>}
+                    { auth.user && <NavLink exact to="/app/profile" activeClassName='active-link'>Profile</NavLink>}
                     <Button 
                         className='button' 
-                        label={auth.authenticated ? 'Logout' : 'Login/Register'} 
-                        onClick={auth.authenticated ? onLogoutClick : onLoginClick}
+                        label={auth.user ? 'Logout' : 'Login/Register'} 
+                        onClick={auth.user ? onLogoutClick : onLoginClick}
                     />
                     <PachydermStatus className='status' isOnline={isOnline}>
                         <div className='icon'><i className={`pi ${ isOnline ? 'pi-check' : 'pi-ban'}`}></i></div>

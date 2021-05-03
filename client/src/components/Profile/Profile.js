@@ -3,7 +3,7 @@ import './Profile.css';
 import UserInfo from './subcomponents/UserInfo';
 import UserPSet from './subcomponents/UserPSet';
 import {Messages} from 'primereact/messages';
-import {AuthContext} from '../../context/auth';
+import { AuthContext } from '../../hooks/Context';
 import * as Helper from '../Shared/Helper';
 
 class Profile extends React.Component{
@@ -25,7 +25,7 @@ class Profile extends React.Component{
     static contextType = AuthContext;
 
     componentDidMount(){
-        fetch('/api/user/pset/?username=' + this.context.username)  
+        fetch('/api/user/pset/?username=' + this.context.user.username)  
             .then(res => res.json())
             .then(resData => {
                 let complete = [];
@@ -51,7 +51,7 @@ class Profile extends React.Component{
         }
         fetch('/api/user/pset/remove', {
             method: 'POST',
-            body: JSON.stringify({username: this.context.username, psetID: psetID}),
+            body: JSON.stringify({username: this.context.user.username, psetID: psetID}),
             headers: {
                 'Content-type': 'application/json'
             }
@@ -76,7 +76,7 @@ class Profile extends React.Component{
         }
         fetch('/api/pset/cancel', {
             method: 'POST',
-            body: JSON.stringify({username: this.context.username, psetID: psetID}),
+            body: JSON.stringify({username: this.context.user.username, psetID: psetID}),
             headers: {
                 'Content-type': 'application/json'
             }
@@ -121,12 +121,15 @@ class Profile extends React.Component{
                     <UserInfo />
                     <div className='userPSetLists'>
                         <Messages ref={(el) => this.messages = el} />
-                        <UserPSet heading='Your Saved PSets' btnLabel='Remove from List' 
+                        <UserPSet 
+                            heading='Your Saved PSets' 
+                            btnLabel='Remove from List' 
                             pset={this.state.psetSaved} 
                             handleBtnClick={this.removeFromSavedList}
                             messages={this.messages}
                         />
-                        <UserPSet heading='Your PSet Requests in Process'
+                        <UserPSet 
+                            heading='Your PSet Requests in Process'
                             pset={this.state.psetInProcess} 
                             pending={true}
                         />

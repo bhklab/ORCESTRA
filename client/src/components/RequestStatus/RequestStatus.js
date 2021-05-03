@@ -4,7 +4,7 @@ import Loader from 'react-loader-spinner';
 import {Messages} from 'primereact/messages';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
-import {AuthContext} from '../../context/auth';
+import { AuthContext } from '../../hooks/Context';
 
 const RequestStatus = () => {
     
@@ -103,7 +103,7 @@ const RequestStatus = () => {
                                 <Column className='textField' field='name' header='Name' style={{width:'5em'}} sortable={true} />
                                 <Column className='textField' field='dateSubmitted' header='Submitted Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
                                 <Column className='textField' field='dateProcessed' header='Process Start Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
-                                { auth.isAdmin && <Column body={buttonTemplate} style={{width:'1.5em'}}/> }
+                                { auth.user.isAdmin && <Column body={buttonTemplate} style={{width:'1.5em'}}/> }
                             </DataTable>
                             :
                             <h3>There are no pending or in-process requests.</h3>

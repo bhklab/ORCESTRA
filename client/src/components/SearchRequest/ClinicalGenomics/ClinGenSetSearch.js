@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {AuthContext} from '../../../context/auth';
+import { AuthContext } from '../../../hooks/Context';
 import SearchReqContext from '../SearchReqContext';
 
 import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
@@ -104,7 +104,8 @@ const ClinGenSetSearch = () => {
                             <ClinGenSetTable 
                                 datasets={datasets} selectedDatasets={selectedDatasets} 
                                 updateDatasetSelection={updateDatasetSelection} scrollHeight='600px'
-                                authenticated={auth.authenticated} download={true}
+                                authenticated={auth.user ? true : false}  
+                                download={true}
                             /> 
                             :
                             <SearchTableLoader />

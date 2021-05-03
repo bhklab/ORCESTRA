@@ -4,12 +4,12 @@ module.exports = {
     selectUser: async function(username){
         const db = await mongo.getDB();
         try{
-            const collection = db.collection('user')
-            const data = await collection.findOne({'username': username})
-            return data
+            const collection = db.collection('user');
+            const data = await collection.findOne({'username': username});
+            return data;
         }catch(err){
-            console.log(err)
-            throw err
+            console.log(err);
+            throw err;
         }
     },
 
@@ -30,13 +30,13 @@ module.exports = {
     registerUser: async function(user){
         const db = await mongo.getDB();
         try{
-            const collection = db.collection('user')
+            const collection = db.collection('user');
             const data = await collection.findOneAndUpdate(
                 {'username': user.username},
                 {'$set': {'password': user.password, 'registered': true}},
                 {'upsert': true}
-            )
-            return data.value
+            );
+            return data.value;
         }catch(err){
             console.log(err)
             throw err

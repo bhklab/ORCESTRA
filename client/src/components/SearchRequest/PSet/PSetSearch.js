@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {AuthContext} from '../../../context/auth';
+import { AuthContext } from '../../../hooks/Context';
 import SearchReqContext from '../SearchReqContext';
 
 import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
@@ -129,7 +129,7 @@ const PSetSearch = () => {
                             <div>
                                 <SearchSummary title='Search or Request Pharmacogenomic Datasets (PSets)' searchAll={searchAll} matchNum={psets.length} />
                                 {
-                                    auth.authenticated ?
+                                    auth.user ?
                                     <SaveDatasetButton selectedPSets={selectedPSets} disabled={disableSaveBtn} onSaveComplete={showMessage} />
                                     :
                                     '*Login or register to save existing PSets to your profile.'
@@ -145,7 +145,8 @@ const PSetSearch = () => {
                             <PSetTable 
                                 psets={psets} selectedPSets={selectedPSets} 
                                 updatePSetSelection={updatePSetSelection} scrollHeight='600px'
-                                authenticated={auth.authenticated} download={true}
+                                authenticated={auth.user ? true : false} 
+                                download={true}
                             /> 
                             :
                             <SearchTableLoader />

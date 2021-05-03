@@ -1,18 +1,24 @@
 import React, {useContext} from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import {AuthContext} from '../context/auth';
+import { AuthContext } from '../hooks/Context';
 
-const AdminRoute = ({component: Component, ...rest}) => {
-    const auth = useContext(AuthContext)
-    console.log(rest)
-    console.log(auth)
+const AdminRoute = ({component: Component, location, ...rest}) => {
+    const {user, loading} = useContext(AuthContext);
+    
+    if(loading){
+        return null;
+    }
+
     return(
-        <Route {...rest} render={(props) => (
-            auth.isAdmin === true
-            ? <Component {...props} />
-            :
-            <Redirect to={{pathname: rest.redirect, state:{from: props.location}}} />
-        )} />
+        <Route 
+            {...rest} 
+            render={(props) => (
+                user && user.isAdmin ?
+                <Component {...props} />
+                :
+                <Redirect to={{pathname: rest.redirect, state:{from: location}}} />
+            )} 
+        />
     ) 
 }
 

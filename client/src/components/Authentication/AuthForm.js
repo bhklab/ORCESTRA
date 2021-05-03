@@ -124,60 +124,59 @@ const AuthForm = (props) => {
             }),
             headers: { 'Content-type': 'application/json' }
         })
-        const data = await res.json()
+        const data = await res.json();
         if(res.ok){
             AuthForm.messages.show({severity: 'success', summary: 'Email has been sent.', detail: 'Please follow the link in the email to reset your password.'});
         }else{
             AuthForm.messages.show({severity: 'error', summary: 'An error occurred', detail: data.message});
         }
     }
-
-    const loginForm = () => {
-        return(
-            <React.Fragment>
-                <h4>Login with your password:</h4>
-                <div className='pwdMsg'>Password needs to be at least 6 characters in length</div>
-                <InputText className='pwdInput' type='password' name='password' value={password} onChange={handleInputChange}/>
-                <div>
-                    <Button label='Login' onClick={onLoginClick} disabled={btnLoginDisabled}/>
-                </div>
-                <div>
-                    <button className='forgotPasswordBtn' onClick={onResetClick}>Reset your password</button>
-                </div>
-            </React.Fragment>
-        );
-    }
-
-    const registerForm = () => {
-        return(
-            <React.Fragment>
-                <h4>{userExists ? 'Email is not registered. ': 'Email not found. '}Please register.</h4>
-                <div>
-                    <div className='pwdMsg'>Password needs to be at least 6 characters in length</div>
-                    <InputText className='pwdInput' type='password' name='passwordReg1' value={passwordReg1} onChange={handleInputChange}/>
-                </div>
-                <div>
-                    <label>Confirm your password:</label>
-                    <InputText className='pwdInput' type='password' name='passwordReg2' value={passwordReg2} onChange={handleInputChange}/>
-                </div>
-                <div>
-                    <Button label='Register' onClick={onRegisterClick} disabled={btnRegDisabled}/>
-                </div>
-            </React.Fragment>
-        );
-    }
-
     
     return(
         <React.Fragment>
-            <h2>Login/Register</h2>
+            <h3>Login / Register</h3>
             <Messages ref={(el) => AuthForm.messages = el}></Messages>
-            <h4>Enter your email:</h4>
+            <h5>Enter your email:</h5>
             <div className='emailInput'>
                 <InputText type='email' name='email' value={email} onChange={handleInputChange}/>
                 <Button className='btnLoginFind' label='Find' icon="pi pi-arrow-right" onClick={onFindClick} disabled={btnFindDisabled}/>
             </div>
-            { userChecked ? <div className='formContainer'>{userRegistered ? loginForm() : registerForm()}</div> : '' }
+            { 
+                userChecked ? 
+                <div className='formContainer'>
+                    {
+                        userRegistered ? 
+                        <React.Fragment>
+                            <h4>Login with your password:</h4>
+                            <div className='pwdMsg'>Password needs to be at least 6 characters in length</div>
+                            <InputText className='pwdInput' type='password' name='password' value={password} onChange={handleInputChange}/>
+                            <div>
+                                <Button label='Login' onClick={onLoginClick} disabled={btnLoginDisabled}/>
+                            </div>
+                            <div>
+                                <button className='forgotPasswordBtn' onClick={onResetClick}>Reset your password</button>
+                            </div>
+                        </React.Fragment> 
+                        : 
+                        <React.Fragment>
+                            <h4>{userExists ? 'Email is not registered. ': 'Email not found. '}Please register.</h4>
+                            <div>
+                                <div className='message'>Password needs to be at least 6 characters in length</div>
+                                <InputText className='pwdInput' type='password' name='passwordReg1' value={passwordReg1} onChange={handleInputChange}/>
+                            </div>
+                            <div>
+                                <label>Confirm your password:</label>
+                                <InputText className='pwdInput' type='password' name='passwordReg2' value={passwordReg2} onChange={handleInputChange}/>
+                            </div>
+                            <div>
+                                <Button label='Register' onClick={onRegisterClick} disabled={btnRegDisabled}/>
+                            </div>
+                        </React.Fragment>
+                    }
+                </div> 
+                : 
+                '' 
+            }
         </React.Fragment>
     );
 }

@@ -4,9 +4,9 @@ import './UserInfo.css'
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
-import {AuthContext} from '../../../context/auth';
+import { AuthContext } from '../../../hooks/Context';
 
-const UserInfo = (props) => {
+const UserInfo = () => {
     const auth = useContext(AuthContext);
     const [show, setShow] = useState(false)
     const [password1, setPassword1] = useState('')
@@ -29,32 +29,32 @@ const UserInfo = (props) => {
 
     const resetPwd = async (event) => {
         event.preventDefault()
-        const res = await fetch('/api/user/reset', {
-            method: 'POST',
-            body: JSON.stringify({
-                user: { username: auth.username, password: password1 }   
-            }),
-            headers: { 'Content-type': 'application/json' }
-        })
-        const data = await res.json();
-        if(data.authenticated){
-            console.log('authenticated');
-            auth.setAuthToken(data);
-            setPassword1('')
-            setPassword2('')
-            setShow(false)
-            UserInfo.messages.show({severity: 'success', summary: 'Password changed'});
-        }else{
-            UserInfo.messages.show({severity: 'error', summary: 'Error occurred', detail: 'Password could not be changed'});
-        }
+        // const res = await fetch('/api/user/reset', {
+        //     method: 'POST',
+        //     body: JSON.stringify({
+        //         user: { username: auth.user.username, password: password1 }   
+        //     }),
+        //     headers: { 'Content-type': 'application/json' }
+        // })
+        // const data = await res.json();
+        // if(data.authenticated){
+        //     console.log('authenticated');
+        //     auth.setAuthToken(data);
+        //     setPassword1('')
+        //     setPassword2('')
+        //     setShow(false)
+        //     UserInfo.messages.show({severity: 'success', summary: 'Password changed'});
+        // }else{
+        //     UserInfo.messages.show({severity: 'error', summary: 'Error occurred', detail: 'Password could not be changed'});
+        // }
     }
 
     return(
         <div className='userInfoContainer'>
             <h2>User Information</h2>
             <Messages ref={(el) => UserInfo.messages = el}></Messages>
-            <div className='userInfo'>Username: {auth.username}</div>
-            { auth.isAdmin && <div className='userInfo'><Link to = '/admin'>Admin Menu</Link></div> }
+            <div className='userInfo'>Username: {auth.user.username}</div>
+            { auth.user.isAdmin && <div className='userInfo'><Link to = '/admin'>Admin Menu</Link></div> }
             {
                 show &&
                 <div>
