@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {Button} from 'primereact/button';
-import {AuthContext} from '../../../context/auth';
+import { AuthContext } from '../../../hooks/Context';
 import * as APICalls from '../APICalls';
 
 const SaveDatasetButton = (props) => {
@@ -9,8 +9,8 @@ const SaveDatasetButton = (props) => {
     
     const saveSelectedDatasets = (event) => {
         event.preventDefault();
-        if(auth.authenticated){
-            APICalls.saveOrUpdateUserPSets(auth.username, selectedDatasets, (status, data) => {onSaveComplete(status, data)});
+        if(auth.user){
+            APICalls.saveOrUpdateUserPSets(auth.user.username, selectedDatasets, (status, data) => {onSaveComplete(status, data)});
         }
     }
 

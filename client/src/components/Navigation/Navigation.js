@@ -101,8 +101,7 @@ const Navigation = (props) => {
                         <div className='text'>Pachyderm is <br />{isOnline ? 'online' : 'offline'}</div>
                     </PachydermStatus> 
                     {
-                        auth.user ?
-                        <div className='loggedIn'>{`Logged in as: ${auth.user.username}`}</div> : ''
+                        auth.user ? <div className='loggedIn'>{`Logged in as: ${auth.user.username}`}</div> : ''
                     }  
                 </div> 
             </NavigationWrapper>

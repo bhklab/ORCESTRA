@@ -5,7 +5,7 @@ import {Button} from 'primereact/button';
 import styled from 'styled-components';
 import {trackPromise} from 'react-promise-tracker';
 import Loader from 'react-loader-spinner';
-import {AuthContext} from '../../context/auth';
+import { AuthContext } from '../../hooks/Context';
 
 const MenuContainer = styled.div`
     display: flex;
@@ -15,7 +15,7 @@ const MenuContainer = styled.div`
     }
 `
 
-const Admin = props => {
+const Admin = () => {
     
     const auth = useContext(AuthContext);
 
@@ -73,7 +73,7 @@ const Admin = props => {
                 <PSetTable 
                     psets={data.psets} selectedPSets={selected} 
                     updatePSetSelection={handleSelectionChange} scrollHeight='600px'
-                    authenticated={auth.authenticated}
+                    authenticated={auth.user ? true : false}
                     download={false}
                 /> 
                 :

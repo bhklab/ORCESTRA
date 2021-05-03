@@ -1,40 +1,12 @@
 import React, { useState } from 'react';
-import {withRouter} from 'react-router';
 import axios from 'axios';
 
-import styled from 'styled-components';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
+import StyledAuthForm from './StyledAuthForm';
 
-import './Login.css';
 import useAuth from '../../hooks/useAuth';
-
-const StyledLoginForm = styled.div`
-    width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color:rgb(255, 255, 255,0.5);
-    border-radius: 10px;
-    padding-top: 10px;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 30px;
-    margin-top: 200px;
-    .message {
-        color: red;
-        font-size: 12px;
-    }
-    .emailInput{
-        display: flex;
-        align-items: center;
-        .p-inputtext {
-            font-size: 12px;
-            margin-right: 10px;
-            width: 80%;
-        }
-    }
-`;
 
 const Authentication = (props) => {
     const { location } = props;
@@ -90,7 +62,7 @@ const Authentication = (props) => {
 
     return(
         <div className='pageContent'>
-            <StyledLoginForm>
+            <StyledAuthForm>
                 <div className='message'>{msg ? msg : ''}</div>
                 <h3>Login / Register</h3>
                 <Messages ref={(el) => Authentication.messages = el}></Messages>
@@ -113,7 +85,7 @@ const Authentication = (props) => {
                     user.action.length > 0 &&
                     <React.Fragment>
                         <h4>{user.action === 'login' ? 'Login with your password:' : 'Please register:'}</h4>
-                        <div className='pwdMsg'>Password needs to be at least 6 characters in length</div>
+                        <div className='message'>Password needs to be at least 6 characters in length</div>
                         <InputText 
                             className='pwdInput' 
                             type='password' 
@@ -147,9 +119,9 @@ const Authentication = (props) => {
                         </div>
                     </React.Fragment> 
                 }
-            </StyledLoginForm>   
+            </StyledAuthForm>   
         </div>
     );
 }
 
-export default withRouter(Authentication);
+export default Authentication;

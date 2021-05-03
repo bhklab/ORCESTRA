@@ -28,6 +28,7 @@ class Profile extends React.Component{
         fetch('/api/user/pset/?username=' + this.context.user.username)  
             .then(res => res.json())
             .then(resData => {
+                console.log(resData);
                 let complete = [];
                 let pending = [];
                 for(let i = 0; i < resData.length; i++){

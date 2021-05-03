@@ -26,8 +26,10 @@ export const NavigationWrapper = styled.div`
 
     .right {
         position: relative;
+        width: 400px;
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         .button {
             margin-right: 10px;
         }
