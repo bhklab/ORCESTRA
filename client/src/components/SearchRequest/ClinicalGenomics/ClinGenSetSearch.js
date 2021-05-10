@@ -102,8 +102,10 @@ const ClinGenSetSearch = () => {
                         {
                             ready ?
                             <ClinGenSetTable 
-                                datasets={datasets} selectedDatasets={selectedDatasets} 
-                                updateDatasetSelection={updateDatasetSelection} scrollHeight='600px'
+                                datasets={datasets} 
+                                selectedDatasets={selectedDatasets} 
+                                updateDatasetSelection={updateDatasetSelection} 
+                                scrollHeight='600px'
                                 authenticated={auth.user ? true : false}  
                                 download={true}
                             /> 

@@ -9,19 +9,16 @@ import { AuthContext } from '../../../hooks/Context';
 const StyledUserInfo = styled.div`
     background-color: rgba(255, 255, 255, 0.8);
     font-size: 12px;
-    width: 25%;
-    max-width: 300px;
-    height: 100%;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 20px;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 1px 20px 20px 20px;
     border-radius: 10px;
     .userInfo{
         margin-bottom: 20px;
         font-size: 14px;
     }
     .userInfoBtn{
-        margin-top: 40px;
+        margin-top: 20px;
     }
     .userInfoBtn .pwdReset {
         margin-right: 5px;

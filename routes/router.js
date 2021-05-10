@@ -8,6 +8,7 @@ const router = express.Router();
 const dataset = require('./api/dataset');
 const psetRequest = require('./api/pset-request');
 const user = require('./api/user');
+const userDataset = require('./api/user-dataset');
 const auth = require('./api/auth');
 const formMetric = require('./api/form-metric');
 const pachyderm = require('./api/pachyderm');
@@ -34,12 +35,12 @@ router.get('/user/session', auth.verifyToken, user.getSession);
 router.get('/user', user.getUser);
 router.post('/user/reset/email', user.sendResetPwdEmail);
 router.post('/user/reset/token', user.resetPwdWithToken);
-
-// private routes
-router.get('/user/pset', auth.verifyToken, user.getUserPSet);
-router.post('/user/pset/add', auth.verifyToken, user.addToUserPset);
-router.post('/user/pset/remove', auth.verifyToken, user.removeUserPSet);
 router.post('/user/reset', auth.verifyToken, user.resetPwd);
+
+// user-dataset routes
+router.get('/user/pset', auth.verifyToken, userDataset.getUserPSet);
+router.post('/user/pset/add', auth.verifyToken, userDataset.addToUserPset);
+router.post('/user/pset/remove', auth.verifyToken, userDataset.removeUserPSet);
 
 //formdata and stats
 router.get('/:datasetType/formdata', formMetric.getFormData);

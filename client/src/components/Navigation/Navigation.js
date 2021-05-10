@@ -52,7 +52,7 @@ const Navigation = (props) => {
             case dataTypes.radiogenomics:
                 return 'Radiogenomics';
             default:
-                return 'Pharmacogenomics';
+                return '';
         }
     }
 
@@ -86,7 +86,7 @@ const Navigation = (props) => {
                     }
                     <NavLink exact to={`/documentation/overview`} className='link' activeClassName='active-link'>Documentation</NavLink>
                     { 
-                        auth.user && 
+                        path.datatype === dataTypes.pharmacogenomics && auth.user && 
                         <NavLink exact to="/app/profile" className='link' activeClassName='active-link'>Profile</NavLink>
                     }
                 </div>

@@ -6,7 +6,6 @@
  */
 const userdata = require('../../db/helper/userdata');
 const userPSet = require('../../db/helper/user-pset');
-const User = require('../../db/models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mailer = require('../../mailer/mailer');
@@ -101,7 +100,7 @@ const getSession = async (req, res) => {
     res.send(data);
 }
 
-async function resetPwd(req, res){
+const resetPwd = async (req, res) => {
     const user = req.body.user
     try{
         const hashed = await bcrypt.hash(user.password, saltRounds)
@@ -114,7 +113,7 @@ async function resetPwd(req, res){
     }
 }
 
-async function sendResetPwdEmail(req, res){
+const sendResetPwdEmail = async (req, res) => {
     const email = req.body.email
     try{
         // check if the user is registered
@@ -139,7 +138,7 @@ async function sendResetPwdEmail(req, res){
     
 }
 
-async function resetPwdWithToken(req, res){
+const resetPwdWithToken = async (req, res) => {
     const token = req.body.user.token
     try{
         const user = await userdata.selectUser(req.body.user.username)
@@ -166,37 +165,6 @@ async function resetPwdWithToken(req, res){
     }
 }
 
-async function getUserPSet(req, res){
-    try{
-        const result = await userPSet.selectUserPSets(req.query.username);
-        res.send(result);
-    }catch(error){
-        console.log(error);
-        res.status(500).send(error);
-    }
-}
-
-async function addToUserPset(req, res){
-    const pset = req.body.reqData;
-    try{
-        await userPSet.addToUserPset(pset);
-        res.send({summary: 'PSets Saved', message: 'The selected PSets have been saved.'});
-    }catch(error){
-        console.log(error);
-        res.status(500).send(error);
-    }
-}
-
-async function removeUserPSet(req, res){
-    try{
-        await userPSet.removeUserPSets(req.body.username, req.body.psetID);
-        res.send({summary: 'Updated Saved PSets', message: 'The selected PSet(s) have been removed from the saved list.'});
-    }catch(error){
-        console.log(error);
-        res.status(500).send(error);
-    }
-}
-
 module.exports = {
     getUser,
     find,
@@ -205,8 +173,5 @@ module.exports = {
     getSession,
     resetPwd,
     sendResetPwdEmail,
-    resetPwdWithToken,
-    getUserPSet,
-    addToUserPset,
-    removeUserPSet
+    resetPwdWithToken
 }

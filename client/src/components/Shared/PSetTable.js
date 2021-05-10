@@ -5,6 +5,16 @@ import { Link } from 'react-router-dom';
 import {dataTypes} from '../Shared/Enums';
 
 const PSetTable = (props) => {
+
+    const { 
+        psets, 
+        selectedPSets, 
+        updatePSetSelection, 
+        scrollHeight, 
+        download, 
+        authenticated, 
+        showPrivate
+    } = props;
     
     const [state, setState] = useState({
         rows: 10,
@@ -13,7 +23,7 @@ const PSetTable = (props) => {
         end: 10,
         totalRecords: 0,
         loading: true
-    })
+    });
 
     useEffect(()=>{
         setState({...state, loading: false})
@@ -63,19 +73,30 @@ const PSetTable = (props) => {
         <div>{rowData[column.field] ? 'Yes' : ''}</div>
     );
 
+    const privateTemplate = (rowData, column) => (
+        <div>{rowData[column.field] ? 'Yes' : ''}</div>
+    );
+
     const updatePSetSelectionEvent = event => {
-        props.updatePSetSelection(event.value);
+        updatePSetSelection(event.value);
     };
 
     return(
         <DataTable 
-            value={props.psets} 
-            selection={props.selectedPSets} onSelectionChange={updatePSetSelectionEvent} 
-            paginator={true} rows={state.rows} 
-            resizableColumns={true} columnResizeMode="fit"
-            scrollable={true} scrollHeight={props.scrollHeight }
+            value={psets} 
+            selection={selectedPSets} 
+            onSelectionChange={updatePSetSelectionEvent} 
+            paginator={true} 
+            rows={state.rows} 
+            resizableColumns={true} 
+            columnResizeMode="fit"
+            scrollable={true} 
+            scrollHeight={scrollHeight}
         >
-            {props.authenticated && <Column selectionMode="multiple" style={{width: '30px', textAlign: 'center'}} />}
+            {
+                authenticated && 
+                <Column selectionMode="multiple" style={{width: '40px', textAlign: 'center'}} />
+            }
             <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplate} sortable={true} />
             <Column className='textField' field='dataset.name' header='Dataset' style={{width:'100px'}} sortable={true} />
             <Column className='textField' field='dataset.versionInfo' header='Drug Sensitivity' style={{width:'120px'}} sortable={true} />
@@ -84,7 +105,14 @@ const PSetTable = (props) => {
             <Column field='rnaRef' body={toolsRefTemplate} style={{width:'120px'}} header='RNA Ref' sortable={true} />
             <Column field='dataType' body={dataTypeTemplate} style={{width:'125px'}} header='Molecular Data' />
             <Column field='canonical' body={canonicalTemplate} style={{width:'90px', textAlign: 'center'}} header='Canonical' />
-            {props.download && <Column field='downloadLink' body={downloadTemplate} style={{width:'90px', textAlign: 'center'}} header='Download' /> }
+            {
+                download && 
+                <Column field='downloadLink' body={downloadTemplate} style={{width:'90px', textAlign: 'center'}} header='Download' /> 
+            }
+            {
+                showPrivate && 
+                <Column field='private' body={privateTemplate} style={{width:'60px', textAlign: 'center'}} header='Private' /> 
+            }
         </DataTable>
     );
 
