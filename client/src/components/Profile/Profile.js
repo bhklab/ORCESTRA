@@ -1,144 +1,88 @@
-import React from 'react';
-import './Profile.css';
-import UserInfo from './subcomponents/UserInfo';
-import UserPSet from './subcomponents/UserPSet';
+import React, {useState, useEffect, useContext} from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+
 import {Messages} from 'primereact/messages';
 import { AuthContext } from '../../hooks/Context';
 import * as Helper from '../Shared/Helper';
+import UserInfo from './subcomponents/UserInfo';
+import UserPSet from './subcomponents/UserPSet';
 
-class Profile extends React.Component{
+const StyledProfile = styled.div`
+    display: flex;
+    .main {
+        margin-left: 20px;
+    }
+`;
 
-    constructor(){
-        super();
-        this.state = {
-            username: '',
-            userEmail: '',
-            psetSaved: [],
-            psetInProcess: []
+const Profile = () =>{
+    const auth = useContext(AuthContext);
+    const [savedPSets, setSavedPSets] = useState([]);
+    const [inProcessPSets, setInProcessPSets] = useState([]);
+
+    useEffect(() => {
+        const initialize = async () => {
+            const res = await axios.get(`/api/user/pset/?username=${auth.user.username}`);
+            console.log(res.data);
+            let complete = res.data.filter(itme => itme.status === 'complete');
+            let pending = res.data.filter(itme => itme.status !== 'complete');
+            setSavedPSets(complete);
+            setInProcessPSets(pending);
         }
-        this.removeFromSavedList = this.removeFromSavedList.bind(this);
-        this.cancelPSetRequest = this.cancelPSetRequest.bind(this);
-        this.findPSetByID = this.findPSetByID.bind(this);
-        this.removePSetByID = this.removePSetByID.bind(this);
-    }
+        initialize();
+    }, []);
 
-    static contextType = AuthContext;
-
-    componentDidMount(){
-        fetch('/api/user/pset/?username=' + this.context.user.username)  
-            .then(res => res.json())
-            .then(resData => {
-                console.log(resData);
-                let complete = [];
-                let pending = [];
-                for(let i = 0; i < resData.length; i++){
-                    if(resData[i].status === 'complete'){
-                        complete.push(resData[i]);
-                    }else{
-                        pending.push(resData[i]);
-                    }
-                }
-                this.setState({
-                    psetSaved: complete,
-                    psetInProcess: pending
-                });
-            });
-    }
-
-    removeFromSavedList = (selectedPSet, callback) => {
-        var psetID = []
-        for(let i = 0; i < selectedPSet.length; i++){
-            psetID.push(selectedPSet[i]._id);
+    const removeFromSavedList = async (selectedPSets, callback) => {
+        let psetID = selectedPSets.map(item => (item._id));
+        try{
+            await axios.post('/api/user/pset/remove', {username: auth.user.username, psetID: psetID});
+            let updated = savedPSets.filter(item => !psetID.includes(item._id));
+            setSavedPSets(updated);
+            callback(0);
+        }catch(err){
+            console.log(err);
+            Helper.messageAfterRequest(0, err, null, Profile.messages);
+            callback(1);
         }
-        fetch('/api/user/pset/remove', {
-            method: 'POST',
-            body: JSON.stringify({username: this.context.user.username, psetID: psetID}),
-            headers: {
-                'Content-type': 'application/json'
-            }
-        })
-            .then(res => res.json())
-            .then(resData => {
-                Helper.messageAfterRequest(1, resData, null, this.messages);
-                var saved = this.state.psetSaved;
-                saved = this.removePSetByID(saved, psetID);
-                this.setState({psetSaved: saved}, callback(0));
-            })
-            .catch(err => {
-                Helper.messageAfterRequest(0, err, null, this.messages);
-                callback(1);
-            });
     }
 
-    cancelPSetRequest = (selectedPSet, callback) => {
-        var psetID = []
-        for(let i = 0; i < selectedPSet.length; i++){
-            psetID.push(selectedPSet[i]._id);
-        }
-        fetch('/api/pset/cancel', {
-            method: 'POST',
-            body: JSON.stringify({username: this.context.user.username, psetID: psetID}),
-            headers: {
-                'Content-type': 'application/json'
-            }
-        })
-            .then(res => res.json())
-            .then(resData => {
-                Helper.messageAfterRequest(1, resData, null, this.messages);
-                var inProcess = this.state.psetInProcess;
-                inProcess = this.removePSetByID(inProcess, psetID);
-                this.setState({psetInProcess: inProcess}, callback(0));
-            })
-            .catch(err => {
-                Helper.messageAfterRequest(0, err, null, this.messages);
-                callback(1);
-            });
-    }
+    // const cancelPSetRequest = async (selectedPSet, callback) => {
+    //     let psetID = selectedPSet.map(item => (item._id));
+    //     try{
+    //         const res = await axios.post('/api/pset/cancel', {username: auth.user.username, psetID: psetID});
+    //         Helper.messageAfterRequest(1, res.data, null, Profile.messages);
+    //         let inProcess = psetInProcess;
+    //         inProcess = removePSetByID(inProcess, psetID);
+    //         this.setState({psetInProcess: inProcess}, callback(0));
+    //     }catch(err){
+    //         console.log(err);
+    //         Helper.messageAfterRequest(0, err, null, Profile.messages);
+    //         callback(1);
+    //     }
+    // }
 
-    findPSetByID(psetArray, id){
-        for(let i = 0; i < psetArray.length; i++){
-            if(psetArray[i]._id === id){
-                return(i)
-            }
-        }
-        return(-1);
-    }
-
-    removePSetByID(psets, selected){
-        for(let i = 0; i < selected.length; i++){
-            let index = this.findPSetByID(psets, selected[i]);
-            if(index > -1){
-                psets.splice(index, 1);
-            }
-        }
-        return(psets);
-    }
-
-    render(){   
-        return(
-            <div className='pageContent'>
-                <h2>Your Profile</h2>
-                <div className='userProfile'>
-                    <UserInfo />
-                    <div className='userPSetLists'>
-                        <Messages ref={(el) => this.messages = el} />
-                        <UserPSet 
-                            heading='Your Saved PSets' 
-                            btnLabel='Remove from List' 
-                            pset={this.state.psetSaved} 
-                            handleBtnClick={this.removeFromSavedList}
-                            messages={this.messages}
-                        />
-                        <UserPSet 
-                            heading='Your PSet Requests in Process'
-                            pset={this.state.psetInProcess} 
-                            pending={true}
-                        />
-                    </div>
+    return(
+        <div className='pageContent'>
+            <StyledProfile>
+                <UserInfo />
+                <div className='main'>
+                    <Messages ref={(el) => Profile.messages = el} />
+                    <UserPSet 
+                        heading='Your Saved PSets' 
+                        btnLabel='Remove from List' 
+                        pset={savedPSets} 
+                        handleBtnClick={removeFromSavedList}
+                        messages={Profile.messages}
+                    />
+                    <UserPSet 
+                        heading='Your PSet Requests in Process'
+                        pset={inProcessPSets} 
+                        pending={true}
+                    />
                 </div>
-            </div>
-        );
-    }
+            </StyledProfile>
+        </div>
+    );
 }
 
 export default Profile;

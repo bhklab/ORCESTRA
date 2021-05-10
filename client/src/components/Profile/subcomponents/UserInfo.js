@@ -1,10 +1,32 @@
 import React, {useState, useContext, useEffect} from 'react';
 import { Link } from "react-router-dom";
-import './UserInfo.css'
+import styled from 'styled-components';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
 import { AuthContext } from '../../../hooks/Context';
+
+const StyledUserInfo = styled.div`
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    width: 25%;
+    max-width: 300px;
+    height: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    border-radius: 10px;
+    .userInfo{
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+    .userInfoBtn{
+        margin-top: 40px;
+    }
+    .userInfoBtn .pwdReset {
+        margin-right: 5px;
+    }
+`;
 
 const UserInfo = () => {
     const auth = useContext(AuthContext);
@@ -50,8 +72,8 @@ const UserInfo = () => {
     }
 
     return(
-        <div className='userInfoContainer'>
-            <h2>User Information</h2>
+        <StyledUserInfo>
+            <h2>Profile</h2>
             <Messages ref={(el) => UserInfo.messages = el}></Messages>
             <div className='userInfo'>Username: {auth.user.username}</div>
             { auth.user.isAdmin && <div className='userInfo'><Link to = '/admin'>Admin Menu</Link></div> }
@@ -80,7 +102,7 @@ const UserInfo = () => {
                 }
                 
             </div>
-        </div>
+        </StyledUserInfo>
     );
 }
 

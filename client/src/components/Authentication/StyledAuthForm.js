@@ -11,10 +11,16 @@ const StyledLoginForm = styled.div`
     padding-right: 30px;
     padding-bottom: 30px;
     margin-top: 200px;
+
+    label {
+        font-size: 12px;
+    }
+
     .message {
         color: red;
         font-size: 12px;
     }
+
     .emailInput{
         display: flex;
         align-items: center;
@@ -27,10 +33,12 @@ const StyledLoginForm = styled.div`
             padding: 0.3em 0.5em 0.3em 2.0em;
         }
     }
+
     .pwdInput{
         width: 80%;
         margin-bottom: 20px;
     }
+
     .forgotPasswordBtn{
         background: none;
         outline: none;

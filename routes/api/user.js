@@ -55,7 +55,7 @@ const submit = async (req, res) => {
                 const match = bcrypt.compareSync(user.password1, found.password);
                 if(match){
                     data = { username: found.username, isAdmin: found.isAdmin };
-                    const token = jwt.sign(data, process.env.TOKEN, {expiresIn: '1h'});
+                    const token = jwt.sign(data, process.env.TOKEN, {expiresIn: '8h'});
                     res.cookie('orcestratoken', token, {httpOnly: true});
                 }
                 break;

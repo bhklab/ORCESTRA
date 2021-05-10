@@ -4,13 +4,20 @@ import axios from 'axios';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
+import CustomMessages from '../Shared/CustomMessages';
 import StyledAuthForm from './StyledAuthForm';
 
 import useAuth from '../../hooks/useAuth';
 
+const errorMessage = { 
+    severity: 'error', 
+    summary: 'Login Failed', 
+    detail: 'Please try again with correct credentials.', 
+    sticky: true 
+};
+
 const Authentication = (props) => {
     const { location } = props;
-    const msg = location.state ? location.state.logoutMsg : undefined;
     const { submitUser, error } = useAuth();
 
     const [user, setUser] = useState({
@@ -63,9 +70,9 @@ const Authentication = (props) => {
     return(
         <div className='pageContent'>
             <StyledAuthForm>
-                <div className='message'>{msg ? msg : ''}</div>
                 <h3>Login / Register</h3>
                 <Messages ref={(el) => Authentication.messages = el}></Messages>
+                <CustomMessages trigger={error} message={errorMessage} />
                 <h5>Enter your email:</h5>
                 <div className='emailInput'>
                     <InputText 
@@ -84,7 +91,7 @@ const Authentication = (props) => {
                 {
                     user.action.length > 0 &&
                     <React.Fragment>
-                        <h4>{user.action === 'login' ? 'Login with your password:' : 'Please register:'}</h4>
+                        <h4>{user.action === 'login' ? '' : 'Please register:'}</h4>
                         <div className='message'>Password needs to be at least 6 characters in length</div>
                         <InputText 
                             className='pwdInput' 
