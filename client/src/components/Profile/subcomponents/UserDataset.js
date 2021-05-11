@@ -100,7 +100,7 @@ const UserDataset = (props) => {
         <div>{rowData[column.field] ? 'Yes' : ''}</div>
     );
     const privateTemplate = (rowData, column) => (
-        <div>{rowData[column.field] ? 'Yes' : ''}</div>
+        <div>{rowData[column.field] ? 'Yes' : 'No'}</div>
     );
 
     return(
