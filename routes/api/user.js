@@ -42,7 +42,7 @@ const find = async (req, res) => {
         res.status(500).send({});
     }
 }
-
+ // submit user
 const submit = async (req, res) => {
     const user = req.body;
     let data = null;
