@@ -65,7 +65,8 @@ const RadioSetTable = (props) => {
     return(
         <DataTable 
             value={props.datasets} 
-            selection={props.selectedDatasets} onSelectionChange={event => {props.updateDataSelection(event.value)}} 
+            selection={props.selectedDatasets} 
+            onSelectionChange={props.updateDatasetSelection} 
             paginator={props.datasets.length > 10} rows={state.rows} 
             resizableColumns={true} columnResizeMode="fit"
             scrollable={true} scrollHeight={props.scrollHeight }

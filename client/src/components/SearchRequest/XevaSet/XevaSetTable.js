@@ -65,7 +65,8 @@ const XevaSetTable = (props) => {
     return(
         <DataTable 
             value={props.xevasets} 
-            selection={props.selectedTSets} onSelectionChange={event => {props.updateXevaSetSelection(event.value)}} 
+            selection={props.selectedDatasets} 
+            onSelectionChange={props.updateDatasetSelection} 
             paginator={props.xevasets.length > 10} rows={state.rows} 
             resizableColumns={true} columnResizeMode="fit"
             scrollable={true} scrollHeight={props.scrollHeight }

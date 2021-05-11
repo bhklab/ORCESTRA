@@ -5,7 +5,6 @@
  * password reset
  */
 const userdata = require('../../db/helper/userdata');
-const userPSet = require('../../db/helper/user-pset');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mailer = require('../../mailer/mailer');

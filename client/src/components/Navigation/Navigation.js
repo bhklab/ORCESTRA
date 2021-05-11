@@ -67,7 +67,7 @@ const Navigation = (props) => {
                     </div>
                     <NavLink exact to={`/`} className='link' activeClassName='active-link'>Home</NavLink>
                     {
-                        path.datatype.length > 0 &&
+                        path.datatype.length > 0 && 
                         <React.Fragment>
                             <NavLink exact to={`/${path.datatype}`} className='link' activeClassName='active-link'>{getDatatype(path.datatype)}</NavLink>
                             {
@@ -85,12 +85,12 @@ const Navigation = (props) => {
                         </React.Fragment>
                     }
                     <NavLink exact to={`/documentation/overview`} className='link' activeClassName='active-link'>Documentation</NavLink>
-                    { 
-                        path.datatype === dataTypes.pharmacogenomics && auth.user && 
-                        <NavLink exact to="/app/profile" className='link' activeClassName='active-link'>Profile</NavLink>
-                    }
                 </div>
                 <div className='right'>
+                    { 
+                        auth.user && 
+                        <NavLink exact to="/app/profile" className='link' activeClassName='active-link'>Profile</NavLink>
+                    }
                     <Button 
                         className='button' 
                         label={auth.user ? 'Logout' : 'Login/Register'} 

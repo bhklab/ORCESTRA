@@ -1,13 +1,15 @@
 import React, {useState, useEffect, useContext} from 'react';
+import {Messages} from 'primereact/messages';
 import { AuthContext } from '../../../hooks/Context';
 import SearchReqContext from '../SearchReqContext';
+import {dataTypes} from '../../Shared/Enums';
+import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 
 import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
 import SearchTableLoader from '../SearchTableLoader';
 import SearchSummary from '../SearchSummary';
 import ToxicoSetFilter from './ToxicoSetFilter';
 import ToxicoSetTable from './ToxicoSetTable';
-import {dataTypes} from '../../Shared/Enums';
 
 async function fetchData(url, parameters) {
     const response = await fetch(url, {
@@ -26,7 +28,6 @@ const ToxicoSetSearch = () => {
     const [toxicoSets, setToxicoSets] = useState([]);
     const [searchAll, setSearchAll] = useState(true);
     const [selectedTSets, setSelectedTSets] = useState([]);
-    // const [disableSaveBtn, setDisableSaveBtn] = useState(true);
     const [isRequest, setIsRequest] = useState(false);
     
     const [parameters, setParameters] = useState({
@@ -49,10 +50,6 @@ const ToxicoSetSearch = () => {
         initializeView();
     }, []);
 
-    // useEffect(() => {
-    //     setDisableSaveBtn(Helper.isSelected(selectedPSets) ? false : true)
-    // }, [selectedPSets]);
-
     useEffect(() => {   
         async function search() {
             console.log('search');
@@ -73,14 +70,11 @@ const ToxicoSetSearch = () => {
         }
     }, [parameters]);
 
-    const updateTSetSelection = (selected) => {
-        setSelectedTSets(selected);
+    const showMessage = (status, data) => {
+        let severity = status ? 'success' : 'error';
+        ToxicoSetSearch.messages.show({severity: severity, summary: data.summary, detail: data.message, sticky: true});
+        setSelectedTSets([]);
     }
-
-    // const initializeState = () => {
-    //     setSelectedPSets([]);
-    //     setDisableSaveBtn(true);
-    // }
         
     return(
         <SearchReqContext.Provider 
@@ -96,15 +90,33 @@ const ToxicoSetSearch = () => {
                 <SearchReqWrapper>
                     <ToxicoSetFilter />
                     <MainPanel>
-                        {/* <Messages ref={(el) => PSetSearch.messages = el} /> */}
+                        <Messages ref={(el) => ToxicoSetSearch.messages = el} />
                         <SearchReqPanel>
-                            <SearchSummary title='Explore multimodal Toxicogenomic Datasets (ToxicoSets)' searchAll={searchAll} matchNum={toxicoSets.length} />  
+                            <div>
+                                <SearchSummary 
+                                    title='Explore multimodal Toxicogenomic Datasets (ToxicoSets)' 
+                                    searchAll={searchAll} 
+                                    matchNum={toxicoSets.length} 
+                                />  
+                                {
+                                    auth.user ?
+                                    <SaveDatasetButton 
+                                        selectedDatasets={selectedTSets} 
+                                        disabled={selectedTSets.length > 0 ? false : true} 
+                                        onSaveComplete={showMessage} 
+                                    />
+                                    :
+                                    '*Login or register to save existing ToxicoSets to your profile.'
+                                }
+                            </div>
                         </SearchReqPanel>
                         {
                             ready ?
                             <ToxicoSetTable 
-                                tsets={toxicoSets} selectedTSets={selectedTSets} 
-                                updateTSetSelection={updateTSetSelection} scrollHeight='600px'
+                                tsets={toxicoSets} 
+                                selectedDatasets={selectedTSets} 
+                                updateDatasetSelection={(e) => {setSelectedTSets(e.value)}} 
+                                scrollHeight='600px'
                                 authenticated={auth.user ? true : false} 
                                 download={true}
                             /> 

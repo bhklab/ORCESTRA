@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { AuthContext } from '../../hooks/Context';
 import UserInfo from './subcomponents/UserInfo';
-import UserPSet from './subcomponents/UserPSet';
+import UserDataset from './subcomponents/UserDataset';
 
 const StyledProfile = styled.div`
     width: 100%;
@@ -12,27 +12,27 @@ const StyledProfile = styled.div`
 
 const Profile = () =>{
     const auth = useContext(AuthContext);
-    const [savedPSets, setSavedPSets] = useState([]);
-    const [inProcessPSets, setInProcessPSets] = useState([]);
+    const [savedDatasets, setSavedDatasets] = useState([]);
+    const [inProcessDatasets, setInProcessDatasets] = useState([]);
 
     useEffect(() => {
         const initialize = async () => {
-            const res = await axios.get(`/api/user/pset/?username=${auth.user.username}`);
+            const res = await axios.get(`/api/user/dataset/list?username=${auth.user.username}`);
             console.log(res.data);
             let complete = res.data.filter(itme => itme.status === 'complete');
             let pending = res.data.filter(itme => itme.status !== 'complete');
-            setSavedPSets(complete);
-            setInProcessPSets(pending);
+            setSavedDatasets(complete);
+            setInProcessDatasets(pending);
         }
         initialize();
     }, []);
 
-    const removeFromSavedList = async (selectedPSets) => {
-        let psetID = selectedPSets.map(item => (item._id));
+    const removeFromSavedList = async (selectedDatasets) => {
+        let datasetId = selectedDatasets.map(item => (item._id));
         try{
-            await axios.post('/api/user/pset/remove', {username: auth.user.username, psetID: psetID});
-            let updated = savedPSets.filter(item => !psetID.includes(item._id));
-            setSavedPSets(updated);
+            await axios.post('/api/user/dataset/remove', {username: auth.user.username, datasetId: datasetId});
+            let updated = savedDatasets.filter(item => !datasetId.includes(item._id));
+            setSavedDatasets(updated);
         }catch(err){
             console.log(err);
         }
@@ -42,15 +42,15 @@ const Profile = () =>{
         <div className='pageContent'>
             <StyledProfile>
                 <UserInfo />
-                <UserPSet 
-                    heading='Saved PSets' 
+                <UserDataset 
+                    heading='Saved Datasets' 
                     btnLabel='Remove from List' 
-                    pset={savedPSets} 
+                    datasets={savedDatasets} 
                     handleBtnClick={removeFromSavedList}
                 />
-                <UserPSet 
-                    heading='PSet Requests in Process'
-                    pset={inProcessPSets} 
+                <UserDataset 
+                    heading='Dataset Requests in Process'
+                    datasets={inProcessDatasets} 
                     pending={true}
                 />
             </StyledProfile>

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import { Link } from 'react-router-dom';
-import {dataTypes} from '../Shared/Enums';
+import {dataTypes} from '../../Shared/Enums';
 
 const PSetTable = (props) => {
 
@@ -13,7 +13,6 @@ const PSetTable = (props) => {
         scrollHeight, 
         download, 
         authenticated, 
-        showPrivate
     } = props;
     
     const [state, setState] = useState({
@@ -73,19 +72,11 @@ const PSetTable = (props) => {
         <div>{rowData[column.field] ? 'Yes' : ''}</div>
     );
 
-    const privateTemplate = (rowData, column) => (
-        <div>{rowData[column.field] ? 'Yes' : ''}</div>
-    );
-
-    const updatePSetSelectionEvent = event => {
-        updatePSetSelection(event.value);
-    };
-
     return(
         <DataTable 
             value={psets} 
             selection={selectedPSets} 
-            onSelectionChange={updatePSetSelectionEvent} 
+            onSelectionChange={updatePSetSelection} 
             paginator={true} 
             rows={state.rows} 
             resizableColumns={true} 
@@ -108,10 +99,6 @@ const PSetTable = (props) => {
             {
                 download && 
                 <Column field='downloadLink' body={downloadTemplate} style={{width:'90px', textAlign: 'center'}} header='Download' /> 
-            }
-            {
-                showPrivate && 
-                <Column field='private' body={privateTemplate} style={{width:'60px', textAlign: 'center'}} header='Private' /> 
             }
         </DataTable>
     );

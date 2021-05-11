@@ -4,7 +4,7 @@ import SearchReqContext from '../SearchReqContext';
 import {Filter} from '../SearchReqStyle';
 import FilterInputSwitch from '../../Shared/FilterInputSwitch';
 import FilterDropdown from '../../Shared/FilterDropdown';
-import PSetCheckbox from '../../Shared/PSetCheckbox';
+import CustomCheckbox from '../../Shared/CustomCheckbox';
 import {dataTypes} from '../../Shared/Enums';
 
 const PSetFilter = () => {
@@ -220,7 +220,7 @@ const PSetFilter = () => {
                 />
                 {
                     !context.isRequest &&
-                    <PSetCheckbox 
+                    <CustomCheckbox 
                         label='Canonical PSets only: '
                         onChange={(e) => {
                             setCheckBoxes({...checkBoxes, canonicalOnly: e.checked});
@@ -303,7 +303,7 @@ const PSetFilter = () => {
                 {
                     context.isRequest ?
                     !drugSensSelect.disabled &&
-                    <PSetCheckbox 
+                    <CustomCheckbox 
                         label='Standardize drug dose range and filter noisy sensitivity curves?'
                         onChange={(e) => {
                             setCheckBoxes({...checkBoxes, filteredSensitivity: e.checked});
@@ -312,7 +312,7 @@ const PSetFilter = () => {
                         checked={checkBoxes.filteredSensitivity} 
                     />
                     :
-                    <PSetCheckbox 
+                    <CustomCheckbox 
                         label='Filtered sensitivity data only: '
                         onChange={(e) => {
                             setCheckBoxes({...checkBoxes, filteredSensitivity: e.checked});

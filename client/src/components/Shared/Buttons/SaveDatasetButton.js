@@ -10,13 +10,13 @@ const SaveDatasetButton = (props) => {
     const saveSelectedDatasets = async (event) => {
         event.preventDefault();
         if(auth.user && selectedDatasets.length){
-            let userPSet = { 
+            let userDataset = { 
                 username: auth.user.username,
-                psetId: selectedDatasets.map(item => (item._id))
+                datasetId: selectedDatasets.map(item => (item._id))
             };
             let res = null;
             try{
-                res = await axios.post('/api/user/pset/add', userPSet);
+                res = await axios.post('/api/user/dataset/add', userDataset);
                 onSaveComplete(1, res.data);
             }catch(err){
                 console.log(err);

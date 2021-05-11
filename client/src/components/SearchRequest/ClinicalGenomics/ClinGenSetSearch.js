@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react';
+import {Messages} from 'primereact/messages';
 import { AuthContext } from '../../../hooks/Context';
 import SearchReqContext from '../SearchReqContext';
+import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 
 import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
 import SearchTableLoader from '../SearchTableLoader';
@@ -26,7 +28,6 @@ const ClinGenSetSearch = () => {
     const [datasets, setDatasets] = useState([]);
     const [searchAll, setSearchAll] = useState(true);
     const [selectedDatasets, setSelectedDatasets] = useState([]);
-    // const [disableSaveBtn, setDisableSaveBtn] = useState(true);
     const [isRequest, setIsRequest] = useState(false);
     
     const [parameters, setParameters] = useState({
@@ -49,10 +50,6 @@ const ClinGenSetSearch = () => {
         initializeView();
     }, []);
 
-    // useEffect(() => {
-    //     setDisableSaveBtn(Helper.isSelected(selectedPSets) ? false : true)
-    // }, [selectedPSets]);
-
     useEffect(() => {   
         async function search() {
             console.log('search');
@@ -73,14 +70,11 @@ const ClinGenSetSearch = () => {
         }
     }, [parameters]);
 
-    const updateDatasetSelection = (selected) => {
-        setSelectedDatasets(selected);
+    const showMessage = (status, data) => {
+        let severity = status ? 'success' : 'error';
+        ClinGenSetSearch.messages.show({severity: severity, summary: data.summary, detail: data.message, sticky: true});
+        setSelectedDatasets([]);
     }
-
-    // const initializeState = () => {
-    //     setSelectedPSets([]);
-    //     setDisableSaveBtn(true);
-    // }
         
     return(
         <SearchReqContext.Provider value={{ 
@@ -95,16 +89,32 @@ const ClinGenSetSearch = () => {
                 <SearchReqWrapper>
                     <ClinGenSetFilter />
                     <MainPanel>
-                        {/* <Messages ref={(el) => PSetSearch.messages = el} /> */}
+                        <Messages ref={(el) => ClinGenSetSearch.messages = el} />
                         <SearchReqPanel>
-                            <SearchSummary title='Explore multimodal Clinical Genomics Datasets' searchAll={searchAll} matchNum={datasets.length} />
+                            <div>
+                                <SearchSummary 
+                                    title='Explore multimodal Clinical Genomics Datasets' 
+                                    searchAll={searchAll} 
+                                    matchNum={datasets.length} 
+                                />
+                                {
+                                    auth.user ?
+                                    <SaveDatasetButton 
+                                        selectedDatasets={selectedDatasets} 
+                                        disabled={selectedDatasets.length > 0 ? false : true} 
+                                        onSaveComplete={showMessage} 
+                                    />
+                                    :
+                                    '*Login or register to save existing Clinical Genomics Datasets to your profile.'
+                                }
+                            </div>
                         </SearchReqPanel>
                         {
                             ready ?
                             <ClinGenSetTable 
                                 datasets={datasets} 
                                 selectedDatasets={selectedDatasets} 
-                                updateDatasetSelection={updateDatasetSelection} 
+                                updateDatasetSelection={(e) => {setSelectedDatasets(e.value)}} 
                                 scrollHeight='600px'
                                 authenticated={auth.user ? true : false}  
                                 download={true}

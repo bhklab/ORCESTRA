@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import PSetTable from '../Shared/PSetTable';
+import PSetTable from '../SearchRequest/PSet/PSetTable';
 import {Messages} from 'primereact/messages';
 import {Button} from 'primereact/button';
 import styled from 'styled-components';

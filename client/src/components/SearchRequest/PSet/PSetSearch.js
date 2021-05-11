@@ -5,7 +5,7 @@ import SearchReqContext from '../SearchReqContext';
 import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
 import PSetFilter from './PSetFilter';
 import PSetRequestForm from './PSetRequestForm';
-import PSetTable from '../../Shared/PSetTable';
+import PSetTable from './PSetTable';
 import SearchSummary from '../SearchSummary';
 import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 import SearchTableLoader from '../SearchTableLoader';
@@ -30,7 +30,6 @@ const PSetSearch = () => {
     const [psets, setPSets] = useState([]);
     const [searchAll, setSearchAll] = useState(true);
     const [selectedPSets, setSelectedPSets] = useState([]);
-    const [disableSaveBtn, setDisableSaveBtn] = useState(true);
     const [isRequest, setIsRequest] = useState(false);
     const [readyToSubmit, setReadyToSubmit] = useState(true);
     
@@ -61,10 +60,6 @@ const PSetSearch = () => {
         }
         initializeView();
     }, []);
-
-    useEffect(() => {
-        setDisableSaveBtn(Helper.isSelected(selectedPSets) ? false : true)
-    }, [selectedPSets]);
 
     useEffect(() => {   
         async function search() {
@@ -99,16 +94,7 @@ const PSetSearch = () => {
     const showMessage = (status, data) => {
         let severity = status ? 'success' : 'error';
         PSetSearch.messages.show({severity: severity, summary: data.summary, detail: data.message, sticky: true});
-        initializeState();
-    }
-
-    const updatePSetSelection = (selected) => {
-        setSelectedPSets(selected);
-    }
-
-    const initializeState = () => {
         setSelectedPSets([]);
-        setDisableSaveBtn(true);
     }
         
     return(
@@ -136,7 +122,7 @@ const PSetSearch = () => {
                                     auth.user ?
                                     <SaveDatasetButton 
                                         selectedDatasets={selectedPSets} 
-                                        disabled={disableSaveBtn} 
+                                        disabled={selectedPSets.length > 0 ? false : true} 
                                         onSaveComplete={showMessage} 
                                     />
                                     :
@@ -153,7 +139,7 @@ const PSetSearch = () => {
                             <PSetTable 
                                 psets={psets} 
                                 selectedPSets={selectedPSets} 
-                                updatePSetSelection={updatePSetSelection} 
+                                updatePSetSelection={(e) => {setSelectedPSets(e.value)}} 
                                 scrollHeight='600px'
                                 authenticated={auth.user ? true : false} 
                                 download={true}

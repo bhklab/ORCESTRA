@@ -18,7 +18,7 @@ module.exports = {
         try{
             const collection = db.collection('user')
             const data = await collection.insertOne(
-                {'username': user.username, 'password': user.password, 'userPSets': [], 'registered': true}
+                {'username': user.username, 'password': user.password, 'userDatasets': [], 'registered': true}
             )
             return data
         }catch(err){

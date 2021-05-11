@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react';
+import {Messages} from 'primereact/messages';
 import { AuthContext } from '../../../hooks/Context';
 import SearchReqContext from '../SearchReqContext';
+import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 
 import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
 import SearchTableLoader from '../SearchTableLoader';
@@ -26,7 +28,6 @@ const XevaSetSearch = () => {
     const [xevaSets, setXevaSets] = useState([]);
     const [searchAll, setSearchAll] = useState(true);
     const [selectedXevaSets, setSelectedXevaSets] = useState([]);
-    // const [disableSaveBtn, setDisableSaveBtn] = useState(true);
     const [isRequest, setIsRequest] = useState(false);
     
     const [parameters, setParameters] = useState({
@@ -49,10 +50,6 @@ const XevaSetSearch = () => {
         initializeView();
     }, []);
 
-    // useEffect(() => {
-    //     setDisableSaveBtn(Helper.isSelected(selectedPSets) ? false : true)
-    // }, [selectedPSets]);
-
     useEffect(() => {   
         async function search() {
             console.log('search');
@@ -73,14 +70,11 @@ const XevaSetSearch = () => {
         }
     }, [parameters]);
 
-    const updateXevaSetSelection = (selected) => {
-        setSelectedXevaSets(selected);
+    const showMessage = (status, data) => {
+        let severity = status ? 'success' : 'error';
+        XevaSetSearch.messages.show({severity: severity, summary: data.summary, detail: data.message, sticky: true});
+        setSelectedXevaSets([]);
     }
-
-    // const initializeState = () => {
-    //     setSelectedPSets([]);
-    //     setDisableSaveBtn(true);
-    // }
         
     return(
         <SearchReqContext.Provider 
@@ -96,15 +90,33 @@ const XevaSetSearch = () => {
                 <SearchReqWrapper>
                     <XevaSetFilter />
                     <MainPanel>
-                        {/* <Messages ref={(el) => PSetSearch.messages = el} /> */}
+                    <Messages ref={(el) => XevaSetSearch.messages = el} />
                         <SearchReqPanel>
-                            <SearchSummary title='Explore Xenographic Pharmacogenomics Datasets (XevaSets)' searchAll={searchAll} matchNum={xevaSets.length} />
+                            <div>
+                                <SearchSummary 
+                                    title='Explore Xenographic Pharmacogenomics Datasets (XevaSets)' 
+                                    searchAll={searchAll} 
+                                    matchNum={xevaSets.length} 
+                                />
+                                {
+                                    auth.user ?
+                                    <SaveDatasetButton 
+                                        selectedDatasets={selectedXevaSets} 
+                                        disabled={selectedXevaSets.length > 0 ? false : true} 
+                                        onSaveComplete={showMessage} 
+                                    />
+                                    :
+                                    '*Login or register to save existing XevaSets to your profile.'
+                                }
+                            </div>
                         </SearchReqPanel>
                         {
                             ready ?
                             <XevaSetTable
-                                xevasets={xevaSets} selectedXevaSets={selectedXevaSets} 
-                                updateXevaSetSelection={updateXevaSetSelection} scrollHeight='600px'
+                                xevasets={xevaSets} 
+                                selectedDatasets={selectedXevaSets} 
+                                updateDatasetSelection={(e) => {setSelectedXevaSets(e.value)}} 
+                                scrollHeight='600px'
                                 authenticated={auth.user ? true : false} 
                                 download={true}
                             /> 

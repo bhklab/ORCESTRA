@@ -65,10 +65,14 @@ const ClinGenSetTable = (props) => {
     return(
         <DataTable 
             value={props.datasets} 
-            selection={props.selectedDatasets} onSelectionChange={event => {props.updateDatasetSelection(event.value)}} 
-            paginator={props.datasets.length > 10} rows={state.rows} 
-            resizableColumns={true} columnResizeMode="fit"
-            scrollable={true} scrollHeight={props.scrollHeight }
+            selection={props.selectedDatasets} 
+            onSelectionChange={props.updateDatasetSelection} 
+            paginator={props.datasets.length > 10} 
+            rows={state.rows} 
+            resizableColumns={true} 
+            columnResizeMode="fit"
+            scrollable={true} 
+            scrollHeight={props.scrollHeight }
         >
             {props.authenticated && <Column selectionMode="multiple" style={{width: '30px', textAlign: 'center'}} />}
             <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplate} sortable={true} />
