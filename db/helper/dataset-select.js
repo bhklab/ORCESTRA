@@ -47,6 +47,8 @@ function getQuerySetForPSet(query){
         queryArray.push(getQueryFilter('dataset.filteredSensitivity', true));
     }
 
+    queryArray.push(getQueryFilter('private', query.private));
+
     if(queryArray.length){
         querySet = {$and: queryArray};
     }
@@ -167,6 +169,8 @@ const selectDatasets = async function(datasetType, query, projection=null){
             default:
                 break;
         }
+
+        console.log(queryFilter);
 
         const data = await collection.find(queryFilter, projection).toArray();
         return data;

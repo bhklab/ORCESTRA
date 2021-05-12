@@ -16,7 +16,7 @@ import {dataTypes} from '../../Shared/Enums';
 async function fetchData(url, parameters) {
     const response = await fetch(url, {
         method: 'POST',
-        body: JSON.stringify({parameters: {...parameters, status: 'complete'}}),
+        body: JSON.stringify({parameters: {...parameters, status: 'complete', private: false}}),
         headers: {'Content-type': 'application/json'}
     });
     const json = await response.json();

@@ -50,7 +50,13 @@ const PSetTable = (props) => {
     );
 
     const dataTypeTemplate = (rowData, column) => (
-        <div>{rowData[column.field] ? rowData[column.field].map(item => <div key={item.name}>{item.name} ({item.type})</div>) : ''}</div>
+        <div>
+            {
+                rowData[column.field] ? 
+                rowData[column.field].map(item => <div key={item.name}>{item.name}{item.microarrayType ? ` [${item.microarrayType.label}]` : ''} ({item.type})</div>) 
+                : ''
+            }
+        </div>
     );
 
     const nameColumnTemplate = (rowData, column) => (
@@ -71,6 +77,7 @@ const PSetTable = (props) => {
     const canonicalTemplate = (rowData, column) => (
         <div>{rowData[column.field] ? 'Yes' : ''}</div>
     );
+
 
     return(
         <DataTable 

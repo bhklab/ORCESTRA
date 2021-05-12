@@ -64,6 +64,7 @@ const PSetRequestForm = (props) => {
             }));
         const resData = await res.json();
         props.onRequestComplete(res.ok, resData);
+        // props.onRequestComplete(true, {});
     }
 
     const SubmitRequestButton = () => {

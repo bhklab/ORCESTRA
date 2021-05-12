@@ -117,7 +117,7 @@ const buildInsertPSetObjects = async function(connStr, dbName, filePath){
     console.log('done')
 }
 
-const updatePSets = async function(connStr, dbName){
+const updateDatasets = async function(datasetType, connStr, dbName){
     const client = await mongoClient.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true})
     try{
         const db = client.db(dbName)
@@ -169,9 +169,9 @@ const updatePSets = async function(connStr, dbName){
         //     )
         // }
 
-        await db.collection('pset').updateMany(
-            {'name': {'$ne':'gcsi_cnv'}}, 
-            {'$set': {'dataset.filteredSensitivity' : true}}, 
+        await db.collection(datasetType).updateMany(
+            {'private': undefined}, 
+            {'$set': {'private' : false}}, 
             {multi: true}
         );
 
@@ -186,5 +186,5 @@ const updatePSets = async function(connStr, dbName){
 module.exports = {
     buildAndInsertPSet,
     buildInsertPSetObjects,
-    updatePSets
+    updateDatasets
 }

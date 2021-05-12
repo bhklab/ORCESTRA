@@ -33,6 +33,8 @@ const processOnlineRequest = async function(req, res){
         reqPSet.dateSubmitted = new Date(Date.now());
         reqPSet.dateProcessed = '';
         reqPSet.dateCreated = '';
+        reqPSet.canonical = false;
+        reqPSet.private = false;
 
         const config = await request.buildPachydermConfigJson('pset', reqPSet);
         // console.log(JSON.stringify(config, null, 2));

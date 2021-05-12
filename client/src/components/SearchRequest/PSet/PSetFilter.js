@@ -282,7 +282,7 @@ const PSetFilter = () => {
                     onChange={(e) => {
                         setMiArraySelect({...miArraySelect, selected: e.value});
                         let dataType = JSON.parse(JSON.stringify(context.parameters.dataType));
-                        dataType.find(item => (item.name === 'microarray')).type = e.value
+                        dataType.find(item => (item.name === 'microarray')).microarrayType = e.value;
                         context.setParameters(prev => ({...prev, dataType: dataType, search: false}));
                     }} 
                 />

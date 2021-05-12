@@ -22,7 +22,7 @@ const enums = require('../../helper/enum');
             form.dataset.push({
                 label: ds.label,
                 name: ds.name,
-                versions: ds.versions.map(version => {return {version: version.version, label: version.label, disabled: version.disabled}}),
+                versions: ds.versions.map(version => ({version: version.version, label: version.label, disabled: version.disabled})),
                 accompanyData: [],
                 unavailable: ds.unavailable
             });
@@ -30,11 +30,14 @@ const enums = require('../../helper/enum');
         if(req.params.datasetType === enums.dataTypes.pharmacogenomics){
             form.dataset.forEach(dataset => {
                 let accompanyRNA = result.accompanyRNA.filter(item => item.dataset === dataset.name);
+                accompanyRNA = accompanyRNA.map(item => ({...item, type: 'RNA'}));
                 let accompanyDNA = result.accompanyDNA.filter(item => item.dataset === dataset.name);
+                accompanyDNA= accompanyDNA.map(item => ({...item, type: 'DNA'}));
                 let accompanyData = accompanyRNA.concat(accompanyDNA);
                 dataset.accompanyData = accompanyData.map(item => ({ 
                     label: item.label, 
-                    name: item.name, 
+                    name: item.name,
+                    type: item.type, 
                     dataset: item.dataset, 
                     options: item.options,
                     hidden: false

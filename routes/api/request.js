@@ -12,7 +12,7 @@ const buildPachydermConfigJson = async (datasetType, dataset) => {
     console.log("buildPachydermReqJson");
     console.log(dataset)
     try{
-        const config  = await psetRequest.getMasterConfig(datasetType, dataset.dataset)
+        const config  = await psetRequest.getMasterConfig(datasetType, dataset.dataset);
 
         // input tool/ref config data if necessary.
         if(dataset.rnaTool.length){
@@ -41,11 +41,11 @@ const buildPachydermConfigJson = async (datasetType, dataset) => {
         }
 
         if(dataset.dataset.name === 'GDSC'){
-            const ver = dataset.dataset.versionInfo.split('-')[1].slice(0, -1)
-            config.transform.cmd.push(ver)
+            const ver = dataset.dataset.versionInfo.split('-')[1].slice(0, -1);
+            config.transform.cmd.push(ver);
         }
 
-        const accompanyData = dataset.dataType.filter(dt => {return !dt.default})
+        const accompanyData = dataset.dataType.filter(dt => {return !dt.default});
         if(accompanyData.length){
             accompanyData.forEach(acc => {
                 config.transform.cmd.push(acc.name);
@@ -61,7 +61,7 @@ const buildPachydermConfigJson = async (datasetType, dataset) => {
             // if microarray is selected as accomnapying data, insert microarray type.
             let microarray = accompanyData.find(item => (item.name === 'microarray'));
             if(microarray){
-                config.transform.cmd.push(microarray.type.name); 
+                config.transform.cmd.push(microarray.microarrayType.name); 
             }
         }
 
