@@ -5,6 +5,7 @@ import useFindUser from '../hooks/useFindUser';
 
 // routes 
 import PrivateRoute from './PrivateRoute';
+import DatasetRoute from './DatasetRoute';
 import AdminRoute from './AdminRoute';
 
 // navigation and footer
@@ -43,13 +44,14 @@ const Router = () => {
                     <Route exact path ='/' component={Main} /> 
                     <Route exact path ='/:datatype' render={(props) => (<DatasetMain {...props} />)} /> 
                     <Route exact path ='/:datatype/search' render={(props) => (<SearchRequest {...props}  />)}/>
-                    <Route path='/:datatype/:id1/:id2' render={(props) => (<SingleDataset {...props} />)} />
+                    {/* <Route path='/:datatype/:id1/:id2' render={(props) => (<SingleDataset {...props} />)} /> */}
                     <Route path='/:datatype/canonical' component={CanonicalPSets} /> 
                     <Route exact path ='/:datatype/status' component={RequestStatus}/>
                     <Route exact path ='/:datatype/stats' component={Stats}/>
                     <Route exact path ='/documentation/:section' component={Documentation} />
                     <Route exact path='/app/authentication' component={Authentication} />
                     <Route path ='/reset/:token' component={Reset} />
+                    <DatasetRoute path='/:datatype/:id1/:id2' component={SingleDataset} redirect='/app/authentication' />
                     <PrivateRoute path='/app/profile' component={Profile} redirect='/app/authentication' />
                     <AdminRoute path='/admin' component={Admin} redirect='/app/profile' />
                     <Route component={NotFound404}/>

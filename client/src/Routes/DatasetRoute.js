@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { AuthContext } from '../hooks/Context';
 
 const DatasetRoute = ({component: Component, location, ...rest}) => {
-    const {user, loading} = useContext(AuthContext);
+    const [authorized, setAuthrized] = useState(null);
+
+    useEffect(() => {
+        console.log(location);
+        setAuthrized(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     
-    if(loading){
+    if(!authorized){
         return null;
     }
 
@@ -13,7 +18,7 @@ const DatasetRoute = ({component: Component, location, ...rest}) => {
         <Route 
             {...rest} 
             render={props => (
-                user ? 
+                authorized ? 
                 <Component {...props} />
                 :
                 <Redirect to={{pathname: rest.redirect, state:{ from: location }}} />

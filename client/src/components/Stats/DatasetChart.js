@@ -33,10 +33,11 @@ const DatasetChart = () => {
             setParameters({
                 datasets: json,
                 metricName: 'cellLines'
-            })
+            });
+            setIsReady(true);
         } 
-        getData()
-        setIsReady(true)
+        getData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -122,6 +123,7 @@ const DatasetChart = () => {
             console.log(parameters)
             updateData()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [parameters])
     
     return (

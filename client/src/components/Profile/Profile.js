@@ -25,6 +25,7 @@ const Profile = () =>{
             setInProcessDatasets(pending);
         }
         initialize();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const removeFromSavedList = async (selectedDatasets) => {

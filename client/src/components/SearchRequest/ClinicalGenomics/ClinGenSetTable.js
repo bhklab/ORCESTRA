@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
-import { Link } from 'react-router-dom';
 import {dataTypes} from '../../Shared/Enums';
+import useDataTable from '../../../hooks/useDataTable';
 
 const ClinGenSetTable = (props) => {
     
@@ -13,54 +13,20 @@ const ClinGenSetTable = (props) => {
         end: 10,
         totalRecords: 0,
         loading: true
-    })
+    });
+
+    const {
+        nameColumnTemplate,
+        downloadTemplate,
+        canonicalTemplate,
+        drugSensitivityTemplate,
+        dataTypeTemplate,
+    } = useDataTable(dataTypes.clinicalgenomics);
 
     useEffect(()=>{
-        setState({...state, loading: false})
+        setState({...state, loading: false});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const downloadDataset = (doi, link) => async (event) => {
-        event.preventDefault();
-        console.log('downloadOnePSet');
-        await fetch(`/api/${dataTypes.clinicalgenomics}/download`, {
-            method: 'POST',
-            body: JSON.stringify({datasetDOI: doi}),
-            headers: {'Content-type': 'application/json'}
-        })
-        const anchor = document.createElement('a');
-        anchor.setAttribute('download', null);
-        anchor.style.display = 'none';
-        anchor.setAttribute('href', link);
-        document.body.appendChild(anchor);
-        anchor.click();
-        document.body.removeChild(anchor);
-    }
-
-    const drugSensitivityTemplate = (rowData, column) => {
-        const drugSensitivity = rowData[column.field].find(item => (item.name === 'drugResponse'));
-        return(
-            <div>{drugSensitivity ? drugSensitivity.version : 'None'}</div>
-        );
-    }
-
-    const dataTypeTemplate = (rowData, column) => {
-        const dataTypes = rowData[column.field].filter(item => (item.name !== 'drugResponse'));
-        return(
-            <div>{dataTypes.map(item => <div key={item.name}>{item.name} ({item.type})</div>)}</div>
-        );
-    }
-
-    const nameColumnTemplate = (rowData, column) => (
-        <Link to={`/${dataTypes.clinicalgenomics}/${rowData.doi}`} target="_blank">{rowData.name}</Link>
-    );
-
-    const downloadTemplate = (rowData, column) => {
-        return(rowData.downloadLink ? <a id={rowData._id} href='#' onClick={downloadDataset(rowData.doi, rowData.downloadLink)}>Download</a> : 'Not Available');
-    };
-
-    const canonicalTemplate = (rowData, column) => (
-        <div>{rowData[column.field] ? 'Yes' : ''}</div>
-    );
 
     return(
         <DataTable 

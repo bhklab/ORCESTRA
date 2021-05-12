@@ -92,6 +92,7 @@ const Main = (props) => {
 
     useEffect(() => {
         path.setDatatype('');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const DatatypeBox = (props) => (
@@ -105,7 +106,7 @@ const Main = (props) => {
                     disabled={props.disabled}
                 >
                     <div className='btn-content'>
-                        <img src={`/images/icons/${props.datatype}.png`} />
+                        <img src={`/images/icons/${props.datatype}.png`} alt='icon'/>
                         <div className='hover-cover'></div>
                         <div className='hover-text'>{props.text}</div>
                     </div>

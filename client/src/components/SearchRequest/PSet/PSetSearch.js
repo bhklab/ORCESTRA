@@ -59,6 +59,7 @@ const PSetSearch = () => {
             setReady(true);
         }
         initializeView();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {   
@@ -89,6 +90,7 @@ const PSetSearch = () => {
         if(isRequest){
             setReadyToSubmit(Helper.isReadyToSubmit(parameters));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [parameters]);
 
     const showMessage = (status, data) => {

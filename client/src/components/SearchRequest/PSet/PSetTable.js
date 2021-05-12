@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
-import { Link } from 'react-router-dom';
-import {dataTypes} from '../../Shared/Enums';
+import { dataTypes } from '../../Shared/Enums';
+import useDataTable from '../../../hooks/useDataTable';
 
 const PSetTable = (props) => {
 
@@ -14,6 +14,15 @@ const PSetTable = (props) => {
         download, 
         authenticated, 
     } = props;
+
+    const {
+        toolsRefTemplate,
+        dataTypeTemplate,
+        nameColumnTemplate,
+        downloadTemplate,
+        filteredTemplate,
+        canonicalTemplate
+    } = useDataTable(dataTypes.pharmacogenomics);
     
     const [state, setState] = useState({
         rows: 10,
@@ -25,59 +34,9 @@ const PSetTable = (props) => {
     });
 
     useEffect(()=>{
-        setState({...state, loading: false})
+        setState({...state, loading: false});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const downloadPSet = (doi, link) => async (event) => {
-        event.preventDefault();
-        console.log('downloadOnePSet');
-        await fetch(`/api/${dataTypes.pharmacogenomics}/download`, {
-            method: 'POST',
-            body: JSON.stringify({datasetDOI: doi}),
-            headers: {'Content-type': 'application/json'}
-        })
-        const anchor = document.createElement('a');
-        anchor.setAttribute('download', null);
-        anchor.style.display = 'none';
-        anchor.setAttribute('href', link);
-        document.body.appendChild(anchor);
-        anchor.click();
-        document.body.removeChild(anchor);
-    }
-
-    const toolsRefTemplate = (rowData, column) => (
-        <div>{rowData[column.field] ? rowData[column.field].map(item => <div key={item.name}>{item.label}</div>) : ''}</div>
-    );
-
-    const dataTypeTemplate = (rowData, column) => (
-        <div>
-            {
-                rowData[column.field] ? 
-                rowData[column.field].map(item => <div key={item.name}>{item.name}{item.microarrayType ? ` [${item.microarrayType.label}]` : ''} ({item.type})</div>) 
-                : ''
-            }
-        </div>
-    );
-
-    const nameColumnTemplate = (rowData, column) => (
-        rowData.doi.length > 0 ? 
-        <Link to={`/${dataTypes.pharmacogenomics}/${rowData.doi}`} target="_blank">{rowData.name}</Link>
-        :
-        rowData.name
-    );
-
-    const downloadTemplate = (rowData, column) => {
-        return(rowData.downloadLink ? <a id={rowData._id} href='#' onClick={downloadPSet(rowData.doi, rowData.downloadLink)}>Download</a> : 'Not Available');
-    };
-
-    const filteredTemplate = (rowData, column) => (
-        <div>{rowData.dataset.filteredSensitivity ? 'Yes' : 'No'}</div>
-    );
-
-    const canonicalTemplate = (rowData, column) => (
-        <div>{rowData[column.field] ? 'Yes' : ''}</div>
-    );
-
 
     return(
         <DataTable 

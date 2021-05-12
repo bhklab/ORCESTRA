@@ -38,7 +38,8 @@ const PSet = (props) => {
                 setError(true)
             } 
         }
-        getData()
+        getData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return(

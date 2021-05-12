@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useTable, usePagination, useFilters, useGlobalFilter, useSortBy} from 'react-table';
+import {useTable, usePagination, useFilters, useSortBy} from 'react-table';
 import {Filter, DefaultColumnFilter} from './TableFilters';
 import Pagination from './Pagination';
 import styled from 'styled-components';
@@ -87,12 +87,13 @@ const ReactDataTable = (props) => {
         let start = 0;
         // if index of the current page is not 2, shift the index array.
         // if current index is 2 or less away from the end, shift the index array only to the last page index.
-        if(pageIndexArray.indexOf(pageIndex) != 2 && pageIndex -2 > 0 && pageIndex + 2 < pageOptions.length - 1){
+        if(pageIndexArray.indexOf(pageIndex) !== 2 && pageIndex -2 > 0 && pageIndex + 2 < pageOptions.length - 1){
             start = pageOptions[pageIndex - 2];
         }else if(pageIndex + 2 >= pageOptions.length - 1){ 
             start = pageOptions.length - numPages;
         }
         setPageIndexArray(Array(numPages).fill().map((_, i) => (start + i)));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageIndex]);
 
     const getSortArrow = (column) => {

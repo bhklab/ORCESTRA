@@ -1,6 +1,6 @@
 import React from 'react';
 import { TabHeader, TabContent, StyledAccordion} from '../../SingleDatasetStyle';
-import {Accordion,AccordionTab} from 'primereact/accordion';
+import { AccordionTab } from 'primereact/accordion';
 import styled from 'styled-components';
 
 const PipelineContent = styled.div`
@@ -22,13 +22,13 @@ const PipelineTabContent = props => {
                 </PipelineContent>
                 <PipelineContent>
                     <h3>Docker Image: </h3>
-                    <a target="_blank" href={'https://hub.docker.com/r/' + props.data.config.transform.image.split(':')[0]}>
+                    <a target="_blank" rel='noreferrer' href={'https://hub.docker.com/r/' + props.data.config.transform.image.split(':')[0]}>
                         {props.data.config.transform.image}
                     </a>
                 </PipelineContent>
                 <PipelineContent>
                     <h3>Pipeline Repository: </h3>
-                    <a target="_blank" href={props.data.config.input.cross[0].git.url}>{props.data.config.input.cross[0].git.url}</a>
+                    <a target="_blank" rel='noreferrer' href={props.data.config.input.cross[0].git.url}>{props.data.config.input.cross[0].git.url}</a>
                 </PipelineContent>
                 <StyledAccordion>
                     <AccordionTab header='Pipeline Configuration File'>

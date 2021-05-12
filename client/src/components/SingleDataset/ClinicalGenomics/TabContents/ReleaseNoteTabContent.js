@@ -38,6 +38,8 @@ const ReleaseNoteTabContent = (props) => {
                 return('Newly Added:');
             case 'removed':
                 return('Removed from Previous Version:');
+            default: 
+                return '';
         }
     }
 

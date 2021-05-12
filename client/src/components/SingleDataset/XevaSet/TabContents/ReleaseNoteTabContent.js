@@ -38,6 +38,8 @@ const ReleaseNoteTabContent = (props) => {
                 return `newly added ${label}${count > 1 ? 's' : ''}.`;
             case 'removed':
                 return `${label}${count > 1 ? 's' : ''} ${count > 1 ? 'were' : 'was'} removed from previous version.`;
+            default:
+                return '';
         }
     }
 

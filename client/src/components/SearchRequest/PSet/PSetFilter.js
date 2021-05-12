@@ -37,6 +37,7 @@ const PSetFilter = () => {
             setReady(true);
         }
         initialize();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -67,6 +68,7 @@ const PSetFilter = () => {
                 });
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [datasetSelect.selected]);
 
     useEffect(() => {
@@ -102,6 +104,7 @@ const PSetFilter = () => {
             email: '',
             search: true
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context.isRequest]);
 
     useEffect(() => {
@@ -121,6 +124,7 @@ const PSetFilter = () => {
             }
         }
         setRNARefSelect({...rnaRefSelect, options: rnaRefOptions});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [genomeSelect.selected]);
 
     useEffect(() => {
@@ -135,6 +139,7 @@ const PSetFilter = () => {
         }else{
             setMiArraySelect({...miArraySelect, selected: undefined, options: [], hidden: true});
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataTypeSelect.selected]);
 
     const onDatasetSelection = (dataset) => {

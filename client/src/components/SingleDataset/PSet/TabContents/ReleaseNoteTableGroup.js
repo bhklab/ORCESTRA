@@ -45,6 +45,7 @@ const ReleaseNoteTableGroup = (props) => {
             setReady(true);
         }
         getData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const current = useMemo(
@@ -169,7 +170,7 @@ const ReleaseNoteTableGroup = (props) => {
                     }
                     <div className='flex'>
                         {
-                            props.type != 'experiments' &&
+                            props.type !== 'experiments' &&
                             <div className='column'>
                                 <h3>{`Current (${data[props.type].current.length})`}</h3>
                                 {getTable(current, data[props.type].current)}

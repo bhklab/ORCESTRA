@@ -15,7 +15,7 @@ const StyledUserInfo = styled.div`
     border-radius: 10px;
     .userInfo{
         margin-bottom: 20px;
-        font-size: 14px;
+        font-size: 12px;
     }
     .userInfoBtn{
         margin-top: 20px;

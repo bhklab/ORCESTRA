@@ -27,6 +27,7 @@ const Navigation = (props) => {
         if(location.pathname !== '/' && path.datatype.length === 0){
             path.setDatatype(location.pathname.split('/').filter((el) =>(el.length))[0]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onLoginClick = (event) => {

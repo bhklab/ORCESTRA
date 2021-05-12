@@ -20,6 +20,7 @@ const ClinGenSetFilter = () => {
             setReady(true);
         }
         initialize();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     
     return(

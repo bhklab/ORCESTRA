@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+// import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import DatasetTabContent from './DatasetTabContent';
-import ReleaseNoteTableGroup from './ReleaseNoteTableGroup';
+// import DatasetTabContent from './DatasetTabContent';
+// import ReleaseNoteTableGroup from './ReleaseNoteTableGroup';
 
 
 const StyledReleaseNotes = styled.div`
@@ -11,36 +11,36 @@ const StyledReleaseNotes = styled.div`
     margin-right: auto;
 `
 
-const StyledMetricsPanel = styled.div`
-    margin-bottom: 30px;
-`
+// const StyledMetricsPanel = styled.div`
+//     margin-bottom: 30px;
+// `
 
-const StyledMetricGroupMenu = styled.div`
-    display: flex;
-    margin-top: 15px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    .menuItem {
-        margin-right: 10px;
-        padding-bottom: 5px;
-        button {
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 16px;
-            color: #3D405A;
-        }
-        button:focus {
-            outline: none;
-        }
-    }
-    .selected {
-        button {
-            font-weight: bold;
-        }
-        border-bottom: 3px solid rgb(241, 144, 33);
-    }
-`
+// const StyledMetricGroupMenu = styled.div`
+//     display: flex;
+//     margin-top: 15px;
+//     padding-top: 10px;
+//     padding-bottom: 10px;
+//     .menuItem {
+//         margin-right: 10px;
+//         padding-bottom: 5px;
+//         button {
+//             border: none;
+//             background: none;
+//             cursor: pointer;
+//             font-size: 16px;
+//             color: #3D405A;
+//         }
+//         button:focus {
+//             outline: none;
+//         }
+//     }
+//     .selected {
+//         button {
+//             font-weight: bold;
+//         }
+//         border-bottom: 3px solid rgb(241, 144, 33);
+//     }
+// `
 
 const StyledMetricDataGroup = styled.div`
     margin-top: 20px;    
@@ -93,6 +93,8 @@ const ReleaseNoteTabContent = (props) => {
                 return `newly added ${label}${count > 1 ? 's' : ''}.`;
             case 'removed':
                 return `${label}${count > 1 ? 's' : ''} ${count > 1 ? 'were' : 'was'} removed from previous version.`;
+            default:
+                return '';
         }
     }
 
@@ -111,7 +113,9 @@ const ReleaseNoteTabContent = (props) => {
             case 'fusion':
                 return 'Fusion: ';
             case 'methylation':
-                return 'Methylation: '
+                return 'Methylation: ';
+            default:
+                return '';
         }
     }
 

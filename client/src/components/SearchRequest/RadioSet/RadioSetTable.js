@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
-import { Link } from 'react-router-dom';
 import {dataTypes} from '../../Shared/Enums';
+import useDataTable from '../../../hooks/useDataTable';
 
 const RadioSetTable = (props) => {
     
@@ -13,54 +13,20 @@ const RadioSetTable = (props) => {
         end: 10,
         totalRecords: 0,
         loading: true
-    })
+    });
+
+    const {
+        nameColumnTemplate,
+        downloadTemplate,
+        canonicalTemplate,
+        radiationSensitivityTemplate,
+        dataTypeTemplate,
+    } = useDataTable(dataTypes.radiogenomics);
 
     useEffect(()=>{
-        setState({...state, loading: false})
+        setState({...state, loading: false});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const downloadDataset = (doi, link) => async (event) => {
-        event.preventDefault();
-        console.log('downloadOnePSet');
-        await fetch(`/api/${dataTypes.radiogenomics}/download`, {
-            method: 'POST',
-            body: JSON.stringify({datasetDOI: doi}),
-            headers: {'Content-type': 'application/json'}
-        })
-        const anchor = document.createElement('a');
-        anchor.setAttribute('download', null);
-        anchor.style.display = 'none';
-        anchor.setAttribute('href', link);
-        document.body.appendChild(anchor);
-        anchor.click();
-        document.body.removeChild(anchor);
-    }
-
-    const radiationSensitivityTemplate = (rowData, column) => {
-        const radiationSensitivity = rowData[column.field].find(item => (item.name === 'radiationSensitivity'));
-        return(
-            <div>{radiationSensitivity ? radiationSensitivity.version : 'Not Available'}</div>
-        );
-    }
-
-    const dataTypeTemplate = (rowData, column) => {
-        const dataTypes = rowData[column.field].filter(item => (item.name !== 'radiationSensitivity'));
-        return(
-            <div>{dataTypes.map(item => <div key={item.name}>{item.name} ({item.type})</div>)}</div>
-        );
-    }
-
-    const nameColumnTemplate = (rowData, column) => (
-        <Link to={`/${dataTypes.radiogenomics}/${rowData.doi}`} target="_blank">{rowData.name}</Link>
-    );
-
-    const downloadTemplate = (rowData, column) => {
-        return(rowData.downloadLink ? <a id={rowData._id} href='#' onClick={downloadDataset(rowData.doi, rowData.downloadLink)}>Download</a> : 'Not Available');
-    };
-
-    const canonicalTemplate = (rowData, column) => (
-        <div>{rowData[column.field] ? 'Yes' : ''}</div>
-    );
 
     return(
         <DataTable 
