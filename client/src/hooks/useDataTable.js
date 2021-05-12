@@ -77,6 +77,13 @@ const useDataTable = (datasetType) => {
         rowData.name
     );
 
+    const nameColumnTemplateUserDataset = (rowData, column) => (
+        rowData.doi.length > 0 ? 
+        <Link to={`/${rowData.datasetType.name}/${rowData.doi}`} target="_blank">{rowData.name}</Link>
+        :
+        rowData.name
+    );
+
     const downloadTemplate = (rowData, column) => {
         return(
             rowData.downloadLink ? 
@@ -116,6 +123,7 @@ const useDataTable = (datasetType) => {
         toolsRefTemplate,
         dataTypeTemplate,
         nameColumnTemplate,
+        nameColumnTemplateUserDataset,
         downloadTemplate,
         filteredTemplate,
         canonicalTemplate,

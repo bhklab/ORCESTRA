@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {Messages} from 'primereact/messages';
 import { AuthContext } from '../../../hooks/Context';
+import useDatasetSearch from '../../../hooks/useDatasetSearch';
 import SearchReqContext from '../SearchReqContext';
 import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 
@@ -11,29 +12,17 @@ import ClinGenSetFilter from './ClinGenSetFilter';
 import ClinGenSetTable from './ClinGenSetTable';
 import {dataTypes} from '../../Shared/Enums';
 
-async function fetchData(url, parameters) {
-    const response = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({parameters: {...parameters, status: 'complete', private: false}}),
-        headers: {'Content-type': 'application/json'}
-    });
-    const json = await response.json();
-    return(json);
-}
-
 const ClinGenSetSearch = () => {
     
     const auth = useContext(AuthContext);
+    const { searchAll, search } = useDatasetSearch(dataTypes.clinicalgenomics);
     
     const [datasets, setDatasets] = useState([]);
-    const [searchAll, setSearchAll] = useState(true);
     const [selectedDatasets, setSelectedDatasets] = useState([]);
     const [isRequest, setIsRequest] = useState(false);
     
     const [parameters, setParameters] = useState({
         dataset: [],
-        name: '',
-        email: '',
         search: false
     });
 
@@ -41,33 +30,25 @@ const ClinGenSetSearch = () => {
 
     useEffect(() => {
         const initializeView = async () => {
-            const res = await fetchData(`/api/${dataTypes.clinicalgenomics}/search`);
-            console.log(res)
+            const res = await search({...parameters, status: 'complete', private: false});
             setDatasets(res);
-            setSearchAll(true);
             setReady(true);
         }
         initializeView();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {   
-        async function search() {
-            console.log('search');
+        async function searchClinGenSets() {
             console.log(parameters);
-            const result = await fetchData(`/api/${dataTypes.clinicalgenomics}/search`, parameters);
-            let all = true;
-            Object.keys(parameters).forEach(key => {
-                if(Array.isArray(parameters[key]) && parameters[key].length){
-                    all = false;
-                }
-            });
+            const result = await search({...parameters, status: 'complete', private: false});
             setDatasets(result);
-            setSearchAll(all);
         }
 
         if(parameters.search){
-            search();
+            searchClinGenSets();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [parameters]);
 
     const showMessage = (status, data) => {

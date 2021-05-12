@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {Messages} from 'primereact/messages';
 import { AuthContext } from '../../../hooks/Context';
+import useDatasetSearch from '../../../hooks/useDatasetSearch';
 import SearchReqContext from '../SearchReqContext';
 import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 
@@ -11,29 +12,17 @@ import XevaSetFilter from './XevaSetFilter';
 import XevaSetTable from './XevaSetTable';
 import {dataTypes} from '../../Shared/Enums';
 
-async function fetchData(url, parameters) {
-    const response = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({parameters: {...parameters, status: 'complete', private: false}}),
-        headers: {'Content-type': 'application/json'}
-    });
-    const json = await response.json();
-    return(json);
-}
-
 const XevaSetSearch = () => {
     
     const auth = useContext(AuthContext);
+    const { searchAll, search } = useDatasetSearch(dataTypes.xenographic);
     
     const [xevaSets, setXevaSets] = useState([]);
-    const [searchAll, setSearchAll] = useState(true);
     const [selectedXevaSets, setSelectedXevaSets] = useState([]);
     const [isRequest, setIsRequest] = useState(false);
     
     const [parameters, setParameters] = useState({
         dataset: [],
-        name: '',
-        email: '',
         search: false
     });
 
@@ -41,33 +30,24 @@ const XevaSetSearch = () => {
 
     useEffect(() => {
         const initializeView = async () => {
-            const xevasets = await fetchData(`/api/${dataTypes.xenographic}/search`);
-            console.log(xevasets)
+            const xevasets = await search({...parameters, status: 'complete', private: false});
             setXevaSets(xevasets);
-            setSearchAll(true);
             setReady(true);
         }
         initializeView();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {   
-        async function search() {
-            console.log('search');
-            console.log(parameters);
-            const xevaSets = await fetchData(`/api/${dataTypes.xenographic}/search`, parameters);
-            let all = true;
-            Object.keys(parameters).forEach(key => {
-                if(Array.isArray(parameters[key]) && parameters[key].length){
-                    all = false;
-                }
-            });
+        async function searchXevaSets() {
+            const xevaSets = await search({...parameters, status: 'complete', private: false});
             setXevaSets(xevaSets);
-            setSearchAll(all);
         }
 
         if(parameters.search){
-            search();
+            searchXevaSets();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [parameters]);
 
     const showMessage = (status, data) => {

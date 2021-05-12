@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {Messages} from 'primereact/messages';
 import { AuthContext } from '../../../hooks/Context';
+import useDatasetSearch from '../../../hooks/useDatasetSearch';
 import SearchReqContext from '../SearchReqContext';
 import {dataTypes} from '../../Shared/Enums';
 import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
@@ -11,29 +12,17 @@ import SearchSummary from '../SearchSummary';
 import ToxicoSetFilter from './ToxicoSetFilter';
 import ToxicoSetTable from './ToxicoSetTable';
 
-async function fetchData(url, parameters) {
-    const response = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({parameters: {...parameters, status: 'complete', private: false}}),
-        headers: {'Content-type': 'application/json'}
-    });
-    const json = await response.json();
-    return(json);
-}
-
 const ToxicoSetSearch = () => {
     
     const auth = useContext(AuthContext);
+    const { searchAll, search } = useDatasetSearch(dataTypes.toxicogenomics);
     
     const [toxicoSets, setToxicoSets] = useState([]);
-    const [searchAll, setSearchAll] = useState(true);
     const [selectedTSets, setSelectedTSets] = useState([]);
     const [isRequest, setIsRequest] = useState(false);
     
     const [parameters, setParameters] = useState({
         dataset: [],
-        name: '',
-        email: '',
         search: false
     });
 
@@ -41,33 +30,27 @@ const ToxicoSetSearch = () => {
 
     useEffect(() => {
         const initializeView = async () => {
-            const tsets = await fetchData(`/api/${dataTypes.toxicogenomics}/search`);
+            const tsets = await search({...parameters, status: 'complete', private: false});
             console.log(tsets)
             setToxicoSets(tsets);
-            setSearchAll(true);
             setReady(true);
         }
         initializeView();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {   
-        async function search() {
+        async function searchTSets() {
             console.log('search');
             console.log(parameters);
-            const toxicoSets = await fetchData(`/api/${dataTypes.toxicogenomics}/search`, parameters);
-            let all = true;
-            Object.keys(parameters).forEach(key => {
-                if(Array.isArray(parameters[key]) && parameters[key].length){
-                    all = false;
-                }
-            });
+            const toxicoSets = await search({...parameters, status: 'complete', private: false});
             setToxicoSets(toxicoSets);
-            setSearchAll(all);
         }
 
         if(parameters.search){
-            search();
+            searchTSets();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [parameters]);
 
     const showMessage = (status, data) => {

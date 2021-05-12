@@ -25,7 +25,7 @@ const UserDataset = (props) => {
     const { heading, btnLabel, datasets, handleBtnClick, pending } = props;
     
     const {
-        nameColumnTemplate,
+        nameColumnTemplateUserDataset,
         canonicalTemplate,
         privateTemplate
     } = useDataTable(null);
@@ -84,7 +84,7 @@ const UserDataset = (props) => {
                                 {
                                     !pending && <Column selectionMode="multiple" style={{width: '40px', textAlign: 'center'}} />
                                 }
-                                <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplate} sortable={true} />
+                                <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplateUserDataset} sortable={true} />
                                 <Column className='textField' field='dataset.name' header='Dataset' style={{width:'100px'}} sortable={true} />
                                 <Column className='textField' field='datasetType.label' header='Dataset Type' style={{width:'100px'}} sortable={true} />
                                 {

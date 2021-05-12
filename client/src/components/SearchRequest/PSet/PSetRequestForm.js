@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import SearchReqContext from '../SearchReqContext';
 
 import CustomInputText from '../../Shared/CustomInputText';
@@ -13,7 +13,7 @@ const RequestForm = styled.div`
     div {
         margin-top: 25px;
     }
-`
+`;
 
 const LoaderContainer = styled.div`
     height: 30px;
@@ -21,11 +21,75 @@ const LoaderContainer = styled.div`
     display: flex;
     justify-content: left;
     align-items: center;
-`
+`;
+
+function isSelected(reqParam){
+    if(typeof reqParam === 'undefined' || reqParam === null){
+        return(false);
+    }
+    if(Array.isArray(reqParam) && !reqParam.length){
+        return(false);
+    }
+    return(true);
+}
+
+function hasName(name){
+    if(typeof name === 'undefined' || name === null){
+        return(false);
+    }
+    if(name.length === 0){
+        return(false);
+    }
+    return(true);
+}
+
+function isValidEmail(email){
+    const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    if(typeof email === 'undefined' || email === null){
+        return(false);
+    }
+    if(email.length === 0){
+        return(false);
+    }
+    if(!regex.test(email)){
+        return(false);
+    }
+    return(true);
+}
+
+const getReadyToSubmit = (request) => {
+    if(!isSelected(request.dataset)){
+        return(false)
+    }
+    if(!isSelected(request.drugSensitivity)){
+        return(false);
+    }
+    if(!hasName(request.name)){return(false)}
+
+    if(!isValidEmail(request.email)){return(false)}
+
+    if(!isSelected(request.genome) && !(request.dataset.name === 'CTRPv2' || request.dataset.name === 'FIMM')){
+        return(false);
+    }
+    if(!isSelected(request.rnaTool) && !(request.dataset.name === 'CTRPv2' || request.dataset.name === 'FIMM')){
+        return(false);
+    }
+    if(!isSelected(request.rnaRef) && !(request.dataset.name === 'CTRPv2' || request.dataset.name === 'FIMM')){
+        return(false);
+    }
+
+    return(true);
+}
 
 const PSetRequestForm = (props) => {
 
     const context = useContext(SearchReqContext);
+    const [readyToSubmit, setReadyToSubmit] = useState(false);
+
+    useEffect(() => {
+        setReadyToSubmit(getReadyToSubmit(context.parameters));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [context.parameters]);
 
     const submitRequest = async event => {
         event.preventDefault();
@@ -75,7 +139,7 @@ const PSetRequestForm = (props) => {
                     <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
                 </LoaderContainer>
                 :
-                <Button label='Submit Request' type='submit' disabled={!props.readyToSubmit} onClick={submitRequest}/>
+                <Button label='Submit Request' type='submit' disabled={!readyToSubmit} onClick={submitRequest}/>
         );
     }
 

@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { AuthContext } from '../../../hooks/Context';
+import useDatasetSearch from '../../../hooks/useDatasetSearch';
 import SearchReqContext from '../SearchReqContext';
 
 import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
@@ -10,28 +11,16 @@ import SearchSummary from '../SearchSummary';
 import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 import SearchTableLoader from '../SearchTableLoader';
 import {Messages} from 'primereact/messages';
-import * as Helper from '../../Shared/Helper';
 import {dataTypes} from '../../Shared/Enums';
-
-async function fetchData(url, parameters) {
-    const response = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({parameters: {...parameters, status: 'complete', private: false}}),
-        headers: {'Content-type': 'application/json'}
-    });
-    const json = await response.json();
-    return(json);
-}
 
 const PSetSearch = () => {
     
     const auth = useContext(AuthContext);
-    
+    const { searchAll, search } = useDatasetSearch(dataTypes.pharmacogenomics);
+
     const [psets, setPSets] = useState([]);
-    const [searchAll, setSearchAll] = useState(true);
     const [selectedPSets, setSelectedPSets] = useState([]);
     const [isRequest, setIsRequest] = useState(false);
-    const [readyToSubmit, setReadyToSubmit] = useState(true);
     
     const [parameters, setParameters] = useState({
         dataset: [],
@@ -52,10 +41,9 @@ const PSetSearch = () => {
 
     useEffect(() => {
         const initializeView = async () => {
-            const psets = await fetchData(`/api/${dataTypes.pharmacogenomics}/search`);
-            console.log(psets)
+            const psets = await search({...parameters, status: 'complete', private: false});
+            console.log(psets);
             setPSets(psets);
-            setSearchAll(true);
             setReady(true);
         }
         initializeView();
@@ -63,32 +51,21 @@ const PSetSearch = () => {
     }, []);
 
     useEffect(() => {   
-        async function search() {
+        async function searchPSets() {
             console.log('search');
             console.log(parameters);
             let copy = JSON.parse(JSON.stringify(parameters));
             Object.keys(copy).forEach(key => {
-                if(!Array.isArray(copy[key]) && !(key === 'canonicalOnly' || key === 'filteredSensitivity')){
+                if(!Array.isArray(copy[key]) && !(key === 'canonicalOnly' || key === 'filteredSensitivity' || key === 'search' || key === 'name' || key === 'email')){
                     copy[key] = [copy[key]];
                 }
             });
-            const psets = await fetchData(`/api/${dataTypes.pharmacogenomics}/search`, copy);
-            let all = true;
-            Object.keys(parameters).forEach(key => {
-                if(Array.isArray(parameters[key]) && parameters[key].length){
-                    all = false;
-                }
-            });
+            const psets = await search({...copy, status: 'complete', private: false});
             setPSets(psets);
-            setSearchAll(all);
         }
 
         if(parameters.search){
-            search();
-        }
-        
-        if(isRequest){
-            setReadyToSubmit(Helper.isReadyToSubmit(parameters));
+            searchPSets();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [parameters]);
@@ -133,7 +110,7 @@ const PSetSearch = () => {
                             </div>
                             {
                                 isRequest &&
-                                <PSetRequestForm readyToSubmit={readyToSubmit} onRequestComplete={showMessage} />
+                                <PSetRequestForm onRequestComplete={showMessage} />
                             }
                         </SearchReqPanel>
                         {
