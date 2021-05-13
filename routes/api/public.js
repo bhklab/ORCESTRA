@@ -16,7 +16,7 @@ module.exports = {
         console.log(`getDataSets - ${datasetType}`);
         let dataTypes = Object.values(enums.dataTypes);
 
-        const filter = {'status': 'complete'}
+        const filter = {'status': 'complete', 'private': false};
 
         const projection = {'projection': {
             '_id': false,
