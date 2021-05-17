@@ -66,7 +66,7 @@ const XevaSetSearch = () => {
             }}
         >
             <div className='pageContent'>
-                <div className='title'>ORCESTRA for Xenographic Pharmacogenomics</div>   
+                <div className='page-title'>ORCESTRA for Xenographic Pharmacogenomics</div>   
                 <SearchReqWrapper>
                     <XevaSetFilter />
                     <MainPanel>

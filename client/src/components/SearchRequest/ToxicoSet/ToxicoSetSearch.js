@@ -69,7 +69,7 @@ const ToxicoSetSearch = () => {
             }}
         >
             <div className='pageContent'> 
-                <div className='title'>ORCESTRA for Toxicogenomics</div>
+                <div className='page-title'>ORCESTRA for Toxicogenomics</div>
                 <SearchReqWrapper>
                     <ToxicoSetFilter />
                     <MainPanel>

@@ -68,7 +68,7 @@ const RadioSetSearch = () => {
             }}
         >
             <div className='pageContent'>
-                <div className='title'>ORCESTRA for Radiogenomics</div>  
+                <div className='page-title'>ORCESTRA for Radiogenomics</div>  
                 <SearchReqWrapper>
                     <RadioSetFilter />
                     <MainPanel>

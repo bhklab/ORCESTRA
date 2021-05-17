@@ -38,11 +38,11 @@ const GlobalStyles = createGlobalStyle`
         min-height: 100vh;
         padding-bottom: 200px;
         color: #3D405A;
-        .title {
-            margin-top: -5px;
-            font-weight: bold;
+        .page-title {
             font-size: 25px;
-            padding-bottom: 10px;
+            font-weight: bold;
+            margin-top: -10px;
+            margin-bottom: 15px;
         }
     }
 `;

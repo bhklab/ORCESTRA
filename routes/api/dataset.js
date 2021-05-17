@@ -59,7 +59,7 @@ const getSingleDataset = async (req, res) => {
     const doi = req.params.id1 + '/' + req.params.id2;
     console.log(doi);
     try{
-        const result = await datasetSelect.selectDatasetByDOI(req.params.datasetType, doi)
+        const result = await datasetSelect.selectDatasetByDOI(req.params.datasetType, doi);
         let dataset = {}  
         dataset._id = result._id;
         dataset.name = result.name;

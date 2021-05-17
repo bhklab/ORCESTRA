@@ -66,7 +66,7 @@ const ClinGenSetSearch = () => {
             }}
         >
             <div className='pageContent'>
-                <div className='title'>ORCESTRA for Clinical Genomics</div>  
+                <div className='page-title'>ORCESTRA for Clinical Genomics</div>  
                 <SearchReqWrapper>
                     <ClinGenSetFilter />
                     <MainPanel>
