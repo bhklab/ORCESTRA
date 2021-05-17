@@ -20,9 +20,9 @@ const DatasetChart = () => {
     const [barData, setBarData] = useState([])
     const [parameters, setParameters] = useState({
         datasets: [],
-        metricName: ''
+        metricName: '',
+        ready: false
     });
-    const [isReady, setIsReady] = useState(false)
     const [isPlotReady, setIsPlotReady] = useState(false)
 
     useEffect(() => {
@@ -32,9 +32,9 @@ const DatasetChart = () => {
             console.log(json)
             setParameters({
                 datasets: json,
-                metricName: 'cellLines'
+                metricName: 'cellLines',
+                ready: true
             });
-            setIsReady(true);
         } 
         getData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,7 +119,7 @@ const DatasetChart = () => {
             setIsPlotReady(true)
         }
         setIsPlotReady(false)
-        if(isReady){
+        if(parameters.ready){
             console.log(parameters)
             updateData()
         }
