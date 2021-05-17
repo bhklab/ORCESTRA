@@ -65,6 +65,7 @@ const getSingleDataset = async (req, res) => {
         dataset.name = result.name;
         dataset.downloadLink = result.downloadLink;
         dataset.doi = result.doi;
+        dataset.private = result.private;
         dataset.generalInfo = {name: result.name, doi: result.doi, createdBy: result.createdBy, dateCreated: result.dateCreated};
         dataset.tabData = [];
 
@@ -137,6 +138,29 @@ const checkPrivate = async (req, res) => {
         res.send(result);
     }    
 }
+
+/**
+ * Route used to publish a private dataset
+ * @param {*} req 
+ * @param {*} res 
+ */
+const publishDataset = async (req, res) => {
+    let result = null;
+    try{
+        console.log(req.params);
+        result = await datasetUpdate.updateDataset(
+            req.params.datasetType, 
+            {'doi': `${req.params.id1}/${req.params.id2}`}, 
+            {'private': false}
+        );
+    }catch(error){  
+        console.log(error);
+        res.status(500);
+    }finally{
+        res.send(result);
+    }
+}
+
 
 /**
  * Retrieves filtered datasets.
@@ -222,6 +246,7 @@ const getReleaseNotesData = async (req, res) => {
 module.exports = {
     getSingleDataset,
     checkPrivate,
+    publishDataset,
     searchDatasets,
     getCanonicalDatasets,
     updateCanonicalPSets,

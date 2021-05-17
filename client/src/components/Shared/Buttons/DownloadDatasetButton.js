@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from 'primereact/button';
+import { Button } from 'primereact/button';
 
 const DownloadDatasetButton = props => {
 
@@ -18,11 +18,17 @@ const DownloadDatasetButton = props => {
             method: 'POST',
             body: JSON.stringify({datasetDOI: props.dataset.doi}),
             headers: {'Content-type': 'application/json'}
-        })
+        });
     }
 
     return(
-        <Button label='Download' disabled={props.disabled} onClick={downloadDataset} style={{marginLeft: '30px'}}/>
+        <Button 
+            className={props.className} 
+            label='Download' 
+            icon='pi pi-download'
+            disabled={props.disabled} 
+            onClick={downloadDataset}
+        />
     );
 }
 

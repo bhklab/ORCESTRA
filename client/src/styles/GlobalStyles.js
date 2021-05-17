@@ -10,7 +10,7 @@ const GlobalStyles = createGlobalStyle`
         margin-top: 0;
         margin-left: 0;
         margin-right: 0;
-        padding-top: 90px;
+        padding-top: 80px;
         font-family: "Raleway", "Segoe UI", "Roboto", "Oxygen",
             "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
             sans-serif;
@@ -41,7 +41,6 @@ const GlobalStyles = createGlobalStyle`
         .page-title {
             font-size: 25px;
             font-weight: bold;
-            margin-top: -10px;
             margin-bottom: 15px;
         }
     }
