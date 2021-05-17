@@ -7,6 +7,8 @@ const datasetSelect = require('../../db/helper/dataset-select');
 const datasetUpdate = require('../../db/helper/dataset-update');
 const datasetCanonical = require('../../db/helper/dataset-canonical');
 const metricData = require('../../db/helper/metricdata');
+const auth = require('./auth');
+const userdata = require('../../db/helper/userdata');
 const enums = require('../../helper/enum');
 
 function getTabData(result, withMolData){
@@ -52,7 +54,7 @@ function getTabData(result, withMolData){
  * @param {*} req 
  * @param {*} res 
  */
-const getDatasetByDOI = async function(req, res){
+const getSingleDataset = async (req, res) => {
     console.log(`getDatasetByDOI: ${req.params.datasetType}`);
     const doi = req.params.id1 + '/' + req.params.id2;
     console.log(doi);
@@ -107,11 +109,41 @@ const getDatasetByDOI = async function(req, res){
 }
 
 /**
+ * checks if the requested dataset is private, and if the user is authorized to access it.
+ * @param {*} req 
+ * @param {*} res 
+ */
+const checkPrivate = async (req, res) => {
+    console.log(req.params);
+    let result = {authorized: false};
+    try{
+        // check if the dataset is private
+        const dataset = await datasetSelect.selectDatasetByDOI(req.params.datasetType, `${req.params.id1}/${req.params.id2}`);
+        
+        // if private, check if the user is authenticated, and owns the dataset
+        if(dataset.private){
+            const username = auth.getUsername(req.cookies.orcestratoken);
+            if(username){
+                const user = await userdata.selectUser(username);
+                const userDatasets = user.userDatasets.map(id => id.toString());
+                result.authorized = userDatasets.includes(dataset._id.toString());
+            }
+        }else{
+            result.authorized = true;
+        }
+    }catch(err){
+        console.log(err);
+    }finally{
+        res.send(result);
+    }    
+}
+
+/**
  * Retrieves filtered datasets.
  * @param {*} req 
  * @param {*} res 
  */
-const searchDatasets = async function(req, res){
+const searchDatasets = async (req, res) => {
     console.log(`searchDatasets: ${req.params.datasetType}`);
     try{
         const result = await datasetSelect.selectDatasets(req.params.datasetType, req.body.parameters);
@@ -122,7 +154,7 @@ const searchDatasets = async function(req, res){
     }
 }
 
-const getCanonicalDatasets = async function(req, res){
+const getCanonicalDatasets = async (req, res) => {
     try{
         const canonical = await datasetCanonical.getCanonicalDatasets(req.params.datasetType);
         res.send(canonical)
@@ -131,7 +163,7 @@ const getCanonicalDatasets = async function(req, res){
     }
 }
 
-const updateCanonicalPSets = async function(req, res){
+const updateCanonicalPSets = async (req, res) => {
     try{
         await datasetUpdate.updateCanonicalStatus(req.body.selected.map(s => {return(s._id)}))
         res.send();
@@ -140,7 +172,7 @@ const updateCanonicalPSets = async function(req, res){
     }
 }
 
-const downloadDatasets = async function(req, res){
+const downloadDatasets = async (req, res) => {
     try{
         console.log(req.body);
         console.log(req.params.datasetType);
@@ -156,7 +188,7 @@ const downloadDatasets = async function(req, res){
  * @param {*} req 
  * @param {*} res 
  */
-const getReleaseNotesData = async function(req, res){
+const getReleaseNotesData = async (req, res) => {
     try{
         let currentData;
 
@@ -188,7 +220,8 @@ const getReleaseNotesData = async function(req, res){
 }
 
 module.exports = {
-    getDatasetByDOI,
+    getSingleDataset,
+    checkPrivate,
     searchDatasets,
     getCanonicalDatasets,
     updateCanonicalPSets,

@@ -16,12 +16,14 @@ const public = require('./api/public');
 
 // dataset
 router.post('/:datasetType/search', dataset.searchDatasets);
-router.get('/:datasetType/one/:id1/:id2', dataset.getDatasetByDOI);
+router.get('/:datasetType/one/:id1/:id2', dataset.getSingleDataset);
+router.get('/:datasetType/check_private/:id1/:id2', dataset.checkPrivate);
 router.get('/pset/releasenotes/:name/:version/:type', dataset.getReleaseNotesData);
 router.get('/canonical/:datasetType', dataset.getCanonicalDatasets);
 router.post('/pset/canonical/update', dataset.updateCanonicalPSets);
 router.post('/:datasetType/download', dataset.downloadDatasets);
 router.get('/pachyderm/status', pachyderm.returnStatus);
+
 router.post('/pset/request', psetRequest.processOnlineRequest);
 router.post('/pset/process', psetRequest.processOfflineRequest);
 router.post('/pset/complete', psetRequest.completeRequest);

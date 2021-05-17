@@ -3,7 +3,6 @@
  */
 const jwt = require('jsonwebtoken');
 
-
 /**
  * Checks if the authentication token in a request cookie is still valid
  * @param {*} req request object
@@ -26,6 +25,12 @@ const jwt = require('jsonwebtoken');
     }
 }
 
+/**
+ * Checks if the logged in user is an admin.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 const isAdmin = (req, res, next) => {
     if(req.decoded && req.decoded.isAdmin){
         next();
@@ -34,7 +39,24 @@ const isAdmin = (req, res, next) => {
     }
 }
 
+/**
+ * Decodes cookie and returns user email if decoded
+ * @param {*} token 
+ */
+const getUsername = (token) => {
+    let user = null;
+    try{
+        let decoded = jwt.verify(token, process.env.TOKEN);
+        user = decoded.username;
+    }catch(err){
+        console.log('invalid token');
+    }finally{
+        return user;
+    }
+}
+
 module.exports = {
     verifyToken,
-    isAdmin
+    isAdmin,
+    getUsername
 }
