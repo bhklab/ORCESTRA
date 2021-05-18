@@ -12,7 +12,17 @@ const StyledTable = styled.table`
         cursor: pointer;
         color: #3D405A;
     }
-`
+`;
+
+const DocHeader = styled.div`
+    margin-top: 20px;
+    .title {
+        display: inline-block;
+        font-size: 20px;
+        font-weight: bold;
+        border-bottom: 3px solid rgb(241, 144, 33);
+    }
+`;
 
 const DocSection = styled.div`
     margin-top: 10px;
@@ -20,7 +30,7 @@ const DocSection = styled.div`
     .docContent {
         margin-left: 20px;
     }
-`
+`;
 
 const DataContribution = () => {
 
@@ -59,10 +69,13 @@ const DataContribution = () => {
 
     return(
         <div className='documentation'>
-            <h2>Contributing Your Data</h2>
-            <div>
-                Please ensure your data submission includes the following files, in the format of the example CSV files provided below:
-            </div>
+            <DocHeader>
+                <div className='title'>Contributing Your Data</div>
+                <p>
+                    You can submit your data to ORCESTRA to be processed into a version-controlled multi-modal datasets via <a href='/app/data_submission'>Data Submission page</a>.<br />
+                    Please ensure your data submission includes the following files, in the format of the example CSV files provided below:
+                </p>
+            </DocHeader>
             <div>
                 <DocSection>
                     <h3>1. Sample annotation</h3>
@@ -87,7 +100,7 @@ const DataContribution = () => {
                     </div>  
                 </DocSection>
                 <DocSection>
-                    <h3>3. Raw drug sensitivity data</h3>
+                    <h3>3. Raw treatment sensitivity data</h3>
                     <div className='docContent'>
                         {exampleFilesTable(['example_drug_annotation.csv', 'example_raw_drug_viability.csv'])}
                         <ol>
@@ -104,7 +117,7 @@ const DataContribution = () => {
                     </div>
                 </DocSection>
                 <DocSection>
-                    <h3>4. Drug sensitivity info</h3>
+                    <h3>4. Treatment sensitivity info</h3>
                     <div className='docContent'>
                         {exampleFilesTable(['example_sensitivity_info.csv'])}
                         <p>

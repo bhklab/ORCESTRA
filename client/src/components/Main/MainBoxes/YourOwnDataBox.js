@@ -7,7 +7,7 @@ const YourOwnDataBox = (props) => (
         <div className='content'>
             <p>
                 <b>{`You can generate ${props.datasetName}s using your own datasets.`}</b> <br /> 
-                For more information, please read about <a href={`/${props.datasetType}/documentation/datacontribution`}>contributing your data</a>.
+                For more information, please read about <a href={`/app/documentation/datacontribution`}>contributing your data</a>.
             </p>    
         </div>
     </MainStyle.Item> 
