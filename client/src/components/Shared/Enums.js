@@ -3,5 +3,6 @@ export const dataTypes = {
     toxicogenomics: 'toxicoset',
     xenographic: 'xevaset',
     clinicalgenomics: 'clinicalgenomics',
-    radiogenomics: 'radioset'
+    radiogenomics: 'radioset',
+    radiomics: 'radiomics'
 }
