@@ -127,7 +127,7 @@ const sendResetPwdEmail = async (req, res) => {
         await userdata.setResetToken({username: email, token: token});
         
         //generate a link with the hashed token
-        const link = process.env.BASE_URL_DEV + 'reset/' + token;
+        const link = process.env.BASE_URL + 'reset/' + token;
 
         // send reset password email
         await mailer.sendPwdResetEmail(email, link);

@@ -74,7 +74,7 @@ const DataSubmission = () => {
     return(
         <div className='pageContent'>
             <StyledDataSubmission>
-                <div className='title'>Data Submission Form</div>
+                <div className='title'>Data Submission Form (Coming soon)</div>
                 <div>
                     Please ensure your data submission includes the following files, in the format of the example CSV files provided below:
                 </div>
