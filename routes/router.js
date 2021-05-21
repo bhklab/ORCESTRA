@@ -16,8 +16,9 @@ const public = require('./api/public');
 
 // dataset
 router.post('/:datasetType/search', dataset.searchDatasets);
-router.get('/:datasetType/one/:id1/:id2', dataset.getSingleDataset);
-router.get('/:datasetType/check_private/:id1/:id2', dataset.checkPrivate);
+router.get('/:datasetType/one/:id1/:id2', dataset.checkPrivate, dataset.getSingleDataset);
+router.get('/:datasetType/check_private/:id1/:id2', dataset.checkPrivate, dataset.authorizeAccess);
+router.get('/:datasetType/share_link/:id1/:id2', auth.verifyToken, dataset.createPrivateShareLink);
 router.get('/:datasetType/publish/:id1/:id2', auth.verifyToken, dataset.publishDataset);
 router.get('/pset/releasenotes/:name/:version/:type', dataset.getReleaseNotesData);
 router.get('/canonical/:datasetType', dataset.getCanonicalDatasets);

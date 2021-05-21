@@ -25,6 +25,13 @@ const MessageContainer = styled.div`
     margin-bottom: 10px;
 `;
 
+const sharelinkMessage = {
+    severity: 'success',
+    summary: 'Sharable Link',
+    detail: '',
+    sticky: true
+}
+
 const successMessage = {
     severity: 'success',
     summary: 'Dataset Published',
@@ -41,6 +48,7 @@ const errorMessage = {
 
 const useSingleDataset = (datasetType, doi) => {
     const [dataset, setDataset] = useState({ready: false, data: {}});
+    const [privateView, setPrivateView] = useState(false);
     const [showPublishDialog, setShowPublishDialog] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
     const [message, setMessage] = useState();
@@ -62,14 +70,16 @@ const useSingleDataset = (datasetType, doi) => {
         }
     }
     
-    const getDataset = async () => {
+    const getDataset = async (shareToken=null) => {
         try{
             const res = await axios.get(`/api/${datasetType}/one/${doi}`);
-            console.log(res.data)
             setDataset({
                 ready: true,
                 data: res.data
             });
+            if(res.data && res.data.private && !shareToken){
+                setPrivateView(true);
+            }
         }catch(error){
             console.log(error);
         }
@@ -93,6 +103,21 @@ const useSingleDataset = (datasetType, doi) => {
         }
     }
 
+    const getShareLink = async (e) => {
+        e.preventDefault();
+        let res;
+        try{
+            res = await axios.get(`/api/${datasetType}/share_link/${doi}`);
+            console.log(res.data);
+        }catch(error){
+            console.log(error);
+        }finally{
+            let message = res.data ? {...sharelinkMessage, detail: `Anyone with this link can view your dataset: ${res.data}`} : errorMessage;
+            setMessage(message);
+            setShowMessage(Math.random());
+        }
+    }
+
     const getHeader = () => {
         return(
             <Header>
@@ -101,10 +126,20 @@ const useSingleDataset = (datasetType, doi) => {
                 </div>
                 <DownloadDatasetButton className='left' disabled={false} datasetType={datasetType} dataset={dataset.data} />
                 { 
-                    dataset.data.private && 
+                    privateView && 
                     <Button 
-                        label='Publish' 
+                        className='left'
+                        label='Get sharable link' 
                         icon='pi pi-share-alt' 
+                        onClick={getShareLink}
+                    /> 
+                }
+                { 
+                    privateView && 
+                    <Button 
+                        className='p-button-success'
+                        label='Publish' 
+                        icon='pi pi-check' 
                         onClick={(e) => {
                             e.preventDefault();
                             setShowPublishDialog(true);

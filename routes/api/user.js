@@ -8,8 +8,7 @@ const userdata = require('../../db/helper/userdata');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mailer = require('../../mailer/mailer');
-const UIDGenerator = require('uid-generator');
-const uidgen = new UIDGenerator(512, UIDGenerator.BASE62);
+const { v4: uuidv4 } = require('uuid');
 const saltRounds = 10;
 
 async function getUser(req, res){
@@ -122,7 +121,7 @@ const sendResetPwdEmail = async (req, res) => {
             res.status(500).send({message: 'User is not registered'});
         }
         // generate temp reset token and expire date/time
-        const token = uidgen.generateSync();
+        const token = uuidv4();
         // insert the reset token and expiry date to the user entry
         await userdata.setResetToken({username: email, token: token});
         

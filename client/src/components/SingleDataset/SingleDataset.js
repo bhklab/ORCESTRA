@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import useSingleDataset from '../../hooks/useSingleDataset';
 import {dataTypes} from '../Shared/Enums';
 import PSet from './PSet/PSet';
@@ -8,6 +9,7 @@ import ClinicalGenomics from './ClinicalGenomics/ClinicalGenomics';
 import RadioSet from './RadioSet/RadioSet';
 
 const SingleDataset = (props) => {
+    const location = useLocation();
     const { 
         getDataset, 
         getHeader,
@@ -18,7 +20,7 @@ const SingleDataset = (props) => {
 
     useEffect(() => {
         const getData = async () => {
-            await getDataset();
+            await getDataset(location.search);
         }
         getData();
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -3,6 +3,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 const datasetSelect = require('../../db/helper/dataset-select');
 const datasetUpdate = require('../../db/helper/dataset-update');
 const datasetCanonical = require('../../db/helper/dataset-canonical');
@@ -110,33 +111,90 @@ const getSingleDataset = async (req, res) => {
 }
 
 /**
- * checks if the requested dataset is private, and if the user is authorized to access it.
+ * 
  * @param {*} req 
  * @param {*} res 
+ * @param {*} next 
  */
-const checkPrivate = async (req, res) => {
-    console.log(req.params);
-    let result = {authorized: false};
+const checkPrivate = async (req, res, next) => {
+    console.log(req.query);
     try{
         // check if the dataset is private
         const dataset = await datasetSelect.selectDatasetByDOI(req.params.datasetType, `${req.params.id1}/${req.params.id2}`);
-        
+            
         // if private, check if the user is authenticated, and owns the dataset
         if(dataset.private){
             const username = auth.getUsername(req.cookies.orcestratoken);
             if(username){
                 const user = await userdata.selectUser(username);
                 const userDatasets = user.userDatasets.map(id => id.toString());
-                result.authorized = userDatasets.includes(dataset._id.toString());
+                let isOwner = userDatasets.includes(dataset._id.toString());
+                if(isOwner){
+                    req.authorized = true;
+                }else if(req.query.shared && req.query.shared.length > 0){
+                    req.authorized = req.query.shared === dataset.shareToken;
+                }
+            }else if(req.query.shared && req.query.shared.length > 0){
+                req.authorized = req.query.shared === dataset.shareToken;
             }
         }else{
-            result.authorized = true;
+            req.authorized = true;
+        }
+    }catch(error){
+        console.log(error);
+        res.status(500);
+    }finally{
+        if(req.authorized){
+            next();
+        }else{
+            res.send({authorized: false});
+        }
+    }
+}
+
+/**
+ * checks if the requested dataset is private, and if the user is authorized to access it.
+ * @param {*} req 
+ * @param {*} res 
+ */
+const authorizeAccess = async (req, res) => {
+    console.log(req.params);
+    res.send({authorized: req.authorized});    
+}
+
+/**
+ * Creates and returns a sharable link to a private dataset if the authenticated user owns the dataset.
+ * Only creates a link if it has not been already created.
+ * @param {*} req 
+ * @param {*} res 
+ */
+const createPrivateShareLink = async (req, res) => {
+    let link = null;
+    try{
+        const datasetType = req.params.datasetType;
+        const doi = `${req.params.id1}/${req.params.id2}`;
+        const dataset = await datasetSelect.selectDatasetByDOI(datasetType, doi);
+        const user = await userdata.selectUser(req.decoded.username);
+        const found = user.userDatasets.map(id => id.toString()).find(item => item === dataset._id.toString());
+        if(found){
+            if(dataset.shareToken){
+                link = `${process.env.BASE_URL}${datasetType}/${doi}?shared=${dataset.shareToken}`;
+            }else{
+                let uid = uuidv4();
+                await datasetUpdate.updateDataset(
+                    datasetType,
+                    {'doi': doi},
+                    {'shareToken': uid} 
+                );
+                link = `${process.env.BASE_URL}${datasetType}/${doi}?shared=${uid}`;
+            }
         }
     }catch(err){
         console.log(err);
+        res.status(500);
     }finally{
-        res.send(result);
-    }    
+        res.send(link);
+    }
 }
 
 /**
@@ -246,6 +304,8 @@ const getReleaseNotesData = async (req, res) => {
 module.exports = {
     getSingleDataset,
     checkPrivate,
+    authorizeAccess,
+    createPrivateShareLink,
     publishDataset,
     searchDatasets,
     getCanonicalDatasets,

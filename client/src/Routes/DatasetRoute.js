@@ -18,9 +18,13 @@ const DatasetRoute = ({component: Component, location, computedMatch, ...rest}) 
     const [authorized, setAuthorized] = useState(null);
 
     useEffect(() => {
-        console.log(computedMatch);
+        console.log(location);
+        let url = `/api/${computedMatch.params.datatype}` + 
+        `/check_private/${computedMatch.params.id1}/${computedMatch.params.id2}` + 
+        `${location.search.length > 0 ? location.search : ''}`;
+        
         const checkPrivate = async () => {
-            const res = await axios.get(`/api/${computedMatch.params.datatype}/check_private/${computedMatch.params.id1}/${computedMatch.params.id2}`);
+            const res = await axios.get(url);
             console.log(res.data);
             setAuthorized(res.data.authorized);
         }
