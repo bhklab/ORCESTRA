@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import {Button} from 'primereact/button';
 
@@ -10,20 +10,12 @@ import {withRouter} from 'react-router';
 import {dataTypes} from '../Shared/Enums';
 
 const Navigation = (props) => {
-    const { location, history } = props;
+    const { location, history, isPachydermOnline } = props;
     const path = useContext(PathContext);
     const auth = useContext(AuthContext);
     const { logoutUser } = useAuth();
 
-    const [isOnline, setIsOnline] = useState(false);
-
     useEffect(() => {
-        const checkStatus = async () => {
-            const status = await fetch('/api/pachyderm/status');
-            const json = await status.json();
-            setIsOnline(json.isOnline);
-        }
-        checkStatus();
         if(location.pathname !== '/' && path.datatype.length === 0){
             path.setDatatype(location.pathname.split('/').filter((el) =>(el.length))[0]);
         }
@@ -98,9 +90,9 @@ const Navigation = (props) => {
                         label={auth.user ? 'Logout' : 'Login/Register'} 
                         onClick={auth.user ? onLogoutClick : onLoginClick}
                     /> 
-                    <PachydermStatus className='status' isOnline={isOnline}>
-                        <div className='icon'><i className={`pi ${ isOnline ? 'pi-check' : 'pi-ban'}`}></i></div>
-                        <div className='text'>Pachyderm is <br />{isOnline ? 'online' : 'offline'}</div>
+                    <PachydermStatus className='status' isOnline={isPachydermOnline}>
+                        <div className='icon'><i className={`pi ${ isPachydermOnline ? 'pi-check' : 'pi-ban'}`}></i></div>
+                        <div className='text'>Pachyderm is <br />{isPachydermOnline ? 'online' : 'offline'}</div>
                     </PachydermStatus> 
                     {
                         auth.user ? <div className='loggedIn'>{`Logged in as: ${auth.user.username}`}</div> : ''
@@ -125,9 +117,9 @@ const Navigation = (props) => {
                         label={auth.user ? 'Logout' : 'Login/Register'} 
                         onClick={auth.user ? onLogoutClick : onLoginClick}
                     />
-                    <PachydermStatus className='status' isOnline={isOnline}>
-                        <div className='icon'><i className={`pi ${ isOnline ? 'pi-check' : 'pi-ban'}`}></i></div>
-                        <div className='text'>Pachyderm is <br />{isOnline ? 'online' : 'offline'}</div>
+                    <PachydermStatus className='status' isOnline={isPachydermOnline}>
+                        <div className='icon'><i className={`pi ${ isPachydermOnline ? 'pi-check' : 'pi-ban'}`}></i></div>
+                        <div className='text'>Pachyderm is <br />{isPachydermOnline ? 'online' : 'offline'}</div>
                     </PachydermStatus> 
                 </Menu>
             </BurgerNav> 

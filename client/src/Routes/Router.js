@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { AuthContext, PathContext } from "../hooks/Context";
 import useFindUser from '../hooks/useFindUser';
+import usePachyderm from '../hooks/usePachyderm';
 
 // routes 
 import PrivateRoute from './PrivateRoute';
@@ -36,11 +37,12 @@ const Router = () => {
      */
     const { user, setUser, loading } = useFindUser();
     const [datatype, setDatatype] = useState('');
+    const { online } = usePachyderm();
 
     return(
         <AuthContext.Provider value={{user, setUser, loading}}>
             <PathContext.Provider value={{datatype: datatype, setDatatype: setDatatype}}>
-                <Navigation />
+                <Navigation isPachydermOnline={online} />
                 <Switch>
                     <Route exact path ='/' component={Main} /> 
                     <Route exact path ='/:datatype' render={(props) => (<DatasetMain {...props} />)} /> 
