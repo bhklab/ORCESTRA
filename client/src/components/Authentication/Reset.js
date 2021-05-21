@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Messages} from 'primereact/messages';
@@ -17,24 +18,18 @@ const Reset = (props) => {
     }, [email, password1, password2])
 
     const onResetClick = async (event) => {
-        event.preventDefault()
-        const res = await fetch('/api/user/reset/token', {
-            method: 'POST',
-            body: JSON.stringify({
-                user: { 
-                    username: email, 
-                    password: password1,
-                    token: props.match.params.token 
-                }   
-            }),
-            headers: { 'Content-type': 'application/json' }
-        })
-        const data = await res.json()
-        console.log(data)
-        if(data.status){
+        event.preventDefault();
+        const res = await axios.post('/api/user/reset/token', {
+            user: {
+                username: email, 
+                password: password1,
+                token: props.match.params.token
+            }
+        });
+        if(res.data.status === 1){
             Reset.messages.show({severity: 'success', summary: 'Password has been reset', detail: 'Please login using your new password.'});
         }else{
-            Reset.messages.show({severity: 'error', summary: 'Password could not be reset', detail: data.message});
+            Reset.messages.show({severity: 'error', summary: 'Password could not be reset', detail: res.data.message});
         }
     }
     
@@ -50,7 +45,7 @@ const Reset = (props) => {
                 <div className='formContainer'>
                     <h4>Enter new password</h4>
                     <div>
-                        <div className='pwdMsg'>Password needs to be at least 6 characters in length</div>
+                        <label>Password needs to be at least 6 characters in length</label>
                         <InputText className='pwdInput' type='password' name='password1' value={password1} onChange={(e) => {setPassword1(e.target.value)}}/>
                     </div>
                     <div>

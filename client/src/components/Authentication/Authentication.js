@@ -39,7 +39,8 @@ const Authentication = (props) => {
         event.preventDefault();
         console.log('reset click');
         const res = await axios.post('/api/user/reset/email', { email: user.username} );
-        if(res.ok){
+        console.log(res);
+        if(res.status === 200){
             Authentication.messages.show({severity: 'success', summary: 'Email has been sent.', detail: 'Please follow the link in the email to reset your password.'});
         }else{
             Authentication.messages.show({severity: 'error', summary: 'An error occurred', detail: res.data.message});

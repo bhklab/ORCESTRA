@@ -24,6 +24,9 @@ const StyledLoginForm = styled.div`
     .emailInput{
         display: flex;
         align-items: center;
+        label {
+            margin-right: 10px;
+        }
         .p-inputtext {
             font-size: 12px;
             margin-right: 10px;

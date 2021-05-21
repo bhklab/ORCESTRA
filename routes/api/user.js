@@ -100,20 +100,21 @@ const getSession = async (req, res) => {
 }
 
 const resetPwd = async (req, res) => {
-    const user = req.body.user
+    const user = req.body.user;
     try{
-        const hashed = await bcrypt.hash(user.password, saltRounds)
-        const updated = await userdata.resetPassword({username: user.username, password: hashed})
-        const token = jwt.sign({username: user.username}, process.env.KEY, {expiresIn: '1h'})
-        res.cookie('token', token, {httpOnly: true}).send({authenticated: true, username: user.username, isAdmin: updated.admin}) 
+        const hashed = await bcrypt.hash(user.password, saltRounds);
+        await userdata.resetPassword({username: user.username, password: hashed});
     }catch(error){
         console.log(error)
-        res.status(500).send({authenticated: false})
+        res.status(500);
+    }finally{
+        res.send();
     }
 }
 
 const sendResetPwdEmail = async (req, res) => {
-    const email = req.body.email
+    const email = req.body.email;
+    let result = {};
     try{
         // check if the user is registered
         const user = await userdata.selectUser(email)
@@ -123,44 +124,51 @@ const sendResetPwdEmail = async (req, res) => {
         // generate temp reset token and expire date/time
         const token = uidgen.generateSync();
         // insert the reset token and expiry date to the user entry
-        await userdata.setResetToken({username: email, token: token})
+        await userdata.setResetToken({username: email, token: token});
         
         //generate a link with the hashed token
-        const link = process.env.BASE_URL + 'Reset/' + token
+        const link = process.env.BASE_URL_DEV + 'reset/' + token;
 
         // send reset password email
-        await mailer.sendPwdResetEmail(email, link)
-        res.send({status: 1, message: 'ok'});
+        await mailer.sendPwdResetEmail(email, link);
+        result  = {status: 1, message: 'ok'};
     }catch(error){
-        res.status(500).send({message: 'Password cannot be reset this time. Please try again.'});
+        result = {message: 'Password cannot be reset this time. Please try again.'};
+        res.status(500);
+    }finally{
+        res.send({});
     }
     
 }
 
 const resetPwdWithToken = async (req, res) => {
-    const token = req.body.user.token
+    const token = req.body.user.token;
+    console.log(req.body.user);
+    let result = {};
     try{
-        const user = await userdata.selectUser(req.body.user.username)
+        const user = await userdata.selectUser(req.body.user.username);
         if(!user || !user.registered){
-            console.log('user does not exist')
-            res.send({status: 0, message: 'User does not exist.'})
+            console.log('user does not exist');
+            result = {status: 0, message: 'User does not exist.'};
         }else if(Date.now() > user.expire){
-            console.log('token expired')
-            res.send({status: 0, message: 'Token is expired.'})
-        }else if(token.localeCompare(user.resetToken) != 0){
-            console.log(token.localeCompare(user.resetToken))
-            console.log('token invalid')
-            res.send({status: 0, message: 'Token is invalid.'})
+            console.log('token expired');
+            result = {status: 0, message: 'Token is expired.'};
+        }else if(token.localeCompare(user.resetToken) !== 0){
+            console.log(token.localeCompare(user.resetToken));
+            console.log('token invalid');
+            result = {status: 0, message: 'Token is invalid.'};
         }else{
-            console.log('token still valid')
-            const hashed = await bcrypt.hash(req.body.user.password, saltRounds)
-            await userdata.resetPassword({username: user.username, password: hashed})
-            const token = jwt.sign({username: user.username}, process.env.KEY, {expiresIn: '1h'})
-            res.cookie('token', token, {httpOnly: true}).send({status: 1}) 
+            console.log('token still valid');
+            const hashed = await bcrypt.hash(req.body.user.password, saltRounds);
+            await userdata.resetPassword({username: user.username, password: hashed});
+            result = {status: 1};
         }
     }catch(error){
-        console.log(error)
-        res.status(500).send({status: 0, message: 'An error occurred.'})
+        console.log(error);
+        result = {status: 0, message: 'An error occurred.'};
+        res.status(500);
+    }finally{
+        res.send(result);
     }
 }
 
