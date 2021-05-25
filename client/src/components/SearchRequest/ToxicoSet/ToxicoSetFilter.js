@@ -3,7 +3,7 @@ import SearchReqContext from '../SearchReqContext';
 
 import {Filter} from '../SearchReqStyle';
 import FilterInputSwitch from '../../Shared/FilterInputSwitch';
-import FilterDropdown from '../../Shared/FilterDropdown';
+import CustomSelect from '../../Shared/CustomSelect';
 import {dataTypes} from '../../Shared/Enums';
 
 const ToxicoSetFilter = () => {
@@ -36,7 +36,7 @@ const ToxicoSetFilter = () => {
                     tooltip='Currently unavailable'
                     disabled={true}
                 />
-                <FilterDropdown 
+                <CustomSelect 
                     id='dataset' 
                     hidden={false} 
                     label='Dataset:' 

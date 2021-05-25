@@ -6,8 +6,8 @@ import styled from 'styled-components';
 const FilterSet = styled.div`
     display: flex;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: 30px;
+    // margin-top: 20px;
+    // margin-bottom: 20px;
     label {
         margin-right: 10px;
     }
@@ -32,6 +32,7 @@ const FilterSet = styled.div`
 const FilterDropdown = (props) => {
     const { 
         id, 
+        className,
         hidden, 
         selectOne, 
         label, 
@@ -67,7 +68,7 @@ const FilterDropdown = (props) => {
     }
     if(selectOne){
         return(
-            <FilterSet>
+            <FilterSet className={className}>
                 <label>{label}</label>
                 <Dropdown 
                     id={id} 
@@ -85,7 +86,7 @@ const FilterDropdown = (props) => {
         );
     }
     return(
-        <FilterSet>
+        <FilterSet className={className}>
             <label>{label}</label>
             <MultiSelect 
                 id={id}

@@ -51,10 +51,10 @@ const Router = () => {
                     <Route exact path ='/:datatype/status' component={RequestStatus}/>
                     <Route exact path ='/:datatype/stats' component={Stats}/>
                     <Route exact path ='/app/documentation/:section' component={Documentation} />
-                    <Route exact path ='/app/data_submission' component={DataSubmission} />
                     <Route exact path='/app/authentication' component={Authentication} />
                     <Route path ='/reset/:token' component={Reset} />
                     <DatasetRoute path='/:datatype/:id1/:id2' component={SingleDataset} redirect='/app/authentication' />
+                    <PrivateRoute path ='/app/data_submission' component={DataSubmission} redirect='/app/authentication' />
                     <PrivateRoute path='/app/profile' component={Profile} redirect='/app/authentication' />
                     <AdminRoute path='/admin' component={Admin} redirect='/app/profile' />
                     <Route component={NotFound404}/>

@@ -3,7 +3,7 @@ import SearchReqContext from '../SearchReqContext';
 
 import {Filter} from '../SearchReqStyle';
 import FilterInputSwitch from '../../Shared/FilterInputSwitch';
-import FilterDropdown from '../../Shared/FilterDropdown';
+import CustomSelect from '../../Shared/CustomSelect';
 import CustomCheckbox from '../../Shared/CustomCheckbox';
 import {dataTypes} from '../../Shared/Enums';
 
@@ -234,8 +234,9 @@ const PSetFilter = () => {
                         checked={checkBoxes.canonicalOnly} 
                     />
                 }
-                <FilterDropdown 
+                <CustomSelect 
                     id='dataset' 
+                    className='form-field'
                     hidden={false} 
                     label='Dataset:' 
                     selectOne={context.isRequest}  
@@ -248,7 +249,7 @@ const PSetFilter = () => {
                 />
                 {
                     (context.isRequest && !dataTypeDisabled) && 
-                    <div>
+                    <div className='form-field'>
                         Molecular Data: 
                         {
                             context.parameters.defaultData.length === 1 ?
@@ -264,8 +265,9 @@ const PSetFilter = () => {
                         } 
                     </div>
                 }
-                <FilterDropdown 
+                <CustomSelect 
                     id='dataType' 
+                    className='form-field'
                     hidden={dataTypeSelect.hidden} 
                     label={ context.isRequest ? 'Optional Molecular Data:' : 'Molecular Data Type:'}
                     options={dataTypeSelect.options} 
@@ -276,8 +278,9 @@ const PSetFilter = () => {
                         context.setParameters(prev => ({...prev, dataType: e.value, search: true}));
                     }} 
                 />
-                <FilterDropdown 
+                <CustomSelect 
                     id='microarrayOptions' 
+                    className='form-field'
                     hidden={miArraySelect.hidden} 
                     label='Microarray Type:'
                     selectOne={true}
@@ -291,8 +294,9 @@ const PSetFilter = () => {
                         context.setParameters(prev => ({...prev, dataType: dataType, search: false}));
                     }} 
                 />
-                <FilterDropdown 
+                <CustomSelect 
                     id='drugSensitivity' 
+                    className='form-field'
                     hidden={drugSensSelect.hidden} 
                     label='Drug Sensitivity:' 
                     selectOne={context.isRequest} 
@@ -327,8 +331,9 @@ const PSetFilter = () => {
                     />
                 }
                 
-                <FilterDropdown 
+                <CustomSelect 
                     id='genome' 
+                    className='form-field'
                     disabled={toolRefDisabled} 
                     hidden={false} 
                     label='Genome:' 
@@ -342,8 +347,9 @@ const PSetFilter = () => {
                     }} 
                 />
 
-                <FilterDropdown 
+                <CustomSelect 
                     id='rnaTool' 
+                    className='form-field'
                     disabled={toolRefDisabled} 
                     label='RNA Tool:' 
                     options={rnaToolSelect.options} 
@@ -357,8 +363,9 @@ const PSetFilter = () => {
                     }} 
                 />
 
-                <FilterDropdown 
+                <CustomSelect 
                     id='rnaRef' 
+                    className='form-field'
                     disabled={toolRefDisabled} 
                     label='RNA Ref:' 
                     selectOne={context.isRequest} 

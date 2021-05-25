@@ -15,6 +15,9 @@ export const Filter = styled.div`
     padding-right: 20px;
     padding-bottom: 20px;
     border-radius: 10px;
+    .form-field {
+        margin-bottom: 20px;
+    }
 `;
 
 export const MainPanel = styled.div`
