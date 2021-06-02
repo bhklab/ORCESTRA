@@ -17,12 +17,13 @@ const StyledInputText = styled(InputText)`
 `;
 
 const CustomInputText = (props) => {
-    const {label, id, className, value, onChange, disabled} = props;
+    const {label, id, className, name, value, onChange, disabled} = props;
     return(
         <Container className={className}>
             <label>{label}</label>
             <StyledInputText 
                 id={id} 
+                name={name}
                 value={value} 
                 onChange={onChange}
                 disabled={disabled} 

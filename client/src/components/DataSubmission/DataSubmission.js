@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Button } from 'primereact/button';
 import CustomInputText from '../Shared/CustomInputText';
 import CustomSelect from '../Shared/CustomSelect';
+import MolecularDataForm from './MolecularDataForm';
 
 const StyledDataSubmission = styled.div`
     width: 100%;
@@ -73,10 +74,22 @@ const DataSubmission = () => {
     const [drugAnnotation, setDrugAnnotation] = useState({filename: '', repoURL: ''});
     const [rawTreatmentData, setRawTreatmentData] = useState({filename: '', repoURL: '', publication: {citation: '', link: ''}});
     const [treatmentInfo, setTreatmentInfo] = useState({filename: '', repoURL: ''});
-    const [molecularData, setMolecularData] = useState([]);
+    const [molecularData, setMolecularData] = useState([{name: '', filename: '', repoURL: ''}]);
 
     const submit = async (e) => {
         e.preventDefault();
+    }
+
+    const handleMolecularDataInput = (e, i, field) => {
+        let value = '';
+        if(field === 'name'){
+            value = e.value;
+        }else{
+            value = e.target.value;
+        }
+        const list = [...molecularData];
+        list[i][field] = value;
+        setMolecularData(list);
     }
 
     return(
@@ -239,6 +252,15 @@ const DataSubmission = () => {
                             We accept processed RNA-seq, microarray, mutation, and CNV data. For each datatype, ensure rows are denoted as gene, transcript, or probe ID's, while columns are denoted as samples (unique.sample.id). Please also indicate which tools and their versions were used to process your molecular data (e.g. Kallisto v.0.43.1 for RNA-seq), including information about all accompanying files required to process your data (e.g. Gencode v33 transcriptome for RNA-seq; SureSelectHumanAllExonV5 BED file for mutation calling).
                         </p> 
                     </div>
+                    {
+                        molecularData.map((data, i) => (
+                            <MolecularDataForm 
+                                molecularData={data} 
+                                index={i} 
+                                handleInputChange={handleMolecularDataInput}
+                            />
+                        ))
+                    }
                 </DocSection>
                 <DocSection>
                     <Button label='Submit Data' type='submit' disabled={false} onClick={submit} />
