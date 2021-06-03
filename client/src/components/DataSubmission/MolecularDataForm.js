@@ -25,15 +25,21 @@ const StyledFormContainer = styled.div`
         margin-right: 10px;
     }
     .button-field {
-        .left {
+        .btn {
             margin-left: 10px;
-            margin-right: 10px;
         }
     }
 `;
 
 const MolecularDataForm = (props) => {
-    const { index, molecularData, handleInputChange } = props;
+    const { 
+        length,
+        index, 
+        molecularData, 
+        handleInputChange,
+        handleAddClick,
+        handleRemoveClick 
+    } = props;
 
     return(
         <StyledFormContainer>
@@ -61,9 +67,25 @@ const MolecularDataForm = (props) => {
                 onChange={(e) => {handleInputChange(e, index, 'repoURL')}}
             />
             <div className='button-field'>
-                { index === 0 && <Button icon='pi pi-plus' className='left'/> }
-                { index > 0 && <Button icon='pi pi-times' className='left p-button-danger'/> }
-                <Button label='Reset' />
+                { 
+                    index > 0 && 
+                    <Button 
+                        icon='pi pi-times' 
+                        tooltip='Remove' 
+                        className='btn p-button-danger'
+                        onClick={(e) => {handleRemoveClick(e, index)}}
+                    /> 
+                }
+                { 
+                    index === length - 1 && 
+                    <Button 
+                        icon='pi pi-plus' 
+                        tooltip='Add another molecular profile' 
+                        className='btn'
+                        onClick={handleAddClick}
+                    /> 
+                }
+                <Button icon='pi pi-replay' tooltip='Reset' className='btn p-button-secondary' />
             </div>
         </StyledFormContainer>
     );

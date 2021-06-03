@@ -17,7 +17,6 @@ const StyledDataSubmission = styled.div`
     .title {
         font-size: 20px;
         font-weight: bold;
-        padding-bottom: 10px;
     }
 `;
 
@@ -80,7 +79,7 @@ const DataSubmission = () => {
         e.preventDefault();
     }
 
-    const handleMolecularDataInput = (e, i, field) => {
+    const handleMolecularDataInput = (e, index, field) => {
         let value = '';
         if(field === 'name'){
             value = e.value;
@@ -88,7 +87,18 @@ const DataSubmission = () => {
             value = e.target.value;
         }
         const list = [...molecularData];
-        list[i][field] = value;
+        list[index][field] = value;
+        setMolecularData(list);
+    }
+
+    const handleMolecularDataAdd = (e) => {
+        e.preventDefault();
+        setMolecularData([...molecularData, {name: '', filename: '', repoURL: ''}]);
+    }
+
+    const handleMolecularDataRemove = (e, index) => {
+        const list = [...molecularData];
+        list.splice(index, 1);
         setMolecularData(list);
     }
 
@@ -96,6 +106,12 @@ const DataSubmission = () => {
         <div className='pageContent'>
             <StyledDataSubmission>
                 <div className='title'>Data Submission Form (Coming soon)</div>
+                <p>
+                    Please fill out and submit the form below. 
+                    For Each data, provide the filename, repository URL and publication information if applicable. <br />
+                    We will process the data into a curated dataset, and notify you via email.<br />
+                    Please refer to <a href='/app/documentation/datacontribution'>Contributing Your Data</a> for more details about the format of each data.
+                </p>
                 <SubmissionPanel>
                     <div className='left'>
                         <CustomInputText 
@@ -103,12 +119,6 @@ const DataSubmission = () => {
                             label='Dataset Name:'
                             value={submission.name} 
                             onChange={(e) => {setSubmission({...submission, name: e.target.value})}}
-                        />
-                        <CustomInputText 
-                            className='inputtext'
-                            label='Email:'
-                            value={submission.email} 
-                            onChange={(e) => {setSubmission({...submission, email: e.target.value})}}
                         />
                     </div>
                     <div className='right'>
@@ -121,12 +131,6 @@ const DataSubmission = () => {
                         />
                     </div>
                 </SubmissionPanel>
-                <div>
-                    Please fill out and submit the form below. 
-                    For Each data, provide the filename, repository URL and publication information if applicable. <br />
-                    We will process the data into a curated dataset, and notify you via email.<br />
-                    Please refer to <a href='/app/documentation/datacontribution'>Contributing Your Data</a> for more details about the format of each data.
-                </div>
                 <DocSection>
                     <div className='subtitle'>1. Sample annotation</div>
                     <div className='description'>
@@ -255,9 +259,12 @@ const DataSubmission = () => {
                     {
                         molecularData.map((data, i) => (
                             <MolecularDataForm 
+                                length={molecularData.length}
                                 molecularData={data} 
                                 index={i} 
                                 handleInputChange={handleMolecularDataInput}
+                                handleAddClick={handleMolecularDataAdd}
+                                handleRemoveClick={handleMolecularDataRemove}
                             />
                         ))
                     }
