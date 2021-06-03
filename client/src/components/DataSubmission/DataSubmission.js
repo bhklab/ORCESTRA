@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+
 import { Button } from 'primereact/button';
 import CustomInputText from '../Shared/CustomInputText';
 import CustomSelect from '../Shared/CustomSelect';
+import CustomMessages from '../Shared/CustomMessages';
 import MolecularDataForm from './MolecularDataForm';
+import { dataTypes } from '../Shared/Enums'; 
 
 const StyledDataSubmission = styled.div`
     width: 100%;
@@ -46,15 +50,17 @@ const DocSection = styled.div`
         margin-left: 10px;
         margin-bottom: 10px;
         .filename {
-            width: 300px;
-            margin-right: 10px;
+            width: 250px;
+            margin-right: 20px;
         }
         .repo-url {
+            width: 400px;
+        }
+        .publication-citation {
             width: 500px;
         }
-        .publication-input {
-            width: 500px;
-            margin-right: 10px;
+        .publication-link {
+            width: 250px;
         }
     }
     .description {
@@ -62,21 +68,62 @@ const DocSection = styled.div`
     }
 `;
 
+const datasetTypeOptions = [
+    { label: 'Pharmacogenomics', value: dataTypes.pharmacogenomics},
+    { label: 'Toxicogenomics', value: dataTypes.toxicogenomics },
+    { label: 'Xenographic Pharmacogenomics', value: dataTypes.xenographic},
+    { label: 'Cinical Genomics', value: dataTypes.clinicalgenomics},
+    { label: 'Radiogenomics', value: dataTypes.radiogenomics},
+];
+
+const dataSubmissionSuccessMessage = {
+    severity: 'success', 
+    summary: 'Data Submitted', 
+    detail: 'Your data has been submitted for curation. You will be notified via email once your dataset is processed.', 
+    sticky: true 
+}
+
+const dataSubmissionErrorMessage = {
+    severity: 'error', 
+    summary: 'Error Occurred', 
+    detail: 'There was an error in the server. Please try again, or contact support@orcestra.ca', 
+    sticky: true 
+}
+
 const DataSubmission = () => {
 
-    const [submission, setSubmission] = useState({
-        name: '',
-        datasetType: '',
-        email: ''
-    });
+    const [info, setInfo] = useState({ name: '', datasetType: '' });
     const [sampleAnnotation, setSampleAnnotation] = useState({filename: '', repoURL: ''});
     const [drugAnnotation, setDrugAnnotation] = useState({filename: '', repoURL: ''});
     const [rawTreatmentData, setRawTreatmentData] = useState({filename: '', repoURL: '', publication: {citation: '', link: ''}});
     const [treatmentInfo, setTreatmentInfo] = useState({filename: '', repoURL: ''});
     const [molecularData, setMolecularData] = useState([{name: '', filename: '', repoURL: ''}]);
+    const [showMsg, setShowMsg] = useState(false);
+    const [submitMessage, setSubmitMessage] = useState({});
 
     const submit = async (e) => {
         e.preventDefault();
+        const submission = {
+            info: info,
+            sampleAnnotation: sampleAnnotation,
+            drugAnnotation: drugAnnotation,
+            rawTreatmentData: rawTreatmentData,
+            treatmentInfo: treatmentInfo,
+            molecularData: molecularData
+        };
+        const res = await axios.post('/api/user/dataset/submit', submission);
+        if(res.status === 200){
+            setSubmitMessage(dataSubmissionSuccessMessage);
+        }else{
+            setSubmitMessage(dataSubmissionErrorMessage);
+        }
+        setShowMsg(Math.random());
+        setInfo({ name: '', datasetType: '' });
+        setSampleAnnotation({filename: '', repoURL: ''});
+        setDrugAnnotation({filename: '', repoURL: ''});
+        setRawTreatmentData({filename: '', repoURL: '', publication: {citation: '', link: ''}});
+        setTreatmentInfo({filename: '', repoURL: ''});
+        setMolecularData([{name: '', filename: '', repoURL: ''}]);
     }
 
     const handleMolecularDataInput = (e, index, field) => {
@@ -91,6 +138,12 @@ const DataSubmission = () => {
         setMolecularData(list);
     }
 
+    const handleMolecularDataReset = (e, index) => {
+        const list = [...molecularData];
+        list[index] = {name: '', filename: '', repoURL: ''};
+        setMolecularData(list);
+    }
+
     const handleMolecularDataAdd = (e) => {
         e.preventDefault();
         setMolecularData([...molecularData, {name: '', filename: '', repoURL: ''}]);
@@ -100,6 +153,30 @@ const DataSubmission = () => {
         const list = [...molecularData];
         list.splice(index, 1);
         setMolecularData(list);
+    }
+
+    const isSubmitDisabled = () => {
+        if(info.name.length === 0 || info.datasetType.length === 0){
+            return true;
+        }
+        if(sampleAnnotation.filename.lenght === 0 || sampleAnnotation.repoURL.length === 0){
+            return true;
+        }
+        if(drugAnnotation.filename.length === 0 || drugAnnotation.repoURL.length === 0){
+            return true;
+        }
+        if(rawTreatmentData.filename.length === 0 || rawTreatmentData.repoURL.length === 0){
+            return true;
+        }
+        if(treatmentInfo.filename.length === 0 || treatmentInfo.repoURL.length === 0){
+            return true;
+        }
+        for(const item of molecularData){
+            if(item.name.length === 0 || item.filename.length === 0 || item.repoURL.length === 0){
+                return true;
+            }
+        }
+        return false;
     }
 
     return(
@@ -117,16 +194,16 @@ const DataSubmission = () => {
                         <CustomInputText 
                             className='inputtext'
                             label='Dataset Name:'
-                            value={submission.name} 
-                            onChange={(e) => {setSubmission({...submission, name: e.target.value})}}
+                            value={info.name} 
+                            onChange={(e) => {setInfo({...info, name: e.target.value})}}
                         />
                     </div>
                     <div className='right'>
                         <CustomSelect 
                             label='Dataset Type:'
-                            value={submission.datasetType} 
-                            options={[]}
-                            onChange={(e) => {setSubmission({...submission, datasetType: e.value})}}
+                            selected={info.datasetType} 
+                            options={datasetTypeOptions}
+                            onChange={(e) => {setInfo({...info, datasetType: e.value})}}
                             selectOne={true}
                         />
                     </div>
@@ -211,20 +288,19 @@ const DataSubmission = () => {
                     </div>
                     <div className='form-container'>
                         <CustomInputText 
-                            className='publication-input'
+                            className='publication-citation'
                             label='Pulication Citation:'
                             value={rawTreatmentData.publication.citation} 
                             onChange={(e) => {setRawTreatmentData({...rawTreatmentData, publication: {...rawTreatmentData.publication, citation: e.target.value}})}}
                         />
+                    </div>
+                    <div className='form-container'>
                         <CustomInputText 
-                            className='publication-input'
+                            className='publication-link'
                             label='Link:'
                             value={rawTreatmentData.publication.link} 
                             onChange={(e) => {setRawTreatmentData({...rawTreatmentData, publication: {...rawTreatmentData.publication, link: e.target.value}})}}
                         />
-                    </div>
-                    <div className='form-container'>
-                        
                     </div>
                 </DocSection>
                 <DocSection>
@@ -263,14 +339,21 @@ const DataSubmission = () => {
                                 molecularData={data} 
                                 index={i} 
                                 handleInputChange={handleMolecularDataInput}
+                                handleReset={handleMolecularDataReset}
                                 handleAddClick={handleMolecularDataAdd}
                                 handleRemoveClick={handleMolecularDataRemove}
                             />
                         ))
                     }
                 </DocSection>
+                <CustomMessages trigger={showMsg} message={submitMessage} />
                 <DocSection>
-                    <Button label='Submit Data' type='submit' disabled={false} onClick={submit} />
+                    <Button 
+                        label='Submit Data' 
+                        type='submit' 
+                        disabled={isSubmitDisabled()} 
+                        onClick={submit} 
+                    />
                 </DocSection>
             </StyledDataSubmission>
         </div>

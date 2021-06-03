@@ -78,8 +78,23 @@ const removeUserPSet = async (req, res) => {
     }
 }
 
+const submitDataset = async (req, res) => {
+    try{
+        let submission = req.body;
+        console.log(req.decoded);
+        console.log(submission);
+        
+    }catch(err){
+        console.log(err);
+        res.status(500);
+    }finally{
+        res.send();
+    }
+}
+
 module.exports = {
     getUserPSet,
     addToUserPset,
-    removeUserPSet
+    removeUserPSet,
+    submitDataset
 }

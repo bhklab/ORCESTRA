@@ -45,6 +45,7 @@ router.post('/user/reset', auth.verifyToken, user.resetPwd);
 router.get('/user/dataset/list', auth.verifyToken, userDataset.getUserPSet);
 router.post('/user/dataset/add', auth.verifyToken, userDataset.addToUserPset);
 router.post('/user/dataset/remove', auth.verifyToken, userDataset.removeUserPSet);
+router.post('/user/dataset/submit', auth.verifyToken, userDataset.submitDataset);
 
 //formdata and stats
 router.get('/:datasetType/formdata', formMetric.getFormData);

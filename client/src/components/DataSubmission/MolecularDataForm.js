@@ -11,18 +11,14 @@ const StyledFormContainer = styled.div`
     margin-left: 10px;
     margin-bottom: 10px;
     .datatype {
-        margin-right: 10px;
+        margin-right: 20px;
     }
     .filename {
-        width: 300px;
-        margin-right: 10px;
+        width: 250px;
+        margin-right: 20px;
     }
     .repo-url {
-        width: 500px;
-    }
-    .publication-input {
-        width: 500px;
-        margin-right: 10px;
+        width: 400px;
     }
     .button-field {
         .btn {
@@ -31,15 +27,26 @@ const StyledFormContainer = styled.div`
     }
 `;
 
+const molecularDataOptions = [
+    { label: 'RNA Sequence', value: 'rnaseq' },
+    { label: 'Microarray', value: 'microarray' },
+    { label: 'CNV', value: 'cnv' },
+    { label: 'Fusion', value: 'fusion' },
+    { label: 'Mutation', value: 'mutation' },
+];
+
 const MolecularDataForm = (props) => {
     const { 
         length,
         index, 
         molecularData, 
         handleInputChange,
+        handleReset,
         handleAddClick,
         handleRemoveClick 
     } = props;
+
+    
 
     return(
         <StyledFormContainer>
@@ -47,8 +54,9 @@ const MolecularDataForm = (props) => {
                 className='datatype'
                 label='Data Type:'
                 name='name'
-                value={molecularData.name} 
-                options={[]}
+                optionLabel='label'
+                selected={molecularData.name} 
+                options={molecularDataOptions}
                 onChange={(e) => {handleInputChange(e, index, 'name')}}
                 selectOne={true}
             />
@@ -83,9 +91,15 @@ const MolecularDataForm = (props) => {
                         tooltip='Add another molecular profile' 
                         className='btn'
                         onClick={handleAddClick}
+                        disabled={molecularData.name.length === 0 || molecularData.filename.length === 0 || molecularData.repoURL.length === 0}
                     /> 
                 }
-                <Button icon='pi pi-replay' tooltip='Reset' className='btn p-button-secondary' />
+                <Button 
+                    icon='pi pi-replay' 
+                    tooltip='Reset' 
+                    className='btn p-button-secondary' 
+                    onClick={(e) => {handleReset(e, index)}}
+                />
             </div>
         </StyledFormContainer>
     );
