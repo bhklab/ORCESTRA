@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 import { Button } from 'primereact/button';
+import { Checkbox } from 'primereact/checkbox';
 import CustomInputText from '../Shared/CustomInputText';
 import CustomSelect from '../Shared/CustomSelect';
 import CustomMessages from '../Shared/CustomMessages';
@@ -26,12 +27,10 @@ const StyledDataSubmission = styled.div`
 
 const SubmissionPanel = styled.div`
     display: flex;
+    align-items: center;
     .left {
         width: 300px;
         margin-right: 20px;
-        .inputtext {
-            margin-bottom: 10px;
-        }
     }
 `;
 
@@ -47,8 +46,13 @@ const DocSection = styled.div`
         display: flex;
         aling-items: center;
         flex-wrap: wrap;
+        width: 100%;
         margin-left: 10px;
         margin-bottom: 10px;
+        .version {
+            width: 200px;
+            margin-right: 20px;
+        }
         .filename {
             width: 250px;
             margin-right: 20px;
@@ -92,10 +96,10 @@ const dataSubmissionErrorMessage = {
 
 const DataSubmission = () => {
 
-    const [info, setInfo] = useState({ name: '', datasetType: '' });
+    const [info, setInfo] = useState({ name: '', datasetType: '',  private: false });
     const [sampleAnnotation, setSampleAnnotation] = useState({filename: '', repoURL: ''});
     const [drugAnnotation, setDrugAnnotation] = useState({filename: '', repoURL: ''});
-    const [rawTreatmentData, setRawTreatmentData] = useState({filename: '', repoURL: '', publication: {citation: '', link: ''}});
+    const [rawTreatmentData, setRawTreatmentData] = useState({version: '', filename: '', repoURL: '', publication: {citation: '', link: ''}});
     const [treatmentInfo, setTreatmentInfo] = useState({filename: '', repoURL: ''});
     const [molecularData, setMolecularData] = useState([{name: '', filename: '', repoURL: ''}]);
     const [showMsg, setShowMsg] = useState(false);
@@ -159,13 +163,13 @@ const DataSubmission = () => {
         if(info.name.length === 0 || info.datasetType.length === 0){
             return true;
         }
-        if(sampleAnnotation.filename.lenght === 0 || sampleAnnotation.repoURL.length === 0){
+        if(sampleAnnotation.filename.length === 0 || sampleAnnotation.repoURL.length === 0){
             return true;
         }
         if(drugAnnotation.filename.length === 0 || drugAnnotation.repoURL.length === 0){
             return true;
         }
-        if(rawTreatmentData.filename.length === 0 || rawTreatmentData.repoURL.length === 0){
+        if(rawTreatmentData.version.length === 0 || rawTreatmentData.filename.length === 0 || rawTreatmentData.repoURL.length === 0){
             return true;
         }
         if(treatmentInfo.filename.length === 0 || treatmentInfo.repoURL.length === 0){
@@ -198,7 +202,7 @@ const DataSubmission = () => {
                             onChange={(e) => {setInfo({...info, name: e.target.value})}}
                         />
                     </div>
-                    <div className='right'>
+                    <div className='left'>
                         <CustomSelect 
                             label='Dataset Type:'
                             selected={info.datasetType} 
@@ -206,6 +210,10 @@ const DataSubmission = () => {
                             onChange={(e) => {setInfo({...info, datasetType: e.value})}}
                             selectOne={true}
                         />
+                    </div>
+                    <div className='right'>
+                        <Checkbox inputId='private' onChange={e => setInfo({...info, private: e.checked})} checked={info.private}></Checkbox>
+                        <label htmlFor='private' className='p-checkbox-label'>Keep this dataset private</label>
                     </div>
                 </SubmissionPanel>
                 <DocSection>
@@ -274,6 +282,12 @@ const DataSubmission = () => {
                     </div>
                     <div className='form-container'>
                         <CustomInputText 
+                            className='version'
+                            label='Version:'
+                            value={rawTreatmentData.version} 
+                            onChange={(e) => {setRawTreatmentData({...rawTreatmentData, version: e.target.value})}}
+                        />
+                        <CustomInputText 
                             className='filename'
                             label='Filename:'
                             value={rawTreatmentData.filename} 
@@ -335,6 +349,7 @@ const DataSubmission = () => {
                     {
                         molecularData.map((data, i) => (
                             <MolecularDataForm 
+                                key={i}
                                 length={molecularData.length}
                                 molecularData={data} 
                                 index={i} 
