@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -50,7 +50,6 @@ const DocSection = styled.div`
         margin-left: 10px;
         margin-bottom: 10px;
         .version {
-            width: 200px;
             margin-right: 20px;
         }
         .filename {
@@ -99,11 +98,36 @@ const DataSubmission = () => {
     const [info, setInfo] = useState({ name: '', datasetType: '',  private: false });
     const [sampleAnnotation, setSampleAnnotation] = useState({filename: '', repoURL: ''});
     const [drugAnnotation, setDrugAnnotation] = useState({filename: '', repoURL: ''});
-    const [rawTreatmentData, setRawTreatmentData] = useState({version: '', filename: '', repoURL: '', publication: {citation: '', link: ''}});
+    const [rawTreatmentData, setRawTreatmentData] = useState({
+        version: '', 
+        filename: '', 
+        repoURL: '', 
+        publication: {citation: '', link: ''}
+    });
     const [treatmentInfo, setTreatmentInfo] = useState({filename: '', repoURL: ''});
-    const [molecularData, setMolecularData] = useState([{name: '', filename: '', repoURL: ''}]);
+    const [molecularData, setMolecularData] = useState([
+        {
+            name: '', 
+            filename: '', 
+            repoURL: '',
+            toolname: '', toolversion: '',
+            refname: '', refURL: ''
+        }
+    ]);
     const [showMsg, setShowMsg] = useState(false);
     const [submitMessage, setSubmitMessage] = useState({});
+    const [dataVersionOptions, setDataVersionOptions] = useState([]);
+
+    useEffect(() => {
+        let yearOptions = [];
+        let currentYear = new Date().getFullYear();
+        let minYear = currentYear - 4;
+        for(let current = currentYear; current >= minYear; current--){
+            yearOptions.push({label: current, value: current});
+        }
+        setDataVersionOptions(yearOptions);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const submit = async (e) => {
         e.preventDefault();
@@ -122,12 +146,12 @@ const DataSubmission = () => {
             setSubmitMessage(dataSubmissionErrorMessage);
         }
         setShowMsg(Math.random());
-        setInfo({ name: '', datasetType: '' });
-        setSampleAnnotation({filename: '', repoURL: ''});
-        setDrugAnnotation({filename: '', repoURL: ''});
-        setRawTreatmentData({filename: '', repoURL: '', publication: {citation: '', link: ''}});
-        setTreatmentInfo({filename: '', repoURL: ''});
-        setMolecularData([{name: '', filename: '', repoURL: ''}]);
+        // setInfo({ name: '', datasetType: '' });
+        // setSampleAnnotation({filename: '', repoURL: ''});
+        // setDrugAnnotation({filename: '', repoURL: ''});
+        // setRawTreatmentData({version: '', filename: '', repoURL: '', publication: {citation: '', link: ''}});
+        // setTreatmentInfo({filename: '', repoURL: ''});
+        // setMolecularData([{name: '', filename: '', repoURL: ''}]);
     }
 
     const handleMolecularDataInput = (e, index, field) => {
@@ -144,7 +168,13 @@ const DataSubmission = () => {
 
     const handleMolecularDataReset = (e, index) => {
         const list = [...molecularData];
-        list[index] = {name: '', filename: '', repoURL: ''};
+        list[index] = {
+            name: '', 
+            filename: '', 
+            repoURL: '',
+            toolname: '', toolversion: '',
+            refname: '', refURL: ''
+        };
         setMolecularData(list);
     }
 
@@ -281,11 +311,13 @@ const DataSubmission = () => {
                         </p>
                     </div>
                     <div className='form-container'>
-                        <CustomInputText 
+                        <CustomSelect 
                             className='version'
                             label='Version:'
-                            value={rawTreatmentData.version} 
-                            onChange={(e) => {setRawTreatmentData({...rawTreatmentData, version: e.target.value})}}
+                            selected={rawTreatmentData.version} 
+                            options={dataVersionOptions}
+                            onChange={(e) => {setRawTreatmentData({...rawTreatmentData, version: e.value})}}
+                            selectOne={true}
                         />
                         <CustomInputText 
                             className='filename'
