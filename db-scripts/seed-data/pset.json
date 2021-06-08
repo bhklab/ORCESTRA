@@ -1,0 +1,1145 @@
+[{
+  "_id": {
+    "$oid": "5ef3659e785cc307d861e79e"
+  },
+  "status": "complete",
+  "name": "GDSC_2019(v2-8.0)",
+  "download": 4,
+  "doi": "10.5281/zenodo.4012486",
+  "commitID": "db766edad88245799b2438210dc1d658",
+  "downloadLink": "https://zenodo.org/record/4012486/files/GDSC2.rds?download=1",
+  "dataType": [
+    {
+      "label": "RNA Sequence",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    },
+    {
+      "label": "Microarray",
+      "name": "microarray",
+      "type": "RNA"
+    },
+    {
+      "label": "Copy Number Variation",
+      "name": "cnv",
+      "type": "DNA"
+    },
+    {
+      "label": "Fusion",
+      "name": "fusion",
+      "type": "DNA"
+    },
+    {
+      "label": "Mutation",
+      "name": "mutation",
+      "type": "DNA"
+    }
+  ],
+  "dataset": {
+    "label": "GDSC",
+    "name": "GDSC",
+    "versionInfo": "2019(v2-8.0)",
+    "filteredSensitivity": true
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "createdBy": "BHK Lab",
+  "dateCreated": {
+    "$date": "2020-06-24T14:39:26.588Z"
+  },
+  "rnaTool": [
+    {
+      "name": "kallisto_0_46_1",
+      "label": "Kallisto-0.46.1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "name": "Gencode_v33",
+      "label": "Gencode v33 Transcriptome"
+    }
+  ],
+  "dnaTool": [],
+  "dnaRef": [],
+  "private": false
+},{
+  "_id": {
+    "$oid": "5ef3659e785cc307d861e796"
+  },
+  "status": "complete",
+  "name": "FIMM_2016",
+  "download": 1,
+  "doi": "10.5281/zenodo.3905448",
+  "commitID": "5826fa0429214ef99cd11f3a6e6f21d6",
+  "downloadLink": "https://zenodo.org/record/3905448/files/FIMM.rds?download=1",
+  "dataType": [],
+  "dataset": {
+    "label": "FIMM",
+    "name": "FIMM",
+    "versionInfo": "2016",
+    "filteredSensitivity": true
+  },
+  "genome": {
+    "label": "",
+    "name": ""
+  },
+  "createdBy": "BHK Lab",
+  "canonical": true,
+  "dateCreated": {
+    "$date": "2020-06-24T14:39:26.588Z"
+  },
+  "rnaTool": [],
+  "rnaRef": [],
+  "dnaTool": [],
+  "dnaRef": [],
+  "private": false
+},{
+  "_id": {
+    "$oid": "5ef3659e785cc307d861e79b"
+  },
+  "status": "complete",
+  "name": "CTRPv2_2015",
+  "download": 26,
+  "doi": "10.5281/zenodo.3905470",
+  "commitID": "880ae2dbf2b84bbb82eccce30189fec0",
+  "downloadLink": "https://zenodo.org/record/3905470/files/CTRPv2.rds?download=1",
+  "dataType": [],
+  "dataset": {
+    "label": "CTRPv2",
+    "name": "CTRPv2",
+    "versionInfo": "2015",
+    "filteredSensitivity": true
+  },
+  "genome": {
+    "label": "",
+    "name": ""
+  },
+  "createdBy": "BHK Lab",
+  "canonical": true,
+  "dateCreated": {
+    "$date": "2020-06-24T14:39:26.588Z"
+  },
+  "rnaTool": [],
+  "rnaRef": [],
+  "dnaTool": [],
+  "dnaRef": [],
+  "private": false
+},{
+  "_id": {
+    "$oid": "5ef3659e785cc307d861e79c"
+  },
+  "status": "complete",
+  "name": "CCLE_2015",
+  "download": 61,
+  "doi": "10.5281/zenodo.3905462",
+  "commitID": "98f3f656987f442d8b119d921af2fc96",
+  "downloadLink": "https://zenodo.org/record/3905462/files/CCLE.rds?download=1",
+  "dataType": [
+    {
+      "label": "RNA Sequence",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    },
+    {
+      "label": "Microarray",
+      "name": "microarray",
+      "type": "RNA"
+    },
+    {
+      "label": "Copy Number Variation",
+      "name": "cnv",
+      "type": "DNA"
+    },
+    {
+      "label": "Mutation",
+      "name": "mutation",
+      "type": "DNA"
+    }
+  ],
+  "dataset": {
+    "label": "CCLE",
+    "name": "CCLE",
+    "versionInfo": "2015",
+    "filteredSensitivity": true
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "createdBy": "BHK Lab",
+  "canonical": true,
+  "dateCreated": {
+    "$date": "2020-06-24T14:39:26.588Z"
+  },
+  "rnaTool": [
+    {
+      "name": "kallisto_0_46_1",
+      "label": "Kallisto-0.46.1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "name": "Gencode_v33",
+      "label": "Gencode v33 Transcriptome"
+    }
+  ],
+  "dnaTool": [],
+  "dnaRef": [],
+  "private": false
+},{
+  "_id": {
+    "$oid": "5ef3659e785cc307d861e79d"
+  },
+  "status": "complete",
+  "name": "GDSC_2019(v1-8.0)",
+  "download": 5,
+  "doi": "10.5281/zenodo.3905505",
+  "commitID": "0d1e0a354a724895865ef9b0f9b20871",
+  "downloadLink": "https://zenodo.org/record/3905505/files/GDSC1.rds?download=1",
+  "dataType": [
+    {
+      "label": "RNA Sequence",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    },
+    {
+      "label": "Microarray",
+      "name": "microarray",
+      "type": "RNA"
+    },
+    {
+      "label": "Copy Number Variation",
+      "name": "cnv",
+      "type": "DNA"
+    },
+    {
+      "label": "Fusion",
+      "name": "fusion",
+      "type": "DNA"
+    },
+    {
+      "label": "Mutation",
+      "name": "mutation",
+      "type": "DNA"
+    }
+  ],
+  "dataset": {
+    "label": "GDSC",
+    "name": "GDSC",
+    "versionInfo": "2019(v1-8.0)",
+    "filteredSensitivity": true
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "createdBy": "BHK Lab",
+  "dateCreated": {
+    "$date": "2020-06-24T14:39:26.588Z"
+  },
+  "rnaTool": [
+    {
+      "name": "kallisto_0_46_1",
+      "label": "Kallisto-0.46.1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "name": "Gencode_v33",
+      "label": "Gencode v33 Transcriptome"
+    }
+  ],
+  "dnaTool": [],
+  "dnaRef": [],
+  "private": false
+},{
+  "_id": {
+    "$oid": "5ef3659e785cc307d861e799"
+  },
+  "status": "complete",
+  "name": "gCSI_2017",
+  "download": 26,
+  "doi": "10.5281/zenodo.4742696",
+  "commitID": "24b57e661ffc4f7fa13b784ea8ed0f78",
+  "downloadLink": "https://zenodo.org/record/4742696/files/gCSI.rds?download=1",
+  "dataType": [
+    {
+      "label": "RNA Sequence",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    },
+    {
+      "label": "Copy Number Variation",
+      "name": "cnv",
+      "type": "DNA"
+    },
+    {
+      "label": "Mutation",
+      "name": "mutation",
+      "type": "DNA"
+    }
+  ],
+  "dataset": {
+    "label": "gCSI",
+    "name": "gCSI",
+    "versionInfo": "2017",
+    "filteredSensitivity": true
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "createdBy": "BHK Lab",
+  "canonical": true,
+  "dateCreated": {
+    "$date": "2020-06-24T14:39:26.588Z"
+  },
+  "rnaTool": [
+    {
+      "name": "kallisto_0_46_1",
+      "label": "Kallisto-0.46.1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "name": "Gencode_v33",
+      "label": "Gencode v33 Transcriptome"
+    }
+  ],
+  "dnaTool": [],
+  "dnaRef": [],
+  "private": false
+},{
+  "_id": {
+    "$oid": "5ef3659e785cc307d861e794"
+  },
+  "status": "complete",
+  "name": "GRAY_2013",
+  "download": 3,
+  "doi": "10.5281/zenodo.3905454",
+  "commitID": "9af74304c10040a0ae344b7745bc1422",
+  "downloadLink": "https://zenodo.org/record/3905454/files/GRAY.rds?download=1",
+  "dataType": [
+    {
+      "label": "RNA Sequence",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    }
+  ],
+  "dataset": {
+    "label": "GRAY",
+    "name": "GRAY",
+    "versionInfo": "2013",
+    "filteredSensitivity": true
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "createdBy": "BHK Lab",
+  "dateCreated": {
+    "$date": "2020-06-24T14:39:26.587Z"
+  },
+  "rnaTool": [
+    {
+      "name": "kallisto_0_46_1",
+      "label": "Kallisto-0.46.1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "name": "Gencode_v33",
+      "label": "Gencode v33 Transcriptome"
+    }
+  ],
+  "dnaTool": [],
+  "dnaRef": [],
+  "private": false
+},{
+  "_id": {
+    "$oid": "5ef3659e785cc307d861e79a"
+  },
+  "status": "complete",
+  "name": "UHNBreast_2019",
+  "download": 6,
+  "doi": "10.5281/zenodo.3905460",
+  "commitID": "82bdf5b299324c91a8eff63bd0c23b6f",
+  "downloadLink": "https://zenodo.org/record/3905460/files/UHNBreast.rds?download=1",
+  "dataType": [
+    {
+      "label": "RNA Sequence",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    }
+  ],
+  "dataset": {
+    "label": "UHNBreast",
+    "name": "UHNBreast",
+    "versionInfo": "2019",
+    "filteredSensitivity": true
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "createdBy": "BHK Lab",
+  "canonical": true,
+  "dateCreated": {
+    "$date": "2020-06-24T14:39:26.588Z"
+  },
+  "rnaTool": [
+    {
+      "name": "kallisto_0_46_1",
+      "label": "Kallisto-0.46.1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "name": "Gencode_v33",
+      "label": "Gencode v33 Transcriptome"
+    }
+  ],
+  "dnaTool": [],
+  "dnaRef": [],
+  "private": false
+},{
+  "_id": {
+    "$oid": "5ef3659e785cc307d861e798"
+  },
+  "status": "complete",
+  "name": "GDSC_2020(v2-8.2)",
+  "download": 32,
+  "doi": "10.5281/zenodo.3905481",
+  "commitID": "dcc386a204f04b2b8ddec0e95aa13e5a",
+  "downloadLink": "https://zenodo.org/record/3905481/files/GDSC2.rds?download=1",
+  "dataType": [
+    {
+      "label": "RNA Sequence",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    },
+    {
+      "label": "Microarray",
+      "name": "microarray",
+      "type": "RNA"
+    },
+    {
+      "label": "Copy Number Variation",
+      "name": "cnv",
+      "type": "DNA"
+    },
+    {
+      "label": "Fusion",
+      "name": "fusion",
+      "type": "DNA"
+    },
+    {
+      "label": "Mutation",
+      "name": "mutation",
+      "type": "DNA"
+    }
+  ],
+  "dataset": {
+    "label": "GDSC",
+    "name": "GDSC",
+    "versionInfo": "2020(v2-8.2)",
+    "filteredSensitivity": true
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "createdBy": "BHK Lab",
+  "canonical": true,
+  "dateCreated": {
+    "$date": "2020-06-24T14:39:26.588Z"
+  },
+  "rnaTool": [
+    {
+      "name": "kallisto_0_46_1",
+      "label": "Kallisto-0.46.1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "name": "Gencode_v33",
+      "label": "Gencode v33 Transcriptome"
+    }
+  ],
+  "dnaTool": [],
+  "dnaRef": [],
+  "private": false
+},{
+  "_id": {
+    "$oid": "5ef3659e785cc307d861e795"
+  },
+  "status": "complete",
+  "name": "GRAY_2017",
+  "download": 7,
+  "doi": "10.5281/zenodo.4557735",
+  "commitID": "ed49fb80ccbe4ac48e0dd9cc8f0052ea",
+  "downloadLink": "https://zenodo.org/record/4557735/files/GRAY2017.rds?download=1",
+  "dataType": [
+    {
+      "label": "RNA Sequence",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    }
+  ],
+  "dataset": {
+    "label": "GRAY",
+    "name": "GRAY",
+    "versionInfo": "2017",
+    "filteredSensitivity": false
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "createdBy": "BHK Lab",
+  "canonical": true,
+  "dateCreated": {
+    "$date": "2021-02-23T14:39:26.588Z"
+  },
+  "rnaTool": [
+    {
+      "name": "kallisto_0_46_1",
+      "label": "Kallisto-0.46.1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "name": "Gencode_v33",
+      "label": "Gencode v33 Transcriptome"
+    }
+  ],
+  "dnaTool": [],
+  "dnaRef": [],
+  "private": false
+},{
+  "_id": {
+    "$oid": "5ef3659e785cc307d861e797"
+  },
+  "status": "complete",
+  "name": "GDSC_2020(v1-8.2)",
+  "download": 13,
+  "doi": "10.5281/zenodo.3905485",
+  "commitID": "e9ffba869dc14a7381be65538b9ad5b2",
+  "downloadLink": "https://zenodo.org/record/3905485/files/GDSC1.rds?download=1",
+  "dataType": [
+    {
+      "label": "RNA Sequence",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    },
+    {
+      "label": "Microarray",
+      "name": "microarray",
+      "type": "RNA"
+    },
+    {
+      "label": "Copy Number Variation",
+      "name": "cnv",
+      "type": "DNA"
+    },
+    {
+      "label": "Fusion",
+      "name": "fusion",
+      "type": "DNA"
+    },
+    {
+      "label": "Mutation",
+      "name": "mutation",
+      "type": "DNA"
+    }
+  ],
+  "dataset": {
+    "label": "GDSC",
+    "name": "GDSC",
+    "versionInfo": "2020(v1-8.2)",
+    "filteredSensitivity": true
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "createdBy": "BHK Lab",
+  "canonical": true,
+  "dateCreated": {
+    "$date": "2020-06-24T14:39:26.588Z"
+  },
+  "rnaTool": [
+    {
+      "name": "kallisto_0_46_1",
+      "label": "Kallisto-0.46.1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "name": "Gencode_v33",
+      "label": "Gencode v33 Transcriptome"
+    }
+  ],
+  "dnaTool": [],
+  "dnaRef": [],
+  "private": false
+},{
+  "_id": {
+    "$oid": "5f0f2fbf73eccc0879004361"
+  },
+  "status": "complete",
+  "name": "CMAP_2016",
+  "download": 0,
+  "doi": "10.5281/zenodo.3946534",
+  "commitID": "",
+  "downloadLink": "https://zenodo.org/record/3946534/files/CMAP.rds?download=1",
+  "dataType": [
+    {
+      "label": "Microarray",
+      "name": "microarray",
+      "type": "RNA"
+    }
+  ],
+  "dataset": {
+    "label": "CMAP",
+    "name": "CMAP",
+    "versionInfo": "2016",
+    "filteredSensitivity": true
+  },
+  "genome": {
+    "label": "",
+    "name": ""
+  },
+  "createdBy": "BHK Lab",
+  "dateCreated": {
+    "$date": "2020-07-15T16:33:03.834Z"
+  },
+  "rnaTool": [],
+  "rnaRef": [],
+  "dnaTool": [],
+  "dnaRef": [],
+  "canonical": false,
+  "private": false
+},{
+  "_id": {
+    "$oid": "5f342c9e175ef9004548e8be"
+  },
+  "dataset": {
+    "name": "gCSI",
+    "label": "gCSI",
+    "versionInfo": "2017"
+  },
+  "genome": {
+    "label": "GRCh37",
+    "name": "GRCh37"
+  },
+  "dataType": [
+    {
+      "label": "RNA-seq",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    },
+    {
+      "label": "Copy Number Variation",
+      "name": "cnv",
+      "type": "DNA"
+    }
+  ],
+  "rnaTool": [
+    {
+      "label": "Salmon-0.8.2",
+      "name": "salmon_0_8_2"
+    },
+    {
+      "label": "Kallisto-0.46.1",
+      "name": "kallisto_0_46_1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "label": "Gencode v33lift37 Transcriptome",
+      "name": "Gencode_v33lift37",
+      "genome": "GRCh37"
+    }
+  ],
+  "name": "gcsi_cnv",
+  "email": "anthony.mammoliti@gmail.com",
+  "status": "complete",
+  "download": 0,
+  "doi": "10.5281/zenodo.3981386",
+  "downloadLink": "https://zenodo.org/record/3981386/files/gCSI.rds?download=1",
+  "commitID": "c2e02083e8ab451481472bf44838857a",
+  "dateSubmitted": {
+    "$date": "2020-08-12T17:53:34.959Z"
+  },
+  "dateProcessed": {
+    "$date": "2020-08-12T17:53:36.299Z"
+  },
+  "dateCreated": {
+    "$date": "2020-08-12T17:53:36.299Z"
+  },
+  "private": false
+},{
+  "_id": {
+    "$oid": "5fd294ca0082d30035cd9c36"
+  },
+  "dataset": {
+    "name": "CTRPv2",
+    "label": "CTRPv2",
+    "versionInfo": "2015",
+    "filteredSensitivity": false
+  },
+  "genome": {
+    "label": "",
+    "name": ""
+  },
+  "dataType": [],
+  "rnaTool": [],
+  "rnaRef": [],
+  "name": "CTRPv2-unfiltered",
+  "email": "s.jahangiri.cs@gmail.com",
+  "status": "complete",
+  "download": 4,
+  "doi": "10.5281/zenodo.4429239",
+  "downloadLink": "https://zenodo.org/record/4429239/files/CTRPv2.rds?download=1",
+  "commitID": "c848058da6c946b6bffe4fd624080b2c",
+  "dateSubmitted": {
+    "$date": "2020-12-10T21:36:10.674Z"
+  },
+  "dateProcessed": {
+    "$date": "2020-12-10T21:54:25.722Z"
+  },
+  "dateCreated": {
+    "$date": "2021-01-08T20:19:10.602Z"
+  },
+  "private": false
+},{
+  "_id": {
+    "$oid": "6042627ebe172323e93b3a67"
+  },
+  "status": "complete",
+  "name": "BeatAML_2018",
+  "download": 5,
+  "doi": "10.5281/zenodo.4582786",
+  "commitID": "",
+  "downloadLink": "https://zenodo.org/record/4582786/files/BeatAML.rds?download=1",
+  "dataType": [
+    {
+      "name": "rnaseq",
+      "label": "RNA Sequence",
+      "type": "RNA",
+      "default": true
+    },
+    {
+      "name": "mutation",
+      "label": "Mutation",
+      "type": "DNA"
+    }
+  ],
+  "dataset": {
+    "label": "BeatAML",
+    "name": "BeatAML",
+    "versionInfo": "2018"
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "rnaTool": [],
+  "rnaRef": [
+    {
+      "name": "Gencode_v33",
+      "label": "Gencode v33 Transcriptome"
+    }
+  ],
+  "dnaTool": [],
+  "dnaRef": [],
+  "createdBy": "BHK Lab",
+  "dateCreated": {
+    "$date": "2021-03-05T16:55:27.968Z"
+  },
+  "canonical": true,
+  "private": false
+},{
+  "_id": {
+    "$oid": "604264c3e8144b2522f24a2a"
+  },
+  "status": "complete",
+  "name": "Tavor_2020",
+  "download": 3,
+  "doi": "10.5281/zenodo.4585705",
+  "commitID": "",
+  "downloadLink": "https://zenodo.org/record/4585705/files/Tavor.rds?download=1",
+  "dataType": [
+    {
+      "name": "rnaseq",
+      "label": "RNA Sequence",
+      "type": "RNA",
+      "default": true
+    }
+  ],
+  "dataset": {
+    "label": "Tavor",
+    "name": "Tavor",
+    "versionInfo": "2020"
+  },
+  "genome": {
+    "name": "",
+    "label": ""
+  },
+  "rnaTool": [],
+  "rnaRef": [],
+  "dnaTool": [],
+  "dnaRef": [],
+  "createdBy": "BHK Lab",
+  "dateCreated": {
+    "$date": "2021-03-05T17:05:08.535Z"
+  },
+  "canonical": true,
+  "private": false
+},{
+  "_id": {
+    "$oid": "60807a9a9ae6c100369088cd"
+  },
+  "dataset": {
+    "name": "GDSC",
+    "label": "GDSC",
+    "versionInfo": "2020(v2-8.2)",
+    "filteredSensitivity": false
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38",
+    "hide": false
+  },
+  "dataType": [
+    {
+      "label": "RNA-seq",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    },
+    {
+      "label": "Microarray",
+      "name": "microarray",
+      "type": "RNA"
+    },
+    {
+      "label": "Copy Number Variation",
+      "name": "cnv",
+      "type": "DNA"
+    },
+    {
+      "label": "Fusion",
+      "name": "fusion",
+      "type": "DNA"
+    },
+    {
+      "label": "Mutation",
+      "name": "mutation",
+      "type": "DNA"
+    }
+  ],
+  "rnaTool": [
+    {
+      "label": "Kallisto-0.46.1",
+      "name": "kallisto_0_46_1",
+      "hide": false
+    }
+  ],
+  "rnaRef": [
+    {
+      "label": "Gencode v33 Transcriptome",
+      "name": "Gencode_v33",
+      "genome": "GRCh38"
+    }
+  ],
+  "name": "GDSC_2020(v2-8.2)_unfiltered",
+  "email": "petr.smirnov@mail.utoronto.ca",
+  "status": "complete",
+  "download": 1,
+  "doi": "10.5281/zenodo.4721703",
+  "downloadLink": "https://zenodo.org/record/4721703/files/GDSC2.rds?download=1",
+  "commitID": "e2a1d2e306ac46138523e4087053687b",
+  "dateSubmitted": {
+    "$date": "2021-04-21T19:18:50.040Z"
+  },
+  "dateProcessed": {
+    "$date": "2021-04-26T19:11:19.518Z"
+  },
+  "dateCreated": {
+    "$date": "2021-04-26T19:23:50.721Z"
+  },
+  "private": false
+},{
+  "_id": {
+    "$oid": "60807b709ae6c100369088ce"
+  },
+  "dataset": {
+    "name": "gCSI",
+    "label": "gCSI",
+    "versionInfo": "2018",
+    "filteredSensitivity": false
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "dataType": [
+    {
+      "label": "RNA-seq",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    },
+    {
+      "label": "Copy Number Variation",
+      "name": "cnv",
+      "type": "DNA"
+    },
+    {
+      "label": "Mutation",
+      "name": "mutation",
+      "type": "DNA"
+    }
+  ],
+  "rnaTool": [
+    {
+      "label": "Kallisto-0.46.1",
+      "name": "kallisto_0_46_1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "label": "Gencode v33 Transcriptome",
+      "name": "Gencode_v33",
+      "genome": "GRCh38"
+    }
+  ],
+  "name": "gCSI_2018_unfiltered",
+  "email": "petr.smirnov@mail.utoronto.ca",
+  "status": "complete",
+  "download": 0,
+  "doi": "",
+  "downloadLink": "",
+  "commitID": "",
+  "dateSubmitted": {
+    "$date": "2021-04-21T19:22:24.069Z"
+  },
+  "dateProcessed": {
+    "$date": "2021-04-26T19:27:50.629Z"
+  },
+  "dateCreated": "",
+  "private": false
+},{
+  "_id": {
+    "$oid": "60807c03d274700035d0dcd8"
+  },
+  "dataset": {
+    "name": "UHNBreast",
+    "label": "UHNBreast",
+    "versionInfo": "2019",
+    "filteredSensitivity": false
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "dataType": [
+    {
+      "label": "RNA-seq",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    }
+  ],
+  "rnaTool": [
+    {
+      "label": "Kallisto-0.46.1",
+      "name": "kallisto_0_46_1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "label": "Gencode v33 Transcriptome",
+      "name": "Gencode_v33",
+      "genome": "GRCh38"
+    }
+  ],
+  "name": "UHNBreast_2019_unfiltered",
+  "email": "petr.smirnov@mail.utoronto.ca",
+  "status": "complete",
+  "download": 1,
+  "doi": "10.5281/zenodo.4721790",
+  "downloadLink": "https://zenodo.org/record/4721790/files/UHNBreast.rds?download=1",
+  "commitID": "64971d9f5dc84754a577f01c945b71dc",
+  "dateSubmitted": {
+    "$date": "2021-04-21T19:24:51.610Z"
+  },
+  "dateProcessed": {
+    "$date": "2021-04-26T19:51:28.107Z"
+  },
+  "dateCreated": {
+    "$date": "2021-04-26T20:02:38.178Z"
+  },
+  "private": false
+},{
+  "_id": {
+    "$oid": "60807c7cd274700035d0dcd9"
+  },
+  "dataset": {
+    "name": "CCLE",
+    "label": "CCLE",
+    "versionInfo": "2015",
+    "filteredSensitivity": false
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "dataType": [
+    {
+      "label": "RNA-seq",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    },
+    {
+      "label": "Microarray",
+      "name": "microarray",
+      "type": "RNA"
+    },
+    {
+      "label": "Copy Number Variation",
+      "name": "cnv",
+      "type": "DNA"
+    },
+    {
+      "label": "Mutation",
+      "name": "mutation",
+      "type": "DNA"
+    }
+  ],
+  "rnaTool": [
+    {
+      "label": "Kallisto-0.46.1",
+      "name": "kallisto_0_46_1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "label": "Gencode v33 Transcriptome",
+      "name": "Gencode_v33",
+      "genome": "GRCh38"
+    }
+  ],
+  "name": "CCLE_2015_unfiltered",
+  "email": "petr.smirnov@mail.utoronto.ca",
+  "status": "complete",
+  "download": 1,
+  "doi": "10.5281/zenodo.4721823",
+  "downloadLink": "https://zenodo.org/record/4721823/files/CCLE.rds?download=1",
+  "commitID": "f253c53242a84e61b1e84c9f9bba0ee6",
+  "dateSubmitted": {
+    "$date": "2021-04-21T19:26:52.043Z"
+  },
+  "dateProcessed": {
+    "$date": "2021-04-26T20:06:51.948Z"
+  },
+  "dateCreated": {
+    "$date": "2021-04-26T20:32:38.045Z"
+  },
+  "private": false
+},{
+  "_id": {
+    "$oid": "608b314bddb06600357eb860"
+  },
+  "dataset": {
+    "name": "GDSC",
+    "label": "GDSC",
+    "versionInfo": "2020(v1-8.2)",
+    "filteredSensitivity": false
+  },
+  "genome": {
+    "label": "GRCh38",
+    "name": "GRCh38"
+  },
+  "dataType": [
+    {
+      "label": "RNA-seq",
+      "name": "rnaseq",
+      "type": "RNA",
+      "default": true
+    },
+    {
+      "label": "GDSC (microarray)",
+      "name": "microarray",
+      "dataset": "GDSC",
+      "type": "RNA",
+      "microarrayType": {
+        "label": "U133A",
+        "name": "u133a"
+      }
+    },
+    {
+      "label": "GDSC (cnv)",
+      "name": "cnv",
+      "dataset": "GDSC",
+      "type": "DNA"
+    },
+    {
+      "label": "GDSC (fusion)",
+      "name": "fusion",
+      "dataset": "GDSC",
+      "type": "DNA"
+    },
+    {
+      "label": "GDSC (mutation)",
+      "name": "mutation",
+      "dataset": "GDSC",
+      "type": "DNA"
+    }
+  ],
+  "rnaTool": [
+    {
+      "label": "Kallisto-0.46.1",
+      "name": "kallisto_0_46_1"
+    }
+  ],
+  "rnaRef": [
+    {
+      "label": "Gencode v33 Transcriptome",
+      "name": "Gencode_v33",
+      "genome": "GRCh38"
+    }
+  ],
+  "name": "GDSC1_unfiltered_oldarray",
+  "email": "petr.smirnov@utoronto.ca",
+  "status": "complete",
+  "download": 0,
+  "doi": "10.5281/zenodo.4730670",
+  "downloadLink": "https://zenodo.org/record/4730670/files/GDSC1.rds?download=1",
+  "commitID": "aa8b87a3fd924237a05823be0564fa99",
+  "dateSubmitted": {
+    "$date": "2021-04-29T22:20:59.919Z"
+  },
+  "dateProcessed": {
+    "$date": "2021-04-30T15:40:13.044Z"
+  },
+  "dateCreated": {
+    "$date": "2021-04-30T15:59:22.661Z"
+  },
+  "private": false
+}]

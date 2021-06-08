@@ -1,0 +1,1695 @@
+[{
+  "_id": {
+    "$oid": "5f10d7e810c8cf0044915fac"
+  },
+  "config": {
+    "pipeline": {
+      "name": "get_gCSI2017"
+    },
+    "transform": {
+      "image": "bhklab/pharmacogx2.0:v1",
+      "cmd": [
+        "Rscript",
+        "/pfs/getgCSI2017/getgCSI2017.R",
+        "Salmon-1.1.0",
+        "Gencode_v33",
+        "cnv",
+        "5f10d7e810c8cf0044915fac"
+      ]
+    },
+    "resource_requests": {
+      "memory": "8G",
+      "cpu": 1
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getgCSI2017.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi2017ProfileAssemble",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi2017RawSensitivity",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi_rnaseq_salmon_1_1_0",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "5f174577f2bc9d004420e94d"
+  },
+  "config": {
+    "pipeline": {
+      "name": "GDSCv2"
+    },
+    "transform": {
+      "image": "bhklab/pharmacogx2.0:v1",
+      "cmd": [
+        "Rscript",
+        "/pfs/getGDSC/getGDSC2019.R",
+        "Salmon-0.8.2",
+        "Ensembl_v99",
+        "v2",
+        "8.2",
+        "microarray",
+        "5f174577f2bc9d004420e94d"
+      ]
+    },
+    "parallelism_spec": {
+      "constant": 1
+    },
+    "resource_requests": {
+      "memory": "8G",
+      "cpu": 1
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getGDSC.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscprofilesV2",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscU133a_normalized",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscCNA",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscMutPanel",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc1000CellInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscDrugInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "GDSC2019v2Normalize",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscmutation_all",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_cnv_new",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_rnaseq_salmon_0_8_2",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "5f174662f2bc9d004420e94e"
+  },
+  "config": {
+    "pipeline": {
+      "name": "GDSCv2"
+    },
+    "transform": {
+      "image": "bhklab/pharmacogx2.0:v1",
+      "cmd": [
+        "Rscript",
+        "/pfs/getGDSC/getGDSC2019.R",
+        "Salmon-0.8.2",
+        "Ensembl_v99",
+        "v2",
+        "8.2",
+        "microarray",
+        "5f174662f2bc9d004420e94e"
+      ]
+    },
+    "parallelism_spec": {
+      "constant": 1
+    },
+    "resource_requests": {
+      "memory": "8G",
+      "cpu": 1
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getGDSC.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscprofilesV2",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscU133a_normalized",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscCNA",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscMutPanel",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc1000CellInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscDrugInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "GDSC2019v2Normalize",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscmutation_all",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_cnv_new",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_rnaseq_salmon_0_8_2",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "5f1746c7f2bc9d004420e94f"
+  },
+  "config": {
+    "pipeline": {
+      "name": "GDSCv2"
+    },
+    "transform": {
+      "image": "bhklab/pharmacogx2.0:v1",
+      "cmd": [
+        "Rscript",
+        "/pfs/getGDSC/getGDSC2019.R",
+        "Salmon-0.8.2",
+        "Ensembl_v99",
+        "v2",
+        "8.2",
+        "microarray",
+        "5f1746c7f2bc9d004420e94f"
+      ]
+    },
+    "parallelism_spec": {
+      "constant": 1
+    },
+    "resource_requests": {
+      "memory": "8G",
+      "cpu": 1
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getGDSC.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscprofilesV2",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscU133a_normalized",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscCNA",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscMutPanel",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc1000CellInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscDrugInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "GDSC2019v2Normalize",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscmutation_all",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_cnv_new",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_rnaseq_salmon_0_8_2",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "5f175adcf2bc9d004420e950"
+  },
+  "config": {
+    "pipeline": {
+      "name": "GDSCv2"
+    },
+    "transform": {
+      "image": "bhklab/pharmacogx2.0:v1",
+      "cmd": [
+        "Rscript",
+        "/pfs/getGDSC/getGDSC2019.R",
+        "Salmon-0.8.2",
+        "Ensembl_v99",
+        "v2",
+        "8.2",
+        "microarray",
+        "5f175adcf2bc9d004420e950"
+      ]
+    },
+    "parallelism_spec": {
+      "constant": 1
+    },
+    "resource_requests": {
+      "memory": "8G",
+      "cpu": 1
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getGDSC.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscprofilesV2",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscU133a_normalized",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscCNA",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscMutPanel",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc1000CellInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscDrugInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "GDSC2019v2Normalize",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscmutation_all",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_cnv_new",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_rnaseq_salmon_0_8_2",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "5f175b2cf2bc9d004420e951"
+  },
+  "config": {
+    "pipeline": {
+      "name": "GDSCv2"
+    },
+    "transform": {
+      "image": "bhklab/pharmacogx2.0:v1",
+      "cmd": [
+        "Rscript",
+        "/pfs/getGDSC/getGDSC2019.R",
+        "Salmon-0.8.2",
+        "Ensembl_v99",
+        "v2",
+        "8.2",
+        "microarray",
+        "5f175b2cf2bc9d004420e951"
+      ]
+    },
+    "parallelism_spec": {
+      "constant": 1
+    },
+    "resource_requests": {
+      "memory": "8G",
+      "cpu": 1
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getGDSC.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscprofilesV2",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscU133a_normalized",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscCNA",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscMutPanel",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc1000CellInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscDrugInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "GDSC2019v2Normalize",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscmutation_all",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_cnv_new",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_rnaseq_salmon_0_8_2",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "5f1b5d66bd79060045058973"
+  },
+  "config": {
+    "pipeline": {
+      "name": "GDSCv2"
+    },
+    "transform": {
+      "image": "bhklab/pharmacogx2.0:v1",
+      "cmd": [
+        "Rscript",
+        "/pfs/getGDSC/getGDSC2019.R",
+        "Salmon-0.8.2",
+        "Gencode_v33",
+        "v2",
+        "8.2",
+        "microarray",
+        "5f1b5d66bd79060045058973"
+      ]
+    },
+    "parallelism_spec": {
+      "constant": 1
+    },
+    "resource_requests": {
+      "memory": "8G",
+      "cpu": 1
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getGDSC.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscprofilesV2",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscU133a_normalized",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscCNA",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscMutPanel",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc1000CellInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscDrugInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "GDSC2019v2Normalize",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscmutation_all",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_cnv_new",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_rnaseq_salmon_0_8_2",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "5f342c9e175ef9004548e8be"
+  },
+  "config": {
+    "pipeline": {
+      "name": "get_gCSI2017"
+    },
+    "transform": {
+      "image": "bhklab/pharmacogx2.0:v1",
+      "cmd": [
+        "Rscript",
+        "/pfs/getgCSI2017/getgCSI2017.R",
+        "Salmon-0.8.2",
+        "Kallisto-0.46.1",
+        "Gencode_v33lift37",
+        "cnv",
+        "5f342c9e175ef9004548e8be"
+      ]
+    },
+    "resource_requests": {
+      "memory": "8G",
+      "cpu": 1
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getgCSI2017.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi2017ProfileAssemble",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi2017RawSensitivity",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi_rnaseq_salmon_0_8_2",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi_rnaseq_kallisto_0_46_1",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "5f354cece877ef3a222243a4"
+  },
+  "config": {
+    "pipeline": {
+      "name": "get_gCSI2017"
+    },
+    "transform": {
+      "image": "bhklab/pharmacogx2.0:v1",
+      "cmd": [
+        "Rscript",
+        "/pfs/getgCSI2017/getgCSI2017.R",
+        "Kallisto-0.46.1",
+        "Salmon-0.8.2",
+        "Gencode_v33lift37",
+        "cnv",
+        "5f354cece877ef3a222243a4"
+      ]
+    },
+    "resource_requests": {
+      "memory": "8G",
+      "cpu": 1
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getgCSI2017.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi2017ProfileAssemble",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi2017RawSensitivity",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi_rnaseq_kallisto_0_46_1",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi_rnaseq_salmon_0_8_2",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "5f3c1d6d615e970045f63697"
+  },
+  "config": {
+    "pipeline": {
+      "name": "getGDSCv1"
+    },
+    "transform": {
+      "image": "bhklab/pharmacogx2.0:v1",
+      "cmd": [
+        "Rscript",
+        "/pfs/getGDSC/getGDSC2019.R",
+        "Salmon-1.1.0",
+        "Salmon-0.8.2",
+        "Gencode_v33lift37",
+        "v1",
+        "8.2",
+        "cnv",
+        "fusion",
+        "5f3c1d6d615e970045f63697"
+      ]
+    },
+    "parallelism_spec": {
+      "constant": 1
+    },
+    "resource_requests": {
+      "memory": "8G",
+      "cpu": 1
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getGDSC.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscProfilesV1",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscU133a_normalized",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscCNA",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscMutPanel",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc1000CellInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscDrugInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "GDSC2019v1Normalize",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscmutation_all",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_cnv_new",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_rnaseq_salmon_1_1_0",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_rnaseq_salmon_0_8_2",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "5f5115c47134d80045d8ebf5"
+  },
+  "config": {
+    "pipeline": {
+      "name": "get_ccle"
+    },
+    "transform": {
+      "image": "bhklab/pharmacogx2.0:v1",
+      "cmd": [
+        "Rscript",
+        "/pfs/get_CCLE/get_CCLEP.R",
+        "Kallisto-0.43.0",
+        "Gencode_v33lift37",
+        "microarray",
+        "5f5115c47134d80045d8ebf5"
+      ]
+    },
+    "resource_requests": {
+      "memory": "8G",
+      "cpu": 1
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/get_CCLE.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ccleProfilesAssemble",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ccleRawSensitivity",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "download_ccle_molec",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "processCCLE_Brain-Array",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ccle_rnaseq_kallisto_0_43_0",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "5f51167677ff850045064268"
+  },
+  "config": {
+    "pipeline": {
+      "name": "get_ccle"
+    },
+    "transform": {
+      "image": "bhklab/pharmacogx2.0:v1",
+      "cmd": [
+        "Rscript",
+        "/pfs/get_CCLE/get_CCLEP.R",
+        "Kallisto-0.43.0",
+        "Gencode_v33lift37",
+        "microarray",
+        "5f51167677ff850045064268"
+      ]
+    },
+    "resource_requests": {
+      "memory": "8G",
+      "cpu": 1
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/get_CCLE.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ccleProfilesAssemble",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ccleRawSensitivity",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "download_ccle_molec",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "processCCLE_Brain-Array",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ccle_rnaseq_kallisto_0_43_0",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "5fd294ca0082d30035cd9c36"
+  },
+  "config": {
+    "pipeline": {
+      "name": "get_CTRP"
+    },
+    "transform": {
+      "cmd": [
+        "Rscript",
+        "/pfs/getCTRPv2/CTRPv2.R",
+        "5fd294ca0082d30035cd9c36"
+      ],
+      "image": "bhklab/pharmacogx2.0:v1"
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getCTRPv2.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ctrpv2raw",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ctrpv2ProfilesAssemble",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "CTRPv2RawSensitivity",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "60807a9a9ae6c100369088cd"
+  },
+  "config": {
+    "pipeline": {
+      "name": "GDSCv2"
+    },
+    "transform": {
+      "cmd": [
+        "Rscript",
+        "/pfs/getGDSC/getGDSC2019.R",
+        "Kallisto-0.46.1",
+        "Gencode_v33",
+        "v2",
+        "8.2",
+        "microarray",
+        "cnv",
+        "fusion",
+        "mutation",
+        "u219",
+        "60807a9a9ae6c100369088cd"
+      ],
+      "image": "bhklab/pharmacogx2.0:v1"
+    },
+    "resource_requests": {
+      "memory": "8G"
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getGDSC.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscprofilesV2",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscU133a_normalized",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscCNA",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscMutPanel",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc1000CellInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscDrugInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "GDSC2019v2Normalize",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscmutation_all",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_cnv_new",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_rnaseq_kallisto_0_46_1",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "name": "gdscU219normalized",
+            "repo": "gdscU219normalized",
+            "branch": "master",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "60807b709ae6c100369088ce"
+  },
+  "config": {
+    "pipeline": {
+      "name": "get_gCSI2018"
+    },
+    "transform": {
+      "cmd": [
+        "Rscript",
+        "/pfs/getgCSI2018/getgCSI2018.R",
+        "Kallisto-0.46.1",
+        "Gencode_v33",
+        "cnv",
+        "mutation",
+        "60807b709ae6c100369088ce"
+      ],
+      "image": "bhklab/pharmacogx2.0:v1"
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getgCSI2018.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi2017RawSensitivity",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi2018SensData",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi2018ProfilesAssemble",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gcsi_rnaseq_kallisto_0_46_1",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "60807c03d274700035d0dcd8"
+  },
+  "config": {
+    "pipeline": {
+      "name": "getUHN_2019"
+    },
+    "transform": {
+      "cmd": [
+        "Rscript",
+        "/pfs/getUHNBreast_2019/UHNBreast_2019.R",
+        "Kallisto-0.46.1",
+        "Gencode_v33",
+        "60807c03d274700035d0dcd8"
+      ],
+      "image": "bhklab/pharmacogx2.0:v1"
+    },
+    "resource_requests": {
+      "memory": "4G"
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getUHNBreast_2019.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "calculateuhn2019raw",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "uhn_rnaseq_kallisto_0_46_1",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "60807c7cd274700035d0dcd9"
+  },
+  "config": {
+    "pipeline": {
+      "name": "get_ccle"
+    },
+    "transform": {
+      "cmd": [
+        "Rscript",
+        "/pfs/get_CCLE/get_CCLEP.R",
+        "Kallisto-0.46.1",
+        "Gencode_v33",
+        "microarray",
+        "cnv",
+        "mutation",
+        "60807c7cd274700035d0dcd9"
+      ],
+      "image": "bhklab/pharmacogx2.0:v1"
+    },
+    "resource_requests": {
+      "memory": "8G"
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/get_CCLE.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ccleProfilesAssemble",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ccleRawSensitivity",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "download_ccle_molec",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "processCCLE_Brain-Array",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ccle_rnaseq_kallisto_0_46_1",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "6083284c9ae6c100369088cf"
+  },
+  "config": {
+    "pipeline": {
+      "name": "get_ccle"
+    },
+    "transform": {
+      "cmd": [
+        "Rscript",
+        "/pfs/get_CCLE/get_CCLEP.R",
+        "Salmon-1.1.0",
+        "Gencode_v33",
+        "microarray",
+        "6083284c9ae6c100369088cf"
+      ],
+      "image": "bhklab/pharmacogx2.0:v1"
+    },
+    "resource_requests": {
+      "memory": "8G"
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/get_CCLE.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ccleProfilesAssemble",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ccleRawSensitivity",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "download_ccle_molec",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "processCCLE_Brain-Array",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "ccle_rnaseq_salmon_1_1_0",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+},{
+  "_id": {
+    "$oid": "608b314bddb06600357eb860"
+  },
+  "config": {
+    "pipeline": {
+      "name": "getGDSCv1"
+    },
+    "transform": {
+      "cmd": [
+        "Rscript",
+        "/pfs/getGDSC/getGDSC2019.R",
+        "Kallisto-0.46.1",
+        "Gencode_v33",
+        "v1",
+        "8.2",
+        "microarray",
+        "cnv",
+        "fusion",
+        "mutation",
+        "u133a",
+        "608b314bddb06600357eb860"
+      ],
+      "image": "bhklab/pharmacogx2.0:v1"
+    },
+    "resource_requests": {
+      "memory": "8G"
+    },
+    "input": {
+      "cross": [
+        {
+          "git": {
+            "url": "https://github.com/BHKLAB-Pachyderm/getGDSC.git",
+            "name": "",
+            "branch": "master"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscProfilesV1",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscU133a_normalized",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscCNA",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscMutPanel",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "downAnnotations",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc1000CellInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscDrugInfo",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "GDSC2019v1Normalize",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdscmutation_all",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_cnv_new",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "name": "gdscU219normalized",
+            "repo": "gdscU219normalized",
+            "branch": "master",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "gdsc_rnaseq_kallisto_0_46_1",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "update": true,
+    "reprocess": true
+  },
+  "configDir": null,
+  "configPath": null
+}]

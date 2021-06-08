@@ -135,10 +135,11 @@ const DataSubmission = () => {
             info: info,
             sampleAnnotation: sampleAnnotation,
             drugAnnotation: drugAnnotation,
-            rawTreatmentData: rawTreatmentData,
+            rawTreatmentData: {...rawTreatmentData, version: rawTreatmentData.version.value},
             treatmentInfo: treatmentInfo,
             molecularData: molecularData
         };
+        console.log(submission);
         const res = await axios.post('/api/user/dataset/submit', submission);
         if(res.status === 200){
             setSubmitMessage(dataSubmissionSuccessMessage);

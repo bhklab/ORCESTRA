@@ -81,27 +81,9 @@ const removeUserPSet = async (req, res) => {
 const submitDataset = async (req, res) => {
     try{
         let submission = req.body;
-        let datasetType = submission.info.datasetType.value;
-
         console.log(req.decoded);
         console.log(submission);
-        let dataset = {
-            status: 'submitted',
-            canonical: false,
-            private: submission.info.private,
-            dateSubmitted: new Date(Date.now()),
-            dateCreated: null,
-            name: submission.info.name,
-            download: 0,
-            doi: '',
-            commitID: '',
-            downloadLink: '',
-            dataType: [],
-            dataset: {},
-            genome: {},
-            rnaTool: [],
-            rnaRef: [],
-        }
+        
         
     }catch(err){
         console.log(err);
