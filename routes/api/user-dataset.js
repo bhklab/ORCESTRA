@@ -1,4 +1,6 @@
 const mongo = require('../../db/mongo');
+const dataSubmission = require('../../db/helper/data-submission');
+const mailer = require('../../mailer/mailer');
 const { dataTypes } = require('../../helper/enum');
 
 function getDatasetTypeLabel(datatype){
@@ -81,10 +83,11 @@ const removeUserPSet = async (req, res) => {
 const submitDataset = async (req, res) => {
     try{
         let submission = req.body;
-        console.log(req.decoded);
-        console.log(submission);
-        
-        
+        submission.info.email = req.decoded.username;
+        // insert submission data to the database
+        submission.info._id = await dataSubmission.insertOne(submission);
+        // send email to admin
+        await mailer.sendDataSubmissionEmail(submission.info);
     }catch(err){
         console.log(err);
         res.status(500);
