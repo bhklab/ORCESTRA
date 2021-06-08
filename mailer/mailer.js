@@ -1,15 +1,15 @@
 const sgMail = require('@sendgrid/mail');
 
 // used for test only
-const nodemailer = require('nodemailer');
-const transport = nodemailer.createTransport({
-    host: "smtp.mailtrap.io",
-    port: 2525,
-    auth: {
-        user: "9a2ada6eb3c31b",
-        pass: "aa2daea1eb685a"
-    }
-});
+// const nodemailer = require('nodemailer');
+// const transport = nodemailer.createTransport({
+//     host: "smtp.mailtrap.io",
+//     port: 2525,
+//     auth: {
+//         user: "9a2ada6eb3c31b",
+//         pass: "aa2daea1eb685a"
+//     }
+// });
 
 const sendMail = async function(url, doi, email, download, callback){
 
@@ -174,8 +174,8 @@ const sendDataSubmissionEmail = async (submissionInfo) => {
     };
     
     try{
-        // await sgMail.send(message);
-        await transport.sendMail(message);
+        await sgMail.send(message);
+        // await transport.sendMail(message);
         console.log('data submission notification email sent');
     }catch(error){
         console.log(error);
