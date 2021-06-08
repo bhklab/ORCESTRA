@@ -147,12 +147,12 @@ const DataSubmission = () => {
             setSubmitMessage(dataSubmissionErrorMessage);
         }
         setShowMsg(Math.random());
-        // setInfo({ name: '', datasetType: '' });
-        // setSampleAnnotation({filename: '', repoURL: ''});
-        // setDrugAnnotation({filename: '', repoURL: ''});
-        // setRawTreatmentData({version: '', filename: '', repoURL: '', publication: {citation: '', link: ''}});
-        // setTreatmentInfo({filename: '', repoURL: ''});
-        // setMolecularData([{name: '', filename: '', repoURL: ''}]);
+        setInfo({ name: '', datasetType: '' });
+        setSampleAnnotation({filename: '', repoURL: ''});
+        setDrugAnnotation({filename: '', repoURL: ''});
+        setRawTreatmentData({version: '', filename: '', repoURL: '', publication: {citation: '', link: ''}});
+        setTreatmentInfo({filename: '', repoURL: ''});
+        setMolecularData([{name: '', filename: '', repoURL: ''}]);
     }
 
     const handleMolecularDataInput = (e, index, field) => {

@@ -227,12 +227,15 @@ const publishDataset = async (req, res) => {
  */
 const searchDatasets = async (req, res) => {
     console.log(`searchDatasets: ${req.params.datasetType}`);
+    let result = [];
     try{
-        const result = await datasetSelect.selectDatasets(req.params.datasetType, req.body.parameters);
-        res.send(result);
+        result = await datasetSelect.selectDatasets(req.params.datasetType, req.body.parameters);
     }catch(error){
         console.log(error);
-        res.status(500).send(error);
+        result = error;
+        res.status(500);
+    }finally{
+        res.send(result);
     }
 }
 

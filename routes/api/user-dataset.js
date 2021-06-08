@@ -20,7 +20,7 @@ function getDatasetTypeLabel(datatype){
     }
 }
 
-const getUserPSet = async (req, res) => {
+const getUserDataset = async (req, res) => {
     try{
         let userDatasets = [];
         const db = await mongo.getDB();
@@ -40,8 +40,10 @@ const getUserPSet = async (req, res) => {
             }));
             userDatasets = userDatasets.concat(found);
         }
+
+        const submissions = await dataSubmission.list({'info.email': req.query.username}, {'projection': {'info': true}});
         
-        res.send(userDatasets);
+        res.send({datasets: userDatasets, submissions: submissions});
     }catch(error){
         console.log(error);
         res.status(500).send(error);
@@ -84,6 +86,7 @@ const submitDataset = async (req, res) => {
     try{
         let submission = req.body;
         submission.info.email = req.decoded.username;
+        submission.info.status = 'submitted';
         // insert submission data to the database
         submission.info._id = await dataSubmission.insertOne(submission);
         // send email to admin
@@ -96,9 +99,56 @@ const submitDataset = async (req, res) => {
     }
 }
 
+const check_access = async (req, res, next) => {
+    let authorized = false;
+    try{
+        if(req.decoded.isAdmin){
+            authorized = true;
+        }else{
+            let query = {'_id': mongo.ObjectID(req.params.id)}
+            let data = await dataSubmission.findOne(query);
+            if(data.info.email === req.decoded.username){
+                authorized = true;
+            }
+        }
+    }catch(err){
+        console.log(err);
+        res.status(500);
+    }finally{
+        if(authorized){
+            req.authorized = true;
+            next();
+        }else{
+            res.send({authorized: false});
+        }
+    }
+}
+
+const authorize = (req, res) => {
+    res.send({authorized: req.authorized});
+}
+
+const getSubmittedData = async (req, res) => {
+    let data = null;
+    try{
+        if(req.authorized){
+            let query = {'_id': mongo.ObjectID(req.params.id)}
+            data = await dataSubmission.findOne(query);
+        }
+    }catch(err){
+        console.log(err);
+        res.status(500);
+    }finally{
+        res.send(data);
+    }
+}
+
 module.exports = {
-    getUserPSet,
+    getUserDataset,
     addToUserPset,
     removeUserPSet,
-    submitDataset
+    submitDataset,
+    check_access,
+    authorize,
+    getSubmittedData
 }

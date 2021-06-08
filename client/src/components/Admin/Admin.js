@@ -1,11 +1,24 @@
 import React, {useState, useEffect, useContext} from 'react';
-import PSetTable from '../SearchRequest/PSet/PSetTable';
+import axios from 'axios';
+
 import {Messages} from 'primereact/messages';
 import {Button} from 'primereact/button';
 import styled from 'styled-components';
 import {trackPromise} from 'react-promise-tracker';
 import Loader from 'react-loader-spinner';
 import { AuthContext } from '../../hooks/Context';
+import PSetTable from '../SearchRequest/PSet/PSetTable';
+import DataSubmissionList from '../DataSubmission/DataSubmissionList';
+
+const Container = styled.div`
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .bottom {
+        margin-top: 20px;
+    }
+`;
 
 const MenuContainer = styled.div`
     display: flex;
@@ -19,66 +32,68 @@ const Admin = () => {
     
     const auth = useContext(AuthContext);
 
-    const [data, setData] = useState({ready: false, psets: []})
-    const [selected, setSelected] = useState([])
+    const [datasets, setDatasets] = useState({ready: false, psets: []});
+    const [selected, setSelected] = useState([]);
+    const [submissions, setSubmissions] = useState([]);
 
     useEffect(() => {
         const getData = async () => {
-            const res = await trackPromise(fetch('/api/pset/search', {
-                method: 'POST',
-                body: JSON.stringify({parameters: {status: 'complete'}}),
-                headers: {'Content-type': 'application/json'}
-            }));
-            const json = await res.json()
-            console.log(json);
-            setSelected(json.filter(p => {return p.canonical}))
-            setData({ready: true, psets: json})
+            const res = await trackPromise(axios.get('/api/view/admin'));
+            setSelected(res.data.datasets.filter(p => {return p.canonical}));
+            setDatasets({ready: true, psets: res.data.datasets});
+            setSubmissions(res.data.submissions);
         }
-        getData()
+        getData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const updateCanonicalPSets = async (event) => {
         event.preventDefault()
-        setData({...data, ready: false})
-        await trackPromise(fetch('/api/pset/canonical/update', {
-            method: 'POST',
-            body: JSON.stringify({selected: selected}),
-            headers: {'Content-type': 'application/json'}
-        }));
-        const res = await trackPromise(fetch('/api/pset/search', {
-            method: 'POST',
-            body: JSON.stringify({parameters: {status: 'complete'}}),
-            headers: {'Content-type': 'application/json'}
-        }));
-        const json = await res.json();
-        setSelected(json.filter(p => {return p.canonical}));
-        setData({ready: true, psets: json});
+        setDatasets({...datasets, ready: false})
+        await trackPromise(axios.post('/api/admin/dataset/canonical/update', {selected: selected}));
+        const res = await trackPromise(axios.post('/api/pset/search', {parameters: {status: 'complete', private: false}}));
+        setSelected(res.data.filter(p => {return p.canonical}));
+        setDatasets({ready: true, psets: res.data});
     }
 
-    const handleSelectionChange = (selection) => {
-        console.log(selection);
-        setSelected(selection);
+    const markCompleteSubmisson = async (e, id) => {
+        e.preventDefault();
+        console.log(id);
+        await axios.post(`/api/admin/submission/complete/${id}`, {});
+        const res = await axios.get('/api/admin/submission/list');
+        setSubmissions(res.data);
     }
     
     return(
         <div className='pageContent'>
-            <h2>Administrator's Menu</h2>
-            <Messages ref={(el) => Admin.messages = el} />
-            <MenuContainer>
-                <h3>Update Canonical PSets</h3>
-                <Button label='Update' type='submit' onClick={updateCanonicalPSets} />
-            </MenuContainer>
-            {
-                data.ready ?
-                <PSetTable 
-                    psets={data.psets} selectedPSets={selected} 
-                    updatePSetSelection={handleSelectionChange} scrollHeight='600px'
-                    authenticated={auth.user ? true : false}
-                    download={false}
-                /> 
-                :
-                <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
-            }
+            <Container>
+                <div className='title'>Administrator's Menu</div>
+                <Messages ref={(el) => Admin.messages = el} />
+                <MenuContainer>
+                    <h4>Update Canonical PSets</h4>
+                    <Button label='Update' type='submit' onClick={updateCanonicalPSets} />
+                </MenuContainer>
+                {
+                    datasets.ready ?
+                    <PSetTable 
+                        psets={datasets.psets} 
+                        selectedPSets={selected} 
+                        updatePSetSelection={(e) => {setSelected(e.value)}} 
+                        scrollHeight='600px'
+                        authenticated={auth.user ? true : false}
+                        download={false}
+                    /> 
+                    :
+                    <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                }
+                <DataSubmissionList 
+                    className='bottom'
+                    heading='Data Submissions'
+                    datasets={submissions}
+                    admin={true}
+                    markComplete={markCompleteSubmisson}
+                />
+            </Container>
         </div>
     )
 }

@@ -8,6 +8,7 @@ const router = express.Router();
 const dataset = require('./api/dataset');
 const psetRequest = require('./api/pset-request');
 const user = require('./api/user');
+const admin = require('./api/admin');
 const userDataset = require('./api/user-dataset');
 const auth = require('./api/auth');
 const formMetric = require('./api/form-metric');
@@ -22,7 +23,6 @@ router.get('/:datasetType/share_link/:id1/:id2', auth.verifyToken, dataset.creat
 router.get('/:datasetType/publish/:id1/:id2', auth.verifyToken, dataset.publishDataset);
 router.get('/pset/releasenotes/:name/:version/:type', dataset.getReleaseNotesData);
 router.get('/canonical/:datasetType', dataset.getCanonicalDatasets);
-router.post('/pset/canonical/update', dataset.updateCanonicalPSets);
 router.post('/:datasetType/download', dataset.downloadDatasets);
 router.get('/pachyderm/status', pachyderm.returnStatus);
 
@@ -42,10 +42,18 @@ router.post('/user/reset/token', user.resetPwdWithToken);
 router.post('/user/reset', auth.verifyToken, user.resetPwd);
 
 // user-dataset routes
-router.get('/user/dataset/list', auth.verifyToken, userDataset.getUserPSet);
+router.get('/view/user/profile/main', auth.verifyToken, userDataset.getUserDataset);
 router.post('/user/dataset/add', auth.verifyToken, userDataset.addToUserPset);
 router.post('/user/dataset/remove', auth.verifyToken, userDataset.removeUserPSet);
 router.post('/user/dataset/submit', auth.verifyToken, userDataset.submitDataset);
+router.get('/user/dataset/submit/check_private/:id', auth.verifyToken, userDataset.check_access, userDataset.authorize);
+router.get('/user/dataset/submitted/:id', auth.verifyToken, userDataset.check_access, userDataset.getSubmittedData);
+
+// admin routes
+router.get('/view/admin', auth.verifyToken, auth.isAdmin, admin.initialize);
+router.post('/admin/dataset/canonical/update', auth.verifyToken, auth.isAdmin, dataset.updateCanonicalPSets);
+router.post('/admin/submission/complete/:id', auth.verifyToken, auth.isAdmin, admin.updateSubmission);
+router.get('/admin/submission/list', auth.verifyToken, auth.isAdmin, admin.getSubmissionList);
 
 //formdata and stats
 router.get('/:datasetType/formdata', formMetric.getFormData);

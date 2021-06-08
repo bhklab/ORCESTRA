@@ -6,7 +6,8 @@ import usePachyderm from '../hooks/usePachyderm';
 
 // routes 
 import PrivateRoute from './PrivateRoute';
-import DatasetRoute from './DatasetRoute';
+// import DatasetRoute from './DatasetRoute'; not used
+import RestrictedRoute from './RestrictedRoute';
 import AdminRoute from './AdminRoute';
 
 // navigation and footer
@@ -22,6 +23,7 @@ import RequestStatus from '../components/RequestStatus/RequestStatus';
 import Stats from '../components/Stats/Stats';
 import Documentation from '../components/Documentation/Documentation';
 import DataSubmission from '../components/DataSubmission/DataSubmission';
+import SingleDataSubmission from '../components/DataSubmission/SingleDataSubmission';
 import Profile from '../components/Profile/Profile';
 import Admin from '../components/Admin/Admin';
 import Authentication from '../components/Authentication/Authentication';
@@ -47,16 +49,29 @@ const Router = () => {
                     <Route exact path ='/' component={Main} /> 
                     <Route exact path ='/:datatype' render={(props) => (<DatasetMain {...props} />)} /> 
                     <Route exact path ='/:datatype/search' render={(props) => (<SearchRequest {...props}  />)}/>
-                    <Route path='/:datatype/canonical' component={CanonicalPSets} /> 
+                    <Route exact path='/:datatype/canonical' component={CanonicalPSets} /> 
                     <Route exact path ='/:datatype/status' component={RequestStatus}/>
                     <Route exact path ='/:datatype/stats' component={Stats}/>
                     <Route exact path ='/app/documentation/:section' component={Documentation} />
                     <Route exact path='/app/authentication' component={Authentication} />
-                    <Route path ='/reset/:token' component={Reset} />
-                    <DatasetRoute path='/:datatype/:id1/:id2' component={SingleDataset} redirect='/app/authentication' />
-                    <PrivateRoute path ='/app/data_submission' component={DataSubmission} redirect='/app/authentication' />
-                    <PrivateRoute path='/app/profile' component={Profile} redirect='/app/authentication' />
-                    <AdminRoute path='/admin' component={Admin} redirect='/app/profile' />
+                    <Route exact path ='/reset/:token' component={Reset} />
+                    <PrivateRoute exact path ='/app/data_submission' component={DataSubmission} redirect='/app/authentication' />
+                    <PrivateRoute exact path='/app/profile' component={Profile} redirect='/app/authentication' />
+                    <AdminRoute exact path='/app/admin' component={Admin} redirect='/app/profile' />
+                    <RestrictedRoute 
+                        exact 
+                        path ='/app/data_submission/submitted/:id' 
+                        component={SingleDataSubmission} 
+                        redirect='/app/authentication' 
+                        type='dataSubmission'
+                    />
+                    <RestrictedRoute 
+                        exact 
+                        path='/:datatype/:id1/:id2' 
+                        component={SingleDataset} 
+                        redirect='/app/authentication' 
+                        type='dataset'
+                    />
                     <Route component={NotFound404}/>
                 </Switch>
                 <Footer />

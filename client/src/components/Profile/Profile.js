@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { AuthContext } from '../../hooks/Context';
 import UserInfo from './subcomponents/UserInfo';
 import UserDataset from './subcomponents/UserDataset';
+import DataSubmissionList from '../DataSubmission/DataSubmissionList';
 
 const StyledProfile = styled.div`
     width: 100%;
@@ -14,15 +15,17 @@ const Profile = () =>{
     const auth = useContext(AuthContext);
     const [savedDatasets, setSavedDatasets] = useState([]);
     const [inProcessDatasets, setInProcessDatasets] = useState([]);
+    const [dataSubmissions, setDataSubmissions] = useState([]);
 
     useEffect(() => {
         const initialize = async () => {
-            const res = await axios.get(`/api/user/dataset/list?username=${auth.user.username}`);
+            const res = await axios.get(`/api//view/user/profile/main?username=${auth.user.username}`);
             console.log(res.data);
-            let complete = res.data.filter(itme => itme.status === 'complete');
-            let pending = res.data.filter(itme => itme.status !== 'complete');
+            let complete = res.data.datasets.filter(itme => itme.status === 'complete');
+            let pending = res.data.datasets.filter(itme => itme.status !== 'complete');
             setSavedDatasets(complete);
             setInProcessDatasets(pending);
+            setDataSubmissions(res.data.submissions);
         }
         initialize();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,6 +56,10 @@ const Profile = () =>{
                     heading='Dataset Requests in Process'
                     datasets={inProcessDatasets} 
                     pending={true}
+                />
+                <DataSubmissionList 
+                    heading='Data Submissions'
+                    datasets={dataSubmissions}
                 />
             </StyledProfile>
         </div>

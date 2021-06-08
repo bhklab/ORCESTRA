@@ -156,7 +156,7 @@ const sendDataSubmissionEmail = async (submissionInfo) => {
                 '</p>' +
                 '<p class="content">' + 
                     'You can view the details of the submitted data here: ' +
-                    `<a href='www.orcestra.ca'>www.orcestra.ca</a>` +
+                    `<a href=${process.env.BASE_URL}app/data_submission/submitted/${submissionInfo._id}>${process.env.BASE_URL}app/data_submission/submitted/${submissionInfo._id}</a>` +
                 '</p>' + 
                  '<p class="signature">' + 
                     'ORCESTRA powered by BHK Lab' + 
