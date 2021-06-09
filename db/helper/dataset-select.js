@@ -1,6 +1,7 @@
 const mongo = require('../mongo');
 const formdata = require('./formdata');
 const metricData = require('./metricdata');
+const datasetNotes = require('./dataset-notes');
 const enums = require('../../helper/enum');
 
 function getQuerySetForPSet(query){
@@ -221,6 +222,17 @@ const selectDatasetByDOI = async function(datasetType, doi, projection=null){
         // add release notes metrics
         const metrics = await metricData.getMetricDataVersion(datasetType, datasetObj.dataset.name, datasetObj.dataset.versionInfo.version, 'releaseNotes');
         datasetObj.releaseNotes = metrics;
+
+        // add notes and disclaimers
+        let name = datasetObj.dataset.name
+        if(name === 'GDSC'){
+            datasetObj.dataset.versionInfo.version
+            const ver = datasetObj.dataset.versionInfo.version.split('v')[1].slice(0, 1);
+            name = datasetObj.dataset.name + ver;
+        }
+        console.log(name);
+        const notes = await datasetNotes.findOne(name);
+        datasetObj.disclaimer = notes;
 
         return datasetObj
     }catch(err){

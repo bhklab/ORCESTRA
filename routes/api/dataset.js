@@ -16,6 +16,13 @@ function getTabData(result, withMolData){
     let tabData = [];
     tabData.push({header: 'Dataset', data: {dataset: result.dataset, genome: result.genome}})
 
+    if(result.disclaimer){
+        tabData.push({
+            header: 'Disclaimer',
+            data: result.disclaimer
+        })
+    }
+    
     if(withMolData){
         let rnaData = [];
         let dnaData = [];
@@ -61,6 +68,7 @@ const getSingleDataset = async (req, res) => {
     console.log(doi);
     try{
         const result = await datasetSelect.selectDatasetByDOI(req.params.datasetType, doi);
+        
         let dataset = {}  
         dataset._id = result._id;
         dataset.name = result.name;
