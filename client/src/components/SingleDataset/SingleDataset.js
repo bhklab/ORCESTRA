@@ -13,6 +13,7 @@ const SingleDataset = (props) => {
     const { 
         getDataset, 
         getHeader,
+        getGeneralInfoAccordion,
         datasetMessage, 
         publishDialog,
         dataset 
@@ -31,15 +32,34 @@ const SingleDataset = (props) => {
             {
                 dataset.ready &&
                 <React.Fragment>
-                    { datasetMessage }
-                    { getHeader() }
-                    { publishDialog() }
+                    { 
+                        datasetMessage 
+                    }
+                    { 
+                        getHeader() 
+                    }
+                    { 
+                        publishDialog() 
+                    }
+                    { 
+                        getGeneralInfoAccordion(dataset.data.generalInfo) 
+                    }
                     <React.Fragment>
-                        { props.match.params.datatype === dataTypes.pharmacogenomics && <PSet dataset={dataset.data} /> }
-                        { props.match.params.datatype === dataTypes.toxicogenomics && <ToxicoSet dataset={dataset.data} /> }
-                        { props.match.params.datatype === dataTypes.xenographic && <XevaSet dataset={dataset.data} /> }
-                        { props.match.params.datatype === dataTypes.clinicalgenomics && <ClinicalGenomics dataset={dataset.data} /> }
-                        { props.match.params.datatype === dataTypes.radiogenomics && <RadioSet dataset={dataset.data} /> }
+                        { 
+                            props.match.params.datatype === dataTypes.pharmacogenomics && <PSet dataset={dataset.data} /> 
+                        }
+                        { 
+                            props.match.params.datatype === dataTypes.toxicogenomics && <ToxicoSet dataset={dataset.data} /> 
+                        }
+                        { 
+                            props.match.params.datatype === dataTypes.xenographic && <XevaSet dataset={dataset.data} /> 
+                        }
+                        { 
+                            props.match.params.datatype === dataTypes.clinicalgenomics && <ClinicalGenomics dataset={dataset.data} /> 
+                        }
+                        { 
+                            props.match.params.datatype === dataTypes.radiogenomics && <RadioSet dataset={dataset.data} /> 
+                        }
                     </React.Fragment>
                 </React.Fragment>
             } 

@@ -66,8 +66,16 @@ const getSingleDataset = async (req, res) => {
         dataset.name = result.name;
         dataset.downloadLink = result.downloadLink;
         dataset.doi = result.doi;
+        dataset.bioComputeObject = result.bioComputeObject;
         dataset.private = result.private;
-        dataset.generalInfo = {name: result.name, doi: result.doi, createdBy: result.createdBy, dateCreated: result.dateCreated};
+        dataset.generalInfo = {
+            name: result.name, 
+            doi: result.doi, 
+            bioComputeDOI: result.bioComputeObject ? result.bioComputeObject.doi : null,
+            createdBy: result.createdBy, 
+            canonical: result.canonical,
+            dateCreated: result.dateCreated
+        };
         dataset.tabData = [];
 
         // get molecular tab data for each dataset type

@@ -5,14 +5,12 @@ import RNATabContent from './TabContents/RNATabContent';
 import DNATabContent from './TabContents/DNATabContent';
 import PipelineTabContent from '../PSet/TabContents/PipelineTabContent';
 import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';    
-import { GeneralInfoAccordion } from '../PSet/PSetAccordion';
 import { TabContainer } from '../SingleDatasetStyle';
 
 const XevaSet = (props) => {
     const { dataset } = props;
     return(
         <React.Fragment>
-            <GeneralInfoAccordion datasetType='XevaSet' data={dataset.generalInfo}/>
             <TabContainer>
                 <TabView renderActiveOnly={false}>
                     {

@@ -1,6 +1,5 @@
 import React from 'react';
 import {Accordion,AccordionTab} from 'primereact/accordion';
-import {StyledAccordion} from '../SingleDatasetStyle';
 
 class PSetToolAccordion extends React.Component {
 
@@ -94,25 +93,8 @@ class DNARefAccordion extends React.Component {
 
 }
 
-class GeneralInfoAccordion extends React.Component {
-    render(){   
-        const doi = 'http://doi.org/' + this.props.data.doi
-        return(
-            <StyledAccordion className='generalInfoAccordion' activeIndex={0}>
-                <AccordionTab header="General Information">
-                    <h4>{this.props.datasetType} Name: {this.props.data.name}</h4>
-                    <h4>DOI:  <a href={doi} target="_blank" rel='noreferrer'>{this.props.data.doi}</a></h4>
-                    <h4>Date Created: {this.props.data.dateCreated.split('T')[0]}</h4>
-                    {this.props.data.createdBy && <h4>Created By {this.props.data.createdBy}</h4>}
-                </AccordionTab>    
-            </StyledAccordion>    
-        );
-    }
-}
-
 export {
     PSetToolAccordion,
     RNARefAccordion,
-    DNARefAccordion,
-    GeneralInfoAccordion
+    DNARefAccordion
 }

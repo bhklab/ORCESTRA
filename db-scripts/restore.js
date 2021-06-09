@@ -66,7 +66,7 @@ const restore = async (db, collectionName, filepath) => {
         // await restore(db, 'xevaset', './data/xevaset.json');
 
         // // restore user
-        await restore(db, 'user', './data/user.json');
+        // await restore(db, 'user', './data/user.json');
 
     }catch(err){
         console.log(err);

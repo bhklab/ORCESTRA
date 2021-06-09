@@ -3,14 +3,12 @@ import { TabView,TabPanel } from 'primereact/tabview';
 import DatasetTabContent from './TabContents/DatasetTabContent';
 import PipelineTabContent from '../PSet/TabContents/PipelineTabContent';
 import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';
-import { GeneralInfoAccordion } from '../PSet/PSetAccordion';
 import { TabContainer } from '../SingleDatasetStyle';
 
 const ToxicoSet = (props) => {
     const { dataset } = props;
     return(
         <React.Fragment>
-            <GeneralInfoAccordion datasetType='ToxicoSet' data={dataset.generalInfo}/>
             <TabContainer>
                 <TabView renderActiveOnly={false}>
                     {

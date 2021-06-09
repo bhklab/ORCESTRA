@@ -5,14 +5,12 @@ import RNATabContent from './TabContents/RNATabContent';
 import DNATabContent from './TabContents/DNATabContent';
 import PipelineTabContent from './TabContents/PipelineTabContent';
 import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';
-import { GeneralInfoAccordion } from './PSetAccordion';
 import { TabContainer } from '../SingleDatasetStyle';
 
 const PSet = (props) => {
     const { dataset } = props;
     return(
         <React.Fragment>
-            <GeneralInfoAccordion datasetType='PSet' data={dataset.generalInfo}/>
             <TabContainer>
                 <TabView renderActiveOnly={false}>
                     {

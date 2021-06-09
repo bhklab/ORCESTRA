@@ -3,7 +3,9 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
-import DownloadDatasetButton from '../components/Shared/Buttons/DownloadDatasetButton';
+import { Accordion, AccordionTab } from 'primereact/accordion';
+
+import DownloadButton from '../components/Shared/Buttons/DownloadButton';
 import CustomMessages from '../components/Shared/CustomMessages';
 import { dataTypes } from '../components/Shared/Enums';
 
@@ -18,6 +20,17 @@ const Header = styled.div`
     }
     .left {
         margin-right: 30px;
+    }
+`;
+
+const StyledAccordion = styled(Accordion)`
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    h4 {
+        margin-left: 20px;
+        font-size: 14px;
+        max-width: 90%;
     }
 `;
 
@@ -73,6 +86,7 @@ const useSingleDataset = (datasetType, doi) => {
     const getDataset = async (shareToken=null) => {
         try{
             const res = await axios.get(`/api/${datasetType}/one/${doi}`);
+            console.log(res.data);
             setDataset({
                 ready: true,
                 data: res.data
@@ -124,7 +138,29 @@ const useSingleDataset = (datasetType, doi) => {
                 <div className='title left'>
                     Explore {getLabel()} - {dataset.data.name}
                 </div>
-                <DownloadDatasetButton className='left' disabled={false} datasetType={datasetType} dataset={dataset.data} />
+                <DownloadButton 
+                    className='left' 
+                    disabled={false} 
+                    datasetType={datasetType} 
+                    doi={dataset.data.doi}
+                    downloadLink={dataset.data.downloadLink}
+                    mode='dataset'
+                    label='Download Dataset'
+                    tooltip={`Donwload ${dataset.data.name} as an R object`}
+                />
+                {
+                    dataset.data.bioComputeObject &&
+                    <DownloadButton 
+                        className='left' 
+                        disabled={false} 
+                        datasetType={datasetType} 
+                        doi={dataset.data.bioComputeObject.doi}
+                        downloadLink={dataset.data.bioComputeObject.downloadLink}
+                        mode='bioCompute'
+                        label='Download BioCompute Object'
+                        tooltip={`Donwload a BioCompute object of a pipleine used to create ${dataset.data.name}`}
+                    />
+                }
                 { 
                     privateView && 
                     <Button 
@@ -147,6 +183,27 @@ const useSingleDataset = (datasetType, doi) => {
                     /> 
                 }
             </Header>
+        );
+    }
+
+    const getGeneralInfoAccordion = (data) => {
+        return(
+            <StyledAccordion className='generalInfoAccordion' activeIndex={0}>
+                <AccordionTab header="General Information">
+                    <h4>Name: {data.name}</h4>
+                    <div>
+                        <h4>Dataset DOI:  <a href={`http://doi.org/${data.doi}`} target="_blank" rel='noreferrer'>{data.doi}</a></h4>
+                        {
+                            data.bioComputeDOI &&
+                            <h4>BioCompute Object DOI:  <a href={`http://doi.org/${data.bioComputeDOI}`} target="_blank" rel='noreferrer'>{data.bioComputeDOI}</a></h4>
+                        }
+                    </div>
+                    <h4>Date Created: {data.dateCreated.split('T')[0]}</h4>
+                    {
+                        data.createdBy && <h4>Created By {data.createdBy} { data.canonical ? '(Canonical)' : '' }</h4>
+                    }
+                </AccordionTab>    
+            </StyledAccordion>    
         );
     }
 
@@ -180,6 +237,7 @@ const useSingleDataset = (datasetType, doi) => {
     return {
         getDataset,
         getHeader,
+        getGeneralInfoAccordion,
         publishDialog,
         datasetMessage,
         dataset

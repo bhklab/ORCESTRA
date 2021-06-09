@@ -5,14 +5,12 @@ import RNATabContent from './TabContents/RNATabContent';
 import DNATabContent from './TabContents/DNATabContent';
 import PipelineTabContent from './TabContents/PipelineTabContent';
 import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';
-import { GeneralInfoAccordion } from './PSetAccordion';
 import { TabContainer } from '../SingleDatasetStyle';
 
 const RadioSet = (props) => {
     const { dataset } = props;
     return(
         <React.Fragment>
-            <GeneralInfoAccordion datasetType='RadioSet' data={dataset.generalInfo}/>
             <TabContainer>
                 <TabView renderActiveOnly={false}>
                     {
