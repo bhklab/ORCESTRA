@@ -28,6 +28,9 @@ const backup = async (db, collectionName, outputPath) => {
         // backup metric-data
         await backup(db, 'metric-data', './data/metric-data.json');
 
+        // backup metric-data
+        await backup(db, 'dataset-notes', './data/dataset-notes.json');
+
         // backup req.-config
         await backup(db, 'req.-config', './data/req.config.json');
 
