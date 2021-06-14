@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { Accordion, AccordionTab } from 'primereact/accordion';
+import Loader from 'react-loader-spinner';
+import {usePromiseTracker} from "react-promise-tracker";
+import {trackPromise} from 'react-promise-tracker';
 
 import DownloadButton from '../components/Shared/Buttons/DownloadButton';
 import CustomMessages from '../components/Shared/CustomMessages';
@@ -60,6 +63,8 @@ const errorMessage = {
 }
 
 const useSingleDataset = (datasetType, doi) => {
+    const {promiseInProgress} = usePromiseTracker();
+
     const [dataset, setDataset] = useState({ready: false, data: {}});
     const [privateView, setPrivateView] = useState(false);
     const [showPublishDialog, setShowPublishDialog] = useState(false);
@@ -104,7 +109,7 @@ const useSingleDataset = (datasetType, doi) => {
         let res;
         try{
             setShowPublishDialog(false);
-            res = await axios.get(`/api/${datasetType}/publish/${doi}`);
+            res = await trackPromise(axios.get(`/api/${datasetType}/publish/${doi}`));
             console.log(res.data);
         }catch(error){
             console.log(error);
@@ -112,7 +117,7 @@ const useSingleDataset = (datasetType, doi) => {
             setMessage(res.data ? successMessage : errorMessage);
             setShowMessage(Math.random());
             if(res.data){
-                setDataset({...dataset, data: {...dataset.data, private: res.data.private}});
+                setPrivateView(false);
             }
         }
     }
@@ -138,18 +143,21 @@ const useSingleDataset = (datasetType, doi) => {
                 <div className='title left'>
                     Explore {getLabel()} - {dataset.data.name}
                 </div>
-                <DownloadButton 
-                    className='left' 
-                    disabled={false} 
-                    datasetType={datasetType} 
-                    doi={dataset.data.doi}
-                    downloadLink={dataset.data.downloadLink}
-                    mode='dataset'
-                    label='Download Dataset'
-                    tooltip={`Donwload ${dataset.data.name} as an R object`}
-                />
                 {
-                    dataset.data.bioComputeObject &&
+                    !privateView &&
+                    <DownloadButton 
+                        className='left' 
+                        disabled={false} 
+                        datasetType={datasetType} 
+                        doi={dataset.data.doi}
+                        downloadLink={dataset.data.downloadLink}
+                        mode='dataset'
+                        label='Download Dataset'
+                        tooltip={`Donwload ${dataset.data.name} as an R object`}
+                    />
+                }
+                {
+                    !privateView && dataset.data.bioComputeObject &&
                     <DownloadButton 
                         className='left' 
                         disabled={false} 
@@ -171,16 +179,21 @@ const useSingleDataset = (datasetType, doi) => {
                     /> 
                 }
                 { 
-                    privateView && 
-                    <Button 
-                        className='p-button-success'
-                        label='Publish' 
-                        icon='pi pi-check' 
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setShowPublishDialog(true);
-                        }}
-                    /> 
+                    privateView ?
+                        promiseInProgress ?
+                        <Loader type="ThreeDots" color="#3D405A" height={50} width={50} />
+                        :
+                        <Button 
+                            className='p-button-success'
+                            label='Publish' 
+                            icon='pi pi-check' 
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setShowPublishDialog(true);
+                            }}
+                        /> 
+                    :
+                    ''
                 }
             </Header>
         );

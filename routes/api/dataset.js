@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
+const axios = require('axios');
 const datasetSelect = require('../../db/helper/dataset-select');
 const datasetUpdate = require('../../db/helper/dataset-update');
 const datasetCanonical = require('../../db/helper/dataset-canonical');
@@ -222,9 +223,37 @@ const publishDataset = async (req, res) => {
     let result = null;
     try{
         console.log(req.params);
+        let doi = `${req.params.id1}/${req.params.id2}`;
+        let depositionId = doi.split('.').pop();
+
+        // open the repository for editting
+        let resp = await axios.post(
+            `${process.env.ZENODO_URL}${depositionId}/actions/edit?access_token=${process.env.ZENODO_ACCESS_TOKEN}`
+        );
+        console.log(resp.status);
+
+        // update the editied data (make the access_right 'open')
+        let metadata = resp.data.metadata;
+        delete metadata.access_conditions;
+        let updated = {
+            metadata: {...metadata, access_right: 'open'}
+        }    
+        resp = await axios.put(
+            `${process.env.ZENODO_URL}${depositionId}?access_token=${process.env.ZENODO_ACCESS_TOKEN}`,
+            updated
+        );
+        console.log(resp.status);
+
+        // publish the editted deposition
+        resp = await axios.post(
+            `${process.env.ZENODO_URL}${depositionId}/actions/publish?access_token=${process.env.ZENODO_ACCESS_TOKEN}`
+        );
+        console.log(resp.status);
+
+        // make the dataset public
         result = await datasetUpdate.updateDataset(
             req.params.datasetType, 
-            {'doi': `${req.params.id1}/${req.params.id2}`}, 
+            {'doi': doi}, 
             {'private': false}
         );
     }catch(error){  
