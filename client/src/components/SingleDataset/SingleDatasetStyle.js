@@ -16,7 +16,7 @@ export const TabContent = styled.div`
 
 export const TabContentSection = styled.div`
     margin-top: 30px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     h3 {
         font-size: 16px;
     }
@@ -25,7 +25,7 @@ export const TabContentSection = styled.div`
     }
     .subContent {
         margin-left: 20px;
-        font-size: 14px;
+        font-size: 12px;
         max-width: 90%;
         .subContentHeader {
             color: #3D405A;

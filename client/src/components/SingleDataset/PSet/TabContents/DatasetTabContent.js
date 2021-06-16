@@ -44,7 +44,13 @@ class DatasetTabContent extends React.Component{
                             {publication}
                         </ul> 
                     </TabContentSection>
-                    
+                    {
+                        this.props.metadata.dataset.acknowledgement &&
+                        <TabContentSection>
+                            <h3>Acknowledgement</h3>
+                            <div className='subContent'>{ this.props.metadata.dataset.acknowledgement }</div>
+                        </TabContentSection>
+                    }
                     <TabContentSection>
                         <h3>Genome Version</h3>
                         <div className='subContent'>{this.props.metadata.genome.name ? this.props.metadata.genome.name : "Not Available"}</div>
