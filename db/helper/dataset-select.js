@@ -225,10 +225,23 @@ const selectDatasetByDOI = async function(datasetType, doi, projection=null){
 
         // add notes and disclaimers
         let name = datasetObj.dataset.name
-        if(name === 'GDSC'){
-            datasetObj.dataset.versionInfo.version
-            const ver = datasetObj.dataset.versionInfo.version.split('v')[1].slice(0, 1);
-            name = datasetObj.dataset.name + ver;
+        switch(name){
+            case 'GDSC':
+                datasetObj.dataset.versionInfo.version
+                const ver = datasetObj.dataset.versionInfo.version.split('v')[1].slice(0, 1);
+                name = datasetObj.dataset.name + ver;
+                break;
+            case 'Open TG-GATEs Human':
+                name = 'Open TG-GATEs';
+                break;
+            case 'Open TG-GATEs Rat':
+                name = 'Open TG-GATEs';
+                break;
+            case 'DrugMatrix Rat':
+                name = 'DrugMatrix';
+                break;
+            default:
+                break;
         }
         console.log(name);
         const notes = await datasetNotes.findOne(name);

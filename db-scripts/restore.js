@@ -12,7 +12,9 @@ const restore = async (db, collectionName, filepath) => {
     let data = fs.readFileSync(filepath);
     data = JSON.parse(data);
     for(item of data){
-        item._id = mongo.ObjectId(item._id);
+        if(item._id){
+            item._id = mongo.ObjectId(item._id);
+        }
         if('dateSubmitted' in item){
             item.dateSubmitted = new Date(item.dateSubmitted);
         }
@@ -39,13 +41,13 @@ const restore = async (db, collectionName, filepath) => {
         console.log('connection open');
 
         // // restore formdata
-        await restore(db, 'formdata', './data/formdata.json');
+        // await restore(db, 'formdata', './data/formdata.json');
 
         // // restore metric-data
-        await restore(db, 'metric-data', './data/metric-data.json');
+        // await restore(db, 'metric-data', './data/metric-data.json');
 
         // restore dataset-notes
-        // await restore(db, 'dataset-notes', './data/dataset-notes.json');
+        await restore(db, 'dataset-notes', './data/dataset-notes.json');
 
         // // restore req-config
         // await restore(db, 'req-config', './data/req-config.json');
@@ -57,7 +59,7 @@ const restore = async (db, collectionName, filepath) => {
         // await restore(db, 'clinicalgenomics', './data/clinicalgenomics.json');
 
         // // restore pset
-        await restore(db, 'pset', './data/pset.json');
+        // await restore(db, 'pset', './data/pset.json');
 
         // // restore radioset
         // await restore(db, 'radioset', './data/radioset.json');
