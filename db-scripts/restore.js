@@ -41,7 +41,7 @@ const restore = async (db, collectionName, filepath) => {
         console.log('connection open');
 
         // // restore formdata
-        // await restore(db, 'formdata', './data/formdata.json');
+        await restore(db, 'formdata', './data/formdata.json');
 
         // // restore metric-data
         // await restore(db, 'metric-data', './data/metric-data.json');
