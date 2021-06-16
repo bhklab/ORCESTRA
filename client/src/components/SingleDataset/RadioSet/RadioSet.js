@@ -3,7 +3,7 @@ import { TabView,TabPanel } from 'primereact/tabview';
 import DatasetTabContent from './TabContents/DatasetTabContent';
 import RNATabContent from './TabContents/RNATabContent';
 import DNATabContent from './TabContents/DNATabContent';
-import PipelineTabContent from './TabContents/PipelineTabContent';
+import PipelineTabContent from '../PSet/TabContents/PipelineTabContent';
 import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';
 import { TabContainer } from '../SingleDatasetStyle';
 
