@@ -15,13 +15,6 @@ const enums = require('../../helper/enum');
 
 function getTabData(result, withMolData){
     let tabData = [];
-    tabData.push({
-        header: 'Dataset', 
-        data: {
-            dataset: result.dataset, 
-            genome: result.genome
-        }
-    });
 
     if(result.disclaimer){
         tabData.push({
@@ -29,6 +22,14 @@ function getTabData(result, withMolData){
             data: result.disclaimer
         })
     }
+
+    tabData.push({
+        header: 'Dataset', 
+        data: {
+            dataset: result.dataset, 
+            genome: result.genome
+        }
+    });
     
     if(withMolData){
         let rnaData = [];
