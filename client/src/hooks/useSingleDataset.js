@@ -66,7 +66,8 @@ const useSingleDataset = (datasetType, doi) => {
     const {promiseInProgress} = usePromiseTracker();
 
     const [dataset, setDataset] = useState({ready: false, data: {}});
-    const [privateView, setPrivateView] = useState(false);
+    const [publicView, setPublicView] = useState(false);
+    const [ownerView, setOwnerView] = useState(false);
     const [showPublishDialog, setShowPublishDialog] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
     const [message, setMessage] = useState();
@@ -90,14 +91,18 @@ const useSingleDataset = (datasetType, doi) => {
     
     const getDataset = async (shareToken=null) => {
         try{
-            const res = await axios.get(`/api/${datasetType}/one/${doi}`);
+            let url = shareToken ? `/api/${datasetType}/one/${doi}${shareToken}` : `/api/${datasetType}/one/${doi}`;
+            const res = await axios.get(url);
             console.log(res.data);
             setDataset({
                 ready: true,
                 data: res.data
             });
+            if(res.data && !res.data.private){
+                setPublicView(true);
+            }
             if(res.data && res.data.private && !shareToken){
-                setPrivateView(true);
+                setOwnerView(true);
             }
         }catch(error){
             console.log(error);
@@ -117,7 +122,7 @@ const useSingleDataset = (datasetType, doi) => {
             setMessage(res.data ? successMessage : errorMessage);
             setShowMessage(Math.random());
             if(res.data){
-                setPrivateView(false);
+                setPublicView(true);
             }
         }
     }
@@ -144,7 +149,7 @@ const useSingleDataset = (datasetType, doi) => {
                     Explore {getLabel()} - {dataset.data.name}
                 </div>
                 {
-                    !privateView &&
+                    publicView &&
                     <DownloadButton 
                         className='left' 
                         disabled={false} 
@@ -157,7 +162,7 @@ const useSingleDataset = (datasetType, doi) => {
                     />
                 }
                 {
-                    !privateView && dataset.data.bioComputeObject &&
+                    publicView && dataset.data.bioComputeObject &&
                     <DownloadButton 
                         className='left' 
                         disabled={false} 
@@ -166,20 +171,21 @@ const useSingleDataset = (datasetType, doi) => {
                         downloadLink={dataset.data.bioComputeObject.downloadLink}
                         mode='bioCompute'
                         label='Download BioCompute Object'
-                        tooltip={`Donwload a BioCompute object of a pipleine used to create ${dataset.data.name}`}
+                        tooltip={`Donwload the BioCompute object of the pipleine used to create ${dataset.data.name}`}
                     />
                 }
                 { 
-                    privateView && 
+                    ownerView && 
                     <Button 
                         className='left'
                         label='Get sharable link' 
                         icon='pi pi-share-alt' 
                         onClick={getShareLink}
+                        tooltip={`Generates a link you can share with others to access this page.`}
                     /> 
                 }
                 { 
-                    privateView ?
+                    ownerView ?
                         promiseInProgress ?
                         <Loader type="ThreeDots" color="#3D405A" height={50} width={50} />
                         :
@@ -191,6 +197,7 @@ const useSingleDataset = (datasetType, doi) => {
                                 e.preventDefault();
                                 setShowPublishDialog(true);
                             }}
+                            tooltip={`Makes ${dataset.data.name} publicly available.`}
                         /> 
                     :
                     ''

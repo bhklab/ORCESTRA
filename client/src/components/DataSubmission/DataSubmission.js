@@ -217,7 +217,7 @@ const DataSubmission = () => {
     return(
         <div className='pageContent'>
             <StyledDataSubmission>
-                <div className='title'>Data Submission Form (Coming soon)</div>
+                <div className='title'>Data Submission Form</div>
                 <p>
                     Please fill out and submit the form below. 
                     For Each data, provide the filename, repository URL and publication information if applicable. <br />
