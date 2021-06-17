@@ -245,10 +245,10 @@ const selectDatasetByDOI = async function(datasetType, doi, projection=null){
         }
         console.log(name);
         const notes = await datasetNotes.findOne(name);
-        if(notes.notes.acknowledgement){
+        if(notes && notes.notes.acknowledgement){
             datasetObj.dataset.acknowledgement = notes.notes.acknowledgement;
+            delete notes.notes.acknowledgement;
         }
-        delete notes.notes.acknowledgement;
         datasetObj.disclaimer = notes;
 
         return datasetObj
