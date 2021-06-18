@@ -82,6 +82,7 @@ module.exports = {
             const dataset = db.collection(datasetType);
 
             res.form = await formdata.getFormData(datasetType);
+            res.form.dataset = res.form.dataset.filter(item => !item.disabled);
 
             //res.user = await user.find({'registered': true}).count();
 

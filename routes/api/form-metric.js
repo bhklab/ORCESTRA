@@ -19,13 +19,15 @@ const enums = require('../../helper/enum');
         let form = {dataType: [], dataset: [], genome: [], rnaTool: [], rnaRef: [], dnaTool: [], dnaRef: []}
         const result = await formdata.getFormData(req.params.datasetType);
         result.dataset.forEach((ds) => {
-            form.dataset.push({
-                label: ds.label,
-                name: ds.name,
-                versions: ds.versions.map(version => ({version: version.version, label: version.label, disabled: version.disabled})),
-                accompanyData: [],
-                unavailable: ds.unavailable
-            });
+            if(!ds.disabled){
+                form.dataset.push({
+                    label: ds.label,
+                    name: ds.name,
+                    versions: ds.versions.map(version => ({version: version.version, label: version.label, disabled: version.disabled})),
+                    accompanyData: [],
+                    unavailable: ds.unavailable
+                });
+            }
         });
         if(req.params.datasetType === enums.dataTypes.pharmacogenomics){
             form.dataset.forEach(dataset => {
