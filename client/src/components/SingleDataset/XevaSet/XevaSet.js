@@ -1,5 +1,6 @@
 import React from 'react';
 import { TabView,TabPanel } from 'primereact/tabview';
+import DisclaimerTabContent from '../PSet/TabContents/DisclaimerTabContent';
 import DatasetTabContent from './TabContents/DatasetTabContent';
 import RNATabContent from './TabContents/RNATabContent';
 import DNATabContent from './TabContents/DNATabContent';
@@ -16,6 +17,7 @@ const XevaSet = (props) => {
                     {
                         dataset.tabData.map(td => (
                             <TabPanel key={Math.random()} header={td.header}>
+                                {td.header === 'Disclaimer' && <DisclaimerTabContent notes={td.data.notes} />}
                                 {td.header === 'Dataset' && <DatasetTabContent metadata={td.data} />}
                                 {td.header === 'RNA' && <RNATabContent metadata={td.data} />}
                                 {td.header === 'DNA' && <DNATabContent metadata={td.data} />}

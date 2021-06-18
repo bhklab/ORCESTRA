@@ -23,13 +23,13 @@ const backup = async (db, collectionName, outputPath) => {
         console.log('connection open');
 
         // // backup formdata
-        await backup(db, 'formdata', './data/formdata.json');
+        // await backup(db, 'formdata', './data/formdata.json');
 
         // // backup metric-data
-        await backup(db, 'metric-data', './data/metric-data.json');
+        // await backup(db, 'metric-data', './data/metric-data.json');
 
         // backup metric-data
-        // await backup(db, 'dataset-notes', './data/dataset-notes.json');
+        await backup(db, 'dataset-notes', './data/dataset-notes.json');
 
         // // backup req.-config
         // await backup(db, 'req.-config', './data/req.config.json');
@@ -41,7 +41,7 @@ const backup = async (db, collectionName, outputPath) => {
         // await backup(db, 'clinicalgenomics', './data/clinicalgenomics.json');
 
         // // backup pset
-        await backup(db, 'pset', './data/pset.json');
+        // await backup(db, 'pset', './data/pset.json');
 
         // // backup radioset
         // await backup(db, 'radioset', './data/radioset.json');
