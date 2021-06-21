@@ -282,6 +282,11 @@ const searchDatasets = async (req, res) => {
     let result = [];
     try{
         result = await datasetSelect.selectDatasets(req.params.datasetType, req.body.parameters);
+        let canonicals = result.filter(item => item.canonical);
+        let noncanonicals = result.filter(item => !item.canonical);
+        canonicals.sort((a, b) => a.name.localeCompare(b.name));
+        noncanonicals.sort((a, b) => a.name.localeCompare(b.name));
+        result = canonicals.concat(noncanonicals);
     }catch(error){
         console.log(error);
         result = error;
