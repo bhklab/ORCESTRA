@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "node app.js",
-    "test": "mocha"
+    "test": "mocha --exit"
   },
   "nodemonConfig": {
     "ignore": [
@@ -19,6 +19,7 @@
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "chai-http": "^4.3.0",
     "cookie-parser": "^1.4.4",
     "csvtojson": "^2.0.10",
     "doasync": "^2.0.1",
