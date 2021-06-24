@@ -150,7 +150,7 @@ async function buildDataSetObject(dset, formdata, withMolData=false){
 }
 
 const selectDatasets = async function(datasetType, query, projection=null){     
-    console.log(datasetType);
+    // console.log(datasetType);
     // console.log(query);
     const db = await mongo.getDB();
 
@@ -170,9 +170,6 @@ const selectDatasets = async function(datasetType, query, projection=null){
             default:
                 break;
         }
-
-        console.log(queryFilter);
-
         const data = await collection.find(queryFilter, projection).toArray();
         return data;
     }catch(err){

@@ -12,7 +12,7 @@ const path = require('path');
 
 const getDatasets = async (req, res) => {
     let datasetType = req.params.datasetType === 'clinicalgenomics' ? req.params.datasetType : req.params.datasetType.replace(/s([^s]*)$/, '$1');
-    console.log(`getDataSets - ${datasetType}`);
+    // console.log(`getDataSets - ${datasetType}`);
     let dataTypes = Object.values(enums.dataTypes);
 
     const filter = {'status': 'complete', 'private': false};
@@ -44,11 +44,19 @@ const getDatasets = async (req, res) => {
             }
 
             for(let i = 0; i < datasetResults.length; i++){
-                const version = form.dataset.find(
+                let version = form.dataset.find(
                     d => {return d.name === datasetResults[i].dataset.name}
                 ).versions.find(
                     version => {return(version.version === datasetResults[i].dataset.versionInfo)}
                 );
+
+                if(!version || typeof version === 'undefined'){
+                    version = {
+                        version: "",
+                        type: "",
+                        rawSeqDataRNA: "",
+                    }
+                }
 
                 if(datasetType === 'pset' || datasetType === 'radioset' || datasetType === 'xevaset'){
                     datasetResults[i].dataset.versionInfo = {
