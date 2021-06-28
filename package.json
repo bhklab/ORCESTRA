@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "start": "node app.js",
+    "devstart": "nodemon app.js",
     "test": "mocha --exit"
   },
   "nodemonConfig": {
