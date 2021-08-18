@@ -46,8 +46,8 @@ const restore = async (db, collectionName, filepath) => {
         // // restore metric-data
         // await restore(db, 'metric-data', './data/metric-data.json');
 
-        // restore dataset-notes
-        await restore(db, 'dataset-notes', './data/dataset-notes.json');
+        // // restore dataset-notes
+        // await restore(db, 'dataset-notes', './data/dataset-notes.json');
 
         // // restore req-config
         // await restore(db, 'req-config', './data/req-config.json');
