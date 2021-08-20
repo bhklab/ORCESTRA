@@ -74,7 +74,7 @@ const PSetFilter = () => {
     useEffect(() => {
         if(context.isRequest){
             // disable dataset option(s) that are not available to use for a PSet request.
-            let datasetOptions = datasetSelect.options.map(item => ({...item, disabled: item.unavailable ? true : false}));
+            let datasetOptions = datasetSelect.options.map(item => ({...item, disabled: item.requestDisabled}));
             setDatasetSelect({...datasetSelect, options: datasetOptions, selected: undefined});
             setDataTypeSelect({...dataTypeSelect, selected: [], disabled: true, options: []});
             setDataTypeDisabled(true);

@@ -25,10 +25,12 @@ const enums = require('../../helper/enum');
                     name: ds.name,
                     versions: ds.versions.map(version => ({version: version.version, label: version.label, disabled: version.disabled})),
                     accompanyData: [],
-                    unavailable: ds.unavailable
+                    unavailable: ds.unavailable,
+                    requestDisabled: ds.requestDisabled ? true : false
                 });
             }
         });
+        form.dataset.sort((a, b) => a.name.localeCompare(b.name));
         if(req.params.datasetType === enums.dataTypes.pharmacogenomics){
             form.dataset.forEach(dataset => {
                 let accompanyRNA = result.accompanyRNA.filter(item => item.dataset === dataset.name);
@@ -67,7 +69,7 @@ const enums = require('../../helper/enum');
  const getDataForStats = async (req, res) => { 
     let data = {psets: [], chartData:[]}
     try{
-        const form = await formdata.getFormData(req.params.datasetType)
+        const form = await formdata.getFormData(req.params.datasetType);
         const dataset = form.dataset
         for(let i = 0; i < dataset.length; i++){
             let item = {
@@ -168,10 +170,14 @@ const enums = require('../../helper/enum');
             '#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#6fbd22','#bcbd22','#17becf','#222AA1','#7DC922','#03F14A','#2F0248','#D31E70','#370E0F','#101A21','#FF9585','#BE93F6','#1CF4A5','#DACC14','#BB012F','#62AD27','#49947F','#A817D1','#159326','#652CBF','#1922A7','#2FC186','#6A0570'
         ];
         
-        let data = await metricdata.getAvailableDatasetForMetrics();
-        console.log(data);
+        let availableDatasets = await metricdata.getAvailableDatasetForMetrics();
+        const form = await formdata.getFormData('pset');
+        const formDatasets = form.dataset.filter(item => !item.unavailable).map(item => item.name);
+        console.log(availableDatasets);
+        availableDatasets = availableDatasets.filter(item => formDatasets.includes(item.name));
+
         // parses available dataset into an array of objects that can be used for upset plot rendering
-        const datasets = data.map((d, i) => ({
+        const datasets = availableDatasets.map((d, i) => ({
             name: d.name + "_" + d.version,
             dataset: d.name,
             version: d.version,

@@ -56,7 +56,7 @@ const getCanonicalDatasets = async function(datasetType, query={}, projection=nu
             })
         }
 
-        return canonical
+        return canonical.sort((a, b) => a.dataset.localeCompare(b.dataset));
     }catch(error){
         console.log('getCanonicalPSets')
         console.log(error)

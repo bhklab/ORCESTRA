@@ -58,7 +58,14 @@ module.exports = {
 
             // obtains dataset name and version of current canonical PSets.
             const pset = db.collection('pset');
-            const canonicals = await pset.find({'canonical': true}, {'projection': {'dataset': true}}).sort({'name': 1, 'version': 1}).toArray();
+            const canonicals = await pset.find(
+                {
+                    'canonical': true,
+                }, 
+                {
+                    'projection': {'dataset': true}
+                }
+            ).sort({'name': 1, 'version': 1}).toArray();
             
             // converts it to an array of objects containing dataste name and version.
             const datasets = canonicals.map(pset => ({name: pset.dataset.name, version: pset.dataset.versionInfo}));
