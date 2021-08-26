@@ -4,10 +4,10 @@ import AccompanyDataTabContent from './AccompanyDataTabContent';
 import { TabHeader, TabContent, TabContentSection} from '../../SingleDatasetStyle';
 
 const RNATabContent = props => {
-    const rawSeqDataRNA = props.metadata.find(x => x.name === 'rawSeqDataRNA')
-    const rnaRef = props.metadata.find(x => x.name === 'rnaRef')
-    const rnaTool = props.metadata.find(x => x.name === 'rnaTool')
-    const accRNA = props.metadata.find(x => x.name === 'accRNA')
+    const rawSeqDataRNA = props.metadata.find(x => x.name === 'rawSeqDataRNA');
+    const rnaRef = props.metadata.find(x => x.name === 'rnaRef');
+    const rnaTool = props.metadata.find(x => x.name === 'rnaTool');
+    const accRNA = props.metadata.find(x => x.name === 'accRNA');
 
     return(
         <React.Fragment>
@@ -62,7 +62,7 @@ const RNATabContent = props => {
                     </TabContentSection>
                 }
                 {
-                    accRNA &&
+                    accRNA && (props.dataset.name !== 'NCI60' && props.dataset.name !== 'PRISM') &&
                     <AccompanyDataTabContent data={accRNA.value} />
                 }
             </TabContent>

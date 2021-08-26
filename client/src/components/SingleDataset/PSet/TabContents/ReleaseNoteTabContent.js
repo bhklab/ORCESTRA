@@ -161,26 +161,36 @@ const ReleaseNoteTabContent = (props) => {
 
     return(
         <StyledReleaseNotes>
-            {metricDataGroup('Cell Lines', props.data.name, 'cell line', props.data.releaseNotes.cellLines, renderDataRow)} 
-            {metricDataGroup('Drugs', props.data.name, 'drug', props.data.releaseNotes.drugs, renderDataRow)} 
-            {metricDataGroup('Drug Sensitivity Experiments', props.data.name, 'experiment', props.data.releaseNotes.experiments, renderDataRow)} 
-            {metricDataGroup('Molecular Data', props.data.name, '', props.data.releaseNotes.molData, renderMolDataRow)} 
             {
-                props.data.name === 'GDSC' &&
-                <AdditionalInformation>
-                    <h2>Additional Information</h2>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td className='title'>GDSC Official Release Notes: </td>
-                                <td>
-                                    <a href={props.data.releaseNotes.additional.link} target="_blank" rel="noopener noreferrer">{props.data.releaseNotes.additional.link}</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </AdditionalInformation>
+                (props.data.name === 'NCI60' || props.data.name === 'PRISM') ?
+                <React.Fragment>
+                    <h2>Coming soon</h2>
+                </React.Fragment>
+                :
+                <React.Fragment>
+                    {metricDataGroup('Cell Lines', props.data.name, 'cell line', props.data.releaseNotes.cellLines, renderDataRow)} 
+                    {metricDataGroup('Drugs', props.data.name, 'drug', props.data.releaseNotes.drugs, renderDataRow)} 
+                    {metricDataGroup('Drug Sensitivity Experiments', props.data.name, 'experiment', props.data.releaseNotes.experiments, renderDataRow)} 
+                    {metricDataGroup('Molecular Data', props.data.name, '', props.data.releaseNotes.molData, renderMolDataRow)} 
+                    {
+                        props.data.name === 'GDSC' &&
+                        <AdditionalInformation>
+                            <h2>Additional Information</h2>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td className='title'>GDSC Official Release Notes: </td>
+                                        <td>
+                                            <a href={props.data.releaseNotes.additional.link} target="_blank" rel="noopener noreferrer">{props.data.releaseNotes.additional.link}</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </AdditionalInformation>
+                    }
+                </React.Fragment>
             }
+            
             {/* <StyledMetricsPanel>
                 <StyledMetricGroupMenu>
                     <div className={display === 'cellLines' ? 'menuItem selected' : 'menuItem'}>
