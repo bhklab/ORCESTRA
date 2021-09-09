@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+// const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const app = express();
@@ -7,6 +8,8 @@ const router = require('./routes/router');
 //const port = 80;
 //const port = process.env.PORT || 3000
 require('dotenv').config();
+
+// app.use(cors());
 
 // support json encoded bodies
 app.use(bodyParser.json());
