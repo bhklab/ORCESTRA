@@ -38,7 +38,10 @@ const RNATabContent = props => {
                         <div className='subContent'>
                         {
                             processedDataSource.value ? 
-                            <a href={processedDataSource.value}>{processedDataSource.value}</a>
+                            <div>
+                                <a href={processedDataSource.value}>{processedDataSource.value}</a>
+                                <div>Processed data included in the dataset</div>
+                            </div>
                             :
                             'Not Available'
                         }
