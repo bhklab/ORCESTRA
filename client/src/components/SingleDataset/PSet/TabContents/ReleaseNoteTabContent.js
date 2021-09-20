@@ -60,7 +60,7 @@ const StyledMetricDataGroup = styled.div`
             color: #3D405A;
         }
     }
-`
+`;
 
 const AdditionalInformation = styled.div`
     margin-bottom: 20px;
@@ -79,7 +79,7 @@ const AdditionalInformation = styled.div`
             color: #3D405A;
         }
     }
-`
+`;
 
 const ReleaseNoteTabContent = (props) => {
 
@@ -102,6 +102,12 @@ const ReleaseNoteTabContent = (props) => {
         switch(key){
             case 'rnaSeq':
                 return 'RNA-seq: ';
+            case 'rnaSeqIsoforms':
+                return 'RNA-seq Isoforms';
+            case 'rnaSeqCompositeExpression':
+                return 'RNA-seq Composite Expression';
+            case 'microRNA':
+                return 'MicroRNA';
             case 'microarray': 
                 return 'Microarray: ';
             case 'mutation':
@@ -134,17 +140,43 @@ const ReleaseNoteTabContent = (props) => {
         Object.keys(data).map(key => (
             data[key] > 0 &&
             <tr key={key}>
-                <td><span className='number'>{ data[key] }</span></td>
+                <td><span className='number'>{ data[key].toLocaleString() }</span></td>
                 <td className='text'>{ getMetricDataText(key, label, data[key]) }</td>
             </tr>
         ))
     );
 
-    const renderMolDataRow = (name, data) => (
-        Object.keys(data).map(key => (
-            key === 'mutationExome' ? name === 'GDSC' && molDataTableRow(key, data) :  molDataTableRow(key, data)
-        ))
-    );
+    const renderMolDataRow = (name, data) => {
+        let molDataRow = [];
+        Object.keys(data).forEach(key => {
+            switch(key){
+                case 'mutationExome':
+                    if(name === 'GDSC'){
+                        molDataRow.push(molDataTableRow(key, data));
+                    }
+                    break;
+                case 'rnaSeqIsoforms':
+                    if(name === 'NCI60'){
+                        molDataRow.push(molDataTableRow(key, data));
+                    }
+                    break;
+                case 'rnaSeqCompositeExpression':
+                    if(name === 'NCI60'){
+                        molDataRow.push(molDataTableRow(key, data));
+                    }
+                    break;
+                case 'microRNA':
+                    if(name === 'NCI60'){
+                        molDataRow.push(molDataTableRow(key, data));
+                    }
+                    break;
+                default:
+                    molDataRow.push(molDataTableRow(key, data));
+                    break;
+            }
+        });
+        return molDataRow
+    }
 
     const molDataTableRow = (key, data) => (
         <tr key={key}>
@@ -161,35 +193,28 @@ const ReleaseNoteTabContent = (props) => {
 
     return(
         <StyledReleaseNotes>
-            {
-                (props.data.name === 'NCI60' || props.data.name === 'PRISM') ?
-                <React.Fragment>
-                    <h2>Coming soon</h2>
-                </React.Fragment>
-                :
-                <React.Fragment>
-                    {metricDataGroup('Cell Lines', props.data.name, 'cell line', props.data.releaseNotes.cellLines, renderDataRow)} 
-                    {metricDataGroup('Drugs', props.data.name, 'drug', props.data.releaseNotes.drugs, renderDataRow)} 
-                    {metricDataGroup('Drug Sensitivity Experiments', props.data.name, 'experiment', props.data.releaseNotes.experiments, renderDataRow)} 
-                    {metricDataGroup('Molecular Data', props.data.name, '', props.data.releaseNotes.molData, renderMolDataRow)} 
-                    {
-                        props.data.name === 'GDSC' &&
-                        <AdditionalInformation>
-                            <h2>Additional Information</h2>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td className='title'>GDSC Official Release Notes: </td>
-                                        <td>
-                                            <a href={props.data.releaseNotes.additional.link} target="_blank" rel="noopener noreferrer">{props.data.releaseNotes.additional.link}</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </AdditionalInformation>
-                    }
-                </React.Fragment>
-            }
+            <React.Fragment>
+                {metricDataGroup('Cell Lines', props.data.name, 'cell line', props.data.releaseNotes.cellLines, renderDataRow)} 
+                {metricDataGroup('Drugs', props.data.name, 'drug', props.data.releaseNotes.drugs, renderDataRow)} 
+                {metricDataGroup('Drug Sensitivity Experiments', props.data.name, 'experiment', props.data.releaseNotes.experiments, renderDataRow)} 
+                {metricDataGroup('Molecular Data', props.data.name, '', props.data.releaseNotes.molData, renderMolDataRow)} 
+                {
+                    props.data.name === 'GDSC' &&
+                    <AdditionalInformation>
+                        <h2>Additional Information</h2>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td className='title'>GDSC Official Release Notes: </td>
+                                    <td>
+                                        <a href={props.data.releaseNotes.additional.link} target="_blank" rel="noopener noreferrer">{props.data.releaseNotes.additional.link}</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </AdditionalInformation>
+                }
+            </React.Fragment>
             
             {/* <StyledMetricsPanel>
                 <StyledMetricGroupMenu>

@@ -5,10 +5,14 @@ import { TabHeader, TabContent, TabContentSection} from '../../SingleDatasetStyl
 
 const RNATabContent = props => {
     const rawSeqDataRNA = props.metadata.find(x => x.name === 'rawSeqDataRNA');
-    const rnaRef = props.metadata.find(x => x.name === 'rnaRef');
-    const rnaTool = props.metadata.find(x => x.name === 'rnaTool');
-    const accRNA = props.metadata.find(x => x.name === 'accRNA');
-
+    const processedDataSource = props.metadata.find(x => x.name === 'processedDataSource');
+    let rnaRef, rnaTool, accRNA = undefined;
+    if(props.dataset.name !== 'NCI60'){
+        rnaRef = props.metadata.find(x => x.name === 'rnaRef');
+        rnaTool = props.metadata.find(x => x.name === 'rnaTool');
+        accRNA = props.metadata.find(x => x.name === 'accRNA');
+    }
+    
     return(
         <React.Fragment>
             <TabHeader>RNA Data</TabHeader>
@@ -21,6 +25,20 @@ const RNATabContent = props => {
                         {
                             rawSeqDataRNA.value ? 
                             <a href={rawSeqDataRNA.value}>{rawSeqDataRNA.value}</a>
+                            :
+                            'Not Available'
+                        }
+                        </div>
+                    </TabContentSection>
+                }
+                {
+                    processedDataSource &&
+                    <TabContentSection>
+                        <h3>Processed Data Source: </h3>
+                        <div className='subContent'>
+                        {
+                            processedDataSource.value ? 
+                            <a href={processedDataSource.value}>{processedDataSource.value}</a>
                             :
                             'Not Available'
                         }

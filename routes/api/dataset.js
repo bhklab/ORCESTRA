@@ -44,6 +44,9 @@ function getTabData(result, withMolData){
         if(result.dataset.versionInfo.rawSeqDataRNA.length) {
             rnaData.push({name: 'rawSeqDataRNA', value: result.dataset.versionInfo.rawSeqDataRNA});
         }
+        if(result.dataset.versionInfo.processedDataSource) {
+            rnaData.push({name: 'processedDataSource', value: result.dataset.versionInfo.processedDataSource});
+        }
         if(result.accompanyRNA.length) {
             rnaData.push({name: 'accRNA', value: result.accompanyRNA});
         }
