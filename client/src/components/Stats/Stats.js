@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import DatasetChart from './DatasetChart';
 import Loader from 'react-loader-spinner';
 import {dataTypes} from '../Shared/Enums';
+import StyledPage from '../../styles/StyledPage';
 
 const Stats = () => {
 
@@ -32,7 +33,7 @@ const Stats = () => {
     }
         
     return(
-        <div className='pageContent'>
+        <StyledPage>
             {
                 isReady ?
                 <div className='statContainer'>
@@ -58,7 +59,7 @@ const Stats = () => {
                     <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
                 </div>
             }
-        </div>
+        </StyledPage>
     );
 }
 

@@ -5,6 +5,7 @@ import {Messages} from 'primereact/messages';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import { AuthContext } from '../../hooks/Context';
+import StyledPage from '../../styles/StyledPage';
 
 const RequestStatus = () => {
     
@@ -80,7 +81,7 @@ const RequestStatus = () => {
     }
 
     return(
-        <div className='pageContent'>
+        <StyledPage>
             <div className='dashboardWrapper'>
                 <Messages ref={(el) => RequestStatus.messages = el }></Messages>
                 <div className='dashboardSummary'>
@@ -114,7 +115,7 @@ const RequestStatus = () => {
                     } 
                 </div> 
             </div>   
-        </div>  
+        </StyledPage>  
     );
 }
 

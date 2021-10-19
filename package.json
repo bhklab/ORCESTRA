@@ -50,6 +50,6 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.1.1"
+    "mocha": "^9.1.3"
   }
 }

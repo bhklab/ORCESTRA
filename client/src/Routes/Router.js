@@ -22,6 +22,7 @@ import SingleDataset from '../components/SingleDataset/SingleDataset';
 import RequestStatus from '../components/RequestStatus/RequestStatus';
 import Stats from '../components/Stats/Stats';
 import Documentation from '../components/Documentation/Documentation';
+import Contact from '../components/Contact/Contact';
 import DataSubmission from '../components/DataSubmission/DataSubmission';
 import SingleDataSubmission from '../components/DataSubmission/SingleDataSubmission';
 import Profile from '../components/Profile/Profile';
@@ -53,6 +54,7 @@ const Router = () => {
                     <Route exact path ='/:datatype/status' component={RequestStatus}/>
                     <Route exact path ='/:datatype/stats' component={Stats}/>
                     <Route exact path ='/app/documentation/:section' component={Documentation} />
+                    <Route exact path ='/app/contact' component={Contact} />
                     <Route exact path='/app/authentication' component={Authentication} />
                     <Route exact path ='/reset/:token' component={Reset} />
                     <PrivateRoute exact path ='/app/data_submission' component={DataSubmission} redirect='/app/authentication' />

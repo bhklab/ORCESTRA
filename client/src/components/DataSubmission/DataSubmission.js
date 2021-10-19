@@ -9,6 +9,7 @@ import CustomSelect from '../Shared/CustomSelect';
 import CustomMessages from '../Shared/CustomMessages';
 import MolecularDataForm from './MolecularDataForm';
 import { dataTypes } from '../Shared/Enums'; 
+import StyledPage from '../../styles/StyledPage';
 
 const StyledDataSubmission = styled.div`
     width: 100%;
@@ -215,7 +216,7 @@ const DataSubmission = () => {
     }
 
     return(
-        <div className='pageContent'>
+        <StyledPage>
             <StyledDataSubmission>
                 <div className='title'>Data Submission Form</div>
                 <p>
@@ -404,7 +405,7 @@ const DataSubmission = () => {
                     />
                 </DocSection>
             </StyledDataSubmission>
-        </div>
+        </StyledPage>
     )
 }
 

@@ -4,6 +4,7 @@ import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Messages} from 'primereact/messages';
 import StyledAuthForm from './StyledAuthForm';
+import StyledPage from '../../styles/StyledPage';
 
 const Reset = (props) => {
 
@@ -34,7 +35,7 @@ const Reset = (props) => {
     }
     
     return(
-        <div className='pageContent'>
+        <StyledPage>
             <StyledAuthForm>
                 <h3>Reset Password</h3>
                 <Messages ref={(el) => Reset.messages = el}></Messages>
@@ -57,7 +58,7 @@ const Reset = (props) => {
                     </div>
                 </div>
             </StyledAuthForm> 
-        </div>
+        </StyledPage>
     );
 }
 

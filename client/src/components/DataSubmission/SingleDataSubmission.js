@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import StyledPage from '../../styles/StyledPage';
 
 const StyledDataSubmission = styled.div`
     width: 100%;
@@ -60,7 +61,7 @@ const SingleDateSubmission = (props) => {
     }, []);
 
     return(
-        <div className='pageContent'>
+        <StyledPage>
             {
                 ready &&
                 <StyledDataSubmission>
@@ -205,7 +206,7 @@ const SingleDateSubmission = (props) => {
                     }
                 </StyledDataSubmission>
             }
-        </div>
+        </StyledPage>
     );
 }
 

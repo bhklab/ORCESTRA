@@ -6,6 +6,7 @@ import {Button} from 'primereact/button';
 import styled from 'styled-components';
 import {trackPromise} from 'react-promise-tracker';
 import Loader from 'react-loader-spinner';
+import StyledPage from '../../styles/StyledPage';
 import { AuthContext } from '../../hooks/Context';
 import PSetTable from '../SearchRequest/PSet/PSetTable';
 import DataSubmissionList from '../DataSubmission/DataSubmissionList';
@@ -65,7 +66,7 @@ const Admin = () => {
     }
     
     return(
-        <div className='pageContent'>
+        <StyledPage>
             <Container>
                 <div className='title'>Administrator's Menu</div>
                 <Messages ref={(el) => Admin.messages = el} />
@@ -94,7 +95,7 @@ const Admin = () => {
                     markComplete={markCompleteSubmisson}
                 />
             </Container>
-        </div>
+        </StyledPage>
     )
 }
 

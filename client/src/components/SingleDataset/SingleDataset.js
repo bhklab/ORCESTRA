@@ -7,6 +7,7 @@ import ToxicoSet from './ToxicoSet/ToxicoSet';
 import XevaSet from './XevaSet/XevaSet';
 import ClinicalGenomics from './ClinicalGenomics/ClinicalGenomics';
 import RadioSet from './RadioSet/RadioSet';
+import StyledPage from '../../styles/StyledPage';
 
 const SingleDataset = (props) => {
     const location = useLocation();
@@ -28,7 +29,7 @@ const SingleDataset = (props) => {
     }, []);
 
     return(
-        <div className='pageContent'>
+        <StyledPage>
             {
                 dataset.ready &&
                 <React.Fragment>
@@ -64,7 +65,7 @@ const SingleDataset = (props) => {
                 </React.Fragment>
             } 
             { !dataset.data && <h3>Dataset with the specified DOI could not be found</h3> }
-        </div>
+        </StyledPage>
     );
 }
 

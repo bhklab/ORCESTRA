@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {Messages} from 'primereact/messages';
+import StyledPage from '../../styles/StyledPage';
 import CustomMessages from '../Shared/CustomMessages';
 import StyledAuthForm from './StyledAuthForm';
 
@@ -69,7 +70,7 @@ const Authentication = (props) => {
     }
 
     return(
-        <div className='pageContent'>
+        <StyledPage>
             <StyledAuthForm>
                 <h3>Login / Register</h3>
                 <Messages ref={(el) => Authentication.messages = el}></Messages>
@@ -128,7 +129,7 @@ const Authentication = (props) => {
                     </React.Fragment> 
                 }
             </StyledAuthForm>   
-        </div>
+        </StyledPage>
     );
 }
 

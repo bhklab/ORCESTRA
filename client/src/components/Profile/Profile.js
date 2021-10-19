@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 import { AuthContext } from '../../hooks/Context';
+import StyledPage from '../../styles/StyledPage';
 import UserInfo from './subcomponents/UserInfo';
 import UserDataset from './subcomponents/UserDataset';
 import DataSubmissionList from '../DataSubmission/DataSubmissionList';
@@ -43,7 +44,7 @@ const Profile = () =>{
     }
 
     return(
-        <div className='pageContent'>
+        <StyledPage>
             <StyledProfile>
                 <UserInfo />
                 <UserDataset 
@@ -62,7 +63,7 @@ const Profile = () =>{
                     datasets={dataSubmissions}
                 />
             </StyledProfile>
-        </div>
+        </StyledPage>
     );
 }
 

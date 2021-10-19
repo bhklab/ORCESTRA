@@ -11,6 +11,7 @@ import SearchSummary from '../SearchSummary';
 import ClinGenSetFilter from './ClinGenSetFilter';
 import ClinGenSetTable from './ClinGenSetTable';
 import {dataTypes} from '../../Shared/Enums';
+import StyledPage from '../../../styles/StyledPage';
 
 const ClinGenSetSearch = () => {
     
@@ -65,7 +66,7 @@ const ClinGenSetSearch = () => {
                 setIsRequest: setIsRequest
             }}
         >
-            <div className='pageContent'>
+            <StyledPage>
                 <div className='page-title'>ORCESTRA for Clinical Genomics</div>  
                 <SearchReqWrapper>
                     <ClinGenSetFilter />
@@ -105,7 +106,7 @@ const ClinGenSetSearch = () => {
                         }  
                     </MainPanel>
                 </SearchReqWrapper>
-            </div>
+            </StyledPage>
         </SearchReqContext.Provider>
     );
 }

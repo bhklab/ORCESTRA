@@ -78,6 +78,7 @@ const Navigation = (props) => {
                         </React.Fragment>
                     }
                     <NavLink exact to={`/app/documentation/overview`} className='link' activeClassName='active-link'>Documentation</NavLink>
+                    <NavLink exact to={`/app/contact`} className='link' activeClassName='active-link'>Contact</NavLink>
                 </div>
                 <div className='right'>
                     {

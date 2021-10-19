@@ -12,6 +12,7 @@ import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 import SearchTableLoader from '../SearchTableLoader';
 import {Messages} from 'primereact/messages';
 import {dataTypes} from '../../Shared/Enums';
+import StyledPage from '../../../styles/StyledPage';
 
 const PSetSearch = () => {
     
@@ -85,7 +86,7 @@ const PSetSearch = () => {
                 setIsRequest: setIsRequest
             }}
         >
-            <div className='pageContent'>
+            <StyledPage>
                 <SearchReqWrapper>
                     <PSetFilter />
                     <MainPanel>
@@ -128,7 +129,7 @@ const PSetSearch = () => {
                         }  
                     </MainPanel>
                 </SearchReqWrapper>
-            </div>
+            </StyledPage>
         </SearchReqContext.Provider>
     );
 }

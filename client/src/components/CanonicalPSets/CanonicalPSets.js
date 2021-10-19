@@ -3,6 +3,7 @@ import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {dataTypes} from '../Shared/Enums';
+import StyledPage from '../../styles/StyledPage';
 
 const StyledContainer = styled.div`
     margin-bottom: 20px;
@@ -121,7 +122,7 @@ const CanonicalPSets = (props) => {
     )
 
     return(
-        <div className='pageContent'>
+        <StyledPage>
             <h2>List of Canonical PSets (The Latest Version of PSets Created by BHK Lab)</h2>
             <StyledContainer>
             {
@@ -145,7 +146,7 @@ const CanonicalPSets = (props) => {
                 ))
             }
             </StyledContainer>
-        </div>
+        </StyledPage>
     )
 }
 

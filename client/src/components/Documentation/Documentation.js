@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Documentation.css';
-
+import StyledPage from '../../styles/StyledPage';
 import Overview from './DocFunctionality/Overview';
 import Search from './DocFunctionality/Search';
 import Request from './DocFunctionality/Request';
@@ -15,7 +15,7 @@ const Documentation = (props) => {
     const [display, setDisplay] = useState(props.match.params.section);
 
     return(
-        <div className='pageContent'>
+        <StyledPage>
             <div className='documentationContent'>
                 <nav className='documentationNav'>
                     <h3>Functionality</h3>
@@ -61,7 +61,7 @@ const Documentation = (props) => {
                 {display === 'api-pset-single' && <PSetMetadata /> }
                 {display === 'api-statistics' && <StatisticsAPI /> }
             </div>
-        </div>
+        </StyledPage>
     );
 }
 

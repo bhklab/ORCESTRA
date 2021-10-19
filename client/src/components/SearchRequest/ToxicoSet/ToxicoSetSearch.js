@@ -11,6 +11,7 @@ import SearchTableLoader from '../SearchTableLoader';
 import SearchSummary from '../SearchSummary';
 import ToxicoSetFilter from './ToxicoSetFilter';
 import ToxicoSetTable from './ToxicoSetTable';
+import StyledPage from '../../../styles/StyledPage';
 
 const ToxicoSetSearch = () => {
     
@@ -68,7 +69,7 @@ const ToxicoSetSearch = () => {
                 setIsRequest: setIsRequest
             }}
         >
-            <div className='pageContent'> 
+            <StyledPage> 
                 <div className='page-title'>ORCESTRA for Toxicogenomics</div>
                 <SearchReqWrapper>
                     <ToxicoSetFilter />
@@ -108,7 +109,7 @@ const ToxicoSetSearch = () => {
                         }  
                     </MainPanel>
                 </SearchReqWrapper>
-            </div>
+            </StyledPage>
         </SearchReqContext.Provider>
     );
 }

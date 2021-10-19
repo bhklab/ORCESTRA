@@ -11,6 +11,7 @@ import SearchSummary from '../SearchSummary';
 import XevaSetFilter from './XevaSetFilter';
 import XevaSetTable from './XevaSetTable';
 import {dataTypes} from '../../Shared/Enums';
+import StyledPage from '../../../styles/StyledPage';
 
 const XevaSetSearch = () => {
     
@@ -65,7 +66,7 @@ const XevaSetSearch = () => {
                 setIsRequest: setIsRequest
             }}
         >
-            <div className='pageContent'>
+            <StyledPage>
                 <div className='page-title'>ORCESTRA for Xenographic Pharmacogenomics</div>   
                 <SearchReqWrapper>
                     <XevaSetFilter />
@@ -105,7 +106,7 @@ const XevaSetSearch = () => {
                         }  
                     </MainPanel>
                 </SearchReqWrapper>
-            </div>
+            </StyledPage>
         </SearchReqContext.Provider>
     );
 }

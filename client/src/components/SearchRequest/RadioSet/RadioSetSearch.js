@@ -11,6 +11,7 @@ import SearchSummary from '../SearchSummary';
 import RadioSetFilter from './RadioSetFilter';
 import RadioSetTable from './RadioSetTable';
 import {dataTypes} from '../../Shared/Enums';
+import StyledPage from '../../../styles/StyledPage';
 
 const RadioSetSearch = () => {
     
@@ -67,7 +68,7 @@ const RadioSetSearch = () => {
                 setIsRequest: setIsRequest
             }}
         >
-            <div className='pageContent'>
+            <StyledPage>
                 <div className='page-title'>ORCESTRA for Radiogenomics</div>  
                 <SearchReqWrapper>
                     <RadioSetFilter />
@@ -107,7 +108,7 @@ const RadioSetSearch = () => {
                         }  
                     </MainPanel>
                 </SearchReqWrapper>
-            </div>
+            </StyledPage>
         </SearchReqContext.Provider>
     );
 }
