@@ -18,7 +18,6 @@ const StyledContact = styled.div`
 `;
 
 const Contact = () => {
-    
     return(
         <StyledPage>
             <div className='page-title'>BHK Lab</div>
