@@ -77,7 +77,7 @@ function getQuerySetForTSet(query){
     return(querySet);
 }
 
-function getQuerySetForXevaSet(query){
+function getDefaultQuerySet(query){
     let querySet = {}
     let queryArray = [];
 
@@ -165,10 +165,8 @@ const selectDatasets = async function(datasetType, query, projection=null){
             case enums.dataTypes.toxicogenomics:
                 queryFilter = getQuerySetForTSet(query);
                 break;
-            case enums.dataTypes.xenographic:
-                queryFilter = getQuerySetForXevaSet(query);
             default:
-                break;
+                queryFilter = getDefaultQuerySet(query);
         }
         const data = await collection.find(queryFilter, projection).toArray();
         return data;
