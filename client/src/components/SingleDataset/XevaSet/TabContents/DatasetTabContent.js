@@ -43,9 +43,17 @@ const DatasetTabContent = (props) => {
             <TabContent>
                 <TabContentSection>
                     <h3>Drug Response Data: </h3>
-                    <ul>
-                        {dataListDrugResponse(props.metadata.dataset.versionInfo.drugSensitivity)}
-                    </ul> 
+                    {
+                        props.metadata.dataset.versionInfo.drugSensitivity ?
+                        <ul>
+                            {dataListDrugResponse(props.metadata.dataset.versionInfo.drugSensitivity)}
+                        </ul> 
+                        :
+                        <div className="subContent">
+                            Not available.
+                        </div>
+                    }
+                    
                 </TabContentSection>
                 <TabContentSection>
                     <h3>Publication: </h3>

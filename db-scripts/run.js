@@ -12,13 +12,11 @@ const run = async () => {
         client = await mongoClient.connect(process.env.CONNECTION_STR, {useNewUrlParser: true, useUnifiedTopology: true});
         const db = await client.db(process.env.DB);
         console.log('connection open');
-        const collection = db.collection('clinicalgenomics');
+        const collection = db.collection('dataset-notes');
+        let data = fs.readFileSync('./data/new/new-dataset-notes.json');
+        data = JSON.parse(data);
 
-        let dataset = await collection.findOne({name: "TCGA_2.0.1"});
-        dataset.downloadLink.forEach(link => {
-            link.label = `${link.label} (${link.name})`;
-        });
-        await collection.updateOne({_id: dataset._id}, {$set: dataset}, {upsert: true});
+        await collection.insertOne(data);
     }catch(e){
         console.log(e);
     }finally{

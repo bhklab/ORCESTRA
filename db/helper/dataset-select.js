@@ -89,6 +89,8 @@ function getDefaultQuerySet(query){
         queryArray.push(getQueryFilter('dataset.name', query.dataset.map(ds => {return(ds.name)})));
     }
 
+    queryArray.push(getQueryFilter('private', query.private));
+
     if(queryArray.length){
         querySet = {$and: queryArray};
     }
