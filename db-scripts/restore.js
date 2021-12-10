@@ -9,6 +9,7 @@ const mongo  = require('mongodb');
 const mongoClient = mongo.MongoClient;
 
 const restore = async (db, collectionName, filepath) => {
+    console.log(collectionName);
     let data = fs.readFileSync(filepath);
     data = JSON.parse(data);
     for(item of data){
@@ -40,17 +41,17 @@ const restore = async (db, collectionName, filepath) => {
         const db = await client.db(process.env.DB);
         console.log('connection open');
 
-        // // restore formdata
-        // await restore(db, 'formdata', './data/formdata.json');
+        // restore formdata
+        await restore(db, 'formdata', './data/formdata.json');
 
-        // // restore metric-data
-        // await restore(db, 'metric-data', './data/metric-data.json');
+        // restore metric-data
+        await restore(db, 'metric-data', './data/metric-data.json');
 
-        // // restore dataset-notes
-        // await restore(db, 'dataset-notes', './data/dataset-notes.json');
+        // restore dataset-notes
+        await restore(db, 'dataset-notes', './data/dataset-notes.json');
 
-        // // restore req-config
-        // await restore(db, 'req-config', './data/req-config.json');
+        // restore req-config
+        await restore(db, 'req-config', './data/req-config.json');
 
         // // restore req-config-master
         // await restore(db, 'reg-config-master', './data/req-config-master.json');
@@ -58,17 +59,17 @@ const restore = async (db, collectionName, filepath) => {
         // restore clinicalgenomics
         await restore(db, 'clinicalgenomics', './data/clinicalgenomics.json');
 
-        // // restore pset
-        // await restore(db, 'pset', './data/pset.json');
+        // restore pset
+        await restore(db, 'pset', './data/pset.json');
 
-        // // restore radioset
-        // await restore(db, 'radioset', './data/radioset.json');
+        // restore radioset
+        await restore(db, 'radioset', './data/radioset.json');
 
-        // // restore toxicoset
-        // await restore(db, 'toxicoset', './data/toxicoset.json');
+        // restore toxicoset
+        await restore(db, 'toxicoset', './data/toxicoset.json');
 
-        // // restore xevaset
-        // await restore(db, 'xevaset', './data/xevaset.json');
+        // restore xevaset
+        await restore(db, 'xevaset', './data/xevaset.json');
 
         // // restore user
         // await restore(db, 'user', './data/user.json');

@@ -53,7 +53,7 @@ const backup = async (db, collectionName, outputPath) => {
         await backup(db, 'xevaset', './data/xevaset.json');
 
         // backup user
-        await backup(db, 'user', './data/user.json');
+        // await backup(db, 'user', './data/user.json');
 
     }catch(err){
         console.log(err);
