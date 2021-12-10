@@ -83,7 +83,10 @@ const ReleaseNoteTabContent = (props) => {
     return(
         <StyledReleaseNotes>
             {
+                props.data.releaseNotes.current ?
                 metricDataGroup('Number of Samples', props.data.releaseNotes.samples, renderDataRow)
+                :
+                <h2>Coming soon</h2>
             } 
         </StyledReleaseNotes>
     );

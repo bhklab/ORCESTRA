@@ -85,12 +85,17 @@ const useDataTable = (datasetType) => {
     );
 
     const downloadTemplate = (rowData, column) => {
-        return(
-            rowData.downloadLink ? 
-            <StyledButton id={rowData._id} onClick={downloadDataset(rowData.doi, rowData.downloadLink)} >Download</StyledButton>
-            : 
-            'Not Available'
-        );
+        if(rowData.downloadLink){
+            if(Array.isArray(rowData.downloadLink)){
+                return(
+                    <a href={`http://doi.org/${rowData.doi}`} target="_blank" rel='noreferrer'>Multiple Data Objects</a>
+                );
+            }
+            return(
+                <StyledButton id={rowData._id} onClick={downloadDataset(rowData.doi, rowData.downloadLink)} >Download</StyledButton>
+            );
+        }
+        return 'Not Available';
     };
 
     const filteredTemplate = (rowData, column) => (

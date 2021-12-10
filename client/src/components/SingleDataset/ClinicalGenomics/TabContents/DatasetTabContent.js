@@ -5,7 +5,7 @@ const DatasetTabContent = (props) => {
 
     const dataList = (data) => (
         <div>    
-        {data.length ? 
+        {data && data.length ? 
             <li key={data} className='pubList'>
                 <div className='subContent'>
                     <a href={data}>{data}</a>
@@ -15,7 +15,7 @@ const DatasetTabContent = (props) => {
             <div className="subContent">
                 Not available.
             </div>
-            }  
+        }  
         </div> 
     );
 
@@ -60,18 +60,24 @@ const DatasetTabContent = (props) => {
         <React.Fragment>
             <TabHeader>Dataset: {props.metadata.dataset.label}</TabHeader>
             <TabContent>
-                <TabContentSection>
-                    <h3>Microarray Data: </h3>
-                    <ul>
-                        {dataList(props.metadata.dataset.versionInfo.data.rawMicroarrayData)}
-                    </ul> 
-                </TabContentSection>
-                <TabContentSection>
-                    <h3>Drug Response Data: </h3>
-                    <ul>
-                        {drugResponse(props.metadata.dataset.versionInfo.data.drugResponseData)}
-                    </ul> 
-                </TabContentSection>
+                {
+                    props.metadata.dataset.versionInfo.data.rawMicroarrayData &&
+                    <TabContentSection>
+                        <h3>Microarray Data:</h3>
+                        <ul>
+                            {dataList(props.metadata.dataset.versionInfo.data.rawMicroarrayData)}
+                        </ul> 
+                    </TabContentSection>
+                }
+                {
+                    props.metadata.dataset.versionInfo.data.drugResponseData &&
+                    <TabContentSection>
+                        <h3>Drug Response Data:</h3>
+                        <ul>
+                            {drugResponse(props.metadata.dataset.versionInfo.data.drugResponseData)}
+                        </ul> 
+                    </TabContentSection>
+                }
                 <TabContentSection>
                     <h3>Publication: </h3>
                     <ul>

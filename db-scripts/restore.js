@@ -40,8 +40,8 @@ const restore = async (db, collectionName, filepath) => {
         const db = await client.db(process.env.DB);
         console.log('connection open');
 
-        // restore formdata
-        await restore(db, 'formdata', './data/formdata.json');
+        // // restore formdata
+        // await restore(db, 'formdata', './data/formdata.json');
 
         // // restore metric-data
         // await restore(db, 'metric-data', './data/metric-data.json');
@@ -55,10 +55,10 @@ const restore = async (db, collectionName, filepath) => {
         // // restore req-config-master
         // await restore(db, 'reg-config-master', './data/req-config-master.json');
 
-        // // restore clinicalgenomics
-        // await restore(db, 'clinicalgenomics', './data/clinicalgenomics.json');
+        // restore clinicalgenomics
+        await restore(db, 'clinicalgenomics', './data/clinicalgenomics.json');
 
-        // restore pset
+        // // restore pset
         // await restore(db, 'pset', './data/pset.json');
 
         // // restore radioset

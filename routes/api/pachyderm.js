@@ -10,7 +10,7 @@ module.exports = {
      */
     createPipeline: async function(request){
         console.log("createPipeline");
-        grpc.createPipeline(request, (result) => {
+        grpc.createPipeline(request, process.env.PACHYDERM_IP, (result) => {
             if(result.status){
                 console.log("pipeline created");
             }else{
@@ -24,11 +24,11 @@ module.exports = {
     checkOnline: async function(){
         let online = false;
         try{
-            const result = await grpc.getVersion({});
+            const result = await grpc.getVersion({}, process.env.PACHYDERM_IP);
             console.log(result);
             online = result.response.major ? true : false;
         }catch(error){
-            //console.log(error);
+            console.log(error);
             console.log('pachyderm is offline')
         }finally{
             return(online);

@@ -10,6 +10,7 @@ import {trackPromise} from 'react-promise-tracker';
 
 import DownloadButton from '../components/Shared/Buttons/DownloadButton';
 import CustomMessages from '../components/Shared/CustomMessages';
+import CustomSelect from '../components/Shared/CustomSelect';
 import { dataTypes } from '../components/Shared/Enums';
 
 const Header = styled.div`
@@ -66,6 +67,7 @@ const useSingleDataset = (datasetType, doi) => {
     const {promiseInProgress} = usePromiseTracker();
 
     const [dataset, setDataset] = useState({ready: false, data: {}});
+    const [selectedObject, setSelectedObject] = useState(undefined);
     const [publicView, setPublicView] = useState(false);
     const [ownerView, setOwnerView] = useState(false);
     const [showPublishDialog, setShowPublishDialog] = useState(false);
@@ -142,6 +144,51 @@ const useSingleDataset = (datasetType, doi) => {
         }
     }
 
+    const renderDataObjectDownload = () => {
+        if(publicView){
+            if(Array.isArray(dataset.data.downloadLink)){
+                return(
+                    <React.Fragment>
+                        <CustomSelect
+                            className='left' 
+                            selectOne={true}
+                            selected={selectedObject}
+                            label='Data Object: '
+                            options={dataset.data.downloadLink.map(link => ({
+                                label: link.label,
+                                value: link
+                            }))}
+                            onChange={(e) => {setSelectedObject(e.value)}}
+                        />
+                        <DownloadButton 
+                            className='left' 
+                            disabled={typeof selectedObject === 'undefined'} 
+                            datasetType={datasetType} 
+                            doi={dataset.data.doi}
+                            downloadLink={typeof selectedObject !== 'undefined' ? selectedObject.value.downloadLink : ''}
+                            mode='dataset'
+                            label='Download Dataset'
+                            tooltip={`Download ${dataset.data.name}(${typeof selectedObject !== 'undefined' ? selectedObject.value.name : ''}) as an R object`}
+                        />
+                    </React.Fragment>
+                );
+            }
+            return(
+                <DownloadButton 
+                    className='left' 
+                    disabled={false} 
+                    datasetType={datasetType} 
+                    doi={dataset.data.doi}
+                    downloadLink={dataset.data.downloadLink}
+                    mode='dataset'
+                    label='Download Dataset'
+                    tooltip={`Download ${dataset.data.name} as an R object`}
+                />
+            );
+        }
+        return '';
+    }
+
     const getHeader = () => {
         return(
             <Header>
@@ -149,17 +196,7 @@ const useSingleDataset = (datasetType, doi) => {
                     Explore {getLabel()} - {dataset.data.name}
                 </div>
                 {
-                    publicView &&
-                    <DownloadButton 
-                        className='left' 
-                        disabled={false} 
-                        datasetType={datasetType} 
-                        doi={dataset.data.doi}
-                        downloadLink={dataset.data.downloadLink}
-                        mode='dataset'
-                        label='Download Dataset'
-                        tooltip={`Donwload ${dataset.data.name} as an R object`}
-                    />
+                    renderDataObjectDownload()
                 }
                 {
                     publicView && dataset.data.bioComputeObject &&

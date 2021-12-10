@@ -17,14 +17,17 @@ const DisclaimerTabContent = (props) => {
                     <div dangerouslySetInnerHTML={{__html: notes.usagePolicy}}></div>
                 }
             </TabContentSection>
-            <TabContentSection>
-                <h3>Please cite the following when using these data</h3>
-                {
-                    notes.citations.map((item, i) => (
-                        <div className='pubList' key={i} dangerouslySetInnerHTML={{__html: item}}></div>
-                    ))
-                }
-            </TabContentSection>
+            {
+                notes.citations.length > 0 &&
+                <TabContentSection>
+                    <h3>Please cite the following when using these data</h3>
+                    {
+                        notes.citations.map((item, i) => (
+                            <div className='pubList' key={i} dangerouslySetInnerHTML={{__html: item}}></div>
+                        ))
+                    }
+                </TabContentSection>
+            }
         </TabContent> 
     );
 }

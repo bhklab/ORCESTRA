@@ -77,7 +77,7 @@ function getQuerySetForTSet(query){
     return(querySet);
 }
 
-function getQuerySetForXevaSet(query){
+function getDefaultQuerySet(query){
     let querySet = {}
     let queryArray = [];
 
@@ -88,6 +88,8 @@ function getQuerySetForXevaSet(query){
     if(query.dataset && query.dataset.length){
         queryArray.push(getQueryFilter('dataset.name', query.dataset.map(ds => {return(ds.name)})));
     }
+
+    queryArray.push(getQueryFilter('private', query.private));
 
     if(queryArray.length){
         querySet = {$and: queryArray};
@@ -165,10 +167,8 @@ const selectDatasets = async function(datasetType, query, projection=null){
             case enums.dataTypes.toxicogenomics:
                 queryFilter = getQuerySetForTSet(query);
                 break;
-            case enums.dataTypes.xenographic:
-                queryFilter = getQuerySetForXevaSet(query);
             default:
-                break;
+                queryFilter = getDefaultQuerySet(query);
         }
         const data = await collection.find(queryFilter, projection).toArray();
         return data;
