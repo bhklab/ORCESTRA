@@ -95,7 +95,7 @@ const useSingleDataset = (datasetType, doi) => {
         try{
             let url = shareToken ? `/api/${datasetType}/one/${doi}${shareToken}` : `/api/${datasetType}/one/${doi}`;
             const res = await axios.get(url);
-            console.log(res.data);
+            // console.log(res.data);
             setDataset({
                 ready: true,
                 data: res.data
@@ -117,7 +117,7 @@ const useSingleDataset = (datasetType, doi) => {
         try{
             setShowPublishDialog(false);
             res = await trackPromise(axios.get(`/api/${datasetType}/publish/${doi}`));
-            console.log(res.data);
+            // console.log(res.data);
         }catch(error){
             console.log(error);
         }finally{
@@ -145,7 +145,7 @@ const useSingleDataset = (datasetType, doi) => {
     }
 
     const renderDataObjectDownload = () => {
-        if(publicView){
+        // if(publicView){
             if(Array.isArray(dataset.data.downloadLink)){
                 return(
                     <React.Fragment>
@@ -185,8 +185,8 @@ const useSingleDataset = (datasetType, doi) => {
                     tooltip={`Download ${dataset.data.name} as an R object`}
                 />
             );
-        }
-        return '';
+        // }
+        // return '';
     }
 
     const getHeader = () => {
