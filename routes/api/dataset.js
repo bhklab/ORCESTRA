@@ -83,7 +83,7 @@ const getSingleDataset = async (req, res) => {
         let dataset = {}  
         dataset._id = result._id;
         dataset.name = result.name;
-        dataset.downloadLink = result.downloadLink;
+        dataset.downloadLink = result.private ? `${result.downloadLink}&access_token=${process.env.ZENODO_ACCESS_TOKEN}` : result.downloadLink;
         dataset.doi = result.doi;
         dataset.bioComputeObject = result.bioComputeObject;
         dataset.private = result.private;
