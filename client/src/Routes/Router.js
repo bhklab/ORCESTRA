@@ -31,7 +31,7 @@ import Authentication from '../components/Authentication/Authentication';
 import Reset from '../components/Authentication/Reset';
 import CanonicalPSets from '../components/CanonicalPSets/CanonicalPSets';
 import NotFound404 from '../components/Shared/NotFound404';
-import Test from '../components/Test/Test';
+// import Test from '../components/Test/Test';
 
 const Router = () => {
     /**
