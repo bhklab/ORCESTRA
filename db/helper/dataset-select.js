@@ -48,7 +48,7 @@ function getQuerySetForPSet(query){
         queryArray.push(getQueryFilter('dataset.filteredSensitivity', true));
     }
 
-    queryArray.push(getQueryFilter('private', query.private));
+    queryArray.push(getQueryFilter('private', typeof query.private !== 'undefined' ? query.private : false));
 
     if(queryArray.length){
         querySet = {$and: queryArray};
@@ -89,7 +89,7 @@ function getDefaultQuerySet(query){
         queryArray.push(getQueryFilter('dataset.name', query.dataset.map(ds => {return(ds.name)})));
     }
 
-    queryArray.push(getQueryFilter('private', query.private));
+    queryArray.push(getQueryFilter('private', typeof query.private !== 'undefined' ? query.private : false));
 
     if(queryArray.length){
         querySet = {$and: queryArray};
@@ -153,7 +153,7 @@ async function buildDataSetObject(dset, formdata, withMolData=false){
 
 const selectDatasets = async function(datasetType, query, projection=null){     
     // console.log(datasetType);
-    // console.log(query);
+    console.log(query);
     const db = await mongo.getDB();
 
     try{
@@ -170,6 +170,7 @@ const selectDatasets = async function(datasetType, query, projection=null){
             default:
                 queryFilter = getDefaultQuerySet(query);
         }
+        console.log(queryFilter)
         const data = await collection.find(queryFilter, projection).toArray();
         return data;
     }catch(err){
