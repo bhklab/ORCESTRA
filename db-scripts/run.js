@@ -12,11 +12,14 @@ const run = async () => {
         client = await mongoClient.connect(process.env.CONNECTION_STR, {useNewUrlParser: true, useUnifiedTopology: true});
         const db = await client.db(process.env.DB);
         console.log('connection open');
-        const collection = db.collection('dataset-notes');
-        let data = fs.readFileSync('./data/new/new-dataset-notes.json');
-        data = JSON.parse(data);
+        // const collection = db.collection('dataset-notes');
+        // let data = fs.readFileSync('./data/new/new-dataset-notes.json');
+        // data = JSON.parse(data);
 
-        await collection.insertOne(data);
+        // await collection.insertOne(data);
+        const collection = db.collection('req-config-master')
+        const data = await collection.findOne({'pipeline.name': 'getGDSCv1'}, {'projection': {'_id': false}})
+        console.log(data);
     }catch(e){
         console.log(e);
     }finally{

@@ -42,7 +42,7 @@ const getMasterConfig = async (datasetType, dataset) => {
         const versions = form.dataset.find(data => {return data.name === dataset.name}).versions
         const versionInfo = versions.find(version => {return version.version === dataset.versionInfo})
         const collection = db.collection('req-config-master')
-        const data = collection.findOne({'pipeline.name': versionInfo.pipeline}, {'projection': {'_id': false}})
+        const data = await collection.findOne({'pipeline.name': versionInfo.pipeline}, {'projection': {'_id': false}})
         return data
     }catch(err){
         console.log(err)

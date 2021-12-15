@@ -54,7 +54,7 @@ const restore = async (db, collectionName, filepath) => {
         await restore(db, 'req-config', './data/req-config.json');
 
         // // restore req-config-master
-        // await restore(db, 'reg-config-master', './data/req-config-master.json');
+        await restore(db, 'req-config-master', './data/req-config-master.json');
 
         // restore clinicalgenomics
         await restore(db, 'clinicalgenomics', './data/clinicalgenomics.json');
