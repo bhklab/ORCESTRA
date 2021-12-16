@@ -210,10 +210,12 @@ const selectDatasetByDOI = async function(datasetType, doi, projection=null){
         // add pipeline config json
         const reqConfigCollection = db.collection('req-config');
         let pipelineConfig = {};
-        pipelineConfig = await reqConfigCollection.findOne({'_id': datasetObj._id});
+        pipelineConfig = await reqConfigCollection.findOne({'_id': mongo.ObjectID(datasetObj._id)});
         if(!pipelineConfig){
             const masterConfigCollection = db.collection('req-config-master');
             pipelineConfig = await masterConfigCollection.findOne({'pipeline.name': datasetObj.dataset.versionInfo.pipeline});
+        }else{
+            pipelineConfig = pipelineConfig.config;
         }
         datasetObj.pipeline = pipelineConfig;
         
