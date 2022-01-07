@@ -6,20 +6,96 @@ const mongo  = require('mongodb');
 const mongoClient = mongo.MongoClient;
 const csv = require('csvtojson');
 
+const insertNewDatasets = async () => {
+    let client;
+    try{
+        client = await mongoClient.connect(process.env.CONNECTION_STR_Dev, {useNewUrlParser: true, useUnifiedTopology: true});
+        const db = await client.db(process.env.DB);
+        console.log('connection open');
+        const collection = db.collection('formdata');
+        let psetform = await collection.findOne({datasetType: "pset"});
+        let newformdata = fs.readFileSync("./data/new/new-formdata.json");
+        newformdata = JSON.parse(newformdata);
+        psetform.dataset = psetform.dataset.concat(newformdata.dataset);
+        psetform.accompanyRNA = psetform.accompanyRNA.concat(newformdata.accompanyRNA);
+        psetform.accompanyDNA = psetform.accompanyDNA.concat(newformdata.accompanyDNA);
+        psetform.molecularData = psetform.molecularData.concat(newformdata.molecularData);
+
+        await collection.updateOne(
+            {datasetType: "pset"}, 
+            {$set: {
+                dataset: psetform.dataset, 
+                accompanyRNA: psetform.accompanyRNA,
+                accompanyDNA: psetform.accompanyDNA,
+                molecularData: psetform.molecularData
+            }},
+            {upsert: true}
+        );
+
+        const collection = db.collection('pset');
+        let newdatasets = fs.readFileSync("./data/new/new-dataset.json");
+        newdatasets = JSON.parse(newdatasets);
+        await collection.insertMany(newdatasets);
+
+        const collection = db.collection('dataset-notes');
+        let newnotes = fs.readFileSync("./data/new/new-dataset-notes.json");
+        newnotes = JSON.parse(newnotes);
+        await collection.insertMany(newnotes);
+
+        const collection = db.collection('metric-data');
+        let newmetricdata = fs.readFileSync("./data/new/new-metricdata.json");
+        newmetricdata = JSON.parse(newmetricdata);
+        await collection.insertMany(newmetricdata);
+
+    }catch(e){
+        console.log(e);
+    }finally{
+        client.close();
+        console.log('done');
+    }
+}
+
 const run = async () => {
     let client;
     try{
-        client = await mongoClient.connect(process.env.CONNECTION_STR, {useNewUrlParser: true, useUnifiedTopology: true});
+        client = await mongoClient.connect(process.env.CONNECTION_STR_Dev, {useNewUrlParser: true, useUnifiedTopology: true});
         const db = await client.db(process.env.DB);
         console.log('connection open');
-        // const collection = db.collection('dataset-notes');
-        // let data = fs.readFileSync('./data/new/new-dataset-notes.json');
-        // data = JSON.parse(data);
+        // const collection = db.collection('formdata');
+        // let psetform = await collection.findOne({datasetType: "pset"});
+        // let newformdata = fs.readFileSync("./data/new/new-formdata.json");
+        // newformdata = JSON.parse(newformdata);
+        // psetform.dataset = psetform.dataset.concat(newformdata.dataset);
+        // psetform.accompanyRNA = psetform.accompanyRNA.concat(newformdata.accompanyRNA);
+        // psetform.accompanyDNA = psetform.accompanyDNA.concat(newformdata.accompanyDNA);
+        // psetform.molecularData = psetform.molecularData.concat(newformdata.molecularData);
 
-        // await collection.insertOne(data);
-        const collection = db.collection('req-config-master')
-        const data = await collection.findOne({'pipeline.name': 'getGDSCv1'}, {'projection': {'_id': false}})
-        console.log(data);
+        // await collection.updateOne(
+        //     {datasetType: "pset"}, 
+        //     {$set: {
+        //         dataset: psetform.dataset, 
+        //         accompanyRNA: psetform.accompanyRNA,
+        //         accompanyDNA: psetform.accompanyDNA,
+        //         molecularData: psetform.molecularData
+        //     }},
+        //     {upsert: true}
+        // );
+
+        // const collection = db.collection('pset');
+        // let newdatasets = fs.readFileSync("./data/new/new-dataset.json");
+        // newdatasets = JSON.parse(newdatasets);
+        // await collection.insertMany(newdatasets);
+
+        // const collection = db.collection('dataset-notes');
+        // let newnotes = fs.readFileSync("./data/new/new-dataset-notes.json");
+        // newnotes = JSON.parse(newnotes);
+        // await collection.insertMany(newnotes);
+
+        // const collection = db.collection('metric-data');
+        // let newmetricdata = fs.readFileSync("./data/new/new-metricdata.json");
+        // newmetricdata = JSON.parse(newmetricdata);
+        // await collection.insertMany(newmetricdata);
+
     }catch(e){
         console.log(e);
     }finally{
