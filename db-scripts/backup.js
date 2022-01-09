@@ -18,7 +18,7 @@ const backup = async (db, collectionName, outputPath) => {
 (async () => {
     client = null;
     try{
-        client = await mongoClient.connect(process.env.CONNECTION_STR, {useNewUrlParser: true, useUnifiedTopology: true});
+        client = await mongoClient.connect(process.env.CONNECTION_STR_Dev, {useNewUrlParser: true, useUnifiedTopology: true});
         const db = await client.db(process.env.DB);
         console.log('connection open');
 
@@ -53,7 +53,7 @@ const backup = async (db, collectionName, outputPath) => {
         await backup(db, 'xevaset', './data/xevaset.json');
 
         // backup user
-        // await backup(db, 'user', './data/user.json');
+        await backup(db, 'user', './data/user.json');
 
     }catch(err){
         console.log(err);

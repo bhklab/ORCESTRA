@@ -37,7 +37,7 @@ const restore = async (db, collectionName, filepath) => {
 (async () => {
     client = null;
     try{
-        client = await mongoClient.connect(process.env.CONNECTION_STR, {useNewUrlParser: true, useUnifiedTopology: true});
+        client = await mongoClient.connect(process.env.CONNECTION_STR_Prod, {useNewUrlParser: true, useUnifiedTopology: true});
         const db = await client.db(process.env.DB);
         console.log('connection open');
 
@@ -72,7 +72,7 @@ const restore = async (db, collectionName, filepath) => {
         await restore(db, 'xevaset', './data/xevaset.json');
 
         // // restore user
-        // await restore(db, 'user', './data/user.json');
+        await restore(db, 'user', './data/user.json');
 
     }catch(err){
         console.log(err);
