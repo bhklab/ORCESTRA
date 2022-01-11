@@ -50,29 +50,29 @@ const restore = async (db, collectionName, filepath) => {
         // restore dataset-notes
         await restore(db, 'dataset-notes', './data/dataset-notes.json');
 
-        // restore req-config
-        await restore(db, 'req-config', './data/req-config.json');
+        // // restore req-config
+        // await restore(db, 'req-config', './data/req-config.json');
 
-        // // restore req-config-master
-        await restore(db, 'req-config-master', './data/req-config-master.json');
+        // // // restore req-config-master
+        // await restore(db, 'req-config-master', './data/req-config-master.json');
 
         // restore clinicalgenomics
         await restore(db, 'clinicalgenomics', './data/clinicalgenomics.json');
 
-        // restore pset
-        await restore(db, 'pset', './data/pset.json');
+        // // restore pset
+        // await restore(db, 'pset', './data/pset.json');
 
-        // restore radioset
-        await restore(db, 'radioset', './data/radioset.json');
+        // // restore radioset
+        // await restore(db, 'radioset', './data/radioset.json');
 
-        // restore toxicoset
-        await restore(db, 'toxicoset', './data/toxicoset.json');
+        // // restore toxicoset
+        // await restore(db, 'toxicoset', './data/toxicoset.json');
 
-        // restore xevaset
-        await restore(db, 'xevaset', './data/xevaset.json');
+        // // restore xevaset
+        // await restore(db, 'xevaset', './data/xevaset.json');
 
-        // // restore user
-        await restore(db, 'user', './data/user.json');
+        // // // restore user
+        // await restore(db, 'user', './data/user.json');
 
     }catch(err){
         console.log(err);
