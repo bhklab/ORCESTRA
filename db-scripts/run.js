@@ -12,7 +12,7 @@ const insertNewDatasets = async () => {
         client = await mongoClient.connect(process.env.CONNECTION_STR_Dev, {useNewUrlParser: true, useUnifiedTopology: true});
         const db = await client.db(process.env.DB);
         console.log('connection open');
-        const collection = db.collection('formdata');
+        let collection = db.collection('formdata');
         let psetform = await collection.findOne({datasetType: "pset"});
         let newformdata = fs.readFileSync("./data/new/new-formdata.json");
         newformdata = JSON.parse(newformdata);
@@ -32,17 +32,17 @@ const insertNewDatasets = async () => {
             {upsert: true}
         );
 
-        const collection = db.collection('pset');
+        collection = db.collection('pset');
         let newdatasets = fs.readFileSync("./data/new/new-dataset.json");
         newdatasets = JSON.parse(newdatasets);
         await collection.insertMany(newdatasets);
 
-        const collection = db.collection('dataset-notes');
+        collection = db.collection('dataset-notes');
         let newnotes = fs.readFileSync("./data/new/new-dataset-notes.json");
         newnotes = JSON.parse(newnotes);
         await collection.insertMany(newnotes);
 
-        const collection = db.collection('metric-data');
+        collection = db.collection('metric-data');
         let newmetricdata = fs.readFileSync("./data/new/new-metricdata.json");
         newmetricdata = JSON.parse(newmetricdata);
         await collection.insertMany(newmetricdata);
@@ -61,40 +61,34 @@ const run = async () => {
         client = await mongoClient.connect(process.env.CONNECTION_STR_Dev, {useNewUrlParser: true, useUnifiedTopology: true});
         const db = await client.db(process.env.DB);
         console.log('connection open');
-        // const collection = db.collection('formdata');
-        // let psetform = await collection.findOne({datasetType: "pset"});
+        // const col = db.collection('formdata');
+        // let existingform = await col.findOne({datasetType: "clinicalgenomics"});
         // let newformdata = fs.readFileSync("./data/new/new-formdata.json");
         // newformdata = JSON.parse(newformdata);
-        // psetform.dataset = psetform.dataset.concat(newformdata.dataset);
-        // psetform.accompanyRNA = psetform.accompanyRNA.concat(newformdata.accompanyRNA);
-        // psetform.accompanyDNA = psetform.accompanyDNA.concat(newformdata.accompanyDNA);
-        // psetform.molecularData = psetform.molecularData.concat(newformdata.molecularData);
+        // existingform.dataset.push(newformdata);
 
-        // await collection.updateOne(
-        //     {datasetType: "pset"}, 
+        // await col.updateOne(
+        //     {datasetType: "clinicalgenomics"}, 
         //     {$set: {
-        //         dataset: psetform.dataset, 
-        //         accompanyRNA: psetform.accompanyRNA,
-        //         accompanyDNA: psetform.accompanyDNA,
-        //         molecularData: psetform.molecularData
+        //         dataset: existingform.dataset,
         //     }},
         //     {upsert: true}
         // );
 
-        // const collection = db.collection('pset');
+        // const collection = db.collection('clinicalgenomics');
         // let newdatasets = fs.readFileSync("./data/new/new-dataset.json");
         // newdatasets = JSON.parse(newdatasets);
-        // await collection.insertMany(newdatasets);
+        // await collection.insertOne(newdatasets);
 
         // const collection = db.collection('dataset-notes');
         // let newnotes = fs.readFileSync("./data/new/new-dataset-notes.json");
         // newnotes = JSON.parse(newnotes);
-        // await collection.insertMany(newnotes);
+        // await collection.insertOne(newnotes);
 
-        // const collection = db.collection('metric-data');
-        // let newmetricdata = fs.readFileSync("./data/new/new-metricdata.json");
-        // newmetricdata = JSON.parse(newmetricdata);
-        // await collection.insertMany(newmetricdata);
+        const collection = db.collection('metric-data');
+        let newmetricdata = fs.readFileSync("./data/new/new-metricdata.json");
+        newmetricdata = JSON.parse(newmetricdata);
+        await collection.insertOne(newmetricdata);
 
     }catch(e){
         console.log(e);

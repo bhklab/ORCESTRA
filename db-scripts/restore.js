@@ -37,7 +37,7 @@ const restore = async (db, collectionName, filepath) => {
 (async () => {
     client = null;
     try{
-        client = await mongoClient.connect(process.env.CONNECTION_STR_Prod, {useNewUrlParser: true, useUnifiedTopology: true});
+        client = await mongoClient.connect(process.env.CONNECTION_STR_Dev, {useNewUrlParser: true, useUnifiedTopology: true});
         const db = await client.db(process.env.DB);
         console.log('connection open');
 
