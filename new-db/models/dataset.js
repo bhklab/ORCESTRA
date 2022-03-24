@@ -4,10 +4,10 @@ const Schema = mongoose.Schema;
 const datasetSchema = new Schema({
     name: {type: String, required: true},
     version: {type: String, required: true},
-    datasettype: String,
-    type: String,
+    datasetType: String,
     status: {
         unavailable: Boolean,
+        disabled: Boolean,
         requestDisabled: Boolean
     },
     publications: [{
@@ -16,25 +16,32 @@ const datasetSchema = new Schema({
     }],
     sensitivity: {
         source: String,
+        data: String,
         version: String
     },
     availableData: [{
         name: String,
-        type: String,
+        datatype: String,
         source: String,
-        expCount: Number,
-        updated: Boolean
+        expCount: {type: Number, required: false},
+        noUpdates: {type: Boolean, required: false}
     }],
     datasetNote: { type: mongoose.Schema.Types.ObjectId, ref: 'DatasetNote' },
+    stats: {
+        cellLines: [String],
+        drugs: [String],
+        tissues: [String],
+        numExperiments: Number,
+        numGenes: Number
+    },
     releaseNotes: {
-        genes: Number,
-        tissues: Number,
         counts: [{
             name: String,
             current: Number,
             new: Number,
             removed: Number
-        }]
+        }],
+        additionalNotes: Object
     }
 });
 

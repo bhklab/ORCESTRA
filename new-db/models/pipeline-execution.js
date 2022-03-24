@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const pipelineExecutionSchema = new Schema({
-    datasettype: String,
-    datasetname: String,
+    datasetType: String,
+    datasetName: String,
     pipeline: {
         name: String,
         commitID: String,

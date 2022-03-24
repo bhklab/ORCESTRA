@@ -5,7 +5,7 @@ const options = { typekey: '$type', discriminatorKey: 'dataobjtype' } // discrim
 
 const dataObjectSchema = new Schema(
     {
-        datasettype: String,
+        datasetType: String,
         name: {
             type: String,
             required: true,

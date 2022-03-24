@@ -7,4 +7,5 @@ mock-pachyderm-api/package-lock.json
 node_modules
 .env
 db-scripts/data
+new-db/data
 .DS_Store

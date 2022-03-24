@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const dataFilterSchema = new Schema({
-    datasettype: String,
+    datasetType: String,
     tools : [{
         name: String,
         label: String,
