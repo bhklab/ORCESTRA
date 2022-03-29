@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const options = { typekey: '$type', discriminatorKey: 'dataobjtype' } // discriminator key to get all schema in one place
+const options = { typekey: '$type', discriminatorKey: 'dataObjType' } // discriminator key to get all schema in one place
 
 const dataObjectSchema = new Schema(
     {
@@ -16,11 +16,12 @@ const dataObjectSchema = new Schema(
             status: {type: String, required: true},
             private: Boolean,
             canonical: Boolean,
-            download: Number,
+            numDownload: Number,
             createdBy: String,
             email: String,
             shareToken: String,
             filteredSensitivity: Boolean,
+            commitID: String,
             date: {
                 submitted: Date,
                 processed: Date,
@@ -30,7 +31,7 @@ const dataObjectSchema = new Schema(
         repositories: [{
             version: String,
             doi: String,
-            downloadLink: String,
+            downloadLink: Schema.Types.Mixed,
             biocomputeObj: {
                 doi: String,
                 downloadLink: String
@@ -38,7 +39,8 @@ const dataObjectSchema = new Schema(
         }],
         availableDatatypes: [{
             name: String,
-            type: String
+            genomeType: String,
+            details: Object
         }]
     },
     options
@@ -56,12 +58,12 @@ const GenomeDataObject = DataObject.discriminator(
     new Schema(
         {
             tools: {
-                rna: [String],
-                dna: [String]
+                rna: String,
+                dna: String
             },
             references: {
-                rna: [String],
-                dna: [String]
+                rna: String,
+                dna: String
             },
             genome: String
         }

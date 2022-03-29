@@ -12,14 +12,11 @@ const dataFilterSchema = new Schema({
     references: [{
         name: String,
         label: String,
-        datatype: String,
+        genome: String,
         genomicType: String,
         source: String
     }],
-    genome: [{
-        name: String,
-        label: String
-    }],
+    genome: [String],
     availableData: [{
         name: String,
         label: String,
