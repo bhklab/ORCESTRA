@@ -12,8 +12,11 @@ const metricData = require('../../db/helper/metricdata');
 const auth = require('./auth');
 const userdata = require('../../db/helper/userdata');
 const enums = require('../../helper/enum');
+const query = require('../../helper/data-object-query');
+const DataObject = require('../../new-db/models/data-object').DataObject;
+const DataFilter = require('../../new-db/models/data-filter');
 
-function getTabData(result, withMolData){
+const getTabData = (result, withMolData) => {
     let tabData = [];
 
     if(result.disclaimer){
@@ -67,6 +70,8 @@ function getTabData(result, withMolData){
 
     return tabData;
 } 
+
+
 
 /**
  * Retrives a dataset by datasettype, DOI and parses it into an object form to be used for the single dataset page.
@@ -280,16 +285,38 @@ const publishDataset = async (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-const searchDatasets = async (req, res) => {
-    console.log(`searchDatasets: ${req.params.datasetType}`);
+const search = async (req, res) => {
+    console.log(`searchDatasets: ${req.query.datasetType}`);
     let result = [];
     try{
-        result = await datasetSelect.selectDatasets(req.params.datasetType, req.body.parameters);
-        let canonicals = result.filter(item => item.canonical);
-        let noncanonicals = result.filter(item => !item.canonical);
-        canonicals.sort((a, b) => a.name.localeCompare(b.name));
-        noncanonicals.sort((a, b) => a.name.localeCompare(b.name));
+        let queryObj = await query.getQuery(req.query);
+        result  = await DataObject.find(queryObj).lean().populate('dataset', 'name version');
+        result = result.map(obj => {
+            let repo = obj.repositories.find(r => r.version === process.env.DEFAULT_DATA_VERSION);
+            delete obj.repositories;
+            return({
+                ...obj,
+                doi: repo.doi,
+                downloadLink: repo.downloadLink
+            });
+        });
+        let canonicals = result.filter(item => item.info.canonical).sort((a, b) => a.name.localeCompare(b.name));
+        let noncanonicals = result.filter(item => !item.info.canonical).sort((a, b) => a.name.localeCompare(b.name));
         result = canonicals.concat(noncanonicals);
+
+        if(req.query.datasetType === 'pset'){
+            const filter = await DataFilter.findOne({datasetType: 'pset'}).lean();
+            result = result.map(obj => {
+                if(obj.tools){
+                    obj.tools.rna = filter.tools.find(item => item.name === obj.tools.rna).label;
+                }
+                if(obj.references){
+                    obj.references.rna = filter.references.find(item => item.name === obj.references.rna).label;
+                }
+                return(obj)
+            });
+        }
+
     }catch(error){
         console.log(error);
         result = error;
@@ -370,7 +397,7 @@ module.exports = {
     authorizeAccess,
     createPrivateShareLink,
     publishDataset,
-    searchDatasets,
+    search,
     getCanonicalDatasets,
     updateCanonicalPSets,
     downloadDatasets,

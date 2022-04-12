@@ -36,7 +36,7 @@ const useDataTable = (datasetType) => {
 
     const toolsRefTemplate = (rowData, column) => (
         <div>
-            {rowData[column.field] ? rowData[column.field].map(item => <div key={item.name}>{item.label}</div>) : ''}
+            {rowData[column.field] ? rowData[column.field] : ''}
         </div>
     );
 
@@ -48,7 +48,7 @@ const useDataTable = (datasetType) => {
                         rowData[column.field] ? 
                         rowData[column.field].map(item => 
                             <div key={item.name}>
-                                {item.name}{item.microarrayType ? ` [${item.microarrayType.label}]` : ''} ({item.type})
+                                {item.name}{item.details ? ` [${item.details.microarrayType.label}]` : ''} ({item.genomeType})
                             </div>
                         ) 
                         : ''
@@ -99,11 +99,11 @@ const useDataTable = (datasetType) => {
     };
 
     const filteredTemplate = (rowData, column) => (
-        <div>{rowData.dataset.filteredSensitivity ? 'Yes' : 'No'}</div>
+        <div>{rowData.info.filteredSensitivity ? 'Yes' : 'No'}</div>
     );
 
     const canonicalTemplate = (rowData, column) => (
-        <div>{rowData[column.field] ? 'Yes' : ''}</div>
+        <div>{rowData.info.canonical ? 'Yes' : ''}</div>
     );
 
     const drugSensitivityTemplate = (rowData, column) => {

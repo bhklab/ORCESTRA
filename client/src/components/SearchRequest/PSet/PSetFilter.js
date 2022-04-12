@@ -26,15 +26,15 @@ const PSetFilter = () => {
     
     useEffect(() => {
         const initialize = async () => {
-            const res = await fetch(`/api/${dataTypes.pharmacogenomics}/formData`);
-            const form = await res.json();
-            console.log(form);
-            setDatasetSelect({...datasetSelect, options: form.dataset});
-            setDataTypeSelect({...dataTypeSelect, options: form.dataType, searchOptions: form.dataType});
-            setGenomeSelect({...genomeSelect, options: form.genome});
-            setRNAToolSelect({...rnaToolSelect, options: form.rnaTool});
-            setRNARefSelect({...rnaRefSelect, options: form.rnaRef});
-            setReady(true);
+            // const res = await fetch(`/api/${dataTypes.pharmacogenomics}/formData`);
+            // const form = await res.json();
+            // console.log(form);
+            // setDatasetSelect({...datasetSelect, options: form.dataset});
+            // setDataTypeSelect({...dataTypeSelect, options: form.dataType, searchOptions: form.dataType});
+            // setGenomeSelect({...genomeSelect, options: form.genome});
+            // setRNAToolSelect({...rnaToolSelect, options: form.rnaTool});
+            // setRNARefSelect({...rnaRefSelect, options: form.rnaRef});
+            // setReady(true);
         }
         initialize();
         // eslint-disable-next-line react-hooks/exhaustive-deps

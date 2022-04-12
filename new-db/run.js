@@ -14,6 +14,10 @@ const User = require('./models/user');
         await mongoose.connect(process.env.DEV, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
         
+        let datasets = await Dataset.find({datasetType: 'pset'}).select({name: 1}).lean();
+        datasets = [...new Set(datasets.map(item => item.name))];
+        console.log(datasets);
+        
 
         // let oldusers = fs.readFileSync('./data/user.json');
         // oldusers = JSON.parse(oldusers);

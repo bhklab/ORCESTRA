@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 
 //api
-const dataset = require('./api/dataset');
+const dataObject = require('./api/data-object');
 const psetRequest = require('./api/pset-request');
 const user = require('./api/user');
 const admin = require('./api/admin');
@@ -15,17 +15,17 @@ const formMetric = require('./api/form-metric');
 const pachyderm = require('./api/pachyderm');
 const public = require('./api/public');
 
-const landing = require('./api/view/landing');
+const landingView = require('./api/view/landing-view');
 
 // dataset
-router.post('/:datasetType/search', dataset.searchDatasets);
-router.get('/:datasetType/one/:id1/:id2', dataset.checkPrivate, dataset.getSingleDataset);
-router.get('/:datasetType/check_private/:id1/:id2', dataset.checkPrivate, dataset.authorizeAccess);
-router.get('/:datasetType/share_link/:id1/:id2', auth.verifyToken, dataset.createPrivateShareLink);
-router.get('/:datasetType/publish/:id1/:id2', auth.verifyToken, dataset.publishDataset);
-router.get('/pset/releasenotes/:name/:version/:type', dataset.getReleaseNotesData);
-router.get('/canonical/:datasetType', dataset.getCanonicalDatasets);
-router.post('/:datasetType/download', dataset.downloadDatasets);
+router.get('/data-objects/search', dataObject.search);
+router.get('/:datasetType/one/:id1/:id2', dataObject.checkPrivate, dataObject.getSingleDataset);
+router.get('/:datasetType/check_private/:id1/:id2', dataObject.checkPrivate, dataObject.authorizeAccess);
+router.get('/:datasetType/share_link/:id1/:id2', auth.verifyToken, dataObject.createPrivateShareLink);
+router.get('/:datasetType/publish/:id1/:id2', auth.verifyToken, dataObject.publishDataset);
+router.get('/pset/releasenotes/:name/:version/:type', dataObject.getReleaseNotesData);
+router.get('/canonical/:datasetType', dataObject.getCanonicalDatasets);
+router.post('/:datasetType/download', dataObject.downloadDatasets);
 router.get('/pachyderm/status', pachyderm.returnStatus);
 
 router.post('/pset/request', psetRequest.processOnlineRequest);
@@ -53,7 +53,7 @@ router.get('/user/dataset/submitted/:id', auth.verifyToken, userDataset.check_ac
 
 // admin routes
 router.get('/view/admin', auth.verifyToken, auth.isAdmin, admin.initialize);
-router.post('/admin/dataset/canonical/update', auth.verifyToken, auth.isAdmin, dataset.updateCanonicalPSets);
+router.post('/admin/dataset/canonical/update', auth.verifyToken, auth.isAdmin, dataObject.updateCanonicalPSets);
 router.post('/admin/submission/complete/:id', auth.verifyToken, auth.isAdmin, admin.updateSubmission);
 router.get('/admin/submission/list', auth.verifyToken, auth.isAdmin, admin.getSubmissionList);
 
@@ -64,7 +64,7 @@ router.get('/stats/metrics/options', formMetric.getMetricDataOptions);
 router.post('/stats/metrics/data', formMetric.getMetricData);
 
 //landing data
-router.get('/view/landing', landing.get);
+router.get('/view/landing', landingView.get);
 
 // documentation
 router.get('/example-download/:file', public.downloadExampleFile);
