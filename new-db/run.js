@@ -13,22 +13,23 @@ const User = require('./models/user');
     try{
         await mongoose.connect(process.env.DEV, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
+        
 
-        let oldusers = fs.readFileSync('./data/user.json');
-        oldusers = JSON.parse(oldusers);
+        // let oldusers = fs.readFileSync('./data/user.json');
+        // oldusers = JSON.parse(oldusers);
 
-        let users = oldusers.map(user => ({
-            email: user.username,
-            password: user.password,
-            registered: user.registered,
-            pwdReset: {
-                expire: user.expire,
-                token: user.resetToken
-            },
-            userDataObjects: user.userDatasets.map(item => mongoose.Types.ObjectId(item))
-        }));
+        // let users = oldusers.map(user => ({
+        //     email: user.username,
+        //     password: user.password,
+        //     registered: user.registered,
+        //     pwdReset: {
+        //         expire: user.expire,
+        //         token: user.resetToken
+        //     },
+        //     userDataObjects: user.userDatasets.map(item => mongoose.Types.ObjectId(item))
+        // }));
 
-        await User.insertMany(users);
+        // await User.insertMany(users);
 
     }catch(err){
         console.log(err);

@@ -1,44 +1,39 @@
-import React, {useState, useEffect} from 'react';
-import {DatasetDialog, RNADialog, DNADialog} from '../MainDialog/PharmacogenomicsDialog';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { DatasetDialog, RNADialog } from '../MainDialog/PharmacogenomicsDialog';
 import * as MainStyle from '../MainStyle';
 import CanonicalBox from '../MainBoxes/CanonicalBox';
 import RequestStatusBox from '../MainBoxes/RequestStatusBox';
 import PopularDatasetBox from '../MainBoxes/PopularDatasetBox';
 import YourOwnDataBox from '../MainBoxes/YourOwnDataBox';
-import {dataTypes} from '../../Shared/Enums';
+import { dataTypes } from '../../Shared/Enums';
 
 const Pharmacogenomics = () => {
     
     const [statsData, setStatsData] = useState([]);
-    const [formData, setFormData] = useState({
+    const [searchData, setSearchData] = useState({
         dataset: [],
         rnaTool: [],
         dnaTool: [],
         rnaRef: [],
         dnaRef: []
     });
-    const [dashboard, setDashboard] = useState({
+    const [reqStatus, setReqStatus] = useState({
         pending: 0,
         inProcess: 0
     });
     const [datasetVisible, setDatasetVisible] = useState(false);
     const [rnaVisible, setRNAVisible] = useState(false);
-    const [dnaVisible, setDNAVisible] = useState(false);
 
     useEffect(() => {
-        const fetchData = async (api) => {
-            const res = await fetch(api);
-            const json = await res.json();
-            const dataset = json.form.dataset; 
-            let versionCombo = 0
-            for(let i = 0; i < dataset.length; i++){
-                versionCombo += dataset[i].versions.length
-            }
-            setStatsData(json.dataset);
-            setFormData({...json.form, versionCombo: versionCombo});
-            setDashboard(json.dashboard);
+        const getData = async () => {
+            const res = await axios.get('/api/view/landing', {params: {datasetType: dataTypes.pharmacogenomics}});
+            console.log(res.data);
+            setStatsData(res.data.downloadRanking);
+            setSearchData(res.data.searchData);
+            setReqStatus(res.data.reqStatus);
         }
-        fetchData(`/api/${dataTypes.pharmacogenomics}/landing/data`);
+        getData();
     }, []);
 
     const showDialog = (type) => {
@@ -48,9 +43,6 @@ const Pharmacogenomics = () => {
                 break;
             case 'rna':
                 setRNAVisible(true);
-                break;
-            case 'dna':
-                setDNAVisible(true);
                 break;
             default:
                 break;
@@ -64,9 +56,6 @@ const Pharmacogenomics = () => {
                 break;
             case 'rna':
                 setRNAVisible(false);
-                break;
-            case 'dna':
-                setDNAVisible(false);
                 break;
             default:
                 break;
@@ -87,13 +76,13 @@ const Pharmacogenomics = () => {
                             <div>Design your own PSet using:</div>
                             <div className='line'>
                                 <MainStyle.Number>
-                                    <button onClick={() => {showDialog('dataset')}}>{formData.versionCombo}</button>
+                                    <button onClick={() => {showDialog('dataset')}}>{searchData.numDataVersions}</button>
                                 </MainStyle.Number> 
                                 <span>Dataset/Drug sensitivity combinations</span>
                             </div>
                             <div className='line'>
                                 <MainStyle.Number>
-                                    <button onClick={() => {showDialog('rna')}}>{formData.rnaTool.length}</button>
+                                    <button onClick={() => {showDialog('rna')}}>{searchData.rnaTool.length}</button>
                                 </MainStyle.Number> 
                                 <span>RNA pipelines.</span>
                             </div>
@@ -105,16 +94,15 @@ const Pharmacogenomics = () => {
                 </MainStyle.Column>
                 <MainStyle.Column>
                     <CanonicalBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} />
-                    <RequestStatusBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} dashboard={dashboard}/>
+                    <RequestStatusBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} reqStatus={reqStatus}/>
                 </MainStyle.Column> 
                 <MainStyle.Column>
                     <PopularDatasetBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} statsData={statsData} />
                     <YourOwnDataBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} />
                 </MainStyle.Column>    
             </MainStyle.Row> 
-            <DatasetDialog visible={datasetVisible} onHide={() => {hideDialog('dataset')}} dataset={formData.dataset} />
-            <RNADialog visible={rnaVisible} onHide={() => {hideDialog('rna')}} rna={{tool: formData.rnaTool, ref: formData.rnaRef}} />
-            <DNADialog visible={dnaVisible} onHide={() => {hideDialog('dna')}} dna={{tool: formData.dnaTool, ref: formData.dnaRef}} />  
+            <DatasetDialog visible={datasetVisible} onHide={() => {hideDialog('dataset')}} dataset={searchData.dataset} />
+            <RNADialog visible={rnaVisible} onHide={() => {hideDialog('rna')}} rna={{tool: searchData.rnaTool, ref: searchData.rnaRef}} />
         </MainStyle.Wrapper>
     );
 }

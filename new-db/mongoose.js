@@ -3,7 +3,7 @@ const connection = connect();
 
 function connect() {
     var options = { keepAlive: 1, useNewUrlParser: true, useUnifiedTopology: true };
-    mongoose.connect(process.env.DEV, options);
+    mongoose.connect(process.env.CONNECTION_STR, options);
     return mongoose.connection;
 }
 

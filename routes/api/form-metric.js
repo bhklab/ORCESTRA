@@ -197,19 +197,19 @@ const enums = require('../../helper/enum');
  * @param {*} req 
  * @param {*} res 
  */
- const getLandingData = async (req, res) => {
-    const result = await metricdata.getLandingData(req.params.datasetType);
-    if(result.status){
-        res.send(result);
-    }else{
-        res.status(500).send(result);
-    }
-}
+//  const getLandingData = async (req, res) => {
+//     const result = await metricdata.getLandingData(req.params.datasetType);
+//     if(result.status){
+//         res.send(result);
+//     }else{
+//         res.status(500).send(result);
+//     }
+// }
 
 module.exports = {
     getFormData,
     getDataForStats,
     getMetricData,
     getMetricDataOptions,
-    getLandingData
+    // getLandingData
 }

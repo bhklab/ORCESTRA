@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
@@ -5,9 +6,13 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const app = express();
 const router = require('./routes/router');
-//const port = 80;
-//const port = process.env.PORT || 3000
-require('dotenv').config();
+const db = require('./new-db/mongoose');
+
+const listen = () => {
+  app.listen(port, ()=>{
+    console.log('Server running on port: ' + port);
+  });
+}
 
 app.use(cors());
 
@@ -30,8 +35,13 @@ app.get('/*', (req, res) => {
 var port = process.env.PORT || '2000';
 app.set('port', port);
 
-app.listen(port, ()=>{
-  console.log('Server running on port: ' + port);
-});
+// database connection setting.
+db.connection
+    .on('error', console.log)
+    .on('disconnected', db.connect)
+    .once('open', listen);
+
+// If the Node process ends, close the Mongoose connection
+process.on('SIGINT', db.gracefulExit).on('SIGTERM', db.gracefulExit);
 
 module.exports = app; // for testing

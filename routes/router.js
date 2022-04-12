@@ -15,6 +15,8 @@ const formMetric = require('./api/form-metric');
 const pachyderm = require('./api/pachyderm');
 const public = require('./api/public');
 
+const landing = require('./api/view/landing');
+
 // dataset
 router.post('/:datasetType/search', dataset.searchDatasets);
 router.get('/:datasetType/one/:id1/:id2', dataset.checkPrivate, dataset.getSingleDataset);
@@ -62,7 +64,7 @@ router.get('/stats/metrics/options', formMetric.getMetricDataOptions);
 router.post('/stats/metrics/data', formMetric.getMetricData);
 
 //landing data
-router.get('/:datasetType/landing/data', formMetric.getLandingData);
+router.get('/view/landing', landing.get);
 
 // documentation
 router.get('/example-download/:file', public.downloadExampleFile);
