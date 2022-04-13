@@ -41,7 +41,9 @@ const XevaSetSearch = () => {
 
     useEffect(() => {   
         async function searchXevaSets() {
-            const xevaSets = await search({...parameters, status: 'complete', private: false});
+            let copy = JSON.parse(JSON.stringify(parameters));
+            copy.dataset = copy.dataset.map(item => item.name);
+            const xevaSets = await search({...copy, status: 'complete', private: false});
             setXevaSets(xevaSets);
         }
 

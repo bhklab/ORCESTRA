@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import SearchReqContext from '../SearchReqContext';
-
+import axios from 'axios';
 import {Filter} from '../SearchReqStyle';
 import FilterInputSwitch from '../../Shared/FilterInputSwitch';
 import CustomSelect from '../../Shared/CustomSelect';
@@ -26,15 +26,14 @@ const PSetFilter = () => {
     
     useEffect(() => {
         const initialize = async () => {
-            // const res = await fetch(`/api/${dataTypes.pharmacogenomics}/formData`);
-            // const form = await res.json();
-            // console.log(form);
-            // setDatasetSelect({...datasetSelect, options: form.dataset});
-            // setDataTypeSelect({...dataTypeSelect, options: form.dataType, searchOptions: form.dataType});
-            // setGenomeSelect({...genomeSelect, options: form.genome});
-            // setRNAToolSelect({...rnaToolSelect, options: form.rnaTool});
-            // setRNARefSelect({...rnaRefSelect, options: form.rnaRef});
-            // setReady(true);
+            const res = await axios.get('/api/view/data-object-filter', {params: {datasetType: dataTypes.pharmacogenomics}});
+            console.log(res.data);
+            setDatasetSelect({...datasetSelect, options: res.data.dataset});
+            setDataTypeSelect({...dataTypeSelect, options: res.data.molDataType, searchOptions: res.data.molDataType});
+            setGenomeSelect({...genomeSelect, options: res.data.genome});
+            setRNAToolSelect({...rnaToolSelect, options: res.data.rnaTool});
+            setRNARefSelect({...rnaRefSelect, options: res.data.rnaRef});
+            setReady(true);
         }
         initialize();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -243,6 +242,7 @@ const PSetFilter = () => {
                     options={datasetSelect.options} 
                     selected={datasetSelect.selected} 
                     onChange={(e) => {
+                        console.log(e.value)
                         setDatasetSelect({...datasetSelect, selected: e.value}); 
                         context.setParameters(prev => ({...prev, dataset: e.value, search: true}));
                     }} 
@@ -304,6 +304,7 @@ const PSetFilter = () => {
                     options={drugSensSelect.options} 
                     selected={drugSensSelect.selected} 
                     onChange={(e) => {
+                        console.log(e.value)
                         setDrugSensSelect({...drugSensSelect, selected: e.value});
                         context.setParameters(prev => ({...prev, drugSensitivity: e.value, search: true}));
                     }} 

@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import SearchReqContext from '../SearchReqContext';
-
+import axios from 'axios';
 import {Filter} from '../SearchReqStyle';
 import FilterInputSwitch from '../../Shared/FilterInputSwitch';
 import CustomSelect from '../../Shared/CustomSelect';
@@ -14,9 +14,8 @@ const XevaSetFilter = () => {
     
     useEffect(() => {
         const initialize = async () => {
-            const res = await fetch(`/api/${dataTypes.xenographic}/formData`);
-            const form = await res.json();
-            setDatasetSelect({...datasetSelect, options: form.dataset});
+            const res = await axios.get('/api/view/data-object-filter', {params: {datasetType: dataTypes.xenographic}});
+            setDatasetSelect({...datasetSelect, options: res.data.dataset});
             setReady(true);
         }
         initialize();

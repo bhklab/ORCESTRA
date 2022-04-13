@@ -44,7 +44,9 @@ const ToxicoSetSearch = () => {
         async function searchTSets() {
             console.log('search');
             console.log(parameters);
-            const toxicoSets = await search({...parameters, status: 'complete', private: false});
+            let copy = JSON.parse(JSON.stringify(parameters));
+            copy.dataset = copy.dataset.map(item => item.name);
+            const toxicoSets = await search({...copy, status: 'complete', private: false});
             setToxicoSets(toxicoSets);
         }
 

@@ -18,16 +18,26 @@ const getQuerySetForPSet = async (parameters) => {
     let query = { ...baseQuery };
 
     if(parameters.dataset && parameters.dataset.length){
-        const datasetIDs = await Dataset.find({name: {$in: parameters.dataset}}).select({_id: 1}).lean();
-        query.dataset = {$in: datasetIDs};
+        let datasets = await Dataset.find({name: {$in: parameters.dataset}}).select({_id: 1, name: 1, version: 1}).lean();
+        if(parameters.drugSensitivity && parameters.drugSensitivity.length){
+            let datasetSensitivity = parameters.drugSensitivity.map(sens => {
+                let matches = sens.split(':')[1].match(/\((.*?)\)/g);
+                return({
+                    dataset: matches[matches.length - 1].replace(/\(|\)/g, ''),
+                    version: sens.split(':')[0]
+                })
+            });
+            datasets = datasets.filter(dataset => datasetSensitivity.find(item => item.dataset === dataset.name && item.version === dataset.version));
+        }
+        query.dataset = {$in: datasets.map(dataset => dataset._id)};
     }
     
-    // if(parameters.dataType && parameters.dataType.length){
-    //     queryArray.push(getQueryFilter('dataType.name', query.dataType.map(dt => {return(dt.name)}), true));
-    // }
+    if(parameters.dataType && parameters.dataType.length){
+        query['availableDatatypes.name'] = {$in: parameters.dataType};
+    }
 
     if(parameters.genome && parameters.genome.length){
-        query.genome = {$in: genome};
+        query.genome = {$in: parameters.genome};
     }
 
     if(parameters.rnaTool && parameters.rnaTool.length){
@@ -48,12 +58,13 @@ const getQuerySetForPSet = async (parameters) => {
     return(query);
 }
 
-const getQuerySetForToxicoSet = (parameters) => {
-
-}
-
-const getDefaultQuerySet = (parameters) => {
-
+const getDefaultQuerySet = async (parameters) => {
+    let query = { ...baseQuery };
+    if(parameters.dataset && parameters.dataset.length){
+        let datasets = await Dataset.find({name: {$in: parameters.dataset}}).select({_id: 1, name: 1, version: 1}).lean();
+        query.dataset = {$in: datasets.map(dataset => dataset._id)};
+    }
+    return(query);
 }
  
 const getQuery = async (parameters) => {
@@ -61,9 +72,6 @@ const getQuery = async (parameters) => {
     switch(parameters.datasetType){
         case enums.dataTypes.pharmacogenomics:
             query = await getQuerySetForPSet(parameters);
-            break;
-        case enums.dataTypes.toxicogenomics:
-            query = await getQuerySetForTSet(parameters);
             break;
         default:
             query = await getDefaultQuerySet(parameters);

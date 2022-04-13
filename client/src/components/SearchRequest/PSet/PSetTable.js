@@ -16,7 +16,6 @@ const PSetTable = (props) => {
     } = props;
 
     const {
-        toolsRefTemplate,
         dataTypeTemplate,
         nameColumnTemplate,
         downloadTemplate,
@@ -56,7 +55,7 @@ const PSetTable = (props) => {
             }
             <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplate} sortable={true} />
             <Column className='textField' field='dataset.name' header='Dataset' style={{width:'100px'}} sortable={true} />
-            <Column className='textField' field='dataset.version' header='Drug Sensitivity' style={{width:'120px'}} sortable={true} />
+            <Column className='textField' field='dataset.sensitivity.version' header='Drug Sensitivity' style={{width:'120px'}} sortable={true} />
             <Column field='info.filteredSensitivity' body={filteredTemplate} style={{width:'90px', textAlign: 'center'}} header='Filtered Drug Sensitivity' />
             <Column field='tools.rna' style={{width:'120px'}} header='RNA Tool' sortable={true}  />
             <Column field='references.rna' style={{width:'120px'}} header='RNA Ref' sortable={true} />

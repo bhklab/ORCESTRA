@@ -42,7 +42,9 @@ const ClinGenSetSearch = () => {
     useEffect(() => {   
         async function searchClinGenSets() {
             console.log(parameters);
-            const result = await search({...parameters, status: 'complete', private: false});
+            let copy = JSON.parse(JSON.stringify(parameters));
+            copy.dataset = copy.dataset.map(item => item.name);
+            const result = await search({...copy, status: 'complete', private: false});
             setDatasets(result);
         }
 

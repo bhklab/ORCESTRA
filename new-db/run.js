@@ -14,9 +14,16 @@ const User = require('./models/user');
         await mongoose.connect(process.env.DEV, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
         
-        let datasets = await Dataset.find({datasetType: 'pset'}).select({name: 1}).lean();
-        datasets = [...new Set(datasets.map(item => item.name))];
-        console.log(datasets);
+        let datasets = await Dataset.find({datasetType: 'pset', name: 'GDSC'}).select({name: 1, availableData: 1}).lean();
+        for(let dataset of datasets){
+            let index = dataset.availableData.findIndex(item => item.name === 'microarray');
+            dataset.availableData[index].options = [
+                {name: 'u133a', label: 'U133A'},
+                {name: 'u219', label: 'U219'}
+            ];
+            await Dataset.updateOne({_id: dataset._id}, {$set: {availableData: dataset.availableData}});
+        }
+        
         
 
         // let oldusers = fs.readFileSync('./data/user.json');

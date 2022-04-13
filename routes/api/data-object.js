@@ -286,13 +286,16 @@ const publishDataset = async (req, res) => {
  * @param {*} res 
  */
 const search = async (req, res) => {
-    console.log(`searchDatasets: ${req.query.datasetType}`);
+    console.log(req.query)
     let result = [];
     try{
         let queryObj = await query.getQuery(req.query);
-        result  = await DataObject.find(queryObj).lean().populate('dataset', 'name version');
+        result  = await DataObject.find(queryObj).lean().populate('dataset', 'name version sensitivity');
+
+        // get the doi and downloadlink for specific data version. Only applicable to PSets. For other datasets, use 1.0.
+        let repoVersion = req.query.datasetType === 'pset' ? process.env.DEFAULT_DATA_VERSION : '1.0';
         result = result.map(obj => {
-            let repo = obj.repositories.find(r => r.version === process.env.DEFAULT_DATA_VERSION);
+            let repo = obj.repositories.find(r => r.version === repoVersion);
             delete obj.repositories;
             return({
                 ...obj,
@@ -316,7 +319,6 @@ const search = async (req, res) => {
                 return(obj)
             });
         }
-
     }catch(error){
         console.log(error);
         result = error;

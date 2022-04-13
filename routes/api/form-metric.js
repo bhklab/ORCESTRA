@@ -5,61 +5,6 @@ const formdata = require('../../db/helper/formdata');
 const metricdata = require('../../db/helper/metricdata');
 const datasetCanonical = require('../../db/helper/dataset-canonical');
 const upset = require('../../helper/upset');
-const enums = require('../../helper/enum');
-
-/**
- * Retrieves a formData object from DB, and parses it into arrays of parameter options so that it can be used in drowndown selections.
- * @param {*} req 
- * @param {*} res 
- */
- const getFormData = async (req, res) => {
-    console.log(req.params.datasetType);
-
-    try{
-        let form = {dataType: [], dataset: [], genome: [], rnaTool: [], rnaRef: [], dnaTool: [], dnaRef: []}
-        const result = await formdata.getFormData(req.params.datasetType);
-        result.dataset.forEach((ds) => {
-            if(!ds.disabled){
-                form.dataset.push({
-                    label: ds.label,
-                    name: ds.name,
-                    versions: ds.versions.map(version => ({version: version.version, label: version.label, disabled: version.disabled})),
-                    accompanyData: [],
-                    unavailable: ds.unavailable,
-                    requestDisabled: ds.requestDisabled ? true : false
-                });
-            }
-        });
-        form.dataset.sort((a, b) => a.name.localeCompare(b.name));
-        if(req.params.datasetType === enums.dataTypes.pharmacogenomics){
-            form.dataset.forEach(dataset => {
-                let accompanyRNA = result.accompanyRNA.filter(item => item.dataset === dataset.name);
-                accompanyRNA = accompanyRNA.map(item => ({...item, type: 'RNA'}));
-                let accompanyDNA = result.accompanyDNA.filter(item => item.dataset === dataset.name);
-                accompanyDNA= accompanyDNA.map(item => ({...item, type: 'DNA'}));
-                let accompanyData = accompanyRNA.concat(accompanyDNA);
-                dataset.accompanyData = accompanyData.map(item => ({ 
-                    label: item.label, 
-                    name: item.name,
-                    type: item.type, 
-                    dataset: item.dataset, 
-                    options: item.options,
-                    hidden: false
-                }));
-            });
-            form.genome = result.genome;
-            form.rnaTool = result.rnaTool.map(tool => ({label: tool.label, name: tool.name}));
-            form.rnaRef = result.rnaRef.map(ref => ({label: ref.label, name: ref.name, genome: ref.genome, hidden: false}));
-            form.dnaTool = result.dnaTool.map(tool => ({label: tool.label, name: tool.name, hidden: false}));
-            form.dnaRef = result.dnaRef.map(ref => ({label: ref.label, name: ref.name, genome: ref.genome, hidden: false}));
-            form.dataType = result.molecularData.map(moldata => ({...moldata, hidden: false}));
-        }
-        res.send(form);
-    }catch(error){
-        console.log(error)
-        res.status(500).send(error);
-    }
-}
 
 /**
  * Retrieves formdata and statistics data.
@@ -192,24 +137,8 @@ const enums = require('../../helper/enum');
     }
 }
 
-/**
- * Retrieves all the data to be rendered on the landing page.
- * @param {*} req 
- * @param {*} res 
- */
-//  const getLandingData = async (req, res) => {
-//     const result = await metricdata.getLandingData(req.params.datasetType);
-//     if(result.status){
-//         res.send(result);
-//     }else{
-//         res.status(500).send(result);
-//     }
-// }
-
 module.exports = {
-    getFormData,
     getDataForStats,
     getMetricData,
-    getMetricDataOptions,
-    // getLandingData
+    getMetricDataOptions
 }

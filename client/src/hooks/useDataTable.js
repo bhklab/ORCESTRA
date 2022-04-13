@@ -57,16 +57,9 @@ const useDataTable = (datasetType) => {
             );
         }
 
-        if(datasetType === dataTypes.radiogenomics){
-            const dataTypes = rowData[column.field].filter(item => (item.name !== 'radiationSensitivity'));
-            return(
-                <div>{dataTypes.map(item => <div key={item.name}>{item.name} ({item.type})</div>)}</div>
-            );
-        }
-
-        const datatypeArray = rowData[column.field].filter(item => (item.name !== 'drugResponse'));
+        const datatypeArray = rowData[column.field].filter(item => (item.name !== 'drugResponse' && item.name !== 'radiationSensitivity'));
         return(
-            <div>{datatypeArray.map(item => <div key={item.name}>{item.name} ({item.type})</div>)}</div>
+            <div>{datatypeArray.map(item => <div key={item.name}>{item.name} ({item.genomeType})</div>)}</div>
         );
     }
 
@@ -106,17 +99,9 @@ const useDataTable = (datasetType) => {
         <div>{rowData.info.canonical ? 'Yes' : ''}</div>
     );
 
-    const drugSensitivityTemplate = (rowData, column) => {
-        const drugSensitivity = rowData[column.field].find(item => (item.name === 'drugResponse'));
+    const sensitivityTemplate = (rowData, column) => {
         return(
-            <div>{drugSensitivity ? drugSensitivity.version : 'Not Available'}</div>
-        );
-    }
-
-    const radiationSensitivityTemplate = (rowData, column) => {
-        const radiationSensitivity = rowData[column.field].find(item => (item.name === 'radiationSensitivity'));
-        return(
-            <div>{radiationSensitivity ? radiationSensitivity.version : 'Not Available'}</div>
+            <div>{rowData.dataset.sensitivity ? rowData.dataset.sensitivity.version : 'Not Available'}</div>
         );
     }
 
@@ -132,8 +117,7 @@ const useDataTable = (datasetType) => {
         downloadTemplate,
         filteredTemplate,
         canonicalTemplate,
-        drugSensitivityTemplate,
-        radiationSensitivityTemplate,
+        sensitivityTemplate,
         privateTemplate
     };
 

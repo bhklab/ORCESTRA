@@ -24,7 +24,8 @@ const datasetSchema = new Schema({
         datatype: String,
         source: String,
         expCount: {type: Number, required: false},
-        noUpdates: {type: Boolean, required: false}
+        noUpdates: {type: Boolean, required: false},
+        options: [{name: String, label: String}]
     }],
     datasetNote: { type: mongoose.Schema.Types.ObjectId, ref: 'DatasetNote' },
     stats: {

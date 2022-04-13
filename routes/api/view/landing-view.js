@@ -1,9 +1,9 @@
 /**
  * Includes API routes to fetch data for a single page.
  */
-const dataset = require('../../../new-db/models/dataset');
-const dataObject = require('../../../new-db/models/data-object').DataObject;
-const dataFilter = require('../../../new-db/models/data-filter');
+const Dataset = require('../../../new-db/models/dataset');
+const DataObject = require('../../../new-db/models/data-object').DataObject;
+const DataFilter = require('../../../new-db/models/data-filter');
 
 /**
  * Retrieves all the data to be rendered on the landing page.
@@ -14,7 +14,7 @@ const dataFilter = require('../../../new-db/models/data-filter');
     let data = {status: 0, err: {}, searchData: {}, downloadRanking: [], reqStatus: {}};
     try{
         // Get all pharmacogenomic datasets that are not 'hidden'
-        const datasets = await dataset.find({
+        const datasets = await Dataset.find({
             datasetType: req.query.datasetType,
             'status.unavailable': false
         })
@@ -34,12 +34,12 @@ const dataFilter = require('../../../new-db/models/data-filter');
             versions: datasets.filter(d => d.name === item)
         }));
         // Get data for RNA modal
-        const filters = await dataFilter.findOne({datasetType: req.query.datasetType}).lean();
+        const filters = await DataFilter.findOne({datasetType: req.query.datasetType}).lean();
         data.searchData.rnaTool = filters.tools.filter(item => item.genomicType === 'RNA');
         data.searchData.rnaRef = filters.references.filter(item => item.genomicType === 'RNA');
 
         // Get all PSets
-        const objects = await dataObject.find({
+        const objects = await DataObject.find({
             datasetType: req.query.datasetType,
         })
         .select({

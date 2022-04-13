@@ -16,6 +16,7 @@ const pachyderm = require('./api/pachyderm');
 const public = require('./api/public');
 
 const landingView = require('./api/view/landing-view');
+const dataObjectFilter = require('./api/view/data-object-filter-view');
 
 // dataset
 router.get('/data-objects/search', dataObject.search);
@@ -58,13 +59,14 @@ router.post('/admin/submission/complete/:id', auth.verifyToken, auth.isAdmin, ad
 router.get('/admin/submission/list', auth.verifyToken, auth.isAdmin, admin.getSubmissionList);
 
 //formdata and stats
-router.get('/:datasetType/formdata', formMetric.getFormData);
+// router.get('/:datasetType/formdata', formMetric.getFormData);
 router.get('/:datasetType/stats/data', formMetric.getDataForStats);
 router.get('/stats/metrics/options', formMetric.getMetricDataOptions);
 router.post('/stats/metrics/data', formMetric.getMetricData);
 
-//landing data
+//view/component data
 router.get('/view/landing', landingView.get);
+router.get('/view/data-object-filter', dataObjectFilter.get);
 
 // documentation
 router.get('/example-download/:file', public.downloadExampleFile);
