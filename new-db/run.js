@@ -13,18 +13,20 @@ const User = require('./models/user');
     try{
         await mongoose.connect(process.env.DEV, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
-        
-        let datasets = await Dataset.find({datasetType: 'pset', name: 'GDSC'}).select({name: 1, availableData: 1}).lean();
+        // let datasettype = 'pset';
+        // let oldobjects = fs.readFileSync(`./data/${datasettype}.json`);
+        // oldobjects = JSON.parse(oldobjects);
+        // let objects = await ObjSchema.DataObject.find({datasetType: datasettype}).lean();
+
+        let datasets = await Dataset.find({name: 'GDSC'}).select(['-stats']).lean();
+        let metricdata = fs.readFileSync(`./data/metric-data.json`);
+        metricdata = JSON.parse(metricdata);
+        metricdata = metricdata.find(item => item.name === 'GDSC');
         for(let dataset of datasets){
-            let index = dataset.availableData.findIndex(item => item.name === 'microarray');
-            dataset.availableData[index].options = [
-                {name: 'u133a', label: 'U133A'},
-                {name: 'u219', label: 'U219'}
-            ];
-            await Dataset.updateOne({_id: dataset._id}, {$set: {availableData: dataset.availableData}});
+            let version = metricdata.versions.find(item => item.version === dataset.version);
+            dataset.releaseNotes.additionalNotes = version.releaseNotes.additional;
+            await Dataset.updateOne({_id: dataset._id}, {releaseNotes: dataset.releaseNotes});
         }
-        
-        
 
         // let oldusers = fs.readFileSync('./data/user.json');
         // oldusers = JSON.parse(oldusers);

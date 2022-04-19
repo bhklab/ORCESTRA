@@ -17,14 +17,14 @@ const public = require('./api/public');
 
 const landingView = require('./api/view/landing-view');
 const dataObjectFilter = require('./api/view/data-object-filter-view');
+const singleDataObject = require('./api/view/single-data-object-view');
 
-// dataset
+// data object
 router.get('/data-objects/search', dataObject.search);
-router.get('/:datasetType/one/:id1/:id2', dataObject.checkPrivate, dataObject.getSingleDataset);
-router.get('/:datasetType/check_private/:id1/:id2', dataObject.checkPrivate, dataObject.authorizeAccess);
+router.get('/data-object/check_private', dataObject.checkPrivate, (req, res) => {res.send({authorized: req.authorized})});
+
 router.get('/:datasetType/share_link/:id1/:id2', auth.verifyToken, dataObject.createPrivateShareLink);
 router.get('/:datasetType/publish/:id1/:id2', auth.verifyToken, dataObject.publishDataset);
-router.get('/pset/releasenotes/:name/:version/:type', dataObject.getReleaseNotesData);
 router.get('/canonical/:datasetType', dataObject.getCanonicalDatasets);
 router.post('/:datasetType/download', dataObject.downloadDatasets);
 router.get('/pachyderm/status', pachyderm.returnStatus);
@@ -64,9 +64,10 @@ router.get('/:datasetType/stats/data', formMetric.getDataForStats);
 router.get('/stats/metrics/options', formMetric.getMetricDataOptions);
 router.post('/stats/metrics/data', formMetric.getMetricData);
 
-//view/component data
+// view/component data
 router.get('/view/landing', landingView.get);
 router.get('/view/data-object-filter', dataObjectFilter.get);
+router.get('/view/single-data-object', dataObject.checkPrivate, singleDataObject.get);
 
 // documentation
 router.get('/example-download/:file', public.downloadExampleFile);

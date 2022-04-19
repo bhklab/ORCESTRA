@@ -2,7 +2,7 @@ import React from 'react';
 import { TabHeader, TabContent, TabContentSection} from '../../SingleDatasetStyle';
 
 const DatasetTabContent = (props) => {
-
+    const { metadata } = props;
     const dataListDrugResponse = (data) => (
         <div>     
             <li key={data} className='pubList'>
@@ -21,8 +21,8 @@ const DatasetTabContent = (props) => {
 
     const publication = (
         <div>    
-        {props.metadata.dataset.versionInfo.publication.length ? 
-            props.metadata.dataset.versionInfo.publication.map((item) => 
+        {metadata.dataset.publications.length ? 
+            metadata.dataset.publications.map((item) => 
                 <li key={item.link} className='pubList'>
                     <div className='subContent'>{item.citation}</div>
                     <br />
@@ -39,14 +39,14 @@ const DatasetTabContent = (props) => {
     
     return(
         <React.Fragment>
-            <TabHeader>Dataset: {props.metadata.dataset.label}</TabHeader>
+            <TabHeader>Dataset: {metadata.dataset.name}</TabHeader>
             <TabContent>
                 <TabContentSection>
                     <h3>Drug Response Data: </h3>
                     {
-                        props.metadata.dataset.versionInfo.drugSensitivity ?
+                        metadata.dataset.sensitivity ?
                         <ul>
-                            {dataListDrugResponse(props.metadata.dataset.versionInfo.drugSensitivity)}
+                            {dataListDrugResponse(metadata.dataset.sensitivity)}
                         </ul> 
                         :
                         <div className="subContent">

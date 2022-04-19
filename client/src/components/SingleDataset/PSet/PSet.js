@@ -18,7 +18,7 @@ const PSet = (props) => {
                         dataset.tabData.map(td => (
                             <TabPanel key={Math.random()} header={td.header}>
                                 {td.header === 'Dataset' && <DatasetTabContent metadata={td.data} />}
-                                {td.header === 'Disclaimer' && <DisclaimerTabContent notes={td.data.notes} />}
+                                {td.header === 'Disclaimer' && <DisclaimerTabContent notes={td.data} />}
                                 {td.header === 'RNA' && <RNATabContent dataset={dataset.tabData.find(item => item.header === "Dataset").data.dataset} metadata={td.data} />}
                                 {td.header === 'DNA' && <DNATabContent metadata={td.data} />}
                                 {td.header === 'Pipeline' && <PipelineTabContent data={td.data} />}

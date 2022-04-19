@@ -2,13 +2,13 @@ import React from 'react';
 import { TabHeader, TabContent, TabContentSection} from '../../SingleDatasetStyle';
 
 const DatasetTabContent = (props) => {
-
+    const { metadata } = props;
     const dataList = (data) => (
         <div>    
-        {data.length ? 
-            <li key={data} className='pubList'>
+        {data.source.length ? 
+            <li key={data.source} className='pubList'>
                 <div className='subContent'>
-                    <a href={data}>{data}</a>
+                    <a href={data.soruce}>{data.source}</a>
                 </div>
             </li>
             :
@@ -40,8 +40,8 @@ const DatasetTabContent = (props) => {
 
     const publication = (
         <div>    
-        {props.metadata.dataset.versionInfo.publication.length ? 
-            props.metadata.dataset.versionInfo.publication.map((item) => 
+        {metadata.dataset.publications.length ? 
+            metadata.dataset.publications.map((item) => 
                 <li key={item.link} className='pubList'>
                     <div className='subContent'>{item.citation}</div>
                     <br />
@@ -58,18 +58,18 @@ const DatasetTabContent = (props) => {
     
     return(
         <React.Fragment>
-            <TabHeader>Dataset: {props.metadata.dataset.label}</TabHeader>
+            <TabHeader>Dataset: {metadata.dataset.name}</TabHeader>
             <TabContent>
                 <TabContentSection>
                     <h3>Microarray Data: </h3>
                     <ul>
-                        {dataList(props.metadata.dataset.versionInfo.data.rawMicroarrayData)}
+                        {dataList(metadata.dataset.availableData.find(item => item.name === 'rawMicroarray'))}
                     </ul> 
                 </TabContentSection>
                 <TabContentSection>
                     <h3>Drug Response Data: </h3>
                     <ul>
-                        {drugResponse(props.metadata.dataset.versionInfo.data.drugResponseData)}
+                        {drugResponse(metadata.dataset.sensitivity)}
                     </ul> 
                 </TabContentSection>
                 <TabContentSection>

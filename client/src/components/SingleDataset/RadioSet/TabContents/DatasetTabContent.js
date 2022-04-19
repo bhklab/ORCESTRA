@@ -2,11 +2,11 @@ import React from 'react';
 import { TabHeader, TabContent, TabContentSection} from '../../SingleDatasetStyle';
 
 const DatasetTabContent = (props) => {
-         
+    const { metadata } = props;
     const publication = (
         <div>    
-        {props.metadata.dataset.versionInfo.publication.length ? 
-            props.metadata.dataset.versionInfo.publication.map((item) => 
+        {metadata.dataset.publications.length ? 
+            metadata.dataset.publications.map((item) => 
                 <li key={item.link} className='pubList'>
                     <div className='subContent'>{item.citation}</div>
                     <br />
@@ -23,18 +23,18 @@ const DatasetTabContent = (props) => {
         
     return(
         <React.Fragment>
-            <TabHeader>Dataset: {props.metadata.dataset.label}</TabHeader>
+            <TabHeader>Dataset: {metadata.dataset.label}</TabHeader>
             <TabContent>
                 <TabContentSection>
                     <h3>Radiation Sensitivity</h3>
                     <h4 className='subContent'>Source: 
                     {
-                        props.metadata.dataset.versionInfo.radiationSensitivity ? 
-                        <a href={props.metadata.dataset.versionInfo.radiationSensitivity.source}>{props.metadata.dataset.versionInfo.radiationSensitivity.source}</a> 
+                        metadata.dataset.sensitivity ? 
+                        <a href={metadata.dataset.sensitivity.source}>{metadata.dataset.sensitivity.source}</a> 
                         : 'Not available'
                     }
                     </h4>
-                    <h4 className='subContent'>Version: {props.metadata.dataset.versionInfo.radiationSensitivity.version}</h4>
+                    <h4 className='subContent'>Version: {metadata.dataset.sensitivity.version}</h4>
                 </TabContentSection>
                 
                 <TabContentSection>
@@ -46,7 +46,7 @@ const DatasetTabContent = (props) => {
                 
                 <TabContentSection>
                     <h3>Genome Version</h3>
-                    <div className='subContent'>{props.metadata.genome.name ? props.metadata.genome.name : "Not Available"}</div>
+                    <div className='subContent'>{metadata.genome ? metadata.genome : "Not Available"}</div>
                 </TabContentSection>
             </TabContent> 
         </React.Fragment>

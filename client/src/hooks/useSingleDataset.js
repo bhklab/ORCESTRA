@@ -93,17 +93,20 @@ const useSingleDataset = (datasetType, doi) => {
     
     const getDataset = async (shareToken=null) => {
         try{
-            let url = shareToken ? `/api/${datasetType}/one/${doi}${shareToken}` : `/api/${datasetType}/one/${doi}`;
-            const res = await axios.get(url);
-            // console.log(res.data);
+            const res = await axios.get('/api/view/single-data-object', {params: {
+                datasetType: datasetType,
+                doi: doi,
+                share_token: shareToken ? shareToken.replace('?shared=', '') : null
+            }});
+            console.log(res.data);
             setDataset({
                 ready: true,
                 data: res.data
             });
-            if(res.data && !res.data.private){
+            if(res.data && !res.data.info.private){
                 setPublicView(true);
             }
-            if(res.data && res.data.private && !shareToken){
+            if(res.data && res.data.info.private && !shareToken){
                 setOwnerView(true);
             }
         }catch(error){
@@ -155,7 +158,7 @@ const useSingleDataset = (datasetType, doi) => {
                             selected={selectedObject}
                             label='Data Object: '
                             options={dataset.data.downloadLink.map(link => ({
-                                label: link.label,
+                                label: link.name,
                                 value: link
                             }))}
                             onChange={(e) => {setSelectedObject(e.value)}}
@@ -251,13 +254,13 @@ const useSingleDataset = (datasetType, doi) => {
                     <div>
                         <h4>Dataset DOI:  <a href={`http://doi.org/${data.doi}`} target="_blank" rel='noreferrer'>{data.doi}</a></h4>
                         {
-                            data.bioComputeDOI &&
-                            <h4>BioCompute Object DOI:  <a href={`http://doi.org/${data.bioComputeDOI}`} target="_blank" rel='noreferrer'>{data.bioComputeDOI}</a></h4>
+                            data.bioComputeObject &&
+                            <h4>BioCompute Object DOI:  <a href={`http://doi.org/${data.bioComputeObject.doi}`} target="_blank" rel='noreferrer'>{data.bioComputeObject.doi}</a></h4>
                         }
                     </div>
-                    <h4>Date Created: {data.dateCreated.split('T')[0]}</h4>
+                    <h4>Date Created: {data.info.date.created.split('T')[0]}</h4>
                     {
-                        data.createdBy && <h4>Created By {data.createdBy} { data.canonical ? '(Canonical)' : '' }</h4>
+                        data.info.createdBy && <h4>Created By {data.info.createdBy} { data.info.canonical ? '(Canonical)' : '' }</h4>
                     }
                 </AccordionTab>    
             </StyledAccordion>    

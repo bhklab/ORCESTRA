@@ -25,14 +25,14 @@ const dataObjectSchema = new Schema(
             date: {
                 submitted: Date,
                 processed: Date,
-                completed: Date
+                created: Date
             },
         },
         repositories: [{
             version: String,
             doi: String,
             downloadLink: Schema.Types.Mixed,
-            biocomputeObj: {
+            bioComputeObject: {
                 doi: String,
                 downloadLink: String
             }

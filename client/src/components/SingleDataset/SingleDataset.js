@@ -43,7 +43,7 @@ const SingleDataset = (props) => {
                         publishDialog() 
                     }
                     { 
-                        getGeneralInfoAccordion(dataset.data.generalInfo) 
+                        getGeneralInfoAccordion(dataset.data) 
                     }
                     <React.Fragment>
                         { 

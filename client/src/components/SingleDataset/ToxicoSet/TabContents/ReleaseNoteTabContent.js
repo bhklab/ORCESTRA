@@ -29,7 +29,6 @@ const StyledMetricDataGroup = styled.div`
 `
 
 const ReleaseNoteTabContent = (props) => {
-
     const getMetricDataText = (key, label, count) => {
         switch(key){
             case 'current':
@@ -43,18 +42,8 @@ const ReleaseNoteTabContent = (props) => {
         }
     }
 
-    const metricDataGroup = (title, label, data, renderRow) => (
-        <StyledMetricDataGroup>
-            <h2>{title}</h2>
-            <table>
-                <tbody>
-                    { renderRow(data, label) }
-                </tbody>
-            </table>
-        </StyledMetricDataGroup>
-    );
-
-    const renderDataRow = (data, label) => {
+    const renderDataRow = (dataKey, label) => {
+        let data = props.data.releaseNotes.counts.find(item => item.name === dataKey);
         if(data){
             return(
                 Object.keys(data).map(key => (
@@ -75,16 +64,27 @@ const ReleaseNoteTabContent = (props) => {
         }
     }
 
+    const metricDataGroup = (title, label, dataKey) => (
+        <StyledMetricDataGroup>
+            <h2>{title}</h2>
+            <table>
+                <tbody>
+                    { renderDataRow(dataKey, label) }
+                </tbody>
+            </table>
+        </StyledMetricDataGroup>
+    );
+
     return(
         <StyledReleaseNotes>
             {
-                metricDataGroup('Cell Lines', 'cell line', props.data.releaseNotes.cellLines, renderDataRow)
+                metricDataGroup('Cell Lines', 'cell line', 'cellLines')
             } 
             {
-                metricDataGroup('Drugs', 'drug', props.data.releaseNotes.drugs, renderDataRow)
+                metricDataGroup('Drugs', 'drug', 'drugs')
             } 
             {
-                metricDataGroup('Drug Sensitivity Experiments', 'experiment', props.data.releaseNotes.experiments, renderDataRow)
+                metricDataGroup('Drug Sensitivity Experiments', 'experiment', 'experiments')
             } 
         </StyledReleaseNotes>
     );

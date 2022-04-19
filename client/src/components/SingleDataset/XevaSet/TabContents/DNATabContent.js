@@ -1,13 +1,10 @@
 import React from 'react';
-import {PSetToolAccordion, DNARefAccordion} from '../PSetAccordion';
-import AccompanyDataTabContent from './AccompanyDataTabContent';
+import {PSetToolAccordion, DNARefAccordion} from '../../PSet/PSetAccordion';
+import AccompanyDataTabContent from '../../PSet/TabContents/AccompanyDataTabContent';
 import { TabHeader, TabContent, TabContentSection} from '../../SingleDatasetStyle';
 
 const DNATabContent = props => {
-    const rawSeqDataDNA = props.metadata.find(x => x.name === 'rawSeqDataDNA')
-    const dnaRef = props.metadata.find(x => x.name === 'dnaRef')
-    const dnaTool = props.metadata.find(x => x.name === 'dnaTool')
-    const accDNA = props.metadata.find(x => x.name === 'accDNA')
+    const { rawSeqDataDNA,  dnaRef, dnaTool, accDNA} = props.metadata;
 
     return(
         <React.Fragment>
@@ -18,7 +15,7 @@ const DNATabContent = props => {
                     <TabContentSection>
                         <h3>Raw Data Source: </h3>
                         <div className='subContent'>
-                            <a href={rawSeqDataDNA.value}>{rawSeqDataDNA.value}</a>
+                            <a href={rawSeqDataDNA.source}>{rawSeqDataDNA.source}</a>
                         </div>
                     </TabContentSection>
                 }
@@ -26,19 +23,19 @@ const DNATabContent = props => {
                     dnaRef &&
                     <TabContentSection>
                         <h3>Exome Reference</h3>
-                        <DNARefAccordion items={dnaRef.value} />
+                        <DNARefAccordion items={dnaRef} />
                     </TabContentSection>
                 }
                 {
                     dnaTool &&
                     <TabContentSection>
                         <h3>Tools and Commands Used</h3>
-                        <PSetToolAccordion items={dnaTool.value} />
+                        <PSetToolAccordion items={dnaTool} />
                     </TabContentSection>
                 }
                 {
                     accDNA &&
-                    <AccompanyDataTabContent data={accDNA.value} />
+                    <AccompanyDataTabContent data={accDNA} />
                 }
             </TabContent>
         </React.Fragment>
