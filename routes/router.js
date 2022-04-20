@@ -4,7 +4,6 @@
 const express = require('express');
 const router = express.Router();
 
-//api
 const dataObject = require('./api/data-object');
 const psetRequest = require('./api/pset-request');
 const user = require('./api/user');
@@ -13,11 +12,16 @@ const userDataset = require('./api/user-dataset');
 const auth = require('./api/auth');
 const formMetric = require('./api/form-metric');
 const pachyderm = require('./api/pachyderm');
-const public = require('./api/public');
 
 const landingView = require('./api/view/landing-view');
 const dataObjectFilter = require('./api/view/data-object-filter-view');
 const singleDataObject = require('./api/view/single-data-object-view');
+const public = require('./api/public');
+
+// view/component data
+router.get('/view/landing', landingView.get);
+router.get('/view/data-object-filter', dataObjectFilter.get);
+router.get('/view/single-data-object', dataObject.checkPrivate, singleDataObject.get);
 
 // data object
 router.get('/data-objects/search', dataObject.search);
@@ -64,19 +68,12 @@ router.get('/:datasetType/stats/data', formMetric.getDataForStats);
 router.get('/stats/metrics/options', formMetric.getMetricDataOptions);
 router.post('/stats/metrics/data', formMetric.getMetricData);
 
-// view/component data
-router.get('/view/landing', landingView.get);
-router.get('/view/data-object-filter', dataObjectFilter.get);
-router.get('/view/single-data-object', dataObject.checkPrivate, singleDataObject.get);
-
-// documentation
-router.get('/example-download/:file', public.downloadExampleFile);
-
 //public api
 router.get('/:datasetType/:filter', public.getDatasets);
 router.get('/:datasetType/:doi1/:doi2', public.getDataset);
-router.get('/:datasetType/statistics/download/:limit', public.getDownloadStatistics);
-router.get('/:datasetType/statistics/metrics/:dataset', public.getMetricDataStatistics);
 router.get('/:datasetType/update-download/:doi1/:doi2', public.updateDownloadCount);
+router.get('/example-download/:file', public.downloadExampleFile);
+// router.get('/:datasetType/statistics/download/:limit', public.getDownloadStatistics);
+// router.get('/:datasetType/statistics/metrics/:dataset', public.getMetricDataStatistics);
 
 module.exports = router;

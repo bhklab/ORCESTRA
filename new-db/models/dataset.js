@@ -5,6 +5,9 @@ const datasetSchema = new Schema({
     name: {type: String, required: true},
     version: {type: String, required: true},
     datasetType: String,
+    info: {
+        includedData: String
+    },
     status: {
         unavailable: Boolean,
         disabled: Boolean,

@@ -1,228 +1,140 @@
 /**
  * Contains functions used for publically exposed API calls.
  */
-
-const formdata = require('../../db/helper/formdata');
-const datasetSelect = require('../../db/helper/dataset-select');
-const datasetUpdate = require('../../db/helper/dataset-update');
-const datasetCanonical = require('../../db/helper/dataset-canonical');
-const metricData = require('../../db/helper/metricdata');
 const enums = require('../../helper/enum');
 const path = require('path');
+const DataObject = require('../../new-db/models/data-object').DataObject;
+require('../../new-db/models/dataset');
+
+const getDataVersion = (datasetType, version) => {
+    if(version){
+        return version;
+    }
+    if(datasetType === 'pset'){
+        return process.env.DEFAULT_DATA_VERSION;
+    }
+    return '1.0';
+}
+
+const parseDataObject = (dataObject, repoVersion) => {
+    
+    const findDataSource = (dataName) => {
+        found = dataObject.dataset.availableData.find(avail => avail.name === dataName);
+        return(found ? found.source : null); 
+    };
+
+    let repository = dataObject.repositories.find(repo => repo.version === repoVersion);
+    return({
+        name: dataObject.name,
+        doi: repository.doi,
+        downloadLink: repository.downloadLink,
+        dateCreated: dataObject.info.date.created,
+        dataset: {
+            name: dataObject.dataset.name,
+            versionInfo: {
+                version: dataObject.dataset.version,
+                type: dataObject.dataset.info ? dataObject.dataset.info.includedData : null,
+                publication: dataObject.dataset.publications.map(({_id, ...item}) => item)
+            },
+            sensitivity: dataObject.dataset.sensitivity
+        },
+        availableDatatypes: dataObject.availableDatatypes.map(({_id, ...item}) => ({
+            ...item,
+            source: findDataSource(item.name)
+        }))
+    });
+}
 
 const getDatasets = async (req, res) => {
     let datasetType = req.params.datasetType === 'clinicalgenomics' ? req.params.datasetType : req.params.datasetType.replace(/s([^s]*)$/, '$1');
-    // console.log(`getDataSets - ${datasetType}`);
     let dataTypes = Object.values(enums.dataTypes);
-
-    const filter = {'status': 'complete', 'private': false};
-
-    const projection = {'projection': {
-        '_id': false,
-        'status': false,
-        'email': false, 
-        'commitID': false, 
-        'dateSubmitted': false,
-        'dateProcessed': false,
-        'dnaTool': false,
-        'dnaRef': false,
-        'genome': false,
-        'dataset.label': false,
-        'dataset.unavailable': false
-    }}
-
-    let datasetResults = []
-
+    let results = [];
     try{
         if(dataTypes.includes(datasetType)){
-            const form = await formdata.getFormData(datasetType);
+            let repoVersion = getDataVersion(datasetType, req.query.version);
+            let filter = { 
+                datasetType: datasetType, 
+                'info.status': 'complete', 
+                'info.private': false,
+                'repositories.version': repoVersion
+            };
             if(req.params.filter === 'canonical'){
-                let datasets = await datasetCanonical.getCanonicalDatasets(datasetType, filter, projection)
-                datasets.forEach(data => data.canonicals.forEach(c => datasetResults.push(c)))
-            }else{
-                datasetResults = await datasetSelect.selectDatasets(datasetType, filter, projection)
+                filter['info.canonical'] = true;
             }
 
-            for(let i = 0; i < datasetResults.length; i++){
-                let version = form.dataset.find(
-                    d => {return d.name === datasetResults[i].dataset.name}
-                ).versions.find(
-                    version => {return(version.version === datasetResults[i].dataset.versionInfo)}
-                );
-
-                if(!version || typeof version === 'undefined'){
-                    version = {
-                        version: "",
-                        type: "",
-                        rawSeqDataRNA: "",
-                    }
-                }
-
-                if(datasetType === 'pset' || datasetType === 'radioset' || datasetType === 'xevaset'){
-                    datasetResults[i].dataset.versionInfo = {
-                        version: version.version, 
-                        type: version.type,
-                        publication: version.publication, 
-                        rawSeqDataRNA: version.rawSeqDataRNA, 
-                        drugSensitivity: version.drugSensitiviry
-                    }
-    
-                    datasetResults[i].accompanyRNA = []
-                    datasetResults[i].accompanyDNA = []
-                    let accRNA = datasetResults[i].dataType.filter(dt => {return dt.type === 'RNA' && !dt.default})
-                    let accDNA = datasetResults[i].dataType.filter(dt => {return dt.type === 'DNA' && !dt.default})
-    
-                    // assign accompanying RNA and DNA metadata
-                    if(accRNA.length){
-                        accRNA.forEach(rna => {
-                            const data = form.accompanyRNA.find(acc => {return (datasetResults[i].dataset.name === acc.dataset && rna.name === acc.name)})
-                            datasetResults[i].accompanyRNA.push(data)
-                        })
-                    }
-                    if(accDNA.length){
-                        accDNA.forEach(dna => {
-                            const data = form.accompanyDNA.find(acc => {return (datasetResults[i].dataset.name === acc.dataset && dna.name === acc.name)})
-                            datasetResults[i].accompanyDNA.push(data)
-                        })
-                    }
-                }else{
-                    datasetResults[i].dataset.versionInfo = version;
-                }
-                
-                // delete unnecessary fields
-                delete datasetResults[i].dataType;
-                delete datasetResults[i].pipeline;
-            }
+            let dataObjects = await DataObject.find(filter).populate('dataset', {stats: 0}).lean();
+            results = dataObjects.map(obj => parseDataObject(obj, repoVersion)); 
         }else{
-            datasetResults = `Please use the correct dataset type. It should be one of [
-                ${dataTypes.map(type => type === 'clinicalgenomics' ? type : type.concat('s')).toString().replace(/,/g, ', ')}
+            results = `Please use the correct dataset type. It should be one of [
+                ${dataTypes.map(type => type === 'clinicalgenomics' ? type : type.concat('s')).join(', ')}
             ].`;
         }
-        
-        res.send(datasetResults);
-
     }catch(error){
-        console.log(error)
-        res.status(500).send(error);
+        console.log(error);
+        res.status(500);
+    }finally{
+        res.send(results);
     }
 }
 
 const getDataset = async (req, res) => {
-    console.log('getDataset')
+    let dataTypes = Object.values(enums.dataTypes);
+    const doi = req.params.doi1 + '/' + req.params.doi2;
+    let result = {};
     try{
-        const doi = req.params.doi1 + '/' + req.params.doi2;
-        console.log(doi)
-        const result = await datasetSelect.selectDatasetByDOI(req.params.datasetType, doi, {'projection': {
-            '_id': false,
-            'status': false,
-            'email': false, 
-            'commitID': false, 
-            'dateSubmitted': false,
-            'dateProcessed': false,
-            'dnaTool': false,
-            'dnaRef': false,
-            'genome': false,
-            'dataset.label': false,
-            'dataset.unavailable': false,
-            'dataset.versionInfo.pipeline': false,
-            'dataset.versionInfo.label': false
-        }})
-        
-        // delete unnecessary fields
-        delete result.dataType;
-        delete result.pipeline;
-
-        res.send(result)
-    }catch(error){
-        console.log(error)
-        res.status(500).send(error);
-    }
-}
-
-const getDownloadStatistics = async (req, res) => {
-    console.log('getStatistics');
-    let datasetType = req.params.datasetType.replace(/s([^s]*)$/, '$1');
-    try{
-        let result = await datasetSelect.selectDatasets(datasetType, {}, {'projection': {
-            '_id': false,
-            'status': false,
-            'email': false, 
-            'commitID': false, 
-            'dateSubmitted': false,
-            'dateProcessed': false,
-            'rnaTool': false,
-            'rnaRef': false,
-            'dnaTool': false,
-            'dnaRef': false,
-            'genome': false,
-            'dataType': false,
-            'dataset': false
-        }})
-        result.sort((a, b) => (a.download < b.download) ? 1 : -1)
-        let num = parseInt(req.params.limit, 10)
-        num = (isNaN(num) || num >= result.length ? result.length -1 : num)
-        res.send(result.slice(0, num))
-    }catch(error){
-        console.log(error)
-        res.status(500).send(error);
-    }
-}
-
-/**
- * Returns metric data statistics
- * @param {*} req 
- * @param {*} res 
- */
-const getMetricDataStatistics = async (req, res) => {
-    console.log('getMetricDataStatistics');
-
-    let datasetType = req.params.datasetType.replace(/s([^s]*)$/, '$1');
-    try{
-        let datasetVersions = [];
-        let datasets = await datasetCanonical.getCanonicalDatasets(datasetType, {}, {});
-        if(req.params.dataset !== 'all'){
-            datasets = datasets.find(item => item.dataset === req.params.dataset);
-            datasetVersions = datasets.canonicals.map(item => ({name: item.dataset.name, version: item.dataset.versionInfo}));
+        if(dataTypes.includes(req.params.datasetType)){
+            let filter = { 
+                datasetType: req.params.datasetType, 
+                'info.status': 'complete', 
+                'info.private': false,
+                'repositories.doi': doi
+            };
+            let dataObject = await DataObject.findOne(filter).populate('dataset', {stats: 0}).lean();
+            if(dataObject){
+                let repository = dataObject.repositories.find(repo => repo.doi === doi);
+                result = parseDataObject(dataObject, repository.version); 
+            }
         }else{
-            datasets.forEach(dataset => {
-                let canonicals = dataset.canonicals.map(item => ({name: item.dataset.name, version: item.dataset.versionInfo}));
-                datasetVersions = datasetVersions.concat(canonicals);
-            })
+            result = `Please use the correct dataset type. It should be one of [
+                ${dataTypes.join(', ')}
+            ].`;
         }
-
-        let metrics = await metricData.getMetricData(datasetType, '', [...new Set(datasetVersions.map(item => item.name))], true);
-
-        datasetVersions.forEach(dataset => {
-            let found = metrics.find(metric => metric.name === dataset.name);
-            let metricData = found.versions.find(version => version.version === dataset.version);
-            dataset.genes = metricData.genes;
-            dataset.cellLines = metricData.releaseNotes.cellLines;
-            dataset.drugs = metricData.releaseNotes.drugs;
-            dataset.experiments = metricData.releaseNotes.experiments;
-            dataset.molData = metricData.releaseNotes.molData;
-        });
-        // console.log(datasetVersions);
-        res.send(datasetVersions);
     }catch(error){
         console.log(error);
-        res.status(500).send(error);
+        res.status(500);
+    }finally{
+        res.send(result);
     }
-    
 }
 
 /**
  * Used by PharmacoGx to update PSet download count when a user downloads a PSet from ORCESTRA through PharmacoGx
  */
-const updateDownloadCount = async (req, res) => {
-    console.log('updateDownloadCount');
-    let datasetType = req.params.datasetType.replace(/s([^s]*)$/, '$1');
+ const updateDownloadCount = async (req, res) => {
+    let dataTypes = Object.values(enums.dataTypes);
+    const doi = req.params.doi1 + '/' + req.params.doi2;
+    let result = {};
     try{
-        const doi = req.params.doi1 + '/' + req.params.doi2;
-        await datasetUpdate.updateDownloadCount(datasetType, doi);
-        res.send({});
+        if(dataTypes.includes(req.params.datasetType)){
+            let filter = { 
+                datasetType: req.params.datasetType, 
+                'info.status': 'complete', 
+                'info.private': false,
+                'repositories.doi': doi
+            };
+            await DataObject.updateOne(filter, {$inc: {'info.numDownload': 1}});
+            result = 'success';
+        }else{
+            result = `Please use the correct dataset type. It should be one of [
+                ${dataTypes.join(', ')}
+            ].`;
+        }
     }catch(error){
         console.log(error);
-        res.send({});
+        result = error;
+        res.status(500);
+    }finally{
+        res.send(result);
     }
 }
 
@@ -231,11 +143,81 @@ const downloadExampleFile = async (req, res) => {
     res.download(filePath, (err) => {if(err)console.log(err)});
 }
 
+// const getDownloadStatistics = async (req, res) => {
+//     console.log('getStatistics');
+//     let datasetType = req.params.datasetType.replace(/s([^s]*)$/, '$1');
+//     try{
+//         let result = await datasetSelect.selectDatasets(datasetType, {}, {'projection': {
+//             '_id': false,
+//             'status': false,
+//             'email': false, 
+//             'commitID': false, 
+//             'dateSubmitted': false,
+//             'dateProcessed': false,
+//             'rnaTool': false,
+//             'rnaRef': false,
+//             'dnaTool': false,
+//             'dnaRef': false,
+//             'genome': false,
+//             'dataType': false,
+//             'dataset': false
+//         }})
+//         result.sort((a, b) => (a.download < b.download) ? 1 : -1)
+//         let num = parseInt(req.params.limit, 10)
+//         num = (isNaN(num) || num >= result.length ? result.length -1 : num)
+//         res.send(result.slice(0, num))
+//     }catch(error){
+//         console.log(error)
+//         res.status(500).send(error);
+//     }
+// }
+
+/**
+ * Returns metric data statistics
+ * @param {*} req 
+ * @param {*} res 
+ */
+// const getMetricDataStatistics = async (req, res) => {
+//     console.log('getMetricDataStatistics');
+
+//     let datasetType = req.params.datasetType.replace(/s([^s]*)$/, '$1');
+//     try{
+//         let datasetVersions = [];
+//         let datasets = await datasetCanonical.getCanonicalDatasets(datasetType, {}, {});
+//         if(req.params.dataset !== 'all'){
+//             datasets = datasets.find(item => item.dataset === req.params.dataset);
+//             datasetVersions = datasets.canonicals.map(item => ({name: item.dataset.name, version: item.dataset.versionInfo}));
+//         }else{
+//             datasets.forEach(dataset => {
+//                 let canonicals = dataset.canonicals.map(item => ({name: item.dataset.name, version: item.dataset.versionInfo}));
+//                 datasetVersions = datasetVersions.concat(canonicals);
+//             })
+//         }
+
+//         let metrics = await metricData.getMetricData(datasetType, '', [...new Set(datasetVersions.map(item => item.name))], true);
+
+//         datasetVersions.forEach(dataset => {
+//             let found = metrics.find(metric => metric.name === dataset.name);
+//             let metricData = found.versions.find(version => version.version === dataset.version);
+//             dataset.genes = metricData.genes;
+//             dataset.cellLines = metricData.releaseNotes.cellLines;
+//             dataset.drugs = metricData.releaseNotes.drugs;
+//             dataset.experiments = metricData.releaseNotes.experiments;
+//             dataset.molData = metricData.releaseNotes.molData;
+//         });
+//         // console.log(datasetVersions);
+//         res.send(datasetVersions);
+//     }catch(error){
+//         console.log(error);
+//         res.status(500).send(error);
+//     } 
+// }
+
 module.exports = {
     getDatasets,
     getDataset,
-    getDownloadStatistics,
-    getMetricDataStatistics,
     updateDownloadCount,
-    downloadExampleFile
+    downloadExampleFile,
+    // getDownloadStatistics,
+    // getMetricDataStatistics,
 }

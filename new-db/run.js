@@ -2,6 +2,7 @@ const path = require('path');
 require('dotenv').config({path: path.join(__dirname, '../.env')});
 const mongoose = require('mongoose');
 const fs = require('fs');
+const axios = require('axios');
 
 const DatasetNote = require('./models/dataset-note');
 const Dataset = require('./models/dataset');
@@ -17,16 +18,6 @@ const User = require('./models/user');
         // let oldobjects = fs.readFileSync(`./data/${datasettype}.json`);
         // oldobjects = JSON.parse(oldobjects);
         // let objects = await ObjSchema.DataObject.find({datasetType: datasettype}).lean();
-
-        let datasets = await Dataset.find({name: 'GDSC'}).select(['-stats']).lean();
-        let metricdata = fs.readFileSync(`./data/metric-data.json`);
-        metricdata = JSON.parse(metricdata);
-        metricdata = metricdata.find(item => item.name === 'GDSC');
-        for(let dataset of datasets){
-            let version = metricdata.versions.find(item => item.version === dataset.version);
-            dataset.releaseNotes.additionalNotes = version.releaseNotes.additional;
-            await Dataset.updateOne({_id: dataset._id}, {releaseNotes: dataset.releaseNotes});
-        }
 
         // let oldusers = fs.readFileSync('./data/user.json');
         // oldusers = JSON.parse(oldusers);
