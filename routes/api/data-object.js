@@ -1,8 +1,6 @@
 /**
  * @fileoverview Contains API functions for dataset retrieval and modification.
  */
-const fs = require('fs');
-const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
 
@@ -16,6 +14,54 @@ const query = require('../../helper/data-object-query');
 const DataObject = require('../../new-db/models/data-object').DataObject;
 const DataFilter = require('../../new-db/models/data-filter');
 const User = require('../../new-db/models/user');
+
+/**
+ * Retrieves filtered datasets.
+ * @param {*} req 
+ * @param {*} res 
+ */
+ const search = async (req, res) => {
+    console.log(req.query)
+    let result = [];
+    try{
+        let queryObj = await query.getQuery(req.query);
+        result  = await DataObject.find(queryObj).lean().populate('dataset', 'name version sensitivity');
+
+        // get the doi and downloadlink for specific data version. Only applicable to PSets. For other datasets, use 1.0.
+        let repoVersion = req.query.datasetType === 'pset' ? process.env.DEFAULT_DATA_VERSION : '1.0';
+        result = result.map(obj => {
+            let repo = obj.repositories.find(r => r.version === repoVersion);
+            delete obj.repositories;
+            return({
+                ...obj,
+                doi: repo.doi,
+                downloadLink: repo.downloadLink
+            });
+        });
+        let canonicals = result.filter(item => item.info.canonical).sort((a, b) => a.name.localeCompare(b.name));
+        let noncanonicals = result.filter(item => !item.info.canonical).sort((a, b) => a.name.localeCompare(b.name));
+        result = canonicals.concat(noncanonicals);
+
+        if(req.query.datasetType === 'pset'){
+            const filter = await DataFilter.findOne({datasetType: 'pset'}).lean();
+            result = result.map(obj => {
+                if(obj.tools){
+                    obj.tools.rna = filter.tools.find(item => item.name === obj.tools.rna).label;
+                }
+                if(obj.references){
+                    obj.references.rna = filter.references.find(item => item.name === obj.references.rna).label;
+                }
+                return(obj)
+            });
+        }
+    }catch(error){
+        console.log(error);
+        result = error;
+        res.status(500);
+    }finally{
+        res.send(result);
+    }
+}
 
 /**
  * 
@@ -140,55 +186,6 @@ const publishDataset = async (req, res) => {
         );
     }catch(error){  
         console.log(error);
-        res.status(500);
-    }finally{
-        res.send(result);
-    }
-}
-
-
-/**
- * Retrieves filtered datasets.
- * @param {*} req 
- * @param {*} res 
- */
-const search = async (req, res) => {
-    console.log(req.query)
-    let result = [];
-    try{
-        let queryObj = await query.getQuery(req.query);
-        result  = await DataObject.find(queryObj).lean().populate('dataset', 'name version sensitivity');
-
-        // get the doi and downloadlink for specific data version. Only applicable to PSets. For other datasets, use 1.0.
-        let repoVersion = req.query.datasetType === 'pset' ? process.env.DEFAULT_DATA_VERSION : '1.0';
-        result = result.map(obj => {
-            let repo = obj.repositories.find(r => r.version === repoVersion);
-            delete obj.repositories;
-            return({
-                ...obj,
-                doi: repo.doi,
-                downloadLink: repo.downloadLink
-            });
-        });
-        let canonicals = result.filter(item => item.info.canonical).sort((a, b) => a.name.localeCompare(b.name));
-        let noncanonicals = result.filter(item => !item.info.canonical).sort((a, b) => a.name.localeCompare(b.name));
-        result = canonicals.concat(noncanonicals);
-
-        if(req.query.datasetType === 'pset'){
-            const filter = await DataFilter.findOne({datasetType: 'pset'}).lean();
-            result = result.map(obj => {
-                if(obj.tools){
-                    obj.tools.rna = filter.tools.find(item => item.name === obj.tools.rna).label;
-                }
-                if(obj.references){
-                    obj.references.rna = filter.references.find(item => item.name === obj.references.rna).label;
-                }
-                return(obj)
-            });
-        }
-    }catch(error){
-        console.log(error);
-        result = error;
         res.status(500);
     }finally{
         res.send(result);
