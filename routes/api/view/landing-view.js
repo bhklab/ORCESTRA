@@ -4,6 +4,7 @@
 const Dataset = require('../../../new-db/models/dataset');
 const DataObject = require('../../../new-db/models/data-object').DataObject;
 const DataFilter = require('../../../new-db/models/data-filter');
+const dataObjectHelper = require('../../../helper/data-object');
 
 /**
  * Retrieves all the data to be rendered on the landing page.
@@ -53,7 +54,7 @@ const DataFilter = require('../../../new-db/models/data-filter');
         data.downloadRanking = canonicals.splice(0, 5).map(item => ({
             name: item.name,
             numDownload: item.info.numDownload,
-            doi: item.repositories.find(repo => repo.version === process.env.DEFAULT_DATA_VERSION).doi
+            doi: item.repositories.find(repo => repo.version === dataObjectHelper.getDataVersion(req.query.datasetType)).doi
         }));
         // Get number of pending/in-process data objects.
         data.reqStatus.pending = objects.filter(item => item.info.status === 'pending').length;

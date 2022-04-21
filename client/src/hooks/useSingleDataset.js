@@ -119,8 +119,10 @@ const useSingleDataset = (datasetType, doi) => {
         let res;
         try{
             setShowPublishDialog(false);
-            res = await trackPromise(axios.get(`/api/${datasetType}/publish/${doi}`));
-            // console.log(res.data);
+            res = await trackPromise(axios.post('/api/data-object/publish', {
+                datasetType: datasetType,
+                doi: doi
+            }));
         }catch(error){
             console.log(error);
         }finally{
@@ -136,7 +138,10 @@ const useSingleDataset = (datasetType, doi) => {
         e.preventDefault();
         let res;
         try{
-            res = await axios.get(`/api/${datasetType}/share_link/${doi}`);
+            res = await axios.post('/api/data-object/sharelink', {
+                datasetType: datasetType,
+                doi: doi
+            });
             console.log(res.data);
         }catch(error){
             console.log(error);

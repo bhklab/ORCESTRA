@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { Button } from 'primereact/button';
 
 const DownloadButton = (props) => {
@@ -17,10 +18,9 @@ const DownloadButton = (props) => {
         document.body.removeChild(anchor);
 
         if(mode === 'dataset'){
-            await fetch(`/api/${datasetType}/download`, {
-                method: 'POST',
-                body: JSON.stringify({datasetDOI: doi}),
-                headers: {'Content-type': 'application/json'}
+            await axios.post('/api/data-object/download', {
+                datasetType: datasetType,
+                datasetDOI: doi
             });
         }
     }

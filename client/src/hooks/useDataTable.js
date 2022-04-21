@@ -106,7 +106,7 @@ const useDataTable = (datasetType) => {
     }
 
     const privateTemplate = (rowData, column) => (
-        <div>{rowData[column.field] ? 'Yes' : 'No'}</div>
+        <div>{rowData.info.private ? 'Yes' : 'No'}</div>
     );
 
     return {

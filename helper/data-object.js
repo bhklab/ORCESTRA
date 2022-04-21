@@ -1,5 +1,5 @@
 /**
- * Contains functions used to build database query objects.
+ * Contains helper functions related to data object API.
  */
 
 const enums = require('./enum');
@@ -80,6 +80,17 @@ const getQuery = async (parameters) => {
     return(query);
 }
 
+const getDataVersion = (datasetType, version) => {
+    if(version){
+        return version;
+    }
+    if(datasetType === 'pset'){
+        return process.env.DEFAULT_DATA_VERSION;
+    }
+    return '1.0';
+}
+
 module.exports = {
-    getQuery
+    getQuery,
+    getDataVersion
 }

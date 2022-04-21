@@ -1,8 +1,10 @@
 const DataObject = require('../../../new-db/models/data-object').DataObject;
 const Dataset = require('../../../new-db/models/dataset');
 const DataFilter = require('../../../new-db/models/data-filter');
-require('../../../new-db/models/dataset-note');
+const PachydermPipeline = require('../../../new-db/models/pachyderm-pipeline');
 const enums = require('../../../helper/enum');
+const dataObjectHelper = require('../../../helper/data-object');
+require('../../../new-db/models/dataset-note');
 
 const getTabData = async (dataObject, dataset, filter) => {
     let tabData = [];
@@ -103,8 +105,7 @@ const get = async (req, res) => {
             const filter = await DataFilter.findOne({datasetType: 'pset'}).lean();
 
             // get the doi and downloadlink for specific data version. Only applicable to PSets. For other datasets, use 1.0.
-            let repoVersion = req.query.datasetType === 'pset' ? process.env.DEFAULT_DATA_VERSION : '1.0';
-            let repo = dataObject.repositories.find(r => r.version === repoVersion);
+            let repo = dataObject.repositories.find(r => r.version === dataObjectHelper.getDataVersion(req.query.datasetType));
             dataObj = {
                 _id: dataObject._id,
                 name: dataObject.name,
@@ -117,12 +118,27 @@ const get = async (req, res) => {
             dataObj.tabData = [];
             dataObj.tabData = await getTabData(dataObject, dataset, filter);
 
-            // if(result.pipeline){
-            //     dataset.tabData.push({
-            //         header: 'Pipeline', 
-            //         data: {commitID: result.commitID, config: result.pipeline}
-            //     });
-            // }
+            // add pachyderm pipeline config json: to be replaced with the new data processing layer API data.
+            if(req.query.datasetType === enums.pharmacogenomics){
+                const pipelines = await PachydermPipeline.find();
+                let found = pipelines.find(pipeline => pipeline.data._id === dataObject._id.toString());
+                let pipelineConfig = null;
+                if(!found){
+                    found = pipelines.find(pipeline => pipeline.original &&  (pipeline.data.pipeline.name === dataset.info.pachydermPipeline));
+                    pipelineConfig = found ? found.data : null;
+                }else{
+                    pipelineConfig = found ? found.data.config : null;
+                }
+                if(pipelineConfig){
+                    dataObj.tabData.push({
+                        header: 'Pipeline', 
+                        data: {
+                            commitID: dataObject.info.commitID, 
+                            config: pipelineConfig
+                        }
+                    });
+                }
+            }
 
             let molData = dataset.availableData.map(item => {
                 let availData = dataObject.availableDatatypes.find(avail => avail.name === item.name);

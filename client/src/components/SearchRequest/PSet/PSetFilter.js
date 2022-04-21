@@ -219,8 +219,9 @@ const PSetFilter = () => {
                 <FilterInputSwitch 
                     label='Request PSet:'
                     checked={context.isRequest}
-                    tooltip="Turn this on to request a PSet."
                     onChange={(e) => {context.setIsRequest(e.value)}}
+                    tooltip='Currently unavailable'
+                    disabled={true}
                 />
                 {
                     !context.isRequest &&

@@ -3,14 +3,8 @@
  */
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
-
-const datasetSelect = require('../../db/helper/dataset-select');
-const datasetUpdate = require('../../db/helper/dataset-update');
-const datasetCanonical = require('../../db/helper/dataset-canonical');
-const userdata = require('../../db/helper/userdata');
-
 const auth = require('./auth');
-const query = require('../../helper/data-object-query');
+const dataObjectHelper = require('../../helper/data-object');
 const DataObject = require('../../new-db/models/data-object').DataObject;
 const DataFilter = require('../../new-db/models/data-filter');
 const User = require('../../new-db/models/user');
@@ -24,13 +18,12 @@ const User = require('../../new-db/models/user');
     console.log(req.query)
     let result = [];
     try{
-        let queryObj = await query.getQuery(req.query);
+        let queryObj = await dataObjectHelper.getQuery(req.query);
         result  = await DataObject.find(queryObj).lean().populate('dataset', 'name version sensitivity');
 
         // get the doi and downloadlink for specific data version. Only applicable to PSets. For other datasets, use 1.0.
-        let repoVersion = req.query.datasetType === 'pset' ? process.env.DEFAULT_DATA_VERSION : '1.0';
         result = result.map(obj => {
-            let repo = obj.repositories.find(r => r.version === repoVersion);
+            let repo = obj.repositories.find(r => r.version === dataObjectHelper.getDataVersion(req.query.datasetType));
             delete obj.repositories;
             return({
                 ...obj,
@@ -56,6 +49,21 @@ const User = require('../../new-db/models/user');
         }
     }catch(error){
         console.log(error);
+        result = error;
+        res.status(500);
+    }finally{
+        res.send(result);
+    }
+}
+
+const download = async (req, res) => {
+    let result = {};
+    try{
+        await DataObject.updateOne(
+            {datasetType: req.body.datasetType, 'repositories.doi': req.body.datasetDOI},
+            {$inc: {'info.numDownload': 1}}
+        );
+    }catch(error){
         result = error;
         res.status(500);
     }finally{
@@ -113,23 +121,22 @@ const checkPrivate = async (req, res, next) => {
  * @param {*} req 
  * @param {*} res 
  */
-const createPrivateShareLink = async (req, res) => {
+const createShareLink = async (req, res) => {
     let link = null;
     try{
-        const datasetType = req.params.datasetType;
-        const doi = `${req.params.id1}/${req.params.id2}`;
-        const dataset = await datasetSelect.selectDatasetByDOI(datasetType, doi);
-        const user = await userdata.selectUser(req.decoded.username);
-        const found = user.userDatasets.map(id => id.toString()).find(item => item === dataset._id.toString());
+        const datasetType = req.body.datasetType;
+        const doi = req.body.doi;
+        const dataObject = await DataObject.findOne({datasetType: datasetType, 'repositories.doi': doi}).select({name: 1, info: 1});
+        const user = await User.findOne({email: req.decoded.username});
+        const found = user.userDataObjects.map(id => id.toString()).find(item => item === dataObject._id.toString());
         if(found){
-            if(dataset.shareToken){
-                link = `${process.env.BASE_URL}${datasetType}/${doi}?shared=${dataset.shareToken}`;
+            if(dataObject.info.shareToken){
+                link = `${process.env.BASE_URL}${datasetType}/${doi}?shared=${dataObject.info.shareToken}`;
             }else{
                 let uid = uuidv4();
-                await datasetUpdate.updateDataset(
-                    datasetType,
-                    {'doi': doi},
-                    {'shareToken': uid} 
+                await DataObject.updateOne(
+                    {_id: dataObject._id},
+                    {'info.shareToken': uid} 
                 );
                 link = `${process.env.BASE_URL}${datasetType}/${doi}?shared=${uid}`;
             }
@@ -147,11 +154,11 @@ const createPrivateShareLink = async (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-const publishDataset = async (req, res) => {
+const publish = async (req, res) => {
     let result = null;
     try{
-        console.log(req.params);
-        let doi = `${req.params.id1}/${req.params.id2}`;
+        console.log(req.body);
+        let doi = req.body.doi;
         let depositionId = doi.split('.').pop();
 
         // open the repository for editting
@@ -179,11 +186,11 @@ const publishDataset = async (req, res) => {
         console.log(resp.status);
 
         // make the dataset public
-        result = await datasetUpdate.updateDataset(
-            req.params.datasetType, 
-            {'doi': doi}, 
-            {'private': false}
+        await DataObject.updateOne(
+            {datasetType: req.body.datasetType, 'repositories.doi': doi}, 
+            {'info.private': false}
         );
+        result = {status: 'published'};
     }catch(error){  
         console.log(error);
         res.status(500);
@@ -192,41 +199,20 @@ const publishDataset = async (req, res) => {
     }
 }
 
-const getCanonicalDatasets = async (req, res) => {
-    try{
-        const canonical = await datasetCanonical.getCanonicalDatasets(req.params.datasetType);
-        res.send(canonical)
-    }catch(error){
-        res.status(500).send(error);
-    }
-}
-
-const updateCanonicalPSets = async (req, res) => {
-    try{
-        await datasetUpdate.updateCanonicalStatus(req.body.selected.map(s => {return(s._id)}))
-        res.send();
-    }catch(error){
-        res.status(500).send(error);
-    }
-}
-
-const downloadDatasets = async (req, res) => {
-    try{
-        console.log(req.body);
-        console.log(req.params.datasetType);
-        await datasetUpdate.updateDownloadCount(req.params.datasetType, req.body.datasetDOI);
-        res.send({});
-    }catch(error){
-        res.status(500).send(error);
-    }
-}
+// const updateCanonicalPSets = async (req, res) => {
+//     try{
+//         await datasetUpdate.updateCanonicalStatus(req.body.selected.map(s => {return(s._id)}))
+//         res.send();
+//     }catch(error){
+//         res.status(500).send(error);
+//     }
+// }
 
 module.exports = {
-    checkPrivate,
-    createPrivateShareLink,
-    publishDataset,
     search,
-    getCanonicalDatasets,
-    updateCanonicalPSets,
-    downloadDatasets
+    download,
+    checkPrivate,
+    createShareLink,
+    publish,
+    // updateCanonicalPSets,
 };

@@ -9,12 +9,37 @@ const Dataset = require('./models/dataset');
 const DataFilter = require('./models/data-filter');
 const ObjSchema = require('./models/data-object');
 const User = require('./models/user');
+const PachydermPipeline = require('./models/pachyderm-pipeline');
 
 (async () => {
     try{
         await mongoose.connect(process.env.DEV, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
+
+        // let configs = fs.readFileSync('./data/req-config.json');
+        // configs = JSON.parse(configs)
+        // pipelines = configs.map(item => ({data: item}));
+        
+        // configs = fs.readFileSync('./data/req-config-master.json');
+        // configs = JSON.parse(configs);
+        // configs = configs.map(item => ({data: item, original: true}));
+        // pipelines = pipelines.concat(configs);
+        // await PachydermPipeline.insertMany(pipelines);
+        // await PachydermPipeline.deleteMany();
+
         // let datasettype = 'pset';
+        // let oldDatasets = fs.readFileSync(`./data/formdata.json`);
+        // oldDatasets = JSON.parse(oldDatasets);
+        // oldDatasets = oldDatasets.find(item => item.datasetType === datasettype).dataset;
+
+        // let datasets = await Dataset.find({datasetType: datasettype}).lean();
+        // for(let dataset of datasets){
+        //     let found = oldDatasets.find(item => item.name === dataset.name);
+        //     let version = found.versions.find(item => item.version === dataset.version);
+        //     dataset.info.pachydermPipeline = version.pipeline;
+        //     await Dataset.updateOne({_id: dataset._id}, {info: dataset.info});
+        // }
+
         // let oldobjects = fs.readFileSync(`./data/${datasettype}.json`);
         // oldobjects = JSON.parse(oldobjects);
         // let objects = await ObjSchema.DataObject.find({datasetType: datasettype}).lean();

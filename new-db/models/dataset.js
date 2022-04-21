@@ -6,7 +6,8 @@ const datasetSchema = new Schema({
     version: {type: String, required: true},
     datasetType: String,
     info: {
-        includedData: String
+        includedData: String,
+        pachydermPipeline: String
     },
     status: {
         unavailable: Boolean,

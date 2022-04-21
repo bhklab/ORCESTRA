@@ -88,9 +88,9 @@ const UserDataset = (props) => {
                                 <Column className='textField' field='dataset.name' header='Dataset' style={{width:'100px'}} sortable={true} />
                                 <Column className='textField' field='datasetType.label' header='Dataset Type' style={{width:'100px'}} sortable={true} />
                                 {
-                                    !pending && <Column field='canonical' body={canonicalTemplate} style={{width:'90px', textAlign: 'center'}} header='Canonical' />
+                                    !pending && <Column field='info.canonical' body={canonicalTemplate} style={{width:'90px', textAlign: 'center'}} header='Canonical' />
                                 }
-                                <Column field='private' body={privateTemplate} style={{width:'60px', textAlign: 'center'}} header='Private' /> 
+                                <Column field='info.private' body={privateTemplate} style={{width:'60px', textAlign: 'center'}} header='Private' /> 
                             </DataTable>
                         </div>
                         <div className='footer'>
