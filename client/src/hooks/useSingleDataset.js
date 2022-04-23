@@ -257,10 +257,10 @@ const useSingleDataset = (datasetType, doi) => {
                 <AccordionTab header="General Information">
                     <h4>Name: {data.name}</h4>
                     <div>
-                        <h4>Dataset DOI:  <a href={`http://doi.org/${data.doi}`} target="_blank" rel='noreferrer'>{data.doi}</a></h4>
+                        <h4>Dataset DOI:  <a href={`https://doi.org/${data.doi}`} target="_blank" rel='noreferrer'>{data.doi}</a></h4>
                         {
                             data.bioComputeObject &&
-                            <h4>BioCompute Object DOI:  <a href={`http://doi.org/${data.bioComputeObject.doi}`} target="_blank" rel='noreferrer'>{data.bioComputeObject.doi}</a></h4>
+                            <h4>BioCompute Object DOI:  <a href={`https://doi.org/${data.bioComputeObject.doi}`} target="_blank" rel='noreferrer'>{data.bioComputeObject.doi}</a></h4>
                         }
                     </div>
                     <h4>Date Created: {data.info.date.created.split('T')[0]}</h4>
