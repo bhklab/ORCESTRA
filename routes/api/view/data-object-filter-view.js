@@ -1,5 +1,5 @@
-const Dataset = require('../../../new-db/models/dataset');
-const DataFilter = require('../../../new-db/models/data-filter');
+const Dataset = require('../../../db/models/dataset');
+const DataFilter = require('../../../db/models/data-filter');
 const enums = require('../../../helper/enum');
 
 /**

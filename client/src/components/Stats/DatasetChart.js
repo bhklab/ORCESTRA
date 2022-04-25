@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import Plotly from "plotly.js-basic-dist";
 import createPlotlyComponent from "react-plotly.js/factory";
 import {Checkbox} from 'primereact/checkbox';
@@ -7,8 +8,8 @@ import UpsetPlot from './UpsetPlot'
 import Loader from 'react-loader-spinner';
 const Plot = createPlotlyComponent(Plotly);
 
-const DatasetChart = () => {
-
+const DatasetChart = (props) => {
+    const { metricDatasets } = props;
     const metricSet = [
         {name: 'Number of Cell Lines', value: 'cellLines'},
         {name: 'Number of Drugs', value: 'drugs'},
@@ -27,11 +28,8 @@ const DatasetChart = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const res = await fetch('/api/stats/metrics/options')
-            const json = await res.json()
-            console.log(json)
             setParameters({
-                datasets: json,
+                datasets: metricDatasets,
                 metricName: 'cellLines',
                 ready: true
             });
@@ -42,25 +40,30 @@ const DatasetChart = () => {
 
     useEffect(() => {
         const updateData = async () => {
-            const res = await fetch('/api/stats/metrics/data', {
-                method: 'POST',
-                body: JSON.stringify({parameters: parameters}),
-                headers: {'Content-type': 'application/json'}
-            })
-            const json = await res.json()
-
+            const res = await axios.get(
+                '/api/view/statistics/upset-plot', 
+                {params: {
+                    metric: parameters.metricName, 
+                    datasets: parameters.datasets.filter(dataset => dataset.checked).map(dataset => dataset.id)
+                }}
+            );
             if(parameters.metricName === 'cellLines' || parameters.metricName === 'drugs' || parameters.metricName === 'tissues'){
+                let upsetData = res.data.upsetData;
+                upsetData.sets = upsetData.sets.map(item => ({
+                    ...item,
+                    color: parameters.datasets.find(dataset => dataset.name === item.name).color
+                }));
                 let points = []
                 let bars = []
-                let data = json.upsetData.data
-                console.log(json.upsetData)
+                let data = upsetData.data
+                console.log(upsetData)
                 for(let i = 0; i < data.length; i++){
                     let datasets = []
                     let colors = []
                     for(let j = 0; j < data[i].setIndices.length; j++){
                         let index = data[i].setIndices[j]
-                        datasets.push(json.upsetData.sets[index].name)
-                        colors.push(json.upsetData.sets[index].color)
+                        datasets.push(upsetData.sets[index].name)
+                        colors.push(upsetData.sets[index].color)
                     }
                     data[i].datasets = datasets
                     data[i].colors = colors
@@ -101,18 +104,21 @@ const DatasetChart = () => {
                             hoverinfo: 'text'
                     })
                 }
-                setUpsetData({points: points, bars: bars})
+                setUpsetData({points: points, bars: bars});
             }else{
-                const barDatasets = json.barData
-                barDatasets.sort((a, b) => (a.value > b.value) ? 1: -1)
-
+                let barData = res.data.barData;
+                barData = barData.map(item => ({
+                    ...item,
+                    color: parameters.datasets.find(dataset => dataset.name === item.name).color
+                }));
+                barData.sort((a, b) => (a.value > b.value) ? 1: -1);
                 setBarData([{
-                    x: barDatasets.map((item) => {return item.value}), 
-                    y: barDatasets.map((item) => {return item.name}), 
+                    x: barData.map((item) => {return item.value}), 
+                    y: barData.map((item) => {return item.name}), 
                     type: 'bar',
                     orientation: 'h',
                     marker: {
-                        color: barDatasets.map((item) => {return item.color})
+                        color: barData.map((item) => {return item.color})
                     }
                 }])
             }
@@ -120,8 +126,8 @@ const DatasetChart = () => {
         }
         setIsPlotReady(false)
         if(parameters.ready){
-            console.log(parameters)
-            updateData()
+            console.log(parameters);
+            updateData();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [parameters])

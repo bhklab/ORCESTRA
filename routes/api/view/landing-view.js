@@ -1,9 +1,9 @@
 /**
  * Includes API routes to fetch data for a single page.
  */
-const Dataset = require('../../../new-db/models/dataset');
-const DataObject = require('../../../new-db/models/data-object').DataObject;
-const DataFilter = require('../../../new-db/models/data-filter');
+const Dataset = require('../../../db/models/dataset');
+const DataObject = require('../../../db/models/data-object').DataObject;
+const DataFilter = require('../../../db/models/data-filter');
 const dataObjectHelper = require('../../../helper/data-object');
 
 /**

@@ -1,7 +1,7 @@
-const DataObject = require('../../../new-db/models/data-object').DataObject;
-const DataFilter = require('../../../new-db/models/data-filter');
+const DataObject = require('../../../db/models/data-object').DataObject;
+const DataFilter = require('../../../db/models/data-filter');
 const dataObjectHelper = require('../../../helper/data-object');
-require('../../../new-db/models/dataset');
+require('../../../db/models/dataset');
 
 const formatDataObjects = (objects, toolRefLabels) => {
     let repoVer = dataObjectHelper.getDataVersion('pset');

@@ -3,7 +3,7 @@
  */
 
 const enums = require('./enum');
-const Dataset = require('../new-db/models/dataset');
+const Dataset = require('../db/models/dataset');
 
 let baseQuery = {
     'info.status': 'complete',
@@ -48,12 +48,16 @@ const getQuerySetForPSet = async (parameters) => {
         query['references.rna'] = {$in: parameters.rnaRef};
     }
 
-    if(query.canonicalOnly){
+    if(parameters.canonicalOnly === 'true'){
         query['info.canonical'] = true;
     }
 
-    if(query.filteredSensitivity){
+    if(parameters.filteredSensitivity === 'true'){
         query['info.filteredSensitivity'] = true;
+    }
+
+    if(parameters.requested){
+        query['info.status'] = {$in: ['pending', 'in-process']};
     }
     return(query);
 }

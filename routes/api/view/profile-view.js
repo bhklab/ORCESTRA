@@ -1,8 +1,8 @@
-const User = require('../../../new-db/models/user');
-const DataObject = require('../../../new-db/models/data-object').DataObject;
+const User = require('../../../db/models/user');
+const DataObject = require('../../../db/models/data-object').DataObject;
 const { dataTypes } = require('../../../helper/enum');
 const dataObjectHelper = require('../../../helper/data-object');
-require('../../../new-db/models/dataset');
+require('../../../db/models/dataset');
 
 const getDatasetTypeLabel = (datatype) => {
     switch(datatype){

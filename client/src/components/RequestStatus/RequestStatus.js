@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
+import axios from 'axios';
 import './RequestStatus.css';
 import Loader from 'react-loader-spinner';
 import {Messages} from 'primereact/messages';
@@ -15,14 +16,9 @@ const RequestStatus = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const res = await fetch('/api/pset/search', {
-                method: 'POST',
-                body: JSON.stringify({parameters: {status: ['pending', 'in-process']}}),
-                headers: {'Content-type': 'application/json'}
-            });
-            const json = await res.json();
-            console.log(json);
-            setData(json);
+            const res = await axios.get('/api/data-objects/search', {params: {datasetType: 'pset', requested: true}});
+            console.log(res.data);
+            setData(res.data);
             setLoading(false);
         }
         getData();
@@ -66,8 +62,8 @@ const RequestStatus = () => {
 
     const dateTimeTemplate = (rowData, column) => {
         let dateTimeStr = '';
-        if(rowData[column.field]){
-            dateTimeStr = new Date(rowData[column.field]).toLocaleString(undefined, {dateStyle: 'long', timeStyle: 'medium'});
+        if(rowData.info.date[column.field]){
+            dateTimeStr = new Date(rowData.info.date[column.field]).toLocaleString(undefined, {dateStyle: 'long', timeStyle: 'medium'});
         }
         return(<div>{dateTimeStr}</div>)
     }
@@ -100,10 +96,10 @@ const RequestStatus = () => {
                         !loading ?
                             data.length > 0 ?
                             <DataTable value={data} paginator={true}  scrollable={true} rows={10} >
-                                <Column className='textField' field='status' header='Status' style={{width:'2em'}} sortable={true} />
+                                <Column className='textField' field='info.status' header='Status' style={{width:'2em'}} sortable={true} />
                                 <Column className='textField' field='name' header='Name' style={{width:'5em'}} sortable={true} />
-                                <Column className='textField' field='dateSubmitted' header='Submitted Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
-                                <Column className='textField' field='dateProcessed' header='Process Start Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
+                                <Column className='textField' field='submitted' header='Submitted Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
+                                <Column className='textField' field='processed' header='Process Start Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
                                 { auth.user.isAdmin && <Column body={buttonTemplate} style={{width:'1.5em'}}/> }
                             </DataTable>
                             :

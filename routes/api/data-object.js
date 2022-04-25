@@ -5,9 +5,9 @@ const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
 const auth = require('./auth');
 const dataObjectHelper = require('../../helper/data-object');
-const DataObject = require('../../new-db/models/data-object').DataObject;
-const DataFilter = require('../../new-db/models/data-filter');
-const User = require('../../new-db/models/user');
+const DataObject = require('../../db/models/data-object').DataObject;
+const DataFilter = require('../../db/models/data-filter');
+const User = require('../../db/models/user');
 
 /**
  * Retrieves filtered datasets.
@@ -19,6 +19,7 @@ const User = require('../../new-db/models/user');
     let result = [];
     try{
         let queryObj = await dataObjectHelper.getQuery(req.query);
+        console.log(queryObj)
         result  = await DataObject.find(queryObj).lean().populate('dataset', 'name version sensitivity');
 
         // get the doi and downloadlink for specific data version. Only applicable to PSets. For other datasets, use 1.0.

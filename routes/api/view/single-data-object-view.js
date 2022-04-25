@@ -1,10 +1,10 @@
-const DataObject = require('../../../new-db/models/data-object').DataObject;
-const Dataset = require('../../../new-db/models/dataset');
-const DataFilter = require('../../../new-db/models/data-filter');
-const PachydermPipeline = require('../../../new-db/models/pachyderm-pipeline');
+const DataObject = require('../../../db/models/data-object').DataObject;
+const Dataset = require('../../../db/models/dataset');
+const DataFilter = require('../../../db/models/data-filter');
+const PachydermPipeline = require('../../../db/models/pachyderm-pipeline');
 const enums = require('../../../helper/enum');
 const dataObjectHelper = require('../../../helper/data-object');
-require('../../../new-db/models/dataset-note');
+require('../../../db/models/dataset-note');
 
 const getTabData = async (dataObject, dataset, filter) => {
     let tabData = [];

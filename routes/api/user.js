@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const mailer = require('../../mailer/mailer');
 const { v4: uuidv4 } = require('uuid');
 const saltRounds = 10;
-const User = require('../../new-db/models/user');
+const User = require('../../db/models/user');
 
 const getUser = async (email) => {
     try{

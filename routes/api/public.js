@@ -2,9 +2,9 @@
  * Contains functions used for publically exposed API calls.
  */
 const enums = require('../../helper/enum');
-const DataObject = require('../../new-db/models/data-object').DataObject;
+const DataObject = require('../../db/models/data-object').DataObject;
 const dataObjectHelper = require('../../helper/data-object');
-require('../../new-db/models/dataset');
+require('../../db/models/dataset');
 
 const parseDataObject = (dataObject, repoVersion) => {
     

@@ -2,7 +2,7 @@
  * API routes for adding / removing user's favirote data objects.
  * Used in data object search/request view and profile view.
  */
-const User = require('../../new-db/models/user');
+const User = require('../../db/models/user');
 const mongoose = require('mongoose');
 
 const add = async (req, res) => {

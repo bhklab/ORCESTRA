@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import './Stats.css';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
@@ -10,19 +11,16 @@ import StyledPage from '../../styles/StyledPage';
 
 const Stats = () => {
 
-    const [psets, setPSets] = useState([])
-    const [chartData] = useState([])
-    const [isReady, setIsReady] = useState(false)
+    const [view, setView] = useState({metricDatasets: [], downloads: []});
+    const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
         const getData = async () => {
-            const res = await fetch(`/api/${dataTypes.pharmacogenomics}/stats/data`)
-            const json = await res.json()
-            console.log(json)
-            setPSets(json.psets)
-            setIsReady(true)
+            const res = await axios.get('/api/view/statistics', {params: {datasetType: 'pset'}});
+            setView(res.data);
+            setIsReady(true);
         }
-        getData()
+        getData();
     }, [])
     
     const nameColumnTemplate = (rowData, column) => {
@@ -39,12 +37,12 @@ const Stats = () => {
                 <div className='statContainer'>
                     <div className='container downloadHistogram'>
                         <h3>Dataset Metrics and Usage Statistics</h3>
-                        <DatasetChart chartData={chartData} />
+                        <DatasetChart metricDatasets={view.metricDatasets} />
                     </div>
                     <div className='container rankingTable'>
                         <h3>Download Ranking</h3>
                         <DataTable 
-                            value={psets} paginator={true} rows={10} scrollable={true} 
+                            value={view.downloads} paginator={true} rows={10} scrollable={true} 
                             resizableColumns={true} columnResizeMode="fit"
                         >
                             <Column className='textField' field='download' header='Number of Downloads' style={{width:'5%', textAlign:'center'}} sortable={true} />
