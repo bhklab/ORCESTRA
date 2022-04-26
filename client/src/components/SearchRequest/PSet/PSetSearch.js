@@ -52,15 +52,23 @@ const PSetSearch = () => {
     }, []);
 
     useEffect(() => {   
-        async function searchPSets() {
+        const searchPSets = async () => {
             console.log('search');
-            console.log(parameters);
             let copy = JSON.parse(JSON.stringify(parameters));
             Object.keys(copy).forEach(key => {
                 if(!Array.isArray(copy[key]) && !(key === 'canonicalOnly' || key === 'filteredSensitivity' || key === 'search' || key === 'name' || key === 'email')){
                     copy[key] = [copy[key]];
                 }
             });
+            copy.dataset = copy.dataset.map(item => item.name);
+            copy.drugSensitivity = copy.drugSensitivity.map(item => `${item.version}:${item.label}`);
+            copy.genome = copy.genome.map(item => item.name);
+            copy.dataType = copy.dataType.map(item => item.name);
+            copy.rnaTool = copy.rnaTool.map(item => item.name);
+            copy.rnaRef = copy.rnaRef.map(item => item.name);
+            delete copy.defaultData;
+            delete copy.name;
+            delete copy.email;
             const psets = await search({...copy, status: 'complete', private: false});
             setPSets(psets);
         }

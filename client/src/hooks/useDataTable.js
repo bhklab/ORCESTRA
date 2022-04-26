@@ -36,7 +36,7 @@ const useDataTable = (datasetType) => {
 
     const toolsRefTemplate = (rowData, column) => (
         <div>
-            {rowData[column.field] ? rowData[column.field].map(item => <div key={item.name}>{item.label}</div>) : ''}
+            {rowData[column.field] ? rowData[column.field] : ''}
         </div>
     );
 
@@ -48,7 +48,7 @@ const useDataTable = (datasetType) => {
                         rowData[column.field] ? 
                         rowData[column.field].map(item => 
                             <div key={item.name}>
-                                {item.name}{item.microarrayType ? ` [${item.microarrayType.label}]` : ''} ({item.type})
+                                {item.name}{item.details ? ` [${item.details.microarrayType.label}]` : ''} ({item.genomeType})
                             </div>
                         ) 
                         : ''
@@ -57,16 +57,9 @@ const useDataTable = (datasetType) => {
             );
         }
 
-        if(datasetType === dataTypes.radiogenomics){
-            const dataTypes = rowData[column.field].filter(item => (item.name !== 'radiationSensitivity'));
-            return(
-                <div>{dataTypes.map(item => <div key={item.name}>{item.name} ({item.type})</div>)}</div>
-            );
-        }
-
-        const datatypeArray = rowData[column.field].filter(item => (item.name !== 'drugResponse'));
+        const datatypeArray = rowData[column.field].filter(item => (item.name !== 'drugResponse' && item.name !== 'radiationSensitivity'));
         return(
-            <div>{datatypeArray.map(item => <div key={item.name}>{item.name} ({item.type})</div>)}</div>
+            <div>{datatypeArray.map(item => <div key={item.name}>{item.name} ({item.genomeType})</div>)}</div>
         );
     }
 
@@ -99,29 +92,21 @@ const useDataTable = (datasetType) => {
     };
 
     const filteredTemplate = (rowData, column) => (
-        <div>{rowData.dataset.filteredSensitivity ? 'Yes' : 'No'}</div>
+        <div>{rowData.info.filteredSensitivity ? 'Yes' : 'No'}</div>
     );
 
     const canonicalTemplate = (rowData, column) => (
-        <div>{rowData[column.field] ? 'Yes' : ''}</div>
+        <div>{rowData.info.canonical ? 'Yes' : ''}</div>
     );
 
-    const drugSensitivityTemplate = (rowData, column) => {
-        const drugSensitivity = rowData[column.field].find(item => (item.name === 'drugResponse'));
+    const sensitivityTemplate = (rowData, column) => {
         return(
-            <div>{drugSensitivity ? drugSensitivity.version : 'Not Available'}</div>
-        );
-    }
-
-    const radiationSensitivityTemplate = (rowData, column) => {
-        const radiationSensitivity = rowData[column.field].find(item => (item.name === 'radiationSensitivity'));
-        return(
-            <div>{radiationSensitivity ? radiationSensitivity.version : 'Not Available'}</div>
+            <div>{rowData.dataset.sensitivity ? rowData.dataset.sensitivity.version : 'Not Available'}</div>
         );
     }
 
     const privateTemplate = (rowData, column) => (
-        <div>{rowData[column.field] ? 'Yes' : 'No'}</div>
+        <div>{rowData.info.private ? 'Yes' : 'No'}</div>
     );
 
     return {
@@ -132,8 +117,7 @@ const useDataTable = (datasetType) => {
         downloadTemplate,
         filteredTemplate,
         canonicalTemplate,
-        drugSensitivityTemplate,
-        radiationSensitivityTemplate,
+        sensitivityTemplate,
         privateTemplate
     };
 

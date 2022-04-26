@@ -81,38 +81,38 @@ module.exports = {
      * For Main (landing) page
      * Returns an object containing dataset metric data to be rendered on the landing page.
      */
-    getLandingData: async function(datasetType){
-        const db = await mongo.getDB();
-        const res = {status: 0, err: {}, form: {}, user: {}, dataset: {}, dashboard: {}};
-        try{
-            //const user = db.collection('user');
-            const dataset = db.collection(datasetType);
+    // getLandingData: async function(datasetType){
+    //     const db = await mongo.getDB();
+    //     const res = {status: 0, err: {}, form: {}, user: {}, dataset: {}, dashboard: {}};
+    //     try{
+    //         //const user = db.collection('user');
+    //         const dataset = db.collection(datasetType);
 
-            res.form = await formdata.getFormData(datasetType);
-            res.form.dataset = res.form.dataset.filter(item => !item.disabled);
+    //         res.form = await formdata.getFormData(datasetType);
+    //         res.form.dataset = res.form.dataset.filter(item => !item.disabled);
 
-            //res.user = await user.find({'registered': true}).count();
+    //         //res.user = await user.find({'registered': true}).count();
 
-            const ranking = await datasetCanonical.getCanonicalDownloadRanking(datasetType);
-            res.dataset = ranking.splice(0,5);
+    //         const ranking = await datasetCanonical.getCanonicalDownloadRanking(datasetType);
+    //         res.dataset = ranking.splice(0,5);
 
-            const array = await dataset.find().toArray();
-            const pending = await array.filter(dataset => {
-                return dataset.status === 'pending'
-            });
-            const inProcess = await array.filter(dataset => {
-                return dataset.status === 'in-process'
-            })
-            res.dashboard.pending = pending ? pending.length : 0;
-            res.dashboard.inProcess = inProcess? inProcess.length: 0;
+    //         const array = await dataset.find().toArray();
+    //         const pending = await array.filter(dataset => {
+    //             return dataset.status === 'pending'
+    //         });
+    //         const inProcess = await array.filter(dataset => {
+    //             return dataset.status === 'in-process'
+    //         })
+    //         res.dashboard.pending = pending ? pending.length : 0;
+    //         res.dashboard.inProcess = inProcess? inProcess.length: 0;
 
-            res.status = 1;
-        }catch(err){
-            res.err = err
-        }finally{
-            return res;
-        }
-    },
+    //         res.status = 1;
+    //     }catch(err){
+    //         res.err = err
+    //     }finally{
+    //         return res;
+    //     }
+    // },
 
     /**
      * For single PSet page release notes

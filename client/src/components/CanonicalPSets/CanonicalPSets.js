@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -56,24 +57,23 @@ const PSetContainer = styled.div`
     border-bottom: 1px solid #999999;
 `
 
-const CanonicalPSets = (props) => {
+const CanonicalPSets = () => {
     
-    const [canonPSets, setCanonPSets] = useState([])
+    const [canonPSets, setCanonPSets] = useState([]);
     
     useEffect(() => {
         const getData = async () => {
-            const res = await fetch('/api/canonical/pset')
-            const json = await res.json()
-            console.log(json)
-            setCanonPSets(json)
+            const res = await axios.get('/api/view/canonical-data-objects', {params: {datasetType: 'pset'}});
+            console.log(res.data);
+            setCanonPSets(res.data);
         }
-        getData()
-    }, [])
+        getData();
+    }, []);
 
-    const toolsRefTemplate = (array) => {
+    const toolsRefTemplate = (value) => {
         let output ='Not Available';
-        if(array.length){
-            output = array.map(item => <div key={item.name}>{item.label}</div>);
+        if(value.length){
+            output = <div>{value}</div>;
         }
         return(
             <div>{output}</div>
@@ -94,9 +94,9 @@ const CanonicalPSets = (props) => {
                 return(
                     <tr key={pset.name}>
                         <td className='psetName'>{nameColumnTemplate(pset)}</td>
-                        <td><div>Drug Sensitivity Data:</div> <span className='bold'>{pset.dataset.versionInfo}</span></td>
-                        <td>RNA Tools: <span className='bold'>{toolsRefTemplate(pset.rnaTool)}</span></td>
-                        <td className='rnaRefColumn'>RNA Ref: <span className='bold'>{toolsRefTemplate(pset.rnaRef)}</span></td>
+                        <td><div>Drug Sensitivity Data:</div> <span className='bold'>{pset.dataset.version}</span></td>
+                        <td>RNA Tools: <span className='bold'>{toolsRefTemplate(pset.tools.rna)}</span></td>
+                        <td className='rnaRefColumn'>RNA Ref: <span className='bold'>{toolsRefTemplate(pset.references.rna)}</span></td>
                     </tr>
                 )
             })}
@@ -111,9 +111,9 @@ const CanonicalPSets = (props) => {
                 return(
                     <tr key={pset.name}>
                         <td className='psetName'>{nameColumnTemplate(pset)}</td>
-                        <td><div>Drug Sensitivity Data:</div> {pset.dataset.versionInfo}</td>
-                        <td>RNA Tools: {toolsRefTemplate(pset.rnaTool)}</td>
-                        <td className='rnaRefColumn'>RNA Ref: {toolsRefTemplate(pset.rnaRef)}</td>
+                        <td><div>Drug Sensitivity Data:</div> {pset.dataset.version}</td>
+                        <td>RNA Tools: {toolsRefTemplate(pset.tools.rna)}</td>
+                        <td className='rnaRefColumn'>RNA Ref: {toolsRefTemplate(pset.references.rna)}</td>
                     </tr>
                 )
             })}

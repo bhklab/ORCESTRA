@@ -1,4 +1,4 @@
-const grpc = require('../../grpc/grpc-client');
+const grpc = require('../../../grpc/grpc-client');
 
 /**
  * Module that includes wrappers that calls GRPC interface functions

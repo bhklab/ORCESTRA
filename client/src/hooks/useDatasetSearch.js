@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import qs from 'qs';
 
 /**
  * A custom hook that provides dataset search function
@@ -10,9 +11,17 @@ const useDatasetSearch = (datasetType) => {
     const [searchAll, setSeatchAll] = useState(true);
 
     const search = async (parameters) => {
-        const res = await axios.post(
-            `/api/${datasetType}/search`, 
-            {parameters: parameters}
+        const res = await axios.get(
+            `/api/data-objects/search`, 
+            {
+                params: {
+                    ...parameters,
+                    datasetType: datasetType
+                },
+                paramsSerializer: params => {
+                    return qs.stringify(params)
+                }
+            },
         );
         let all = true;
         Object.keys(parameters).forEach(key => {
@@ -22,6 +31,7 @@ const useDatasetSearch = (datasetType) => {
         });
         setSeatchAll(all);
         return res.data;
+        return [];
     }
     
     return {

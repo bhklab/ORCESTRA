@@ -39,4 +39,5 @@ jobs:
         env:
           CONNECTION_STR: ${{ secrets.CONNECTION_STR }}
           DB: ${{ secrets.DB }}
+          DEFAULT_DATA_VERSION: ${{ secrets.DEFAULT_DATA_VERSION }}
         run: npm test

@@ -17,7 +17,7 @@ const RadioSet = (props) => {
                     {
                         dataset.tabData.map(td => (
                             <TabPanel key={Math.random()} header={td.header}>
-                                {td.header === 'Disclaimer' && <DisclaimerTabContent notes={td.data.notes} />}
+                                {td.header === 'Disclaimer' && <DisclaimerTabContent notes={td.data} />}
                                 {td.header === 'Dataset' && <DatasetTabContent metadata={td.data} />}
                                 {td.header === 'RNA' && <RNATabContent metadata={td.data} />}
                                 {td.header === 'DNA' && <DNATabContent metadata={td.data} />}

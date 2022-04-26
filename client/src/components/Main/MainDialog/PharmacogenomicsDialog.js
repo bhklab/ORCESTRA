@@ -13,24 +13,23 @@ const TabContent = styled.div`
 `
 
 const DatasetDialog = (props) => {
-    
     const datasetAccordionTabs = props.dataset.map((item) => 
-        <TabPanel key={item.label} header={item.label}>
+        <TabPanel key={item.name} header={item.name}>
             <TabContent>
                 <Accordion multiple={true}>
                     {item.versions.map((version) => 
                         <AccordionTab key={version.version} header={version.version}>
                             <div className='tabContentSection'>
                                 <h3>Drug Sensitivity</h3>
-                                <h4 className='subContent'>Version: {version.drugSensitivity.version}</h4>
-                                <h4 className='subContent'>Source: {version.drugSensitivity.source ? <a href={version.drugSensitivity.source}>{version.drugSensitivity.source}</a> : 'Not available'}</h4>
+                                <h4 className='subContent'>Version: {version.sensitivity.version}</h4>
+                                <h4 className='subContent'>Source: {version.sensitivity.source ? <a href={version.sensitivity.source}>{version.sensitivity.source}</a> : 'Not available'}</h4>
                             </div>
                             <div className='tabContentSection'>
                                 <h3>Publication: </h3>
                                 <ul>
                                     <div>    
-                                        {version.publication.length ? 
-                                            version.publication.map((p) => 
+                                        {version.publications.length ? 
+                                            version.publications.map((p) => 
                                                 <li key={p.link} className='pubList'>
                                                     <div className='subContent'>{p.citation}</div>
                                                     <br />

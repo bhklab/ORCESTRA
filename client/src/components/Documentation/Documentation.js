@@ -8,7 +8,6 @@ import UserProfile from './DocFunctionality/UserProfile';
 import DataContribution from './DocFunctionality/DataContribution';
 import AvailablePSets from './DocAPI/AvailablePSets';
 import PSetMetadata from './DocAPI/PSetMetadata';
-import StatisticsAPI from './DocAPI/StatisticsAPI';
 
 const Documentation = (props) => {
     
@@ -46,10 +45,7 @@ const Documentation = (props) => {
                         </li>
                         <li className={display === 'api-pset-single' ? 'selected' : undefined}>
                             <button type='button' onClick={() => setDisplay('api-pset-single')} >Single Dataset</button>
-                        </li>
-                        <li className={display === 'api-statistics' ? 'selected' : undefined}>
-                            <button type='button' onClick={() => setDisplay('api-statistics')}>Statistics</button>
-                        </li>    
+                        </li> 
                     </ul>
                 </nav>
                 {display === 'overview' && <Overview /> }
@@ -59,7 +55,6 @@ const Documentation = (props) => {
                 {display === 'datacontribution' && <DataContribution /> }
                 {display === 'api-psets-available' && <AvailablePSets /> }
                 {display === 'api-pset-single' && <PSetMetadata /> }
-                {display === 'api-statistics' && <StatisticsAPI /> }
             </div>
         </StyledPage>
     );

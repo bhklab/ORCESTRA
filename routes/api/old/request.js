@@ -1,8 +1,8 @@
 /**
  * Contains functions that handles a PSet request.
  */
-const mongo = require('../../db/mongo');
-const psetRequest = require('../../db/helper/pset-request');
+const mongo = require('../../../old-db/mongo');
+const psetRequest = require('../../../old-db/helper/pset-request');
 
 /**
  * Builds Pachyderm config json object from a PSet object.

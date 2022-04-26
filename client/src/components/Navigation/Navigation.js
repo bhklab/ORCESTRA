@@ -115,7 +115,7 @@ const Navigation = (props) => {
                             <NavLink exact to={`/${path.datatype}/documentation/overview`} activeClassName='active-link'>Documentation</NavLink>
                         </React.Fragment>
                     }
-                    { auth.user && <NavLink exact to={`/app/data_submission`} className='link' activeClassName='active-link'>Data Submission</NavLink>}
+                    {/* { auth.user && <NavLink exact to={`/app/data_submission`} className='link' activeClassName='active-link'>Data Submission</NavLink>} */}
                     { auth.user && <NavLink exact to="/app/profile" activeClassName='active-link'>Profile</NavLink>}
                     <Button 
                         className='button' 

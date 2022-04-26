@@ -19,7 +19,7 @@ const ClinGenSetTable = (props) => {
         nameColumnTemplate,
         downloadTemplate,
         canonicalTemplate,
-        drugSensitivityTemplate,
+        sensitivityTemplate,
         dataTypeTemplate,
     } = useDataTable(dataTypes.clinicalgenomics);
 
@@ -43,10 +43,10 @@ const ClinGenSetTable = (props) => {
             {props.authenticated && <Column selectionMode="multiple" style={{width: '30px', textAlign: 'center'}} />}
             <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplate} sortable={true} />
             <Column className='textField' field='dataset.name' header='Dataset' style={{width:'100px'}} sortable={true} />
-            <Column field='dataType' body={drugSensitivityTemplate} style={{width:'100px'}} header='Drug Response' />
-            <Column field='dataType' body={dataTypeTemplate} style={{width:'100px'}} header='Molecular Data' />
+            <Column body={sensitivityTemplate} style={{width:'100px'}} header='Drug Response' />
+            <Column field='availableDatatypes' body={dataTypeTemplate} style={{width:'100px'}} header='Molecular Data' />
             <Column field='canonical' body={canonicalTemplate} style={{width:'90px', textAlign: 'center'}} header='Canonical' />
-            <Column field='download' style={{width:'100px', textAlign: 'center'}} header='Number of Downloads' sortable={true} />
+            <Column field='info.numDownload' style={{width:'100px', textAlign: 'center'}} header='Number of Downloads' sortable={true} />
             {props.download && <Column field='downloadLink' body={downloadTemplate} style={{width:'60px', textAlign: 'center'}} header='Download' /> }
         </DataTable>
     );

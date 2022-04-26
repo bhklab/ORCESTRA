@@ -57,7 +57,7 @@ const Router = () => {
                     <Route exact path ='/app/documentation/:section' component={Documentation} />
                     <Route exact path ='/app/contact' component={Contact} />
                     <Route exact path='/app/authentication' component={Authentication} />
-                    <Route exact path ='/reset/:token' component={Reset} />
+                    <Route exact path ='/user/reset/:token' component={Reset} />
                     <PrivateRoute exact path ='/app/data_submission' component={DataSubmission} redirect='/app/authentication' />
                     <PrivateRoute exact path='/app/profile' component={Profile} redirect='/app/authentication' />
                     <AdminRoute exact path='/app/admin' component={Admin} redirect='/app/profile' />

@@ -62,7 +62,7 @@ const DataContribution = () => {
     );
 
     const downloadFile = async (file) => {
-        const res = await fetch('/api/example-download/' + file);
+        const res = await fetch('/api/view/documentation/example-download/' + file);
         const blob = await res.blob();
         download(blob, file);
     }

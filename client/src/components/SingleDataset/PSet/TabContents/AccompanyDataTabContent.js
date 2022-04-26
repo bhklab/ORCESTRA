@@ -1,23 +1,7 @@
 import React from 'react';
-import { TabContentSection} from '../../SingleDatasetStyle';
+import { TabContentSection } from '../../SingleDatasetStyle';
 
-const getType = function(type){
-    switch(type){
-        case 'rna':
-            return 'Microarray'
-        case 'cnv':
-            return 'Copy Number Variation'
-        case 'mut':
-            return 'Mutation'
-        case 'fusion':
-            return 'Fusion'
-        default:
-            return ''
-    }
-}
-
-const AccompanyDataTabContent = props => {
-    
+const AccompanyDataTabContent = (props) => {
     return(
         <React.Fragment>
             {
@@ -36,7 +20,7 @@ const AccompanyDataTabContent = props => {
                             })
                             :
                             <TabContentSection key={Math.random()}>
-                                <h3>{getType(d.type)}</h3>
+                                <h3>{d.label}</h3>
                                 <h4 className='subContent'>Source: {d.source.length > 0 ? <a href={d.source}>{d.source}</a> : 'Not available'}</h4>
                             </TabContentSection>
                         }

@@ -1,11 +1,11 @@
 /**
  * @fileoverview Includes functions that handles PSet request.
  */
-const psetRequest = require('../../db/helper/pset-request');
-const datasetUpdate = require('../../db/helper/dataset-update');
-const mailer = require('../../mailer/mailer');
-const mongo = require('../../db/mongo');
-const request = require('./request');
+const psetRequest = require('../../../old-db/helper/pset-request');
+const datasetUpdate = require('../../../old-db/helper/dataset-update');
+const mailer = require('../../../mailer/mailer');
+const mongo = require('../../../old-db/mongo');
+const request = require('../request');
 const pachyderm = require('./pachyderm');
 
 /**

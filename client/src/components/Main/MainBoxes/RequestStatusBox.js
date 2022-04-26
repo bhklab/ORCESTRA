@@ -7,11 +7,11 @@ const RequestStatusBox = (props) => (
         <div className='content'>
             <div>{`ORCESTRA is processing following ${props.datasetName} requests:`}</div>
             <div className='line'>
-                <MainStyle.Number>{props.dashboard.pending}</MainStyle.Number> 
+                <MainStyle.Number>{props.reqStatus.pending}</MainStyle.Number> 
                 <span>Requests in queue.</span>
             </div>
             <div className='line'>
-                <MainStyle.Number>{props.dashboard.inProcess}</MainStyle.Number> 
+                <MainStyle.Number>{props.reqStatus.inProcess}</MainStyle.Number> 
                 <span >Requests in process.</span>
             </div>
             <div className='link'>

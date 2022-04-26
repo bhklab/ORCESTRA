@@ -1,46 +1,11 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-// import DatasetTabContent from './DatasetTabContent';
-// import ReleaseNoteTableGroup from './ReleaseNoteTableGroup';
-
 
 const StyledReleaseNotes = styled.div`
     width: 95%;
     margin-left: auto;
     margin-right: auto;
-`
-
-// const StyledMetricsPanel = styled.div`
-//     margin-bottom: 30px;
-// `
-
-// const StyledMetricGroupMenu = styled.div`
-//     display: flex;
-//     margin-top: 15px;
-//     padding-top: 10px;
-//     padding-bottom: 10px;
-//     .menuItem {
-//         margin-right: 10px;
-//         padding-bottom: 5px;
-//         button {
-//             border: none;
-//             background: none;
-//             cursor: pointer;
-//             font-size: 16px;
-//             color: #3D405A;
-//         }
-//         button:focus {
-//             outline: none;
-//         }
-//     }
-//     .selected {
-//         button {
-//             font-weight: bold;
-//         }
-//         border-bottom: 3px solid rgb(241, 144, 33);
-//     }
-// `
+`;
 
 const StyledMetricDataGroup = styled.div`
     margin-top: 20px;    
@@ -82,8 +47,7 @@ const AdditionalInformation = styled.div`
 `;
 
 const ReleaseNoteTabContent = (props) => {
-
-    //const [display, setDisplay] = useState('cellLines');
+    const { data } = props;
 
     const getMetricDataText = (key, label, count) => {
         switch(key){
@@ -98,144 +62,81 @@ const ReleaseNoteTabContent = (props) => {
         }
     }
 
-    const getMolDataName = (key) => {
-        switch(key){
-            case 'rnaSeq':
-                return 'RNA-seq: ';
-            case 'rnaSeqIsoforms':
-                return 'RNA-seq Isoforms';
-            case 'rnaSeqCompositeExpression':
-                return 'RNA-seq Composite Expression';
-            case 'microRNA':
-                return 'MicroRNA';
-            case 'microarray': 
-                return 'Microarray: ';
-            case 'mutation':
-                return 'Mutation: ';
-            case 'mutationExome':
-                return 'Mutation (Exome): ';
-            case 'cnv':
-                return 'CNV: ';
-            case 'fusion':
-                return 'Fusion: ';
-            case 'methylation':
-                return 'Methylation: ';
-            default:
-                return '';
+    const metricDataGroup = (title, label, dataName) => {
+        const count = data.releaseNotes.counts.find(item => item.name === dataName);
+        if(!count){
+            return '';
         }
+        return(
+            <StyledMetricDataGroup>
+                <h2>{title}</h2>
+                <table>
+                    <tbody>
+                        {
+                            Object.keys(count).map(key => (
+                                count[key] > 0 &&
+                                <tr key={key}>
+                                    <td><span className='number'>{ count[key].toLocaleString() }</span></td>
+                                    <td className='text'>{ getMetricDataText(key, label, count[key]) }</td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </StyledMetricDataGroup>
+        )
+    };
+
+    const renderMolDataRow = () => {
+        return (
+            <StyledMetricDataGroup>
+                <h2>Molecular Data</h2>
+                <table>
+                    <tbody>
+                        {
+                            data.releaseNotes.molData.map(item => (
+                                <tr key={item.name}>
+                                    <td className='title'>{item.label}</td>
+                                    <td>
+                                        {
+                                            item.available ?  
+                                            <span><span className='number'>{item.expCount}</span> cell lines {item.noUpdates && '(no updates from previous version)'}</span>
+                                            : 'Not available for this dataset.'
+                                        }
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </StyledMetricDataGroup>
+        );
     }
-
-    const metricDataGroup = (title, name, label, data, renderRow) => (
-        <StyledMetricDataGroup>
-            <h2>{title}</h2>
-            <table>
-                <tbody>
-                    { renderRow(name, data, label) }
-                </tbody>
-            </table>
-        </StyledMetricDataGroup>
-    );
-
-    const renderDataRow = (name=null, data, label) => (
-        Object.keys(data).map(key => (
-            data[key] > 0 &&
-            <tr key={key}>
-                <td><span className='number'>{ data[key].toLocaleString() }</span></td>
-                <td className='text'>{ getMetricDataText(key, label, data[key]) }</td>
-            </tr>
-        ))
-    );
-
-    const renderMolDataRow = (name, data) => {
-        let molDataRow = [];
-        Object.keys(data).forEach(key => {
-            switch(key){
-                case 'mutationExome':
-                    if(name === 'GDSC'){
-                        molDataRow.push(molDataTableRow(key, data));
-                    }
-                    break;
-                case 'rnaSeqIsoforms':
-                    if(name === 'NCI60'){
-                        molDataRow.push(molDataTableRow(key, data));
-                    }
-                    break;
-                case 'rnaSeqCompositeExpression':
-                    if(name === 'NCI60'){
-                        molDataRow.push(molDataTableRow(key, data));
-                    }
-                    break;
-                case 'microRNA':
-                    if(name === 'NCI60'){
-                        molDataRow.push(molDataTableRow(key, data));
-                    }
-                    break;
-                default:
-                    molDataRow.push(molDataTableRow(key, data));
-                    break;
-            }
-        });
-        return molDataRow
-    }
-
-    const molDataTableRow = (key, data) => (
-        <tr key={key}>
-            <td className='title'>{getMolDataName(key)}</td>
-            <td>
-                {
-                    data[key].available ?  
-                    <span><span className='number'>{data[key].count}</span> cell lines {data[key].noUpdates && '(no updates from previous version)'}</span>
-                    : 'Not available for this dataset.'
-                }
-            </td>
-        </tr>
-    );
 
     return(
         <StyledReleaseNotes>
-            <React.Fragment>
-                {metricDataGroup('Cell Lines', props.data.name, 'cell line', props.data.releaseNotes.cellLines, renderDataRow)} 
-                {metricDataGroup('Drugs', props.data.name, 'drug', props.data.releaseNotes.drugs, renderDataRow)} 
-                {metricDataGroup('Drug Sensitivity Experiments', props.data.name, 'experiment', props.data.releaseNotes.experiments, renderDataRow)} 
-                {metricDataGroup('Molecular Data', props.data.name, '', props.data.releaseNotes.molData, renderMolDataRow)} 
-                {
-                    props.data.name === 'GDSC' &&
-                    <AdditionalInformation>
-                        <h2>Additional Information</h2>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td className='title'>GDSC Official Release Notes: </td>
-                                    <td>
-                                        <a href={props.data.releaseNotes.additional.link} target="_blank" rel="noopener noreferrer">{props.data.releaseNotes.additional.link}</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </AdditionalInformation>
-                }
-            </React.Fragment>
-            
-            {/* <StyledMetricsPanel>
-                <StyledMetricGroupMenu>
-                    <div className={display === 'cellLines' ? 'menuItem selected' : 'menuItem'}>
-                        <button type='button' onClick={() => setDisplay('cellLines')}>Cell Lines</button>
-                    </div>
-                    <div className={display === 'drugs' ? 'menuItem selected' : 'menuItem'}>
-                        <button type='button' onClick={() => setDisplay('drugs')}>Drugs</button>
-                    </div>    
-                    <div className={display === 'experiments' ? 'menuItem selected' : 'menuItem'}>
-                        <button type='button' onClick={() => setDisplay('experiments')}>Experiments</button>
-                    </div>
-                    <div className={display === 'molData' ? 'menuItem selected' : 'menuItem'}>
-                        <button type='button' onClick={() => setDisplay('molData')}>Molecular Data</button>
-                    </div>
-                </StyledMetricGroupMenu>
-                {display === 'cellLines' && <ReleaseNoteTableGroup dataset={{name: props.data.name, version: props.data.version}} type='cellLines'/>}
-                {display === 'drugs' && <ReleaseNoteTableGroup dataset={{name: props.data.name, version: props.data.version}} type='drugs'/>}
-                {display === 'experiments' && <ReleaseNoteTableGroup dataset={{name: props.data.name, version: props.data.version}} type='experiments'/>}
-                {display === 'molData' && molDataGroup(props.data.molData)}
-            </StyledMetricsPanel> */}
+            {metricDataGroup('Cell Lines', 'cell line', 'cellLines')} 
+            {metricDataGroup('Drugs', 'drug', 'drugs')} 
+            {metricDataGroup('Drug Sensitivity Experiments', 'experiment', 'experiments')} 
+            {
+                renderMolDataRow()
+            }
+            {
+                data.datasetName === 'GDSC' &&
+                <AdditionalInformation>
+                    <h2>Additional Information</h2>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td className='title'>GDSC Official Release Notes: </td>
+                                <td>
+                                    <a href={data.releaseNotes.additionalNotes.link} target="_blank" rel="noopener noreferrer">{data.releaseNotes.additionalNotes.link}</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </AdditionalInformation>
+            }
         </StyledReleaseNotes>
     );
 }

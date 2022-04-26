@@ -21,11 +21,15 @@ const RestrictedRoute = ({component: Component, location, computedMatch, type, .
         console.log(location);
         console.log(type);
         let url = '';
+        let params = {};
         switch(type){
             case 'dataset':
-                url = `/api/${computedMatch.params.datatype}` + 
-                `/check_private/${computedMatch.params.id1}/${computedMatch.params.id2}` + 
-                `${location.search.length > 0 ? location.search : ''}`;
+                url = '/api/data-object/check_private';
+                params = {
+                    datasetType: computedMatch.params.datatype,
+                    doi: `${computedMatch.params.id1}/${computedMatch.params.id2}`,
+                    shareToken: location.search.length > 0 ? location.search : null
+                }
                 break;
             case 'dataSubmission':
                 url = `/api/user/dataset/submit/check_private/${computedMatch.params.id}`;
@@ -34,7 +38,7 @@ const RestrictedRoute = ({component: Component, location, computedMatch, type, .
                 break;
         }
         const checkPrivate = async () => {
-            const res = await axios.get(url);
+            const res = await axios.get(url, {params: params});
             console.log(res.data);
             setAuthorized(res.data.authorized);
         }

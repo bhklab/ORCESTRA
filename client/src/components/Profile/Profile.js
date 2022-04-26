@@ -6,7 +6,7 @@ import { AuthContext } from '../../hooks/Context';
 import StyledPage from '../../styles/StyledPage';
 import UserInfo from './subcomponents/UserInfo';
 import UserDataset from './subcomponents/UserDataset';
-import DataSubmissionList from '../DataSubmission/DataSubmissionList';
+// import DataSubmissionList from '../DataSubmission/DataSubmissionList';
 
 const StyledProfile = styled.div`
     width: 100%;
@@ -16,17 +16,17 @@ const Profile = () =>{
     const auth = useContext(AuthContext);
     const [savedDatasets, setSavedDatasets] = useState([]);
     const [inProcessDatasets, setInProcessDatasets] = useState([]);
-    const [dataSubmissions, setDataSubmissions] = useState([]);
+    // const [dataSubmissions, setDataSubmissions] = useState([]);
 
     useEffect(() => {
         const initialize = async () => {
-            const res = await axios.get(`/api//view/user/profile/main?username=${auth.user.username}`);
+            const res = await axios.get('/api/view/user/profile/main', {params: {username: auth.user.username}});
             console.log(res.data);
-            let complete = res.data.datasets.filter(itme => itme.status === 'complete');
-            let pending = res.data.datasets.filter(itme => itme.status !== 'complete');
+            let complete = res.data.datasets.filter(item => item.info.status === 'complete');
+            let pending = res.data.datasets.filter(item => item.info.status !== 'complete');
             setSavedDatasets(complete);
             setInProcessDatasets(pending);
-            setDataSubmissions(res.data.submissions);
+            // setDataSubmissions(res.data.submissions);
         }
         initialize();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,10 +58,10 @@ const Profile = () =>{
                     datasets={inProcessDatasets} 
                     pending={true}
                 />
-                <DataSubmissionList 
+                {/* <DataSubmissionList 
                     heading='Data Submissions'
                     datasets={dataSubmissions}
-                />
+                /> */}
             </StyledProfile>
         </StyledPage>
     );
