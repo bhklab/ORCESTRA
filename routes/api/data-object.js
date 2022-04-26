@@ -15,11 +15,9 @@ const User = require('../../db/models/user');
  * @param {*} res 
  */
  const search = async (req, res) => {
-    console.log(req.query)
     let result = [];
     try{
         let queryObj = await dataObjectHelper.getQuery(req.query);
-        console.log(queryObj)
         result  = await DataObject.find(queryObj).lean().populate('dataset', 'name version sensitivity');
 
         // get the doi and downloadlink for specific data version. Only applicable to PSets. For other datasets, use 1.0.
@@ -200,20 +198,10 @@ const publish = async (req, res) => {
     }
 }
 
-// const updateCanonicalPSets = async (req, res) => {
-//     try{
-//         await datasetUpdate.updateCanonicalStatus(req.body.selected.map(s => {return(s._id)}))
-//         res.send();
-//     }catch(error){
-//         res.status(500).send(error);
-//     }
-// }
-
 module.exports = {
     search,
     download,
     checkPrivate,
     createShareLink,
-    publish,
-    // updateCanonicalPSets,
+    publish
 };

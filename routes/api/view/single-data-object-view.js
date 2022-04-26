@@ -93,7 +93,6 @@ const getTabData = async (dataObject, dataset, filter) => {
  * @param {*} res 
  */
 const get = async (req, res) => {
-    console.log(req.query)
     let dataObj = {} 
     try{
         const dataObject = await DataObject.findOne({
@@ -119,8 +118,9 @@ const get = async (req, res) => {
             dataObj.tabData = await getTabData(dataObject, dataset, filter);
 
             // add pachyderm pipeline config json: to be replaced with the new data processing layer API data.
-            if(req.query.datasetType === enums.pharmacogenomics){
+            if(req.query.datasetType === enums.dataTypes.pharmacogenomics){
                 const pipelines = await PachydermPipeline.find();
+                console.log(dataObject._id.toString())
                 let found = pipelines.find(pipeline => pipeline.data._id === dataObject._id.toString());
                 let pipelineConfig = null;
                 if(!found){

@@ -6,7 +6,7 @@ const PSetMetadata = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const res = await fetch('/api/pset/10.5281/zenodo.3905462')
+            const res = await fetch('/api/pset/10.5281/zenodo.3905461')
             const data = await res.json()
             console.log(data)
             setData(JSON.stringify(data, null, 2))
@@ -26,7 +26,7 @@ const PSetMetadata = () => {
                     <b>Dataset Type:</b> Accepts one of <code>pset</code>, <code>toxicoset</code>, <code>xevaset</code>, <code>clinicalgenomics</code>, and <code>radioset</code>. <br />
                 </div>
                 Example:<br />
-                <code className='code'>curl http://api.orcestra.ca/pset/10.5281/zenodo.3905462</code><br />
+                <code className='code'>curl http://api.orcestra.ca/pset/10.5281/zenodo.3905461</code><br />
                 Current result of the successful API call is as follows:<br />
             </p>
             <ScrollPanel className='documentation-scroll'>

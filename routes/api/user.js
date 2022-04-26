@@ -59,13 +59,11 @@ const find = async (req, res) => {
  // submit user
 const submit = async (req, res) => {
     const incomingUser = req.body;
-    console.log(incomingUser)
     try{
         const found = await getUser(incomingUser.username);
         switch(incomingUser.action){
             case 'login':
                 const match = bcrypt.compareSync(incomingUser.password1, found.password);
-                console.log(match)
                 if(match){
                     const token = jwt.sign(
                         { username: found.email, isAdmin: found.isAdmin }, 
@@ -185,7 +183,6 @@ const sendResetPwdEmail = async (req, res) => {
 
 const resetPwdWithToken = async (req, res) => {
     const token = req.body.user.token;
-    console.log(req.body.user)
     let result = {};
     try{
         const user = await getUser(req.body.user.username);
