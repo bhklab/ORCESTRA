@@ -8,4 +8,5 @@ node_modules
 .env
 db-scripts/data
 new-db/data
+db/data
 .DS_Store
