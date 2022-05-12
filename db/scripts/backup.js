@@ -22,7 +22,7 @@ const backup = async (outputPath, Model) => {
 
 (async () => {
     try{
-        await mongoose.connect(process.env.DEV, { useNewUrlParser: true, useUnifiedTopology: true });
+        await mongoose.connect(process.env.Prod, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
 
         await backup('../data/dataobjects.json', DataObject);

@@ -198,10 +198,36 @@ const publish = async (req, res) => {
     }
 }
 
+const updateCanonical = async (req, res) => {
+    let result = [];
+    try{
+        let canonicals = req.body.selected.map(item => item._id);
+        await DataObject.updateMany({_id: {$in: canonicals}}, {$set: {'info.canonical': true}});
+        await DataObject.updateMany({_id: {$nin: canonicals}}, {$set: {'info.canonical': false}});
+        result = await DataObject.find({datasetType: 'pset', 'info.status': 'complete'})
+            .lean().populate('dataset', 'name version sensitivity');
+        result = result.map(obj => {
+            let repo = obj.repositories.find(r => r.version === dataObjectHelper.getDataVersion('pset'));
+            delete obj.repositories;
+            return({
+                ...obj,
+                doi: repo.doi,
+                downloadLink: repo.downloadLink
+            });
+        });
+    }catch(error){
+        console.log(error);
+        res.status(500);
+    }finally{
+        res.send(result);
+    }
+}
+
 module.exports = {
     search,
     download,
     checkPrivate,
     createShareLink,
-    publish
+    publish,
+    updateCanonical
 };

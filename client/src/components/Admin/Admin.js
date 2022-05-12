@@ -1,15 +1,11 @@
-import React, {useState, useEffect, useContext} from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 
-import {Messages} from 'primereact/messages';
-import {Button} from 'primereact/button';
+import { Messages } from 'primereact/messages';
 import styled from 'styled-components';
-import {trackPromise} from 'react-promise-tracker';
-import Loader from 'react-loader-spinner';
 import StyledPage from '../../styles/StyledPage';
-import { AuthContext } from '../../hooks/Context';
-import PSetTable from '../SearchRequest/PSet/PSetTable';
-import DataSubmissionList from '../DataSubmission/DataSubmissionList';
+import CanonicalPSetManager from './CanonicalPSetManager';
+import ProcessedDataObjects from './ProcessedDataObjects';
+import DataSubmissionManager from './DataSubmissionManager';
 
 const Container = styled.div`
     .title {
@@ -21,79 +17,60 @@ const Container = styled.div`
     }
 `;
 
-const MenuContainer = styled.div`
+const TabNavigation = styled.div`
+    width: 100%;
     display: flex;
     align-items: center;
-    button {
-        margin-left: 20px;
+    height: 70px;
+    .nav-item {
+        margin-right: 20px;
+        padding-bottom: 2px;
+        font-weight: bold;
+        font-size: 14px;
+        cursor: pointer;
     }
-`
+    .active {
+        border-bottom: 2px solid rgb(241, 144, 33);
+    }
+`;
 
 const Admin = () => {
-    
-    const auth = useContext(AuthContext);
-
-    const [datasets, setDatasets] = useState({ready: false, psets: []});
-    const [selected, setSelected] = useState([]);
-    const [submissions, setSubmissions] = useState([]);
-
-    useEffect(() => {
-        const getData = async () => {
-            const res = await trackPromise(axios.get('/api/view/admin'));
-            setSelected(res.data.datasets.filter(p => {return p.canonical}));
-            setDatasets({ready: true, psets: res.data.datasets});
-            setSubmissions(res.data.submissions);
-        }
-        getData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    const updateCanonicalPSets = async (event) => {
-        event.preventDefault()
-        setDatasets({...datasets, ready: false})
-        await trackPromise(axios.post('/api/admin/dataset/canonical/update', {selected: selected}));
-        const res = await trackPromise(axios.post('/api/pset/search', {parameters: {status: 'complete', private: false}}));
-        setSelected(res.data.filter(p => {return p.canonical}));
-        setDatasets({ready: true, psets: res.data});
-    }
-
-    const markCompleteSubmisson = async (e, id) => {
-        e.preventDefault();
-        console.log(id);
-        await axios.post(`/api/admin/submission/complete/${id}`, {});
-        const res = await axios.get('/api/admin/submission/list');
-        setSubmissions(res.data);
-    }
+    const [selectedMenu, setSelectedMenu] = useState('canonical-psets');
     
     return(
         <StyledPage>
             <Container>
                 <div className='title'>Administrator's Menu</div>
                 <Messages ref={(el) => Admin.messages = el} />
-                <MenuContainer>
-                    <h4>Update Canonical PSets</h4>
-                    <Button label='Update' type='submit' onClick={updateCanonicalPSets} />
-                </MenuContainer>
+                <TabNavigation>
+                    <span 
+                        className={`nav-item ${selectedMenu === 'canonical-psets' ? 'active' : ''}`} 
+                        onClick={(e) => {setSelectedMenu('canonical-psets')}}
+                    >
+                        Canonical PSets
+                    </span>
+                    <span 
+                        className={`nav-item ${selectedMenu === 'processed-data-obj' ? 'active' : ''}`}
+                        onClick={(e) => {setSelectedMenu('processed-data-obj')}}
+                    >
+                        Processed Data Objects
+                    </span>
+                    <span 
+                        className={`nav-item ${selectedMenu === 'data-submissions' ? 'active' : ''}`}
+                        onClick={(e) => {setSelectedMenu('data-submissions')}}
+                    >
+                        Data Submissions
+                    </span>
+                </TabNavigation>
                 {
-                    datasets.ready ?
-                    <PSetTable 
-                        psets={datasets.psets} 
-                        selectedPSets={selected} 
-                        updatePSetSelection={(e) => {setSelected(e.value)}} 
-                        scrollHeight='600px'
-                        authenticated={auth.user ? true : false}
-                        download={false}
-                    /> 
-                    :
-                    <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                    selectedMenu === 'canonical-psets' && <CanonicalPSetManager />
                 }
-                <DataSubmissionList 
-                    className='bottom'
-                    heading='Data Submissions'
-                    datasets={submissions}
-                    admin={true}
-                    markComplete={markCompleteSubmisson}
-                />
+                {
+                    selectedMenu === 'processed-data-obj' && <ProcessedDataObjects />
+                }
+                {
+                    selectedMenu === 'data-submissions' && <DataSubmissionManager />
+                }
             </Container>
         </StyledPage>
     )

@@ -13,7 +13,7 @@ const AdminRoute = ({component: Component, location, ...rest}) => {
         <Route 
             {...rest} 
             render={(props) => (
-                user && user.isAdmin ?
+                user && user.admin ?
                 <Component {...props} />
                 :
                 <Redirect to={{pathname: rest.redirect, state:{from: location}}} />
