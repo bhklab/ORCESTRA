@@ -21,7 +21,7 @@ const ClinGenSetTable = (props) => {
         canonicalTemplate,
         sensitivityTemplate,
         dataTypeTemplate,
-    } = useDataTable(dataTypes.clinicalgenomics);
+    } = useDataTable(props.datasetType);
 
     useEffect(()=>{
         setState({...state, loading: false});

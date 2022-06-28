@@ -3,7 +3,8 @@ const dataTypes = {
     toxicogenomics: 'toxicoset',
     xenographic: 'xevaset',
     clinicalgenomics: 'clinicalgenomics',
-    radiogenomics: 'radioset'
+    radiogenomics: 'radioset',
+    icb: 'clinical_icb'
 }
 
 module.exports = {

@@ -14,8 +14,9 @@ const DatasetMain = (props) => {
             {props.match.params.datatype === dataTypes.pharmacogenomics && <Pharmacogenomics />}
             {props.match.params.datatype === dataTypes.toxicogenomics && <ToxicoSetSearch />}
             {props.match.params.datatype === dataTypes.xenographic && <XevaSetSearch />}
-            {props.match.params.datatype === dataTypes.clinicalgenomics && <ClinGenSearch />}
+            {props.match.params.datatype === dataTypes.clinicalgenomics && <ClinGenSearch datasetType={dataTypes.clinicalgenomics} />}
             {props.match.params.datatype === dataTypes.radiogenomics && <RadioSetSearch />}
+            {props.match.params.datatype === dataTypes.icb && <ClinGenSearch datasetType={dataTypes.icb} />}
         </React.Fragment>
     );
 }

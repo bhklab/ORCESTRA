@@ -31,11 +31,11 @@ const backup = async (outputPath, Model) => {
 
         await backup('../data/datasetnotes.json', DatasetNote);
 
-        await backup('../data/datafilters.json', DataFilter);
+        // await backup('../data/datafilters.json', DataFilter);
 
-        await backup('../data/users.json', User);
+        // await backup('../data/users.json', User);
 
-        await backup('../data/pachydermpipelines.json', PachydermPipeline);
+        // await backup('../data/pachydermpipelines.json', PachydermPipeline);
     }catch(err){
         console.log(err);
     }finally{
