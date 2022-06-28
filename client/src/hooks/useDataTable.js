@@ -24,7 +24,7 @@ const useDataTable = (datasetType) => {
     const downloadDataset = (doi, link) => async (event) => {
         event.preventDefault();
         console.log('download dataset');
-        await axios.post(`/api/${datasetType}/download`, {datasetDOI: doi});
+        await axios.post(`/api/data-object/download`, {datasetDOI: doi});
         const anchor = document.createElement('a');
         anchor.setAttribute('download', null);
         anchor.style.display = 'none';
