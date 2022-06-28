@@ -1,5 +1,5 @@
 const path = require('path');
-require('dotenv').config({path: path.join(__dirname, '../.env')});
+require('dotenv').config({path: path.join(__dirname, '../../.env')});
 const mongoose = require('mongoose');
 const fs = require('fs');
 const axios = require('axios');
@@ -11,55 +11,134 @@ const ObjSchema = require('../models/data-object');
 const User = require('../models/user');
 const PachydermPipeline = require('../models/pachyderm-pipeline');
 
+const datasetInfo = [
+    {
+        name: 'ICB_Hwang',
+        citation: "Hwang, S., et al. 2020. Immune gene signatures for predicting durable clinical benefit of anti-pd-1 immunotherapy in patients with non-small cell lung cancer. Sci Rep, 2020. 10(1): p.643.",
+        link: "https://pubmed.ncbi.nlm.nih.gov/31959763/",
+        availableData: [
+            {name: 'rnaseq', datatype: 'RNA', source: ''}
+        ]
+    },
+    {
+        name: 'ICB_Jerby_Arnon',
+        citation: "Jerby-arnon, L., et al. 2018. A Cancer Cell Program Promotes T Cell Exclusion and Resistance to Checkpoint Blockade. Cell, 2018. 175(4): p.984-997.e24.",
+        link: 'https://pubmed.ncbi.nlm.nih.gov/30388455/',
+        availableData: [
+            {name: 'rnaseq', datatype: 'RNA', source: ''}
+        ]
+    },
+    {
+        name: 'ICB_Jung',
+        citation: "	Jung, H., et al. 2019. DNA methylation loss promotes immune evasion of tumours with high mutation and copy number load. Nat Commun, 2019. 10(1): p.4278.",
+        link: 'https://pubmed.ncbi.nlm.nih.gov/31537801/',
+        availableData: [
+            {name: 'rnaseq', datatype: 'RNA', source: ''},
+            {name: 'cna', datatype: 'DNA', source: ''},
+            {name: 'snv', datatype: 'DNA', source: ''}
+        ]
+    },
+    {
+        name: 'ICB_Miao1',
+        citation: "Miao, D., et al. 2018. Genomic correlates of response to immune checkpoint therapies in clear cell renal cell carcinoma. Science, 2018. 359(6377): p.801-806.",
+        link: 'https://pubmed.ncbi.nlm.nih.gov/29301960/',
+        availableData: [
+            {name: 'rnaseq', datatype: 'RNA', source: ''},
+            {name: 'snv', datatype: 'DNA', source: ''}
+        ]
+    },
+    {
+        name: 'ICB_Riaz',
+        citation: "Riaz, N., et al. 2015. Tumor and Microenvironment Evolution during Immunotherapy with Nivolumab. Cell, 2017. 171(4): p.934-949.e16.",
+        link: 'https://pubmed.ncbi.nlm.nih.gov/29033130/',
+        availableData: [
+            
+        ]
+    },
+    {
+        name: 'ICB_Rizvi15',
+        citation: "Rizvi, N.A., et al. 2015. Cancer immunology. Mutational landscape determines sensitivity to PD-1 blockade in non-small cell lung cancer. Science, 2015. 348(6230): p.124-8.",
+        link: 'https://pubmed.ncbi.nlm.nih.gov/25765070/',
+        availableData: [
+            {name: 'cna', datatype: 'DNA', source: ''},
+            {name: 'snv', datatype: 'DNA', source: ''}
+        ]
+    },
+    {
+        name: 'ICB_Rizvi18',
+        citation: "Rizvi, H., et al. 2018. Molecular Determinants of Response to Anti-Programmed Cell Death (PD)-1 and Anti-Programmed Death-Ligand 1 (PD-L1) Blockade in Patients With Non-Small-Cell Lung Cancer Profiled With Targeted Next-Generation Sequencing. J Clin Oncol, 2018. 36(7): p. 633-641.",
+        link: 'https://pubmed.ncbi.nlm.nih.gov/29337640/',
+        availableData: [
+            {name: 'cna', datatype: 'DNA', source: ''},
+            {name: 'snv', datatype: 'DNA', source: ''} 
+        ]
+    },
+    {
+        name: 'ICB_Roh',
+        citation: "Roh, W., et al. 2017. Integrated molecular analysis of tumor biopsies on sequential CTLA-4 and PD-1 blockade reveals markers of response and resistance. Sci Transl Med, 2017. 9(379).",
+        link: 'https://pubmed.ncbi.nlm.nih.gov/28251903/',
+        availableData: [
+            {name: 'snv', datatype: 'DNA', source: ''}
+        ]
+    },
+    {
+        name: 'ICB_Samstein',
+        citation: "Samstein, R.M., et al. 2019. Tumor mutational load predicts survival after immunotherapy across multiple cancer types. Nat Genet, 2019. 51(2): p.202-206.",
+        link: 'https://pubmed.ncbi.nlm.nih.gov/30643254/',        
+        availableData: [
+            {name: 'cna', datatype: 'DNA', source: ''},
+            {name: 'snv', datatype: 'DNA', source: ''} 
+        ]
+    }
+]
+
+const getDatasetNote = (name) => {
+    return( {
+        citations: datasets.filter(item => item.name === name).map(item => item.citation),
+        name: name,
+        disclaimer: `The ${name} data were re-processed and shared by the Haibe-Kains Lab (University Health Network). The Haibe-Kains Lab has re-annotated the data to maximize overlap with other clinical datasets.`,
+        usagePolicy: "The data is under <a href='https://creativecommons.org/licenses/by/4.0/'>Creative Commons Attribution 4.0 International License</a> provided.<br />Source: <a href='https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=gse15471'>https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=gse15471</a>",
+    });
+}
+
 (async () => {
     try{
         await mongoose.connect(process.env.DEV, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
-
-        // let configs = fs.readFileSync('./data/req-config.json');
-        // configs = JSON.parse(configs)
-        // pipelines = configs.map(item => ({data: item}));
+        // let datasets = await Dataset.find({datasetType: 'clinical_icb'});
+        // let objInfo = fs.readFileSync('../data/new_obj.json');
+        // objInfo = JSON.parse(objInfo);
+        // let dataObjects = [];
         
-        // configs = fs.readFileSync('./data/req-config-master.json');
-        // configs = JSON.parse(configs);
-        // configs = configs.map(item => ({data: item, original: true}));
-        // pipelines = pipelines.concat(configs);
-        // await PachydermPipeline.insertMany(pipelines);
-        // await PachydermPipeline.deleteMany();
-
-        // let datasettype = 'pset';
-        // let oldDatasets = fs.readFileSync(`./data/formdata.json`);
-        // oldDatasets = JSON.parse(oldDatasets);
-        // oldDatasets = oldDatasets.find(item => item.datasetType === datasettype).dataset;
-
-        // let datasets = await Dataset.find({datasetType: datasettype}).lean();
-        // for(let dataset of datasets){
-        //     let found = oldDatasets.find(item => item.name === dataset.name);
-        //     let version = found.versions.find(item => item.version === dataset.version);
-        //     dataset.info.pachydermPipeline = version.pipeline;
-        //     await Dataset.updateOne({_id: dataset._id}, {info: dataset.info});
+        // for(const dataset of datasets){
+        //     let obj = objInfo.find(item => item.pipeline.name === dataset.name);
+        //     const info = {
+        //         date: {created: obj.process_end_date},
+        //         status: "complete",
+        //         private: false,
+        //         canonical: true,
+        //         numDownload: 0,
+        //         createdBy: "BHK Lab",
+        //         other: {
+        //             pipeline: {url: obj.pipeline.git_url, commit_id: obj.commit_id},
+        //             additionalRepo: obj.additional_repo
+        //         }
+        //     }
+        //     dataObjects.push({
+        //         info: info,
+        //         datasetType: 'clinical_icb',
+        //         name: dataset.name,
+        //         dataset: dataset._id,
+        //         repositories: [
+        //             {version: '1.0', doi: obj.doi, downloadLink: obj.download_link}
+        //         ],
+        //         availableDatatypes: dataset.availableData.map(item => ({name: item.name, genomeType: item.datatype}))
+        //     })
         // }
 
-        // let oldobjects = fs.readFileSync(`./data/${datasettype}.json`);
-        // oldobjects = JSON.parse(oldobjects);
-        // let objects = await ObjSchema.DataObject.find({datasetType: datasettype}).lean();
+        // await ObjSchema.BaseDataObject.insertMany(dataObjects)
 
-        // let oldusers = fs.readFileSync('./data/user.json');
-        // oldusers = JSON.parse(oldusers);
-
-        // let users = oldusers.map(user => ({
-        //     email: user.username,
-        //     password: user.password,
-        //     registered: user.registered,
-        //     pwdReset: {
-        //         expire: user.expire,
-        //         token: user.resetToken
-        //     },
-        //     userDataObjects: user.userDatasets.map(item => mongoose.Types.ObjectId(item))
-        // }));
-
-        // await User.insertMany(users);
-
+        // await ObjSchema.BaseDataObject.deleteMany({datasetType: 'clinical_icb'})
     }catch(err){
         console.log(err);
     }finally{
@@ -67,307 +146,3 @@ const PachydermPipeline = require('../models/pachyderm-pipeline');
         console.log('connection closed');
     }
 })();
-
-// (async () => {
-//     try{
-//         await mongoose.connect(process.env.DEV, { useNewUrlParser: true, useUnifiedTopology: true });
-//         console.log('connection open');
-
-//         let formdata = fs.readFileSync('./data/formdata.json');
-//         formdata = JSON.parse(formdata);
-
-//         let datasettype = 'clinicalgenomics';
-//         formdata = formdata.find(item => item.datasetType === datasettype);
-
-//         let oldobjects = fs.readFileSync(`./data/${datasettype}.json`);
-//         oldobjects = JSON.parse(oldobjects);
-
-//         let datasets = await Dataset.find({datasetType: datasettype});
-
-//         let objects = [];
-//         for(oldobj of oldobjects){
-
-//             let dataset = datasets.find(item => item.name === oldobj.dataset.name && oldobj.dataset.versionInfo);
-//             if(dataset){
-
-//                 datatypes = oldobj.dataType.map(item => {
-//                     if(item.microarrayType){
-//                         item.details = {
-//                             microarrayType: item.microarrayType
-//                         }
-//                     }
-//                     return {
-//                         name: item.name,
-//                         genomeType: item.type,
-//                         details: item.details 
-//                     };
-//                 });
-
-//                 let repo = {
-//                     version: '1.0',
-//                     doi: oldobj.doi,
-//                     bioComputeObj: oldobj.bioComputeObject ? oldobj.bioComputeObject : undefined
-//                 }
-
-//                 if(Array.isArray(oldobj.downloadLink)){
-//                     repo.downloadLink = oldobj.downloadLink.map(item => ({
-//                         name: item.name,
-//                         link: item.downloadLink
-//                     }));
-//                 }else{
-//                     repo.downloadLink = oldobj.downloadLink;
-//                 }
-
-//                 let object = {
-//                     _id: mongoose.Types.ObjectId(oldobj._id),
-//                     datasetType: datasettype,
-//                     name: oldobj.name,
-//                     dataset: dataset._id,
-//                     info: {
-//                         status: oldobj.status,
-//                         private: oldobj.private,
-//                         canonical: oldobj.canonical,
-//                         numDownload: oldobj.download,
-//                         createdBy: oldobj.createdBy,
-//                         email: oldobj.email,
-//                         shareToken: oldobj.shareToken,
-//                         filteredSensitivity: oldobj.dataset.filteredSensitivity,
-//                         commitID: oldobj.commitID,
-//                         date: {
-//                             submitted: oldobj.dateSubmitted,
-//                             processed: oldobj.dateProcessed,
-//                             completed: oldobj.dateCompleted
-//                         },
-//                     },
-//                     repositories: [repo],
-//                     availableDatatypes: datatypes,
-//                     // tools: {
-//                     //     rna: oldobj.rnaTool.length > 0 ? oldobj.rnaTool[0].name : undefined,
-//                     // },
-//                     // references: {
-//                     //     rna: oldobj.rnaRef.length > 0 ? oldobj.rnaRef[0].name : undefined,
-//                     // },
-//                     // genome: oldobj.genome.name
-//                 }
-//                 objects.push(object);
-//                 // console.log(object)
-//             }else{
-//                 console.log(`${oldobj.dataset.name}_${oldobj.dataset.versionInfo} not found`)
-//             }
-//         }
-//         await ObjSchema.BaseDataObject.insertMany(objects);
-//         // await ObjSchema.DataObject.deleteMany();
-//     }catch(err){
-//         console.log(err);
-//     }finally{
-//         await mongoose.connection.close();
-//         console.log('connection closed');
-//     }
-// })();
-
-// (async () => {
-//     try{
-//         await mongoose.connect(process.env.DEV, { useNewUrlParser: true, useUnifiedTopology: true });
-//         console.log('connection open');
-
-//         let formdata = fs.readFileSync('./data/formdata.json');
-//         formdata = JSON.parse(formdata);
-
-//         let datasettype = 'pset';
-//         formdata = formdata.find(item => item.datasetType === datasettype);
-
-//         let tools = formdata.rnaTool.map(item => ({
-//             ...item,
-//             genomicType: 'RNA'
-//         }));
-//         tools = tools.concat(formdata.dnaTool.map(item => ({
-//             ...item,
-//             genomicType: 'DNA'
-//         })));
-        
-//         let datafilter = new DataFilter({
-//             datasetType: datasettype,
-//             tools: tools,
-//             references: formdata.rnaRef.map(item => ({
-//                 ...item,
-//                 genomicType: 'RNA'
-//             })),
-//             genome: formdata.genome.map(item => item.name),
-//             availableData: formdata.molecularData.map(item => ({
-//                 ...item,
-//                 genomicType: item.type,
-//             }))
-//         });
-
-//         await datafilter.save();
-
-//     }catch(err){
-//         console.log(err);
-//     }finally{
-//         await mongoose.connection.close();
-//         console.log('connection closed');
-//     }
-// })();
-
-// (async () => {
-//     try{
-//         await mongoose.connect(process.env.DEV, { useNewUrlParser: true, useUnifiedTopology: true });
-//         console.log('connection open');
-
-//         let formdata = fs.readFileSync('./data/formdata.json');
-//         formdata = JSON.parse(formdata);
-//         let datasetnotes = await DatasetNote.find().lean();
-//         let metricdata = fs.readFileSync('./data/metric-data.json');
-//         metricdata = JSON.parse(metricdata);
-
-//         let datasettype = 'clinicalgenomics';
-//         formdata = formdata.find(item => item.datasetType === datasettype);
-//         let datasets = [];
-//         for(let dset of formdata.dataset){
-            
-//             let availableData = [];
-//             // availableData = availableData.concat(formdata.accompanyRNA.filter(item => item.dataset === dset.name).map(item => ({
-//             //     name: item.name,
-//             //     datatype: 'RNA',
-//             //     source: item.source
-//             // })));
-//             // availableData = availableData.concat(formdata.accompanyDNA.filter(item => item.dataset === dset.name).map(item => ({
-//             //     name: item.name,
-//             //     datatype: 'DNA',
-//             //     source: item.source
-//             // })));
-
-//             if(dset.name === 'GDSC'){
-//                 availableData = availableData.filter(item => item.name !== 'mutation');
-//                 let mutation = formdata.accompanyDNA.find(item => item.dataset === 'GDSC' && item.name === 'mutation');
-//                 let mut = mutation.source.find(item => item.name === 'mutation');
-//                 let mutEx = mutation.source.find(item => item.name === 'mutation_exome');
-//                 availableData.push({
-//                     name: 'mutation',
-//                     datatype: 'DNA',
-//                     source: mut.source
-//                 });
-//                 availableData.push({
-//                     name: 'mutationExome',
-//                     datatype: 'DNA',
-//                     source: mutEx.source
-//                 })
-//             }
-
-//             let metricdataset = metricdata.find(item => item.name === dset.name);
-
-//             for(let version of dset.versions){
-
-//                 // add additional available data
-//                 if(version.rawSeqDataRNA && version.rawSeqDataRNA.length > 0){
-//                     availableData.push({
-//                         name: 'rnaseq',
-//                         datatype: 'RNA',
-//                         source: version.rawSeqDataRNA,
-//                     });
-//                 }
-//                 if(version.processedDataSource && version.processedDataSource.length > 0){
-//                     availableData.push({
-//                         name: 'rnaseqProcessed',
-//                         datatype: 'RNA',
-//                         source: version.processedDataSource,
-//                     });
-//                 }
-//                 if(version.rawSeqDataDNA && version.rawSeqDataDNA.length > 0){
-//                     availableData.push({
-//                         name: 'dnaseq',
-//                         datatype: 'DNA',
-//                         source: version.rawSeqDataDNA,
-//                     });
-//                 }
-
-//                 // toxicoset
-//                 // availableData.push({
-//                 //     name: 'rawMicroarray',
-//                 //     source: version.data.rawMicroarrayData
-//                 // });
-
-//                 metrics = null;
-//                 let stats = undefined;
-//                 let releaseNotes = undefined;
-//                 if(metricdataset){
-//                     metrics = metricdataset.versions.find(item => item.version === version.version);
-//                     // stats = {
-//                     //     cellLines: metrics.cellLines.current,
-//                     //     drugs: metrics.drugs.current,
-//                     //     tissues: metrics.tissues,
-//                     //     numCellLineDrugPairs: metrics.cellLineDrugPairs,
-//                     //     numGenes: metrics.genes
-//                     // };
-//                     // availableData.forEach(item => {
-//                     //     let moldataname = item.name === 'rnaseq' ? 'rnaSeq' : item.name;
-//                     //     let moldata = metrics.releaseNotes.molData[moldataname];
-//                     //     item.expCount = moldata ? moldata.count : null;
-//                     //     item.noUpdates = moldata ? moldata.noUpdates : null;
-//                     // });
-//                     releaseNotes = {
-//                         counts: [
-//                             {...metrics.releaseNotes.samples, name: 'samples'},
-//                             // {...metrics.releaseNotes.radiationTypes, name: 'radiationTypes'},
-//                             // {...metrics.releaseNotes.patients, name: 'patients'},
-//                             // {...metrics.releaseNotes.models, name: 'models'},
-//                             // {...metrics.releaseNotes.drugs, name: 'drugs'},
-//                             // {...metrics.releaseNotes.experiments, name: 'experiments'},
-//                             // {...metrics.releaseNotes.cellLines, name: 'cellLines'},
-//                             // {...metrics.releaseNotes.drugs, name: 'drugs'},
-//                             // {...metrics.releaseNotes.experiments, name: 'experiments'},
-//                         ],
-//                         additional: metrics.releaseNotes.additional ? {newsLink: metrics.releaseNotes.additional} : undefined
-//                     }
-//                 }
-                
-//                 // dataset notes
-//                 let name = dset.name;
-//                 switch(name){
-//                     case 'GDSC':
-//                         name = name + version.version.split('v')[1].slice(0, 1);
-//                         break;
-//                     case 'Open TG-GATEs Human':
-//                         name = 'Open TG-GATEs';
-//                         break;
-//                     case 'Open TG-GATEs Rat':
-//                         name = 'Open TG-GATEs';
-//                         break;
-//                     case 'DrugMatrix Rat':
-//                         name = 'DrugMatrix';
-//                         break;
-//                     default:
-//                         break;
-//                 }
-//                 let datasetnote = datasetnotes.find(item => item.name === name);
-
-//                 let dataset = {
-//                     name: dset.name,
-//                     version: version.version,
-//                     datasetType: datasettype,
-//                     status: {
-//                         unavailable: dset.unavailable,
-//                         disabled: dset.disabled,
-//                         requestDisabled: dset.requestDisabled
-//                     },
-//                     publications: version.publication,
-//                     sensitivity: version.drugSensitivity,
-//                     // sensitivity: version.data.drugResponseData,
-//                     availableData: availableData,
-//                     datasetNote: datasetnote ? datasetnote._id : undefined,
-//                     stats: stats,
-//                     releaseNotes: releaseNotes
-//                 }
-//                 datasets.push(dataset);
-//             }
-//         }
-//         // console.log(datasets);
-//         // await Dataset.insertMany(datasets);
-//         // await Dataset.deleteMany();
-//     }catch(err){
-//         console.log(err);
-//     }finally{
-//         await mongoose.connection.close();
-//         console.log('connection closed');
-//     }
-// })();

@@ -27,6 +27,7 @@ const dataObjectSchema = new Schema(
                 processed: Date,
                 created: Date
             },
+            other: Object
         },
         repositories: [{
             version: String,

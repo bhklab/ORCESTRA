@@ -32,7 +32,7 @@ const jwt = require('jsonwebtoken');
  * @param {*} next 
  */
 const isAdmin = (req, res, next) => {
-    if(req.decoded && req.decoded.isAdmin){
+    if(req.decoded && req.decoded.admin){
         next();
     }else{
         res.send({});

@@ -4,9 +4,9 @@ import axios from 'axios';
 import {Filter} from '../SearchReqStyle';
 import FilterInputSwitch from '../../Shared/FilterInputSwitch';
 import CustomSelect from '../../Shared/CustomSelect';
-import {dataTypes} from '../../Shared/Enums';
 
-const ClinGenSetFilter = () => {    
+const ClinGenSetFilter = (props) => {   
+    const { datasetType, datasetTypeLabel } = props; 
     const context = useContext(SearchReqContext);
 
     const [datasetSelect, setDatasetSelect] = useState({selected: [], options: [], hidden: false});
@@ -14,7 +14,7 @@ const ClinGenSetFilter = () => {
     
     useEffect(() => {
         const initialize = async () => {
-            const res = await axios.get('/api/view/data-object-filter', {params: {datasetType: dataTypes.clinicalgenomics}});
+            const res = await axios.get('/api/view/data-object-filter', {params: {datasetType: datasetType}});
             setDatasetSelect({...datasetSelect, options: res.data.dataset});
             setReady(true);
         }
@@ -27,9 +27,9 @@ const ClinGenSetFilter = () => {
         {
             ready&&
             <Filter>
-                <h2>Clinical Genomics Dataset Parameters</h2>
+                <h2>{`${datasetTypeLabel} Dataset Parameters`}</h2>
                 <FilterInputSwitch 
-                    label='Request Clinical Genomics Dataset:'
+                    label={`Request ${datasetTypeLabel} Dataset:`}
                     checked={context.isRequest}
                     tooltip='Currently unavailable'
                     disabled={true}

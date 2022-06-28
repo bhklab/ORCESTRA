@@ -13,21 +13,30 @@ import ClinGenSetTable from './ClinGenSetTable';
 import {dataTypes} from '../../Shared/Enums';
 import StyledPage from '../../../styles/StyledPage';
 
-const ClinGenSetSearch = () => {
-    
+const ClinGenSetSearch = (props) => {
+    const { datasetType } = props;
     const auth = useContext(AuthContext);
-    const { searchAll, search } = useDatasetSearch(dataTypes.clinicalgenomics);
+    const { searchAll, search } = useDatasetSearch(datasetType);
     
     const [datasets, setDatasets] = useState([]);
     const [selectedDatasets, setSelectedDatasets] = useState([]);
     const [isRequest, setIsRequest] = useState(false);
-    
     const [parameters, setParameters] = useState({
         dataset: [],
         search: false
     });
-
     const [ready, setReady] = useState(false);
+
+    const getDataObjectName = () => {
+        switch(datasetType){
+            case dataTypes.clinicalgenomics:
+                return 'Clinical Genomics';
+            case dataTypes.icb:
+                return 'ICB';
+            default:
+                return ''
+        }
+    }
 
     useEffect(() => {
         const initializeView = async () => {
@@ -69,15 +78,15 @@ const ClinGenSetSearch = () => {
             }}
         >
             <StyledPage>
-                <div className='page-title'>ORCESTRA for Clinical Genomics</div>  
+                <div className='page-title'>{`ORCESTRA for ${getDataObjectName()}`}</div>  
                 <SearchReqWrapper>
-                    <ClinGenSetFilter />
+                    <ClinGenSetFilter datasetType={datasetType} datasetTypeLabel={getDataObjectName()} />
                     <MainPanel>
                         <Messages ref={(el) => ClinGenSetSearch.messages = el} />
                         <SearchReqPanel>
                             <div>
                                 <SearchSummary 
-                                    title='Explore multimodal Clinical Genomics Datasets' 
+                                    title={`Explore multimodal ${getDataObjectName()} Datasets`}
                                     searchAll={searchAll} 
                                     matchNum={datasets.length} 
                                 />
@@ -89,13 +98,14 @@ const ClinGenSetSearch = () => {
                                         onSaveComplete={showMessage} 
                                     />
                                     :
-                                    '*Login or register to save existing Clinical Genomics Datasets to your profile.'
+                                    '*Login or register to save existing data objects to your profile.'
                                 }
                             </div>
                         </SearchReqPanel>
                         {
                             ready ?
                             <ClinGenSetTable 
+                                datasetType={datasetType}
                                 datasets={datasets} 
                                 selectedDatasets={selectedDatasets} 
                                 updateDatasetSelection={(e) => {setSelectedDatasets(e.value)}} 

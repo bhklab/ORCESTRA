@@ -2,7 +2,7 @@ import React from 'react';
 import { TabView,TabPanel } from 'primereact/tabview';
 import DisclaimerTabContent from '../PSet/TabContents/DisclaimerTabContent';
 import DatasetTabContent from './TabContents/DatasetTabContent';
-import PipelineTabContent from '../PSet/TabContents/PipelineTabContent';
+import PipelineTabContent from './TabContents/PipelineTabContent';
 import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';
 import { TabContainer } from '../SingleDatasetStyle';
 

@@ -73,7 +73,7 @@ const UserInfo = () => {
             <h2>Profile</h2>
             <Messages ref={(el) => UserInfo.messages = el}></Messages>
             <div className='userInfo'>Username: {auth.user.username}</div>
-            { auth.user.isAdmin && <div className='userInfo'><Link to = '/app/admin'>Admin Menu</Link></div> }
+            { auth.user.admin && <div className='userInfo'><Link to = '/app/admin'>Admin Menu</Link></div> }
             {
                 show &&
                 <div>

@@ -66,7 +66,7 @@ const submit = async (req, res) => {
                 const match = bcrypt.compareSync(incomingUser.password1, found.password);
                 if(match){
                     const token = jwt.sign(
-                        { username: found.email, isAdmin: found.isAdmin }, 
+                        { username: found.email, admin: found.admin }, 
                         process.env.TOKEN, 
                         {expiresIn: '8h'}
                     );
@@ -76,7 +76,7 @@ const submit = async (req, res) => {
             case 'register':
                 const setToken = () => {
                     const token = jwt.sign(
-                        { username: incomingUser.username, isAdmin: false }, 
+                        { username: incomingUser.username, admin: false }, 
                         process.env.TOKEN, 
                         {expiresIn: '8h'}
                     );
@@ -121,7 +121,7 @@ const session = async (req, res) => {
     if(req.decoded){
         data = { 
             username: req.decoded.username, 
-            isAdmin: req.decoded.isAdmin 
+            admin: req.decoded.admin 
         };
     }
     res.send(data);

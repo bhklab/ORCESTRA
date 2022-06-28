@@ -140,6 +140,17 @@ const get = async (req, res) => {
                 }
             }
 
+            // add snakemake pipeline data 
+            if(req.query.datasetType === enums.dataTypes.icb){
+                dataObj.tabData.push({
+                    header: 'Pipeline',
+                    data: {
+                       pipeline: dataObject.info.other.pipeline,
+                       additionalRepo: dataObject.info.other.additionalRepo
+                    }
+                })
+            }
+
             let molData = dataset.availableData.map(item => {
                 let availData = dataObject.availableDatatypes.find(avail => avail.name === item.name);
                 let filterItem = filter.availableData.find(avail => avail.name === item.name);

@@ -31,7 +31,6 @@ const useDatasetSearch = (datasetType) => {
         });
         setSeatchAll(all);
         return res.data;
-        return [];
     }
     
     return {

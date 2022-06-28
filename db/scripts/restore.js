@@ -25,18 +25,18 @@ const restore = async (file, Model) => {
 
 (async () => {
     try{
-        await mongoose.connect(process.env.Prod, { useNewUrlParser: true, useUnifiedTopology: true });
+        await mongoose.connect(process.env.DEV, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
         
         // await restore('../data/datafilters.json', DataFilter);
 
-        // await restore('../data/datasetnotes.json', DatasetNote);
+        await restore('../data/datasetnotes.json', DatasetNote);
 
-        // await restore('../data/datasets.json', Dataset);
+        await restore('../data/datasets.json', Dataset);
 
         // await restore('../data/pachydermpipelines.json', PachydermPipeline);
 
-        // await restore('../data/dataobjects.json', DataObject);
+        await restore('../data/dataobjects.json', DataObject);
 
         // await restore('../data/users.json', User);
 

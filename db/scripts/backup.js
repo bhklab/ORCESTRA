@@ -22,7 +22,7 @@ const backup = async (outputPath, Model) => {
 
 (async () => {
     try{
-        await mongoose.connect(process.env.DEV, { useNewUrlParser: true, useUnifiedTopology: true });
+        await mongoose.connect(process.env.Prod, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
 
         await backup('../data/dataobjects.json', DataObject);
@@ -31,11 +31,11 @@ const backup = async (outputPath, Model) => {
 
         await backup('../data/datasetnotes.json', DatasetNote);
 
-        await backup('../data/datafilters.json', DataFilter);
+        // await backup('../data/datafilters.json', DataFilter);
 
-        await backup('../data/users.json', User);
+        // await backup('../data/users.json', User);
 
-        await backup('../data/pachydermpipelines.json', PachydermPipeline);
+        // await backup('../data/pachydermpipelines.json', PachydermPipeline);
     }catch(err){
         console.log(err);
     }finally{

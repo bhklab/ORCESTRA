@@ -100,7 +100,7 @@ const RequestStatus = () => {
                                 <Column className='textField' field='name' header='Name' style={{width:'5em'}} sortable={true} />
                                 <Column className='textField' field='submitted' header='Submitted Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
                                 <Column className='textField' field='processed' header='Process Start Date' body={dateTimeTemplate} style={{width:'4em'}} sortable={true} />
-                                { auth.user.isAdmin && <Column body={buttonTemplate} style={{width:'1.5em'}}/> }
+                                { auth.user.admin && <Column body={buttonTemplate} style={{width:'1.5em'}}/> }
                             </DataTable>
                             :
                             <h3>There are no pending or in-process requests.</h3>

@@ -25,6 +25,9 @@ const get = async (req, res) => {
             status: 1, 
             availableData: 1
         }).lean();
+
+        console.groupCollapsed(req.query.datasetType)
+
         datasets = datasets.filter(dataset => !dataset.status.unavailable);
         let datasetNames = [...new Set(datasets.map(item => item.name))];
         objFilter.dataset = datasetNames.map(name => {

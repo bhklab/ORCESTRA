@@ -12,6 +12,9 @@ export const TabHeader = styled.h1`
 export const TabContent = styled.div`
     margin-left: 40px;
     margin-right: 20px;
+    .indent {
+        margin-left: 20px;
+    }
 `;
 
 export const TabContentSection = styled.div`

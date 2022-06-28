@@ -61,6 +61,9 @@ const SingleDataset = (props) => {
                         { 
                             props.match.params.datatype === dataTypes.radiogenomics && <RadioSet dataset={dataset.data} /> 
                         }
+                        { 
+                            props.match.params.datatype === dataTypes.icb && <ClinicalGenomics dataset={dataset.data} /> 
+                        }
                     </React.Fragment>
                 </React.Fragment>
             } 
