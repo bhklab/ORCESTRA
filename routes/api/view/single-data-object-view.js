@@ -113,7 +113,6 @@ const get = async (req, res) => {
                 downloadLink: dataObject.info.private ? `${repo.downloadLink}&access_token=${process.env.ZENODO_ACCESS_TOKEN}` : repo.downloadLink,
                 bioComputeObject: repo.bioComputeObject
             }
-
             dataObj.tabData = [];
             dataObj.tabData = await getTabData(dataObject, dataset, filter);
 

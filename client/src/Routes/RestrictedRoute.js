@@ -28,7 +28,7 @@ const RestrictedRoute = ({component: Component, location, computedMatch, type, .
                 params = {
                     datasetType: computedMatch.params.datatype,
                     doi: `${computedMatch.params.id1}/${computedMatch.params.id2}`,
-                    shareToken: location.search.length > 0 ? location.search : null
+                    shareToken: location.search.length > 0 ? location.search.replace('?shared=', '') : null
                 }
                 break;
             case 'dataSubmission':
@@ -37,6 +37,7 @@ const RestrictedRoute = ({component: Component, location, computedMatch, type, .
             default:
                 break;
         }
+        console.log(params)
         const checkPrivate = async () => {
             const res = await axios.get(url, {params: params});
             console.log(res.data);

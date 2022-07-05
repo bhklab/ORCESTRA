@@ -96,7 +96,7 @@ const useSingleDataset = (datasetType, doi) => {
             const res = await axios.get('/api/view/single-data-object', {params: {
                 datasetType: datasetType,
                 doi: doi,
-                share_token: shareToken ? shareToken.replace('?shared=', '') : null
+                shareToken: shareToken ? shareToken.replace('?shared=', '') : null
             }});
             console.log(res.data);
             setDataset({
