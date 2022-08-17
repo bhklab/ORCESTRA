@@ -3,6 +3,7 @@ require('dotenv').config({path: path.join(__dirname, '../../.env')});
 const mongoose = require('mongoose');
 const fs = require('fs');
 const axios = require('axios');
+const converter = require('json-2-csv');
 
 const DatasetNote = require('../models/dataset-note');
 const Dataset = require('../models/dataset');
@@ -17,44 +18,48 @@ const PachydermPipeline = require('../models/pachyderm-pipeline');
         await mongoose.connect(process.env.Prod, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
 
-        let datasets = await Dataset.find({datasetType: 'clinical_icb'});
-        let objInfo = fs.readFileSync('../data/new_obj.json');
-        objInfo = JSON.parse(objInfo);
-        let dataObjects = [];
+        const res = await axios.get('https://www.orcestra.ca/api/clinical_icb/canonical');
+        let objects = res.data.map(item => ({
+            name: item.name,
+            doi: item.doi,
+            downloadLink: item.downloadLink
+        }));
+        converter.json2csv(objects, (err, csv) => {
+            fs.writeFileSync('../data/objects.csv', csv);
+        });
+
+        // const res = await axios.get('http://206.12.96.126/api/data_object/list?status=uploaded');
+        // fs.writeFileSync('../data/snakemake_dataobjects.json', JSON.stringify(res.data.objects, null, 2));
         
-        for(const dataset of datasets){
-            let obj = objInfo.find(item => item.pipeline.name === dataset.name);
-            if(obj){
-                const info = {
-                    date: {created: obj.process_end_date},
-                    status: "complete",
-                    private: true,
-                    canonical: true,
-                    numDownload: 0,
-                    createdBy: "BHK Lab",
-                    other: {
-                        pipeline: {url: obj.pipeline.git_url, commit_id: ""},
-                        additionalRepo: obj.additional_repo
-                    }
-                }
-                dataObjects.push({
-                    info: info,
-                    datasetType: 'clinical_icb',
-                    name: dataset.name,
-                    dataset: dataset._id,
-                    repositories: [
-                        {version: '1.0', doi: obj.doi, downloadLink: obj.download_link}
-                    ],
-                    availableDatatypes: dataset.availableData.map(item => ({name: item.name, genomeType: item.datatype}))
-                })
-            }
-        }
+        // let objects = fs.readFileSync('../data/snakemake_dataobjects.json');
+        // objects = JSON.parse(objects);
 
-        // console.log(dataObjects)
+        // let pipeline_name = 'ICB_VanDenEnde';
+        // let dataobject = await ObjSchema.DataObject.findOne({name: pipeline_name}).lean();
+        // let snakemakeObject = objects.find(item => item.pipeline.name === pipeline_name);
 
-        await ObjSchema.BaseDataObject.insertMany(dataObjects)
-
-        // await ObjSchema.BaseDataObject.deleteMany({datasetType: 'clinical_icb'})
+        // dataobject.info.other.pipeline = {
+        //     url: snakemakeObject.pipeline.git_url,
+        //     commit_id: snakemakeObject.commit_id
+        // };
+        // dataobject.info.other.additionalRepo = snakemakeObject.additional_repo;
+        // dataobject.info.other.rna_ref = 'Gencode v19';
+        // dataobject.repositories = [{
+        //     version: '1.0',
+        //     doi: snakemakeObject.doi,
+        //     downloadLink: snakemakeObject.download_link
+        // }];
+        
+        // await ObjSchema.DataObject.updateOne(
+        //     {name: pipeline_name}, 
+        //     {
+        //         'info.date.created': new Date(Date.now()),
+        //         'info.private': false,
+        //         'info.other': dataobject.info.other,
+        //         repositories: dataobject.repositories 
+        //     }
+        // );
+        
     }catch(err){
         console.log(err);
     }finally{
