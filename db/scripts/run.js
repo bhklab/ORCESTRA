@@ -18,37 +18,27 @@ const PachydermPipeline = require('../models/pachyderm-pipeline');
         await mongoose.connect(process.env.Prod, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
 
-        const res = await axios.get('https://www.orcestra.ca/api/clinical_icb/canonical');
-        let objects = res.data.map(item => ({
-            name: item.name,
-            doi: item.doi,
-            downloadLink: item.downloadLink
-        }));
-        converter.json2csv(objects, (err, csv) => {
-            fs.writeFileSync('../data/objects.csv', csv);
-        });
-
         // const res = await axios.get('http://206.12.96.126/api/data_object/list?status=uploaded');
         // fs.writeFileSync('../data/snakemake_dataobjects.json', JSON.stringify(res.data.objects, null, 2));
         
-        // let objects = fs.readFileSync('../data/snakemake_dataobjects.json');
-        // objects = JSON.parse(objects);
+        let objects = fs.readFileSync('../data/snakemake_dataobjects.json');
+        objects = JSON.parse(objects);
 
-        // let pipeline_name = 'ICB_VanDenEnde';
-        // let dataobject = await ObjSchema.DataObject.findOne({name: pipeline_name}).lean();
-        // let snakemakeObject = objects.find(item => item.pipeline.name === pipeline_name);
+        let pipeline_name = 'ICB_VanDenEnde';
+        let dataobject = await ObjSchema.DataObject.findOne({name: pipeline_name}).lean();
+        let snakemakeObject = objects.find(item => String(item._id) === '62fe5f8704ec1579b615f0dc');
 
-        // dataobject.info.other.pipeline = {
-        //     url: snakemakeObject.pipeline.git_url,
-        //     commit_id: snakemakeObject.commit_id
-        // };
-        // dataobject.info.other.additionalRepo = snakemakeObject.additional_repo;
-        // dataobject.info.other.rna_ref = 'Gencode v19';
-        // dataobject.repositories = [{
-        //     version: '1.0',
-        //     doi: snakemakeObject.doi,
-        //     downloadLink: snakemakeObject.download_link
-        // }];
+        dataobject.info.other.pipeline = {
+            url: snakemakeObject.pipeline.git_url,
+            commit_id: snakemakeObject.commit_id
+        };
+        dataobject.info.other.additionalRepo = snakemakeObject.additional_repo;
+        dataobject.info.other.rna_ref = 'Gencode v19';
+        dataobject.repositories = [{
+            version: '1.0',
+            doi: snakemakeObject.doi,
+            downloadLink: snakemakeObject.download_link
+        }];
         
         // await ObjSchema.DataObject.updateOne(
         //     {name: pipeline_name}, 
