@@ -8,48 +8,52 @@ const converter = require('json-2-csv');
 const DatasetNote = require('../models/dataset-note');
 const Dataset = require('../models/dataset');
 const DataFilter = require('../models/data-filter');
-const ObjSchema = require('../models/data-object');
+const DataObject = require('../models/data-object').DataObject;
 const User = require('../models/user');
 const PachydermPipeline = require('../models/pachyderm-pipeline');
 
 (async () => {
 
+    const gencode = {
+        v40: 'https://github.com/BHKLAB-Pachyderm/Annotations/blob/master/Gencode.v40.annotation.RData',
+        v19: 'https://github.com/BHKLAB-Pachyderm/Annotations/blob/master/Gencode.v19.annotation.RData'
+    }
+
     try{
         await mongoose.connect(process.env.Prod, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
 
-        // const res = await axios.get('http://206.12.96.126/api/data_object/list?status=uploaded');
-        // fs.writeFileSync('../data/snakemake_dataobjects.json', JSON.stringify(res.data.objects, null, 2));
-        
-        let objects = fs.readFileSync('../data/snakemake_dataobjects.json');
-        objects = JSON.parse(objects);
+        let rawseq_available = ['ICB_Gide', 'ICB_Hugo', 'ICB_Jung', 'ICB_Kim', 'ICB_Riaz'];
 
-        let pipeline_name = 'ICB_VanDenEnde';
-        let dataobject = await ObjSchema.DataObject.findOne({name: pipeline_name}).lean();
-        let snakemakeObject = objects.find(item => String(item._id) === '62fe5f8704ec1579b615f0dc');
-
-        dataobject.info.other.pipeline = {
-            url: snakemakeObject.pipeline.git_url,
-            commit_id: snakemakeObject.commit_id
-        };
-        dataobject.info.other.additionalRepo = snakemakeObject.additional_repo;
-        dataobject.info.other.rna_ref = 'Gencode v19';
-        dataobject.repositories = [{
-            version: '1.0',
-            doi: snakemakeObject.doi,
-            downloadLink: snakemakeObject.download_link
-        }];
-        
-        // await ObjSchema.DataObject.updateOne(
-        //     {name: pipeline_name}, 
-        //     {
-        //         'info.date.created': new Date(Date.now()),
-        //         'info.private': false,
-        //         'info.other': dataobject.info.other,
-        //         repositories: dataobject.repositories 
-        //     }
-        // );
-        
+        let objects = await DataObject.find({datasetType: 'clinical_icb', 'info.private': false, 'info.canonical': true}).populate('dataset', {stats: 0}).lean();
+        let output = objects.map(obj => {
+            let repo = obj.repositories[0];
+            return({
+                name: obj.name,
+                doi: repo.doi,
+                download_link: repo.downloadLink,
+                tsv_doi: '10.5281/zenodo.7007756',
+                tsv_download_link: `https://zenodo.org/record/7007756/files/${obj.name}.zip?download=1`,
+                ref_genome: obj.info.other.rna_ref,
+                ref_genome_link: gencode[obj.info.other.rna_ref.split(' ')[1]],
+                raw_seq_available: rawseq_available.includes(obj.name) ? 'Yes' : 'No',
+                expr_gene_tpm: `Yes${rawseq_available.includes(obj.name) ? '' : '(expr)'}`,
+                expr_gene_counts: rawseq_available.includes(obj.name) ? 'Yes' : 'No',
+                expr_isoform_tpm: rawseq_available.includes(obj.name) ? 'Yes' : 'No',
+                expr_isoform_counts: rawseq_available.includes(obj.name) ? 'Yes' : 'No',
+                snv: obj.availableDatatypes.find(item => item.name === 'snv') ? 'Yes' : 'No',
+                cna: obj.availableDatatypes.find(item => item.name === 'cna') ? 'Yes' : 'No',
+                publication_link: obj.dataset.publications[0].link,
+                curaition_pipeline: `${obj.info.other.pipeline.url.replace('.git', '/tree/')}${obj.info.other.pipeline.commit_id}`
+            })
+        });
+        converter.json2csv(output, (err, csv) => {
+            if (err) {
+                throw err;
+            }
+            // print CSV string
+            fs.writeFileSync('../data/dataset_summary.csv', csv);
+        });
     }catch(err){
         console.log(err);
     }finally{
