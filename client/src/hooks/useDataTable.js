@@ -105,12 +105,6 @@ const useDataTable = (datasetType) => {
         );
     }
 
-    const survivalTemplate = (rowData, column) => {
-        return(
-            <div>{rowData.info.other.response ? rowData.info.other.response : 'Not Available'}</div>
-        );
-    }
-
     const privateTemplate = (rowData, column) => (
         <div>{rowData.info.private ? 'Yes' : 'No'}</div>
     );
@@ -124,7 +118,6 @@ const useDataTable = (datasetType) => {
         filteredTemplate,
         canonicalTemplate,
         sensitivityTemplate,
-        survivalTemplate,
         privateTemplate
     };
 

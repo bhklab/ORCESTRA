@@ -23,6 +23,10 @@ const datasetSchema = new Schema({
         data: String,
         version: String
     },
+    survival: {
+        recistCriteria: Boolean,
+        clinicalEndpoints: String
+    },
     availableData: [{
         name: String,
         datatype: String,

@@ -19,8 +19,6 @@ const ClinGenSetTable = (props) => {
         nameColumnTemplate,
         downloadTemplate,
         canonicalTemplate,
-        sensitivityTemplate,
-        survivalTemplate,
         dataTypeTemplate,
     } = useDataTable(props.datasetType);
 
@@ -28,6 +26,18 @@ const ClinGenSetTable = (props) => {
         setState({...state, loading: false});
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const recistTemplate = (rowData, column) => {
+        return(
+            <div>{rowData.dataset.survival.recistCriteria ? 'Available' : 'Not Available'}</div>
+        );
+    };
+
+    const clinEndpointTemplate = (rowData, column) => {
+        return(
+            <div>{rowData.dataset.survival.clinicalEndpoints ? rowData.dataset.survival.clinicalEndpoints : 'Not Available'}</div>
+        );
+    }
 
     return(
         <DataTable 
@@ -44,8 +54,8 @@ const ClinGenSetTable = (props) => {
             {props.authenticated && <Column selectionMode="multiple" style={{width: '30px', textAlign: 'center'}} />}
             <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplate} sortable={true} />
             <Column className='textField' field='dataset.name' header='Dataset' style={{width:'100px'}} sortable={true} />
-            <Column body={sensitivityTemplate} style={{width:'90px'}} header='RECIST Criteria' />
-            {/* <Column body={survivalTemplate} style={{width:'90px'}} header='Clinical Endpoints' /> */}
+            <Column body={recistTemplate} style={{width:'90px'}} header='RECIST Criteria' />
+            <Column body={clinEndpointTemplate} style={{width:'90px'}} header='Clinical Endpoints' />
             <Column field='availableDatatypes' body={dataTypeTemplate} style={{width:'100px'}} header='Molecular Data' />
             <Column field='canonical' body={canonicalTemplate} style={{width:'70px', textAlign: 'center'}} header='Canonical' />
             <Column field='info.numDownload' style={{width:'50px', textAlign: 'center'}} header='Number of Downloads' sortable={true} />

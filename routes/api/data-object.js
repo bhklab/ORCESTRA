@@ -18,7 +18,7 @@ const User = require('../../db/models/user');
     let result = [];
     try{
         let queryObj = await dataObjectHelper.getQuery(req.query);
-        result  = await DataObject.find(queryObj).lean().populate('dataset', 'name version sensitivity');
+        result  = await DataObject.find(queryObj).lean().populate('dataset', 'name version sensitivity survival');
 
         // get the doi and downloadlink for specific data version. Only applicable to PSets. For other datasets, use 1.0.
         result = result.map(obj => {
