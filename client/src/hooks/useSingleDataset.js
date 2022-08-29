@@ -173,7 +173,7 @@ const useSingleDataset = (datasetType, doi) => {
                             disabled={typeof selectedObject === 'undefined'} 
                             datasetType={datasetType} 
                             doi={dataset.data.doi}
-                            downloadLink={typeof selectedObject !== 'undefined' ? selectedObject.value.downloadLink : ''}
+                            downloadLink={typeof selectedObject !== 'undefined' ? selectedObject.value.link : ''}
                             mode='dataset'
                             label='Download Dataset'
                             tooltip={`Download ${dataset.data.name}(${typeof selectedObject !== 'undefined' ? selectedObject.value.name : ''}) as an R object`}
