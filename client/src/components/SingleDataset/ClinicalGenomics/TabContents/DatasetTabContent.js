@@ -2,7 +2,7 @@ import React from 'react';
 import { TabHeader, TabContent, TabContentSection} from '../../SingleDatasetStyle';
 
 const DatasetTabContent = (props) => {
-    const { metadata } = props;
+    const { metadata, info } = props;
     const dataList = (data) => (
         <div>    
         {data && data.length ? 
@@ -75,6 +75,15 @@ const DatasetTabContent = (props) => {
                         <h3>Drug Response Data:</h3>
                         <ul>
                             {drugResponse(metadata.dataset.sensitivity)}
+                        </ul> 
+                    </TabContentSection>
+                }
+                {
+                    info.other && info.other.rna_ref &&
+                    <TabContentSection>
+                        <h3>RNA Reference: </h3>
+                        <ul>
+                            {info.other.rna_ref}
                         </ul> 
                     </TabContentSection>
                 }
