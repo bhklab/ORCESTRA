@@ -7,7 +7,7 @@
     "ajv": "^6.10.2",
     "axios": "^0.21.2",
     "classnames": "^2.2.6",
-    "d3": "^5.14.2",
+    "d3": "^7.6.1",
     "downloadjs": "^1.4.7",
     "js-cookie": "^2.2.1",
     "multiselect-dropdown-react": "^1.0.5",
