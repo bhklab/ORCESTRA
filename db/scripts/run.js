@@ -14,60 +14,53 @@ const PachydermPipeline = require('../models/pachyderm-pipeline');
 
 (async () => {
 
-    const gencode = {
-        v40: 'https://github.com/BHKLAB-Pachyderm/Annotations/blob/master/Gencode.v40.annotation.RData',
-        v19: 'https://github.com/BHKLAB-Pachyderm/Annotations/blob/master/Gencode.v19.annotation.RData'
-    }
-
     try{
         await mongoose.connect(process.env.Prod, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('connection open');
 
-        let datasets = await Dataset.find({datasetType: 'clinical_icb'}).lean();
+        let dataObjects = fs.readFileSync('../data/new-data-objects.json');
+        dataObjects = JSON.parse(dataObjects);
+        let newDataObj = fs.readFileSync('../data/new-data-obj.json');
+        newDataObj = JSON.parse(newDataObj);
 
-        datasets = datasets.map(item => ({
-            ...item,
-            survival: {
-                recistCriteria: true,
-                clinicalEndpoints: 'PFS'
-            }
-        }));
-
-        for(let d of datasets){
-            await Dataset.updateOne({_id: d._id}, {survival: d.survival});
+        for(let obj of dataObjects){
+            let dataset = await Dataset.findOne({name: obj.name});
+            const res = await axios.get(
+                'http://206.12.96.126/api/data_object/list', 
+                {params: {pipeline_name: obj.name, latest: true}}
+            );
+            let pipelineRun = res.data.object;
+            obj.dataset = dataset._id;
+            obj.date_created = pipelineRun.process_end_date;
+            obj.pipeline = {
+                url: pipelineRun.pipeline.git_url,
+                commit_id: pipelineRun.commit_id
+            },
+            obj.repositories = [{
+                version: '1.0',
+                doi: pipelineRun.doi,
+                downloadLink: pipelineRun.download_link
+            }]
         }
-        
-        // let rawseq_available = ['ICB_Gide', 'ICB_Hugo', 'ICB_Jung', 'ICB_Kim', 'ICB_Riaz'];
 
-        // let objects = await DataObject.find({datasetType: 'clinical_icb', 'info.private': false, 'info.canonical': true}).populate('dataset', {stats: 0}).lean();
-        // let output = objects.map(obj => {
-        //     let repo = obj.repositories[0];
-        //     return({
-        //         name: obj.name,
-        //         doi: repo.doi,
-        //         download_link: repo.downloadLink,
-        //         tsv_doi: '10.5281/zenodo.7007756',
-        //         tsv_download_link: `https://zenodo.org/record/7007756/files/${obj.name}.zip?download=1`,
-        //         ref_genome: obj.info.other.rna_ref,
-        //         ref_genome_link: gencode[obj.info.other.rna_ref.split(' ')[1]],
-        //         raw_seq_available: rawseq_available.includes(obj.name) ? 'Yes' : 'No',
-        //         expr_gene_tpm: `Yes${rawseq_available.includes(obj.name) ? '' : '(expr)'}`,
-        //         expr_gene_counts: rawseq_available.includes(obj.name) ? 'Yes' : 'No',
-        //         expr_isoform_tpm: rawseq_available.includes(obj.name) ? 'Yes' : 'No',
-        //         expr_isoform_counts: rawseq_available.includes(obj.name) ? 'Yes' : 'No',
-        //         snv: obj.availableDatatypes.find(item => item.name === 'snv') ? 'Yes' : 'No',
-        //         cna: obj.availableDatatypes.find(item => item.name === 'cna') ? 'Yes' : 'No',
-        //         publication_link: obj.dataset.publications[0].link,
-        //         curaition_pipeline: `${obj.info.other.pipeline.url.replace('.git', '/tree/')}${obj.info.other.pipeline.commit_id}`
-        //     })
-        // });
-        // converter.json2csv(output, (err, csv) => {
-        //     if (err) {
-        //         throw err;
-        //     }
-        //     // print CSV string
-        //     fs.writeFileSync('../data/dataset_summary.csv', csv);
-        // });
+        dataObjects = dataObjects.map(obj => ({
+            ...newDataObj,
+            name: obj.name,
+            dataset: obj.dataset,
+            info: {
+                ...newDataObj.info,
+                date: {
+                    created: obj.date_created
+                },
+                other: {
+                    pipeline: obj.pipeline
+                },
+            },
+            repositories: obj.repositories
+        }));
+        console.log(dataObjects)
+        await DataObject.insertMany(dataObjects);
+
     }catch(err){
         console.log(err);
     }finally{
