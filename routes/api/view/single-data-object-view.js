@@ -141,7 +141,7 @@ const get = async (req, res) => {
 
             // add snakemake pipeline data 
             console.log(dataObject.info.other)
-            if(dataObject.info.other?.pipeline){
+            if(dataObject.info.other && dataObject.info.other.pipeline){
                 dataObj.tabData.push({
                     header: 'Pipeline',
                     data: {
