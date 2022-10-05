@@ -30,8 +30,10 @@ const User = require('../../db/models/user');
                 downloadLink: repo.downloadLink
             });
         });
-        let canonicals = result.filter(item => item.info.canonical).sort((a, b) => a.name.localeCompare(b.name));
-        let noncanonicals = result.filter(item => !item.info.canonical).sort((a, b) => a.name.localeCompare(b.name));
+        let canonicals = result.filter(item => item.info.canonical)
+            .sort((a, b) => b.info.date.created - a.info.date.created || a.name.localeCompare(b.name));
+        let noncanonicals = result.filter(item => !item.info.canonical)
+            .sort((a, b) => b.info.date.created - a.info.date.created || a.name.localeCompare(b.name));
         result = canonicals.concat(noncanonicals);
 
         if(req.query.datasetType === 'pset'){

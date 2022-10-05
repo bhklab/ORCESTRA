@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { TabHeader, TabContent } from '../../SingleDatasetStyle';
 import styled from 'styled-components';
 
@@ -21,7 +21,7 @@ const PipelineTabContent = props => {
     }
 
     return(
-        <React.Fragment>
+        <Fragment>
             <TabHeader>Pipeline Data</TabHeader>
             <TabContent>
                 <PipelineContent>
@@ -32,19 +32,28 @@ const PipelineTabContent = props => {
                     <h3>Commit:</h3>
                     <div><a href={getCommitLink(props.data.pipeline.url, props.data.pipeline.commit_id)}>{props.data.pipeline.commit_id}</a></div>
                 </PipelineContent>
-                <h3>Additional Repositories Used in this Pipeline:</h3>
-                <div className='indent'>
                 {
-                    props.data.additionalRepo.map((repo, i) => (
-                        <PipelineContent key={i}>
-                            <h3>{repo.repo_type}:</h3> 
-                            <div><a href={getCommitLink(repo.git_url, repo.commit_id)}>{getCommitLink(repo.git_url, repo.commit_id)}</a></div>
-                        </PipelineContent>
-                    ))
+                    props.data.additionalRepo.length > 0 &&
+                    <Fragment>
+                        <h3>Additional Repositories Used in this Pipeline:</h3>
+                        <div className='indent'>
+                        {
+                            props.data.additionalRepo.map((repo, i) => (
+                                <PipelineContent key={i}>
+                                    <h3>{repo.repo_type}:</h3> 
+                                    <div>
+                                        <a href={getCommitLink(repo.git_url, repo.commit_id)}>
+                                            {getCommitLink(repo.git_url, repo.commit_id)}
+                                        </a>
+                                    </div>
+                                </PipelineContent>
+                            ))
+                        }
+                        </div>
+                    </Fragment>
                 }
-                </div>
             </TabContent>
-        </React.Fragment> 
+        </Fragment> 
     )
 }
 
