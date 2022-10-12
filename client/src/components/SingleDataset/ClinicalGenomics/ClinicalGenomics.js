@@ -16,7 +16,7 @@ const ClinicalGenomics = (props) => {
                         dataset.tabData.map(td => (
                             <TabPanel key={Math.random()} header={td.header}>
                                 {td.header === 'Disclaimer' && <DisclaimerTabContent notes={td.data} />}
-                                {td.header === 'Dataset' && <DatasetTabContent metadata={td.data} />}
+                                {td.header === 'Dataset' && <DatasetTabContent metadata={td.data} info={dataset.info} />}
                                 {td.header === 'Pipeline' && <PipelineTabContent data={td.data} />}
                                 {td.header === 'Release Notes' && <ReleaseNoteTabContent data={td.data} />}
                             </TabPanel>
