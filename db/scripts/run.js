@@ -20,6 +20,22 @@ const PachydermPipeline = require("../models/pachyderm-pipeline");
     });
     console.log("connection open");
 
+    const res = await axios.get("http://206.12.96.126/api/data_object/list?status=uploaded");
+    let objects = res.data.objects;
+    objects = objects.filter(obj => obj.process_end_date.includes('2022-11-17'))
+    console.log(objects)
+
+    for(const obj of objects){
+      let repositories = [{
+        version: '1.0',
+        doi: obj.doi,
+        downloadLink: obj.download_link
+      }];
+      console.log(repositories)
+      await DataObject.updateOne({name: obj.pipeline.name}, {repositories: repositories});
+    }
+    
+
     // Add new datasets notes
     // let datasetNotes = fs.readFileSync("../data/new-dataset-note.json");
     // datasetNotes = JSON.parse(datasetNotes);
