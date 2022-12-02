@@ -20,21 +20,29 @@ const PachydermPipeline = require("../models/pachyderm-pipeline");
     });
     console.log("connection open");
 
-    const res = await axios.get("http://206.12.96.126/api/data_object/list?status=uploaded");
-    let objects = res.data.objects;
-    objects = objects.filter(obj => obj.process_end_date.includes('2022-11-17'))
-    console.log(objects)
+    // const res = await axios.get(
+    //   "http://206.12.96.126/api/data_object/list?status=uploaded"
+    // );
+    // let objects = res.data.objects;
+    // objects = objects.filter((obj) =>
+    //   obj.process_end_date.includes("2022-12-01")
+    // );
+    // console.log(objects);
 
-    for(const obj of objects){
-      let repositories = [{
-        version: '1.0',
-        doi: obj.doi,
-        downloadLink: obj.download_link
-      }];
-      console.log(repositories)
-      await DataObject.updateOne({name: obj.pipeline.name}, {repositories: repositories});
-    }
-    
+    // for (const obj of objects) {
+    //   let repositories = [
+    //     {
+    //       version: "1.0",
+    //       doi: obj.doi,
+    //       downloadLink: obj.download_link,
+    //     },
+    //   ];
+    //   console.log(repositories);
+    //   await DataObject.updateOne(
+    //     { name: obj.pipeline.name },
+    //     { repositories: repositories }
+    //   );
+    // }
 
     // Add new datasets notes
     // let datasetNotes = fs.readFileSync("../data/new-dataset-note.json");
@@ -54,7 +62,10 @@ const PachydermPipeline = require("../models/pachyderm-pipeline");
     //     name: dataset.name,
     //     publications: dataset.publications,
     //     datasetNote: datasetNote._id,
-    // survival: {}
+    //     survival: {
+    //       recistCriteria: true,
+    //       clinicalEndpoints: "PFS",
+    //     },
     //   });
     // }
     // await Dataset.insertMany(inserted);
@@ -73,17 +84,18 @@ const PachydermPipeline = require("../models/pachyderm-pipeline");
     //   let pipelineRun = res.data.object;
     //   obj.dataset = dataset._id;
     //   obj.date_created = pipelineRun.process_end_date;
-    //   (obj.pipeline = {
+    //   obj.pipeline = {
     //     url: pipelineRun.pipeline.git_url,
     //     commit_id: pipelineRun.commit_id,
-    //   }),
-    //     (obj.repositories = [
-    //       {
-    //         version: "1.0",
-    //         doi: pipelineRun.doi,
-    //         downloadLink: pipelineRun.download_link,
-    //       },
-    //     ]);
+    //   };
+    //   obj.additionalRepo = pipelineRun.additional_repo;
+    //   obj.repositories = [
+    //     {
+    //       version: "1.0",
+    //       doi: pipelineRun.doi,
+    //       downloadLink: pipelineRun.download_link,
+    //     },
+    //   ];
     // }
 
     // dataObjects = dataObjects.map((obj) => ({
@@ -97,12 +109,41 @@ const PachydermPipeline = require("../models/pachyderm-pipeline");
     //     },
     //     other: {
     //       pipeline: obj.pipeline,
+    //       additionalRepo: obj.additionalRepo,
+    //       rna_ref: "Gencode v40",
     //     },
     //   },
     //   repositories: obj.repositories,
+    //   availableDatatypes: obj.availableDatatypes,
     // }));
-    // // console.log(dataObjects);
+    // console.log(dataObjects);
     // await DataObject.insertMany(dataObjects);
+
+    // used to update pipeline version and zenodo repo versions when a data object pipeline is executed with update pipeline.
+    // let objects = await DataObject.find({ datasetType: "clinical_icb" }).lean();
+    // for (let obj of objects) {
+    //   const res = await axios.get("http://206.12.96.126/api/data_object/list", {
+    //     params: { pipeline_name: obj.name, latest: true },
+    //   });
+    //   let pipelineRun = res.data.object;
+    //   obj.info.date.created = pipelineRun.process_end_date;
+    //   obj.info.other.pipeline = {
+    //     url: pipelineRun.pipeline.git_url,
+    //     commit_id: pipelineRun.commit_id,
+    //   };
+    //   obj.info.other.additionalRepo = pipelineRun.additional_repo;
+    //   obj.repositories = [
+    //     {
+    //       version: "1.0",
+    //       doi: pipelineRun.doi,
+    //       downloadLink: pipelineRun.download_link,
+    //     },
+    //   ];
+    //   await DataObject.updateOne(
+    //     { name: obj.name },
+    //     { info: obj.info, repositories: obj.repositories }
+    //   );
+    // }
   } catch (err) {
     console.log(err);
   } finally {
