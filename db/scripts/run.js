@@ -120,7 +120,10 @@ const PachydermPipeline = require("../models/pachyderm-pipeline");
     // await DataObject.insertMany(dataObjects);
 
     // used to update pipeline version and zenodo repo versions when a data object pipeline is executed with update pipeline.
-    // let objects = await DataObject.find({ datasetType: "clinical_icb" }).lean();
+    // let objects = await DataObject.find({
+    //   datasetType: "clinical_icb",
+    //   name: "ICB_Limagne2",
+    // }).lean();
     // for (let obj of objects) {
     //   const res = await axios.get("http://206.12.96.126/api/data_object/list", {
     //     params: { pipeline_name: obj.name, latest: true },
