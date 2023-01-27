@@ -46,7 +46,7 @@
     "req-flash": "0.0.3",
     "request": "^2.88.0",
     "shelljs": "^0.8.2",
-    "simple-git": "^3.4.0",
+    "simple-git": "^3.16.0",
     "uuid": "^3.4.0"
   },
   "devDependencies": {
