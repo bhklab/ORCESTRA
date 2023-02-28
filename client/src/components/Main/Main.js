@@ -130,6 +130,9 @@ const Main = (props) => {
                 <DatatypeBox title='Clinical Genomics Data' datatype={dataTypes.clinicalgenomics} text='GO'  imgWidth='45%'/>
                 <DatatypeBox title='Immune Checkpoint Blockade Data' datatype={dataTypes.icb} text='Go' imgWidth='45%'/>
             </MainStyle.Row>
+            <MainStyle.Row>
+                <DatatypeBox title='Radiomics Data' datatype={dataTypes.radiomics} text='Coming soon' imgWidth='45%' disabled/>
+            </MainStyle.Row>
         </MainStyle.Wrapper>
     );
     
