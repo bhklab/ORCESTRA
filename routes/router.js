@@ -30,6 +30,7 @@ router.get('/view/user/profile/main', auth.verifyToken, profile.get);
 router.get('/view/documentation/example-download/:file', documentation.downloadExampleFile);
 router.get('/view/admin/canonical_psets', auth.verifyToken, auth.isAdmin, admin.canonicalPSets);
 router.get('/view/admin/processed_data_obj', auth.verifyToken, auth.isAdmin, admin.processedDataObjects);
+router.post('/view/admin/upload_data_obj', auth.verifyToken, auth.isAdmin, admin.uploadDataObject);
 
 // data object
 router.get('/data-objects/search', dataObject.search);

@@ -29,15 +29,44 @@ const canonicalPSets = async (req, res) => {
 const processedDataObjects = async (req, res) => {
     let result = [];
     try{
-        const processed = await axios.get(`${process.env.DATA_PROCESSING_URL}data_objects`, {params: req.query});
-        result = processed.data.objects;
+        const processed = await axios.get(`${process.env.DATA_PROCESSING_API}/api/data_object/list`, {params: req.query});
+        const publicObj = await DataObject.find().select('name datasetType repositories');
+        result = processed.data.objects.map(object => {
+            if(object.status === 'uploaded'){
+               const found = publicObj.find(obj => obj.repositories.find(item => item.doi === object.doi));
+               if(found){
+                object.assigned = {
+                    name: found.name,
+                    datasetType: found.datasetType
+                };
+               }
+            }
+            return(object);
+        });
     }catch(error){
         console.log(error);
         res.status(500);
     }finally{
         res.send(result)
     }
+}
 
+const uploadDataObject = async (req, res) => {
+    let result = {};
+    try{
+        console.log(req.body)
+        const res = await axios.post(
+            `${process.env.DATA_PROCESSING_API}/api/data_object/upload`, 
+            req.body,
+            { headers: {'Authorization': process.env.DATA_PROCESSING_TOKEN} }
+        );
+        console.log(res.data);
+    }catch(error){
+        console.log(error);
+        res.status(500);
+    }finally{
+        res.send(result);
+    }
 }
 
 const updateSubmission = async (req, res) => {
@@ -67,6 +96,7 @@ const getSubmissionList = async (req, res) => {
 module.exports = {
     canonicalPSets,
     processedDataObjects,
+    uploadDataObject,
     updateSubmission,
     getSubmissionList
 }

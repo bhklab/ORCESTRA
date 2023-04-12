@@ -19,7 +19,7 @@ const ProcessedDataObjects = () => {
     
     useEffect(() => {
         const getData = async () => {
-            const res = await axios.get('/api/view/admin/processed_data_obj', {params: {status: 'uploaded'}});
+            const res = await axios.get('/api/view/admin/processed_data_obj');
             console.log(res.data)
             setProcessedObjects(res.data);
         }
@@ -27,39 +27,79 @@ const ProcessedDataObjects = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const downloadDataset = (link) => async (event) => {
+    const uploadDataset = (id, depositionId) => async (event) => {
         event.preventDefault();
-        console.log('download dataset');
-        const anchor = document.createElement('a');
-        anchor.setAttribute('download', null);
-        anchor.style.display = 'none';
-        anchor.setAttribute('href', link);
-        document.body.appendChild(anchor);
-        anchor.click();
-        document.body.removeChild(anchor);
+        let body = { data_obj_id: id };
+        if(depositionId){
+            body.deposition_id = depositionId;
+        }
+        const res = await axios.post('/api/view/admin/upload_data_obj', body);
+        console.log(res.data);
     }
 
     const pipelineTemplate = (rowData, column) => (
-        rowData.doi.length > 0 ? 
-        <Link to={`${rowData.git_url.replace('.git', `/tree/${rowData.commit_id}`)}`} target="_blank">{rowData.pipeline_name}</Link>
-        :
-        rowData.name
+        <Link to={`${rowData.pipeline.git_url.replace('.git', `/tree/${rowData.commit_id}`)}`} target="_blank">{rowData.pipeline.name}</Link>
     );
 
     const doiTemplate = (rowData, column) => (
-        rowData.doi.length > 0 ? 
+        rowData.doi ? 
         <Link to={`http://doi.org/${rowData.doi}`} target="_blank">{rowData.doi}</Link>
         :
-        rowData.name
+        ''
     );
 
-    const downloadTemplate = (rowData, column) => {
-        if(rowData.download_link){
+    const filenameTemplate = (rowData, column) => {
+        if(rowData.object_files){
             return(
-                <StyledButton id={rowData._id} onClick={downloadDataset(rowData.downloadLink)} >Download</StyledButton>
-            );
+                <div>
+                    {
+                        rowData.object_files.map((item, i) => (
+                            <div key={i}>{item.filename}</div>
+                        ))
+                    }
+                </div>
+            )
+        }else{
+            return(
+                rowData.pipeline.object_name
+            )
         }
-    };
+    }
+
+    const startDateTimeTemplate = (rowData, column) => (
+        rowData.process_start_date ? rowData.process_start_date.split('.')[0] : ''
+    )
+
+    const endDateTimeTemplate = (rowData, column) => (
+        rowData.process_end_date ? rowData.process_end_date.split('.')[0] : ''
+    )
+
+    const assignedObjTemplate = (rowData, column) => (
+        rowData.assigned ?
+        <Link to={`/${rowData.assigned.datasetType}/${rowData.doi}`} target="_blank">{rowData.assigned.name}</Link>
+        :
+        ''
+    )
+
+    const actionTemplate = (rowData, column) => {
+        let component = ''
+        switch(rowData.status){
+            case 'processing':
+                break;
+            case 'complete':
+                component = <StyledButton onClick={uploadDataset(String(rowData._id))}>Upload</StyledButton>
+                break;
+            case 'uploaded':
+                component = rowData.assigned ? <StyledButton>Un-assign</StyledButton> : <StyledButton>Assign</StyledButton>
+                break;
+            case 'uploading':
+                component = 'Uploading';
+                break;
+            default:
+                break;
+        }
+        return(component)
+    }
 
     return(
         <React.Fragment>
@@ -67,19 +107,20 @@ const ProcessedDataObjects = () => {
             <DataTable 
                 value={processedObjects} 
                 paginator={true} 
-                rows={25} 
+                rows={30} 
                 resizableColumns={true} 
                 columnResizeMode="fit"
                 scrollable={true} 
-                scrollHeight={"600px"}
+                scrollHeight={"1000px"}
             >
-                <Column className='textField' field='pipeline_name' header='Pipeline' style={{width:'100px'}} body={pipelineTemplate} sortable={true} />
-                <Column className='textField' field='filename' header='filename' style={{width:'100px'}} sortable={true} />
-                <Column className='textField' field='doi' header='DOI'  body={doiTemplate} />
-                <Column field='process_start_date' header='Start' />
-                <Column field='process_end_date' header='End' />
-                <Column field='downloadLink' body={downloadTemplate} style={{width:'90px', textAlign: 'center'}} header='Download' /> 
-                <Column field='' header='Assigned Data Object' />
+                <Column className='textField' header='Pipeline' style={{width:'200px'}} body={pipelineTemplate} />
+                <Column className='textField' field='status' header='Status' style={{width:'100px'}} />
+                <Column className='textField' header='Filename' style={{width:'200px'}} body={filenameTemplate}/>
+                <Column className='textField' header='DOI' style={{width:'200px'}} body={doiTemplate} />
+                <Column field='process_start_date' header='Start' style={{width:'150px'}} body={startDateTimeTemplate} />
+                <Column field='process_end_date' header='End' style={{width:'150px'}} body={endDateTimeTemplate} />
+                <Column header='Assigned Data Object' style={{width: '300px'}} body={assignedObjTemplate} />
+                <Column header='Action' body={actionTemplate} style={{width:'100px'}} />
             </DataTable>
         </React.Fragment>
     );
