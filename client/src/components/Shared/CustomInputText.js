@@ -8,7 +8,7 @@ const Container = styled.div`
     width: 100%;
     font-size: 12px; 
     label {
-        width: 100px;
+        white-space: nowrap;
         margin-right: 10px;
     }
 `;

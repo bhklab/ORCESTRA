@@ -4,6 +4,8 @@ import { Messages } from 'primereact/messages';
 import styled from 'styled-components';
 import StyledPage from '../../styles/StyledPage';
 import CanonicalPSetManager from './CanonicalPSetManager';
+import CreatePipeline from './CreatePipeline';
+import RunPipeline from './RunPipeline';
 import ProcessedDataObjects from './ProcessedDataObjects';
 import DataSubmissionManager from './DataSubmissionManager';
 
@@ -35,12 +37,12 @@ const TabNavigation = styled.div`
 `;
 
 const Admin = () => {
-    const [selectedMenu, setSelectedMenu] = useState('canonical-psets');
+    const [selectedMenu, setSelectedMenu] = useState('run-pipeline');
     
     return(
         <StyledPage>
             <Container>
-                <div className='title'>Administrator's Menu</div>
+                <div className='title'>Admin Menu</div>
                 <Messages ref={(el) => Admin.messages = el} />
                 <TabNavigation>
                     <span 
@@ -50,10 +52,22 @@ const Admin = () => {
                         Canonical PSets
                     </span>
                     <span 
+                        className={`nav-item ${selectedMenu === 'create-pipeline' ? 'active' : ''}`} 
+                        onClick={(e) => {setSelectedMenu('create-pipeline')}}
+                    >
+                        Create a Pipeline
+                    </span>
+                    <span 
+                        className={`nav-item ${selectedMenu === 'run-pipeline' ? 'active' : ''}`} 
+                        onClick={(e) => {setSelectedMenu('run-pipeline')}}
+                    >
+                        Run a Pipeline
+                    </span>
+                    <span 
                         className={`nav-item ${selectedMenu === 'processed-data-obj' ? 'active' : ''}`}
                         onClick={(e) => {setSelectedMenu('processed-data-obj')}}
                     >
-                        Processed Data Objects
+                        Data Objects
                     </span>
                     <span 
                         className={`nav-item ${selectedMenu === 'data-submissions' ? 'active' : ''}`}
@@ -64,6 +78,12 @@ const Admin = () => {
                 </TabNavigation>
                 {
                     selectedMenu === 'canonical-psets' && <CanonicalPSetManager />
+                }
+                {
+                    selectedMenu === 'create-pipeline' && <CreatePipeline />
+                }
+                {
+                    selectedMenu === 'run-pipeline' && <RunPipeline />
                 }
                 {
                     selectedMenu === 'processed-data-obj' && <ProcessedDataObjects />
