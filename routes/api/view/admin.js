@@ -74,6 +74,42 @@ const createPipeline = async (req, res) => {
     }
 }
 
+const getPipelines = async (req, res) => {
+    let result = [];
+    try{
+        const res = await axios.get(`${process.env.DATA_PROCESSING_API}/api/pipeline/list`);
+        result = res.data.pipelines;
+        result.sort((a, b) => a.name.localeCompare(b.name));
+    }catch(error){
+        console.log(error);
+        res.status(500);
+    }finally{
+        res.send(result)
+    }
+}
+
+const runPipeline = async (req, res) => {
+    let result = {};
+    try{
+        let pipeline = req.body;
+        console.log(pipeline);
+        pipeline.preserved_data = pipeline.preserved_data.filter(data => data.length > 0);
+        const res = await axios.post(
+            `${process.env.DATA_PROCESSING_API}/api/pipeline/run`,
+            pipeline,
+            { headers: {'Authorization': process.env.DATA_PROCESSING_TOKEN} }
+        );
+        console.log(res.data);
+        result.status = res.data.status;
+        result.message = res.data.message;
+    }catch(error){
+        console.log(error);
+        res.status(500);
+    }finally{
+        res.send(result)
+    }
+}
+
 const processedDataObjects = async (req, res) => {
     let result = [];
     try{
@@ -133,6 +169,8 @@ const getSubmissionList = async (req, res) => {
 module.exports = {
     canonicalPSets,
     createPipeline,
+    getPipelines,
+    runPipeline,
     processedDataObjects,
     uploadDataObject,
     updateSubmission,
