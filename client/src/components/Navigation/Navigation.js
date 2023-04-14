@@ -4,13 +4,13 @@ import {Button} from 'primereact/button';
 
 import { PathContext, AuthContext } from '../../hooks/Context';
 import useAuth from '../../hooks/useAuth';
-import { StyledHeader, NavigationWrapper, BurgerNav, PachydermStatus } from './StyledNavigation';
+import { StyledHeader, NavigationWrapper, BurgerNav } from './StyledNavigation';
 import { slide as Menu } from 'react-burger-menu';
 import {withRouter} from 'react-router';
 import {dataTypes} from '../Shared/Enums';
 
 const Navigation = (props) => {
-    const { location, history, isPachydermOnline } = props;
+    const { location, history } = props;
     const path = useContext(PathContext);
     const auth = useContext(AuthContext);
     const { logoutUser } = useAuth();
@@ -94,10 +94,6 @@ const Navigation = (props) => {
                         label={auth.user ? 'Logout' : 'Login/Register'} 
                         onClick={auth.user ? onLogoutClick : onLoginClick}
                     /> 
-                    <PachydermStatus className='status' isOnline={isPachydermOnline}>
-                        <div className='icon'><i className={`pi ${ isPachydermOnline ? 'pi-check' : 'pi-ban'}`}></i></div>
-                        <div className='text'>Pachyderm is <br />{isPachydermOnline ? 'online' : 'offline'}</div>
-                    </PachydermStatus> 
                     {
                         auth.user ? <div className='loggedIn'>{`Logged in as: ${auth.user.username}`}</div> : ''
                     }  
@@ -122,10 +118,6 @@ const Navigation = (props) => {
                         label={auth.user ? 'Logout' : 'Login/Register'} 
                         onClick={auth.user ? onLogoutClick : onLoginClick}
                     />
-                    <PachydermStatus className='status' isOnline={isPachydermOnline}>
-                        <div className='icon'><i className={`pi ${ isPachydermOnline ? 'pi-check' : 'pi-ban'}`}></i></div>
-                        <div className='text'>Pachyderm is <br />{isPachydermOnline ? 'online' : 'offline'}</div>
-                    </PachydermStatus> 
                 </Menu>
             </BurgerNav> 
         </StyledHeader>

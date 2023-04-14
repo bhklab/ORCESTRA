@@ -57,19 +57,6 @@ router.post('/user/reset', auth.verifyToken, user.resetPwd);
 // user-dataset routes
 router.post('/user/dataset/add', auth.verifyToken, userDataObject.add);
 router.post('/user/dataset/remove', auth.verifyToken, userDataObject.remove);
-// router.post('/user/dataset/submit', auth.verifyToken, userDataset.submitDataset);
-// router.get('/user/dataset/submit/check_private/:id', auth.verifyToken, userDataset.check_access, userDataset.authorize);
-// router.get('/user/dataset/submitted/:id', auth.verifyToken, userDataset.check_access, userDataset.getSubmittedData);
-
-// admin routes
-// router.post('/admin/submission/complete/:id', auth.verifyToken, auth.isAdmin, admin.updateSubmission);
-// router.get('/admin/submission/list', auth.verifyToken, auth.isAdmin, admin.getSubmissionList);
-
-// data object requests: to be replaced with new data processing layer API.
-// router.get('/pachyderm/status', pachyderm.returnStatus);
-// router.post('/pset/request', psetRequest.processOnlineRequest);
-// router.post('/pset/process', psetRequest.processOfflineRequest);
-// router.post('/pset/complete', psetRequest.completeRequest);
 
 //public api
 router.get('/:datasetType/:filter', public.getDatasets);
