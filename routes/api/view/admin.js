@@ -59,6 +59,10 @@ const createPipeline = async (req, res) => {
             }
         }
         pipeline.additional_parameters = additionalParams;
+        pipeline.object_names = pipeline.object_names.filter(name => name.length > 0);
+        if(pipeline.object_names.length === 0){
+            pipeline.object_names = null;
+        }
         const res = await axios.post(
             `${process.env.DATA_PROCESSING_API}/api/pipeline/create`, 
             pipeline,

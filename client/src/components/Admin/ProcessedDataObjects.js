@@ -91,7 +91,7 @@ const ProcessedDataObjects = () => {
 
     const doiTemplate = (rowData, column) => (
         rowData.doi ? 
-        <Link to={`http://doi.org/${rowData.doi}`} target="_blank">{rowData.doi}</Link>
+        <a href={`http://doi.org/${rowData.doi}`} target="_blank">{rowData.doi}</a>
         :
         ''
     );
