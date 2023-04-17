@@ -37,7 +37,7 @@ const TabNavigation = styled.div`
 `;
 
 const Admin = () => {
-    const [selectedMenu, setSelectedMenu] = useState('run-pipeline');
+    const [selectedMenu, setSelectedMenu] = useState('processed-data-obj');
     
     return(
         <StyledPage>

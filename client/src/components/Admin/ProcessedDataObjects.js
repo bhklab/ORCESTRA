@@ -6,6 +6,7 @@ import { DataTable } from 'primereact/datatable';
 import CustomMessages from '../Shared/CustomMessages';
 import { Column } from 'primereact/column';
 import Loader from 'react-loader-spinner';
+import { Dialog } from 'primereact/dialog';
 
 const StyledButton = styled.button`
     font-size: 11px;
@@ -46,7 +47,9 @@ const ProcessedDataObjects = () => {
     const [loading, setLoading] = useState(true);
     const [showMsg, setShowMsg] = useState(false);
     const [submitMessage, setSubmitMessage] = useState({});
-    
+    const [selectedObject, setSelectedObject] = useState(null);
+    const [showObjectDialog, setShowObjectDialog] = useState(false);
+     
     useEffect(() => {
         const getData = async () => {
             const res = await axios.get('/api/view/admin/processed_data_obj');
@@ -83,7 +86,7 @@ const ProcessedDataObjects = () => {
     }
 
     const pipelineTemplate = (rowData, column) => (
-        <Link to={`${rowData.pipeline.git_url.replace('.git', `/tree/${rowData.commit_id}`)}`} target="_blank">{rowData.pipeline.name}</Link>
+        <a href={`${rowData.pipeline.git_url.replace('.git', `/tree/${rowData.commit_id}`)}`} target="_blank">{rowData.pipeline.name}</a>
     );
 
     const doiTemplate = (rowData, column) => (
@@ -92,6 +95,20 @@ const ProcessedDataObjects = () => {
         :
         ''
     );
+
+    const objectIdTemplate = (rowData, column) => {
+        const onClick = (e) => {
+            e.preventDefault();
+            const found = processedObjects.find(obj => String(obj._id) === String(rowData._id));
+            if(found){
+                setSelectedObject(found);
+                setShowObjectDialog(true);
+            }
+        }
+        return(
+            <StyledButton onClick={onClick}>{rowData._id}</StyledButton>
+        )
+    }
 
     const filenameTemplate = (rowData, column) => {
         if(rowData.object_files){
@@ -169,16 +186,31 @@ const ProcessedDataObjects = () => {
                     scrollHeight={"1000px"}
                 >
                     <Column className='textField' header='Pipeline' style={{width:'200px'}} body={pipelineTemplate} />
-                    <Column className='textField' field='status' header='Status' style={{width:'100px'}} />
-                    <Column className='textField' header='Filename' style={{width:'200px'}} body={filenameTemplate}/>
-                    <Column className='textField' header='DOI' style={{width:'200px'}} body={doiTemplate} />
+                    <Column className='textField' field='status' header='Status' style={{width:'80px'}} />
+                    <Column className='textField' field='_id' header='Object ID' style={{width:'150px'}} body={objectIdTemplate} />
+                    <Column className='textField' header='Filename(s)' style={{width:'180px'}} body={filenameTemplate} />
+                    <Column className='textField' header='DOI' style={{width:'150px'}} body={doiTemplate} />
                     <Column field='process_start_date' header='Start' style={{width:'150px'}} body={startDateTimeTemplate} />
                     <Column field='process_end_date' header='End' style={{width:'150px'}} body={endDateTimeTemplate} />
-                    <Column header='Assigned Data Object' style={{width: '300px'}} body={assignedObjTemplate} />
+                    <Column header='Assigned Data Object' style={{width: '200px'}} body={assignedObjTemplate} />
                     <Column header='Action' body={actionTemplate} style={{width:'100px'}} />
                 </DataTable>
             } 
-            </div>      
+            </div>  
+            {
+                selectedObject &&
+                <Dialog 
+                    header={`Pipeline configuration for Object: ${selectedObject._id}`} 
+                    visible={showObjectDialog} 
+                    modal 
+                    onHide={(e) => {
+                        setShowObjectDialog(false);
+                        setSelectedObject(null);
+                    }}
+                >
+                    <pre>{JSON.stringify(selectedObject, null, 2)}</pre>
+                </Dialog> 
+            }
         </React.Fragment>
     );
 }
