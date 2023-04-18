@@ -8,6 +8,7 @@ const CheckBoxContainer = styled.div`
     margin-bottom: 30px;
     .label{
         margin-right: 10px;
+        font-size: 14px;
     }
 `
 

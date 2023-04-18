@@ -152,7 +152,7 @@ const ProcessedDataObjects = () => {
                 component = <StyledButton onClick={uploadDataset(String(rowData._id))}>Upload</StyledButton>
                 break;
             case 'uploaded':
-                component = rowData.assigned ? <StyledButton>Un-assign</StyledButton> : <StyledButton>Assign</StyledButton>
+                component = ''
                 break;
             case 'uploading':
                 component = 'Uploading';

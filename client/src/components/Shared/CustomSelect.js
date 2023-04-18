@@ -10,6 +10,7 @@ const FilterSet = styled.div`
     // margin-bottom: 20px;
     label {
         margin-right: 10px;
+        font-size: 14px;
     }
     .dropdown {
         flex-grow: 1;

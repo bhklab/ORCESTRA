@@ -6,7 +6,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
-    font-size: 12px; 
+    font-size: 14px; 
     label {
         white-space: nowrap;
         margin-right: 10px;

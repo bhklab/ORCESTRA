@@ -29,9 +29,6 @@ export const NavigationWrapper = styled.div`
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        .button {
-            margin-right: 10px;
-        }
         .loggedIn{
             position: absolute;
             right: 0;

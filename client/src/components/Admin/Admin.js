@@ -8,6 +8,7 @@ import CreatePipeline from './CreatePipeline';
 import RunPipeline from './RunPipeline';
 import ProcessedDataObjects from './ProcessedDataObjects';
 import DataSubmissionManager from './DataSubmissionManager';
+import AddNewObject from './AddNewObject';
 
 const Container = styled.div`
     .title {
@@ -37,7 +38,7 @@ const TabNavigation = styled.div`
 `;
 
 const Admin = () => {
-    const [selectedMenu, setSelectedMenu] = useState('create-pipeline');
+    const [selectedMenu, setSelectedMenu] = useState('add-new-object');
     
     return(
         <StyledPage>
@@ -70,6 +71,12 @@ const Admin = () => {
                         Data Objects
                     </span>
                     <span 
+                        className={`nav-item ${selectedMenu === 'add-new-object' ? 'active' : ''}`}
+                        onClick={(e) => {setSelectedMenu('add-new-object')}}
+                    >
+                        Add New Data Object
+                    </span>
+                    <span 
                         className={`nav-item ${selectedMenu === 'data-submissions' ? 'active' : ''}`}
                         onClick={(e) => {setSelectedMenu('data-submissions')}}
                     >
@@ -90,6 +97,9 @@ const Admin = () => {
                 }
                 {
                     selectedMenu === 'data-submissions' && <DataSubmissionManager />
+                }
+                {
+                    selectedMenu === 'add-new-object' && <AddNewObject />
                 }
             </Container>
         </StyledPage>
