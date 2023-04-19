@@ -35,6 +35,7 @@ router.get('/view/admin/pipelines', auth.verifyToken, auth.isAdmin, admin.getPip
 router.post('/admin/data-processing/create-pipeline', auth.verifyToken, auth.isAdmin, admin.createPipeline);
 router.post('/admin/data-processing/run-pipeline', auth.verifyToken, auth.isAdmin, admin.runPipeline);
 router.post('/admin/data-processing/upload_data_obj', auth.verifyToken, auth.isAdmin, admin.uploadDataObject);
+router.post('/admin/data-processing/submit_obj', auth.verifyToken, auth.isAdmin, admin.submitObject);
 
 // data object
 router.get('/data-objects/search', dataObject.search);

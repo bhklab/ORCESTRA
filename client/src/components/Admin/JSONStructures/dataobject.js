@@ -1,9 +1,7 @@
 export const baseDataObject = {
   info: {
     date: {
-      created: {
-        $date: "2023-00-00T00:00:00.000Z"
-      }
+      created: ""
     },
     status: "complete",
     private: false,
@@ -37,9 +35,7 @@ export const baseDataObject = {
   dataObjType: "BaseDataObject",
   datasetType: "",
   name: "",
-  dataset: {
-    $oid: ""
-  },
+  dataset: "",
   repositories: [
     {
       version: "1.0",
@@ -58,9 +54,7 @@ export const baseDataObject = {
 export const genomeDataObject = {
   info: {
     date: {
-      created: {
-        $date: "2023-00-00T00:00:00.000Z"
-      }
+      created: ""
     },
     status: "complete",
     private: false,
@@ -95,9 +89,7 @@ export const genomeDataObject = {
   dataObjType: "GenomeDataObject",
   datasetType: "",
   name: "",
-  dataset: {
-    $oid: ""
-  },
+  dataset: "",
   repositories: [
     {
       version: "3.13",

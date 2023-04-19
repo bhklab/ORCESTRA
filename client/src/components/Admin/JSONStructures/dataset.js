@@ -68,9 +68,7 @@ export const psetDataset = {
       options: []
     }
   ],
-  datasetNote: {
-    $oid: ""
-  },
+  datasetNote: "",
   releaseNotes: {
     counts: [
       {
@@ -103,7 +101,6 @@ export const psetDataset = {
   },
   info: {
     includedData: "sensitivity",
-    pachydermPipeline: "getGDSCv1"
   }
 }
 
@@ -133,9 +130,7 @@ export const genericDataset = {
       options: []
     }
   ],
-  datasetNote: {
-    $oid: ""
-  },
+  datasetNote: "",
   releaseNotes: {
     counts: [
       {
@@ -188,9 +183,7 @@ export const clinicalDataset = {
       options: []
     }
   ],
-  datasetNote: {
-    $oid: ""
-  },
+  datasetNote: "",
   status: {
     unavailable: false,
     disabled: false,

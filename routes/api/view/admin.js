@@ -1,5 +1,7 @@
 const axios = require('axios');
 const DataObject = require('../../../db/models/data-object').DataObject;
+const DatasetNote = require('../../../db/models/dataset-note');
+const Dataset = require('../../../db/models/dataset');
 const dataObjectHelper = require('../../../helper/data-object');
 const timers = require('timers/promises');
 
@@ -146,29 +148,36 @@ const uploadDataObject = async (req, res) => {
     }
 }
 
-const updateSubmission = async (req, res) => {
-    // console.log(req.params.id);
-    // try{
-    //     await dataSubmission.updateOne({_id: mongo.ObjectID(req.params.id)}, {'info.status': 'complete'});
-    // }catch(error){
-    //     console.log(error);
-    //     res.status(500);
-    // }finally{
-    //     res.send();
-    // }
+const submitObject = async (req, res) => {
+    let result = null;
+    try{
+        let objectType = req.body.objectType;
+        let object = JSON.parse(req.body.object.text);
+        switch(objectType){
+            case 'datasetNote':
+                let note = new DatasetNote(object);
+                result = await note.save();
+                break;
+            case 'dataset':
+                let dataset = new Dataset(object);
+                result = await dataset.save();
+                break;
+            case 'dataObj':
+                let dataObj = new DataObject(object);
+                result = await dataObj.save();
+                break;
+            default:
+                break;
+        }
+    }catch(error){
+        console.log(error);
+        res.status(500);
+    }finally{
+        res.send(result)
+    }
 }
 
-const getSubmissionList = async (req, res) => {
-    // let data = []
-    // try{
-    //     data = await dataSubmission.list({}, {'projection': {'info': true}});
-    // }catch(error){
-    //     console.log(error);
-    //     res.status(500);
-    // }finally{
-    //     res.send(data);
-    // }
-}
+
 
 module.exports = {
     canonicalPSets,
@@ -177,6 +186,5 @@ module.exports = {
     runPipeline,
     processedDataObjects,
     uploadDataObject,
-    updateSubmission,
-    getSubmissionList
+    submitObject
 }
