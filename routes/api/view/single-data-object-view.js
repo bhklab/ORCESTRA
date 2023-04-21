@@ -155,7 +155,7 @@ const get = async (req, res) => {
       dataObj.tabData = await getTabData(dataObject, dataset, filter);
 
       // add pachyderm pipeline config json: to be replaced with the new data processing layer API data.
-      if (req.query.datasetType === enums.dataTypes.pharmacogenomics) {
+      if (req.query.datasetType === enums.dataTypes.pharmacogenomics && !dataObject.info.other) {
         const pipelines = await PachydermPipeline.find();
         console.log(dataObject._id.toString());
         let found = pipelines.find(
@@ -172,6 +172,7 @@ const get = async (req, res) => {
         } else {
           pipelineConfig = found ? found.data.config : null;
         }
+        
         if (pipelineConfig) {
           dataObj.tabData.push({
             header: "Pipeline",
@@ -184,7 +185,6 @@ const get = async (req, res) => {
       }
 
       // add snakemake pipeline data
-      console.log(dataObject.info.other);
       if (dataObject.info.other && dataObject.info.other.pipeline) {
         dataObj.tabData.push({
           header: "Pipeline",

@@ -2,9 +2,9 @@ import React from "react";
 import { TabView, TabPanel } from "primereact/tabview";
 import DisclaimerTabContent from "../PSet/TabContents/DisclaimerTabContent";
 import DatasetTabContent from "./TabContents/DatasetTabContent";
-import PipelineTabContent from "./TabContents/PipelineTabContent";
 import ReleaseNoteTabContent from "./TabContents/ReleaseNoteTabContent";
 import { TabContainer } from "../SingleDatasetStyle";
+import SnakemakePipelineTabContent from "../SubComponents/SnakemakePipelineTabContent";
 
 const ClinicalGenomics = (props) => {
   const { dataset } = props;
@@ -21,7 +21,7 @@ const ClinicalGenomics = (props) => {
                 <DatasetTabContent metadata={td.data} info={dataset.info} />
               )}
               {td.header === "Pipeline" && (
-                <PipelineTabContent data={td.data} />
+                <SnakemakePipelineTabContent data={td.data} />
               )}
               {td.header === "Release Notes" && (
                 <ReleaseNoteTabContent data={td.data} />

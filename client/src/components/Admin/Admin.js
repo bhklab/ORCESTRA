@@ -38,7 +38,7 @@ const TabNavigation = styled.div`
 `;
 
 const Admin = () => {
-    const [selectedMenu, setSelectedMenu] = useState('add-new-object');
+    const [selectedMenu, setSelectedMenu] = useState('create-pipeline');
     
     return(
         <StyledPage>
