@@ -3,7 +3,6 @@ const DataObject = require('../../../db/models/data-object').DataObject;
 const DatasetNote = require('../../../db/models/dataset-note');
 const Dataset = require('../../../db/models/dataset');
 const dataObjectHelper = require('../../../helper/data-object');
-const timers = require('timers/promises');
 
 const getDataObjects = async (query) => {
     let result = [];
