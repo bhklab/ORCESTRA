@@ -53,7 +53,19 @@ const getDatasets = async (req, res) => {
             }
 
             let dataObjects = await DataObject.find(filter).populate('dataset', {stats: 0}).lean();
-            results = dataObjects.map(obj => parseDataObject(obj, repoVersion)); 
+            dataObjects = dataObjects.map(obj => parseDataObject(obj, repoVersion)); 
+            for(let obj of dataObjects){
+                if(Array.isArray(obj.downloadLink)){
+                    let objects = obj.downloadLink.map(link => ({
+                        ...obj,
+                        name: link.name,
+                        downloadLink: link.link
+                    }));
+                    results = results.concat(objects);
+                }else{
+                    results.push(obj)
+                }
+            }
         }else{
             results = `Please use the correct dataset type. It should be one of [
                 ${dataTypes.map(type => type === 'clinicalgenomics' ? type : type.concat('s')).join(', ')}
