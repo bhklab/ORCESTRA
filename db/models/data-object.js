@@ -49,11 +49,15 @@ const dataObjectSchema = new Schema(
 
 const DataObject = mongoose.model("DataObject", dataObjectSchema);
 
+// Data objects without genome tools and references.
+// Currently used to represent ToxicoSets, XevaSets, ClinicalGenomics and ICB data objects
 const BaseDataObject = DataObject.discriminator(
     'BaseDataObject',
     new Schema()
 );
 
+// Data objects without genome tools and references.
+// Currently used to represent PSets and RadioSets.
 const GenomeDataObject = DataObject.discriminator(
     'GenomeDataObject',
     new Schema(
