@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 import './styles/prime-style.css';
 import GlobalStyles from './styles/GlobalStyles';
 import Router from './Routes/Router';
@@ -8,8 +8,11 @@ const App = () => {
 	
 	// Google Analytics set up
 	useEffect(() => {
-		ReactGA.initialize('UA-102362625-2')
-		ReactGA.pageview(window.location.pathname + window.location.search)
+		ReactGA.initialize('G-EVTHFJT6FE')
+		ReactGA.send({
+      hitType: "pageview", 
+      path: window.location.pathname + window.location.search
+    });
 	}, [])
 	
 	return (

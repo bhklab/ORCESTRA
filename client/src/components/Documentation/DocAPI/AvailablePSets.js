@@ -20,7 +20,7 @@ const AvailablePSets = () => {
             <p>
                 This RESTful API call restrieves a list of available datasets in the database:<br />
                 <code className='code'>curl http://api.orcestra.ca/[dataset type]/[dataset classification]</code> or,<br />
-                <code className='code'>curl https://www.orcestra.ca/[dataset type]/[dataset classification]</code><br />
+                <code className='code'>curl https://www.orcestra.ca/api/[dataset type]/[dataset classification]</code><br />
                 Input Parameters:<br />
                 <div className='code'>
                     <b>Dataset Type:</b> Accepts one of <code>psets</code>, <code>toxicosets</code>, <code>xevasets</code>, <code>clinicalgenomics</code>, and <code>radiosets</code>. <br />

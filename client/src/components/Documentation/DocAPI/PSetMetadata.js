@@ -20,7 +20,7 @@ const PSetMetadata = () => {
             <p>
                 This RESTful API call restrieves a dataset associated with specified DOI:<br /> 
                 <code className='code'>curl http://api.orcestra.ca/[dataset type]/[ DOI ]</code> or,<br />
-                <code className='code'>curl https://wwww.orcestra.ca/[dataset type]/[ DOI ]</code><br />
+                <code className='code'>curl https://wwww.orcestra.ca/api/[dataset type]/[ DOI ]</code><br />
                 Input Parameters:<br />
                 <div className='code'>
                     <b>Dataset Type:</b> Accepts one of <code>pset</code>, <code>toxicoset</code>, <code>xevaset</code>, <code>clinicalgenomics</code>, and <code>radioset</code>. <br />
