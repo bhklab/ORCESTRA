@@ -10,7 +10,7 @@ const StyledFooter = styled.div`
     bottom: 0%;
     width: 100%;
     background-color: rgb(255,255,255, 0.7);
-    height: 150px;
+    height: 200px;
     font-size: calc(0.7em + 0.2vw);
     padding: 10px 0;
     display: flex;
@@ -75,7 +75,8 @@ const Footer = () => {
                             <NavLink exact to={`/${dataTypes.pharmacogenomics}`} onClick={() => {path.setDatatype(dataTypes.pharmacogenomics)}}>Pharmacogenomics Data</NavLink>
                             <NavLink exact to={`/${dataTypes.toxicogenomics}`} onClick={() => {path.setDatatype(dataTypes.toxicogenomics)}}>Toxicogenomics Data</NavLink>
                             <NavLink exact to={`/${dataTypes.xenographic}`} onClick={() => {path.setDatatype(dataTypes.xenographic)}}>Xenographic Pharmacogenomics Data</NavLink>
-                            <div>Clinical Genomics Data (Coming soon)</div>
+                            <NavLink exact to={`/${dataTypes.clinicalgenomics}`} onClick={() => {path.setDatatype(dataTypes.clinicalgenomics)}}>Clinical Genomics Data</NavLink>
+                            <NavLink exact to={`/${dataTypes.icb}`} onClick={() => {path.setDatatype(dataTypes.icb)}}>Immune Checkpoint Blockade Data</NavLink>
                             <div>Radiogenomics Data (Coming soon)</div>
                         </React.Fragment>
                         :
@@ -98,7 +99,7 @@ const Footer = () => {
                     }
                     <a href="https://github.com/bhklab">GitHub</a>
                     <a href="https://bhklab.ca/">BHKLab</a>
-                    <div>support@orcestra.ca</div>
+                    <a href='mailto: support@orcestra.ca'>support@orcestra.ca</a>
                 </div>
                 <div className="footerContact">
                     <h3>BHKLab</h3>
