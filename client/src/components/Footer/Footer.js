@@ -10,7 +10,7 @@ const StyledFooter = styled.div`
     bottom: 0%;
     width: 100%;
     background-color: rgb(255,255,255, 0.7);
-    height: 200px;
+    height: 220px;
     font-size: calc(0.7em + 0.2vw);
     padding: 10px 0;
     display: flex;
@@ -77,7 +77,8 @@ const Footer = () => {
                             <NavLink exact to={`/${dataTypes.xenographic}`} onClick={() => {path.setDatatype(dataTypes.xenographic)}}>Xenographic Pharmacogenomics Data</NavLink>
                             <NavLink exact to={`/${dataTypes.clinicalgenomics}`} onClick={() => {path.setDatatype(dataTypes.clinicalgenomics)}}>Clinical Genomics Data</NavLink>
                             <NavLink exact to={`/${dataTypes.icb}`} onClick={() => {path.setDatatype(dataTypes.icb)}}>Immune Checkpoint Blockade Data</NavLink>
-                            <div>Radiogenomics Data (Coming soon)</div>
+							<NavLink exact to={`/${dataTypes.radiogenomics}`} onClick={() => {path.setDatatype(dataTypes.radiogenomics)}}>Radiogenomics Data</NavLink>
+							<NavLink exact to={`/${dataTypes.radiomics}`} onClick={() => {path.setDatatype(dataTypes.radiomics)}}>Radiomics Data</NavLink>
                         </React.Fragment>
                         :
                         <React.Fragment>

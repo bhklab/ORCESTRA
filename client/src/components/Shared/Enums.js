@@ -4,6 +4,6 @@ export const dataTypes = {
     xenographic: 'xevaset',
     clinicalgenomics: 'clinicalgenomics',
     radiogenomics: 'radioset',
-    radiomics: 'radiomics',
+    radiomics: 'radiomicset',
     icb: 'clinical_icb'
 }

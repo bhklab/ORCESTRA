@@ -8,6 +8,7 @@ import XevaSet from './XevaSet/XevaSet';
 import ClinicalGenomics from './ClinicalGenomics/ClinicalGenomics';
 import RadioSet from './RadioSet/RadioSet';
 import StyledPage from '../../styles/StyledPage';
+import RadiomicSet from './RadiomicSet/RadiomicSet';
 
 const SingleDataset = (props) => {
     const location = useLocation();
@@ -63,6 +64,9 @@ const SingleDataset = (props) => {
                         }
                         { 
                             props.match.params.datatype === dataTypes.icb && <ClinicalGenomics dataset={dataset.data} /> 
+                        }
+						                        { 
+                            props.match.params.datatype === dataTypes.radiomics && <RadiomicSet dataset={dataset.data} /> 
                         }
                     </React.Fragment>
                 </React.Fragment>

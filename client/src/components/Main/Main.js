@@ -131,7 +131,7 @@ const Main = (props) => {
                 <DatatypeBox title='Immune Checkpoint Blockade Data' datatype={dataTypes.icb} text='Go' imgWidth='45%'/>
             </MainStyle.Row>
             <MainStyle.Row>
-                <DatatypeBox title='Radiomics Data' datatype={dataTypes.radiomics} text='Coming soon' imgWidth='45%' disabled/>
+                <DatatypeBox title='Radiomics Data' datatype={dataTypes.radiomics} text='Go' imgWidth='45%'/>
             </MainStyle.Row>
         </MainStyle.Wrapper>
     );
