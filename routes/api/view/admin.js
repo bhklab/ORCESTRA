@@ -7,6 +7,7 @@ const dataObjectHelper = require('../../../helper/data-object');
 const getDataObjects = async (query) => {
     let result = [];
     const processed = await axios.get(`${process.env.DATA_PROCESSING_API}/api/data_object/list`, {params: query});
+    console.log(processed);
     const publicObj = await DataObject.find().select('name datasetType repositories');
     result = processed.data.objects.map(object => {
         if(object.status === 'uploaded'){
