@@ -40,6 +40,14 @@ const useDataTable = (datasetType) => {
         </div>
     );
 
+	const availableDataTemplate = (rowData, column) => {
+		return(
+            <div>
+				CT
+			</div>
+        );
+	}
+
     const dataTypeTemplate = (rowData, column) => {
         if(datasetType === dataTypes.pharmacogenomics){
             return(
@@ -118,7 +126,8 @@ const useDataTable = (datasetType) => {
         filteredTemplate,
         canonicalTemplate,
         sensitivityTemplate,
-        privateTemplate
+        privateTemplate,
+		availableDataTemplate
     };
 
 }
