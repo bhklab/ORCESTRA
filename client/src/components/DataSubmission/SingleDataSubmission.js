@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import StyledPage from '../../styles/StyledPage';
+import { useParams } from 'react-router-dom';
 
 const StyledDataSubmission = styled.div`
     width: 100%;
@@ -45,13 +46,15 @@ const StyledTable = styled.table`
     }
 `;
 
-const SingleDateSubmission = (props) => {
+const SingleDataSubmission = () => {
     const [submission, setSubmission] = useState();
     const [ready, setReady] = useState(false);
+    const { id } = useParams(); // Using useParams to access route parameters
+
     useEffect(() => {
-        console.log(props.match.params.id);
+        console.log(id);
         const getData = async () => {
-            const res = await axios.get(`/api/user/dataset/submitted/${props.match.params.id}`);
+            const res = await axios.get(`/api/user/dataset/submitted/${id}`);
             console.log(res.data);
             setSubmission(res.data);
             setReady(true);
@@ -63,7 +66,7 @@ const SingleDateSubmission = (props) => {
     return(
         <StyledPage>
             {
-                ready &&
+                ready && submission &&
                 <StyledDataSubmission>
                     <div className='title'>Submitted Data</div>
                     <div className='sub-title'>Submission Info</div>
@@ -210,4 +213,4 @@ const SingleDateSubmission = (props) => {
     );
 }
 
-export default SingleDateSubmission;
+export default SingleDataSubmission;

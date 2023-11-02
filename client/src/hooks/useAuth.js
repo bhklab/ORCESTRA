@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Updated import
 import axios from 'axios';
 import { AuthContext } from './Context';
 
@@ -8,12 +8,12 @@ import { AuthContext } from './Context';
  * @returns 
  */
 const useAuth = () => {
-    const history = useHistory();
+    const navigate = useNavigate(); // Updated to use useNavigate
     const { setUser } = useContext(AuthContext);
     const [error, setError] = useState(false);
 
     /**
-     * Gets a user and sets it in UserContext, then pushes to another page based on location value
+     * Gets a user and sets it in UserContext, then navigates to another page based on location value
      * @param {*} location 
      */ 
     const setUserContext = async (location) => {
@@ -22,9 +22,9 @@ const useAuth = () => {
         setUser(res.data);
         if(res.data){
             if(location.state && location.state.from){
-                history.push(location.state.from);
+                navigate(location.state.from); // Updated to use navigate
             }else{
-                history.push('/app/profile');
+                navigate('/app/profile'); // Updated to use navigate
             }
         }else{
             console.log('authentication failed');
@@ -46,11 +46,14 @@ const useAuth = () => {
         }
     }
 
+    /**
+     * Logs out the user.
+     */
     const logoutUser = async () => {
         try{
-            await axios.get(`/api/user/logout`); // call API to reset cookie token
-            setUser(null); // reset user in UserContext to null
-            history.push('/app/authentication'); // push to signin page
+            await axios.get(`/api/user/logout`); // Call API to reset cookie token
+            setUser(null); // Reset user in UserContext to null
+            navigate('/app/authentication'); // Updated to use navigate
         }catch(err){
             console.log(err);
         }

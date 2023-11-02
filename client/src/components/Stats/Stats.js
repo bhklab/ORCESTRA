@@ -5,7 +5,7 @@ import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import { Link } from 'react-router-dom';
 import DatasetChart from './DatasetChart';
-import Loader from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 import {dataTypes} from '../Shared/Enums';
 import StyledPage from '../../styles/StyledPage';
 
@@ -54,7 +54,7 @@ const Stats = () => {
                 </div>
                 :
                 <div className='componentLoaderContainer'>
-                    <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                    <ThreeDots type="ThreeDots" color="#3D405A" height={100} width={100} />
                 </div>
             }
         </StyledPage>

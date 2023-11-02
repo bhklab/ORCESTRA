@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import './RequestStatus.css';
-import Loader from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 import {Messages} from 'primereact/messages';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
@@ -106,7 +106,7 @@ const RequestStatus = () => {
                             <h3>There are no pending or in-process requests.</h3>
                         :   
                         <div className='dashboardTableLoaderContainer'>
-                            <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                            <ThreeDots type="ThreeDots" color="#3D405A" height={100} width={100} />
                         </div>
                     } 
                 </div> 

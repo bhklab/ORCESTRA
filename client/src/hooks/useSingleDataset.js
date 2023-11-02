@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { Accordion, AccordionTab } from 'primereact/accordion';
-import Loader from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 import {usePromiseTracker} from "react-promise-tracker";
 import {trackPromise} from 'react-promise-tracker';
 
@@ -232,7 +232,7 @@ const useSingleDataset = (datasetType, doi) => {
                 { 
                     ownerView ?
                         promiseInProgress ?
-                        <Loader type="ThreeDots" color="#3D405A" height={50} width={50} />
+                        <ThreeDots color="#3D405A" height={50} width={50} />
                         :
                         <Button 
                             className='p-button-success'

@@ -162,7 +162,7 @@ const publish = async (req, res) => {
         let doi = req.body.doi;
         let depositionId = doi.split('.').pop();
 
-        // open the repository for editting
+        // open the repository for editing
         let resp = await axios.post(
             `${process.env.ZENODO_URL}${depositionId}/actions/edit?access_token=${process.env.ZENODO_ACCESS_TOKEN}`
         );

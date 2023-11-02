@@ -3,7 +3,7 @@ import SearchReqContext from '../SearchReqContext';
 
 import CustomInputText from '../../Shared/CustomInputText';
 import {Button} from 'primereact/button';
-import Loader from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 import {usePromiseTracker} from "react-promise-tracker";
 import {trackPromise} from 'react-promise-tracker';
 import styled from 'styled-components';
@@ -136,7 +136,7 @@ const PSetRequestForm = (props) => {
         return(
             promiseInProgress ? 
                 <LoaderContainer>
-                    <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                    <ThreeDots type="ThreeDots" color="#3D405A" height={100} width={100} />
                 </LoaderContainer>
                 :
                 <Button label='Submit Request' type='submit' disabled={!readyToSubmit} onClick={submitRequest}/>

@@ -1,8 +1,9 @@
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { PathContext } from '../../hooks/Context';
 import * as MainStyle from './MainStyle';
 import styled from 'styled-components';
-import {dataTypes} from '../Shared/Enums';
+import { dataTypes } from '../Shared/Enums';
 
 const StyledBox = styled.div`
     display: flex;
@@ -53,7 +54,7 @@ const StyledBox = styled.div`
     }
 
     img {
-        width: ${props => (props.imgWidth)};
+        width: ${props => (props.imgwidth)};
         min-width: 130px;
         margin: 10px;
     }
@@ -85,10 +86,9 @@ const StyledBox = styled.div`
 `;
 
 
-const Main = (props) => {
-
+const Main = () => {
     const path = useContext(PathContext);
-    const { history } = props;
+    const navigate = useNavigate(); // Use the useNavigate hook
 
     useEffect(() => {
         path.setDatatype('');
@@ -96,22 +96,22 @@ const Main = (props) => {
     }, []);
 
     const DatatypeBox = (props) => (
-            <StyledBox imgWidth={props.imgWidth}>
-                <div className='header'>{props.title}</div>
-                <button 
-                    onClick={() => {
-                        path.setDatatype(props.datatype);
-                        history.push({pathname: `/${props.datatype}`});
-                    }}
-                    disabled={props.disabled}
-                >
-                    <div className='btn-content'>
-                        <img src={`/images/icons/${props.datatype}.png`} alt='icon'/>
-                        <div className='hover-cover'></div>
-                        <div className='hover-text'>{props.text}</div>
-                    </div>
-                </button>
-            </StyledBox>
+        <StyledBox imgwidth={props.imgwidth}>
+            <div className='header'>{props.title}</div>
+            <button 
+                onClick={() => {
+                    path.setDatatype(props.datatype);
+                    navigate(`/${props.datatype}`); // Use navigate instead of history.push
+                }}
+                disabled={props.disabled}
+            >
+                <div className='btn-content'>
+                    <img src={`/images/icons/${props.datatype}.png`} alt='icon'/>
+                    <div className='hover-cover'></div>
+                    <div className='hover-text'>{props.text}</div>
+                </div>
+            </button>
+        </StyledBox>
     );
 
     return (
@@ -121,21 +121,20 @@ const Main = (props) => {
                 <h2>Orchestration platform for reproducing multimodal data</h2>
             </MainStyle.HeaderGroup>
             <MainStyle.Row>
-                <DatatypeBox title='Pharmacogenomics Data' datatype={dataTypes.pharmacogenomics} text='GO' imgWidth='45%' />
-                <DatatypeBox title='Toxicogenomics Data' datatype={dataTypes.toxicogenomics} text='GO' imgWidth='70%'/>
-                <DatatypeBox title='Xenographic Pharmacogenomics Data' datatype={dataTypes.xenographic} text='GO' imgWidth='70%'/>
+                <DatatypeBox title='Pharmacogenomics Data' datatype={dataTypes.pharmacogenomics} text='GO' imgwidth='45%' />
+                <DatatypeBox title='Toxicogenomics Data' datatype={dataTypes.toxicogenomics} text='GO' imgwidth='70%'/>
+                <DatatypeBox title='Xenographic Pharmacogenomics Data' datatype={dataTypes.xenographic} text='GO' imgwidth='70%'/>
             </MainStyle.Row>  
             <MainStyle.Row>
-                <DatatypeBox title='Radiogenomics Data' datatype={dataTypes.radiogenomics} text='GO' imgWidth='45%'/>
-                <DatatypeBox title='Clinical Genomics Data' datatype={dataTypes.clinicalgenomics} text='GO'  imgWidth='45%'/>
-                <DatatypeBox title='Immune Checkpoint Blockade Data' datatype={dataTypes.icb} text='Go' imgWidth='45%'/>
+                <DatatypeBox title='Radiogenomics Data' datatype={dataTypes.radiogenomics} text='GO' imgwidth='45%'/>
+                <DatatypeBox title='Clinical Genomics Data' datatype={dataTypes.clinicalgenomics} text='GO'  imgwidth='45%'/>
+                <DatatypeBox title='Immune Checkpoint Blockade Data' datatype={dataTypes.icb} text='Go' imgwidth='45%'/>
             </MainStyle.Row>
             <MainStyle.Row>
-                <DatatypeBox title='Radiomics Data' datatype={dataTypes.radiomics} text='Go' imgWidth='45%'/>
+                <DatatypeBox title='Radiomics Data' datatype={dataTypes.radiomics} text='Go' imgwidth='45%'/>
             </MainStyle.Row>
         </MainStyle.Wrapper>
     );
-    
 }
 
 export default Main;

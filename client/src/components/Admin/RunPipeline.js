@@ -6,7 +6,7 @@ import CustomSelect from '../Shared/CustomSelect';
 import CustomCheckbox from '../Shared/CustomCheckbox';
 import { Button } from 'primereact/button';
 import styled from 'styled-components';
-import Loader from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 
 const StyledRunPipeline = styled.div`
   max-width: 800px;
@@ -238,7 +238,7 @@ const RunPiepline = () => {
               </div>
               {
                 loading ?
-                <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                <ThreeDots color="#3D405A" height={100} width={100} />
                 :
                 <Button 
                   className='p-button-primary'

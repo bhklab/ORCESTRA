@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { DataTable } from 'primereact/datatable';
 import CustomMessages from '../Shared/CustomMessages';
 import { Column } from 'primereact/column';
-import Loader from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 import { Dialog } from 'primereact/dialog';
 
 const StyledButton = styled.button`
@@ -171,7 +171,7 @@ const ProcessedDataObjects = () => {
             {
                 loading && 
                 <StyledLoading>
-                    <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                    <ThreeDots color="#3D405A" height={100} width={100} />
                 </StyledLoading>
             }
             {

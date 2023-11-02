@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useContext} from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { Navigate, useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import Loader from 'react-loader-spinner';
-import { AuthContext } from '../hooks/Context'
+import { AuthContext } from '../hooks/Context';
 
 const StyledContainer = styled.div`
     width: 100%;
@@ -13,15 +13,15 @@ const StyledContainer = styled.div`
     align-items: center;
 `;
 
-const DatasetRoute = ({component: Component, location, computedMatch, ...rest}) => {
+const DatasetRoute = ({ children, redirect }) => {
     const auth = useContext(AuthContext);
+    const location = useLocation();
+    const params = useParams();
     const [authorized, setAuthorized] = useState(null);
 
     useEffect(() => {
         console.log(location);
-        let url = `/api/${computedMatch.params.datatype}` + 
-        `/check_private/${computedMatch.params.id1}/${computedMatch.params.id2}` + 
-        `${location.search.length > 0 ? location.search : ''}`;
+        let url = `/api/${params.datatype}/check_private/${params.id1}/${params.id2}${location.search.length > 0 ? location.search : ''}`;
         
         const checkPrivate = async () => {
             const res = await axios.get(url);
@@ -29,11 +29,10 @@ const DatasetRoute = ({component: Component, location, computedMatch, ...rest}) 
             setAuthorized(res.data.authorized);
         }
         checkPrivate();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [location, params]);
     
-    if(authorized === null){
-        return(
+    if (authorized === null) {
+        return (
             <StyledContainer>
                 <h1>Loading...</h1>
                 <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
@@ -41,26 +40,15 @@ const DatasetRoute = ({component: Component, location, computedMatch, ...rest}) 
         );
     }
 
-    if(!authorized && auth.user){
-        return(
+    if (!authorized && auth.user) {
+        return (
             <StyledContainer>
                 <h1>You do not have access to this dataset</h1>   
             </StyledContainer>
-            
         );
     }
 
-    return(
-        <Route 
-            {...rest} 
-            render={props => (
-                authorized ? 
-                <Component {...props} />
-                :
-                <Redirect to={{pathname: rest.redirect, state:{ from: location }}} />
-            )} 
-        />
-    );
-}
+    return authorized ? children : <Navigate to={redirect} state={{ from: location }} replace />;
+};
 
 export default DatasetRoute;

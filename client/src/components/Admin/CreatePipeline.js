@@ -6,7 +6,7 @@ import { Button } from 'primereact/button';
 import { RadioButton } from 'primereact/radiobutton';
 import AdditionalFields from './SubComponents/AdditionalFields';
 import styled from 'styled-components';
-import Loader from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 
 const StyledCreatePipeline = styled.div`
   max-width: 1000px;
@@ -247,7 +247,7 @@ const CreatePipeline = () => {
       <div className='submit-button'>
         {
           submitting ?
-          <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+          <ThreeDots color="#3D405A" height={100} width={100} />
           :
           <Button 
             label='Create Pipeline' 

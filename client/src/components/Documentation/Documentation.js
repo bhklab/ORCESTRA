@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import './Documentation.css';
 import StyledPage from '../../styles/StyledPage';
 import Overview from './DocFunctionality/Overview';
@@ -9,9 +10,9 @@ import DataContribution from './DocFunctionality/DataContribution';
 import AvailablePSets from './DocAPI/AvailablePSets';
 import PSetMetadata from './DocAPI/PSetMetadata';
 
-const Documentation = (props) => {
-    
-    const [display, setDisplay] = useState(props.match.params.section);
+const Documentation = () => {
+    const { section } = useParams();
+    const [display, setDisplay] = useState(section);
 
     return(
         <StyledPage>

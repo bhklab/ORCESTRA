@@ -1,22 +1,25 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {InputText} from 'primereact/inputtext';
-import {Button} from 'primereact/button';
-import {Messages} from 'primereact/messages';
+import { useParams } from 'react-router-dom';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { Messages } from 'primereact/messages';
 import StyledAuthForm from './StyledAuthForm';
 import StyledPage from '../../styles/StyledPage';
 
-const Reset = (props) => {
+const Reset = () => {
+    const [email, setEmail] = useState('');
+    const [password1, setPassword1] = useState('');
+    const [password2, setPassword2] = useState('');
+    const [btnDisabled, setBtnDisabled] = useState(true);
 
-    const [email, setEmail] = useState('')
-    const [password1, setPassword1] = useState('')
-    const [password2, setPassword2] = useState('')
-    const [btnDisabled, setBtnDisabled] = useState(true)
+    // Use useParams to access route parameters
+    const { token } = useParams();
 
     useEffect(() => {
         const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-        (password1.length >= 6 && password1 === password2 && regex.test(email)) ? setBtnDisabled(false) : setBtnDisabled(true)
-    }, [email, password1, password2])
+        (password1.length >= 6 && password1 === password2 && regex.test(email)) ? setBtnDisabled(false) : setBtnDisabled(true);
+    }, [email, password1, password2]);
 
     const onResetClick = async (event) => {
         event.preventDefault();
@@ -24,13 +27,13 @@ const Reset = (props) => {
             user: {
                 username: email, 
                 password: password1,
-                token: props.match.params.token
+                token: token // Use the token from useParams
             }
         });
-        if(res.data.status === 1){
-            Reset.messages.show({severity: 'success', summary: 'Password has been reset', detail: 'Please login using your new password.'});
-        }else{
-            Reset.messages.show({severity: 'error', summary: 'Password could not be reset', detail: res.data.message});
+        if (res.data.status === 1) {
+            Reset.messages.show({ severity: 'success', summary: 'Password has been reset', detail: 'Please login using your new password.' });
+        } else {
+            Reset.messages.show({ severity: 'error', summary: 'Password could not be reset', detail: res.data.message });
         }
     }
     

@@ -68,24 +68,24 @@ const Footer = () => {
             <div className='footerContainer'>
                 <div className="footerMenu footerLinks">
                     <h3>Menu</h3>
-                    <NavLink exact to="/" onClick={() => {path.setDatatype('')}}>Home</NavLink>
+                    <NavLink to="/" onClick={() => {path.setDatatype('')}}>Home</NavLink>
                     {
                         path.datatype.length === 0 ? 
                         <React.Fragment>
-                            <NavLink exact to={`/${dataTypes.pharmacogenomics}`} onClick={() => {path.setDatatype(dataTypes.pharmacogenomics)}}>Pharmacogenomics Data</NavLink>
-                            <NavLink exact to={`/${dataTypes.toxicogenomics}`} onClick={() => {path.setDatatype(dataTypes.toxicogenomics)}}>Toxicogenomics Data</NavLink>
-                            <NavLink exact to={`/${dataTypes.xenographic}`} onClick={() => {path.setDatatype(dataTypes.xenographic)}}>Xenographic Pharmacogenomics Data</NavLink>
-                            <NavLink exact to={`/${dataTypes.clinicalgenomics}`} onClick={() => {path.setDatatype(dataTypes.clinicalgenomics)}}>Clinical Genomics Data</NavLink>
-                            <NavLink exact to={`/${dataTypes.icb}`} onClick={() => {path.setDatatype(dataTypes.icb)}}>Immune Checkpoint Blockade Data</NavLink>
-							<NavLink exact to={`/${dataTypes.radiogenomics}`} onClick={() => {path.setDatatype(dataTypes.radiogenomics)}}>Radiogenomics Data</NavLink>
-							<NavLink exact to={`/${dataTypes.radiomics}`} onClick={() => {path.setDatatype(dataTypes.radiomics)}}>Radiomics Data</NavLink>
+                            <NavLink to={`/${dataTypes.pharmacogenomics}`} onClick={() => {path.setDatatype(dataTypes.pharmacogenomics)}}>Pharmacogenomics Data</NavLink>
+                            <NavLink to={`/${dataTypes.toxicogenomics}`} onClick={() => {path.setDatatype(dataTypes.toxicogenomics)}}>Toxicogenomics Data</NavLink>
+                            <NavLink to={`/${dataTypes.xenographic}`} onClick={() => {path.setDatatype(dataTypes.xenographic)}}>Xenographic Pharmacogenomics Data</NavLink>
+                            <NavLink to={`/${dataTypes.clinicalgenomics}`} onClick={() => {path.setDatatype(dataTypes.clinicalgenomics)}}>Clinical Genomics Data</NavLink>
+                            <NavLink to={`/${dataTypes.icb}`} onClick={() => {path.setDatatype(dataTypes.icb)}}>Immune Checkpoint Blockade Data</NavLink>
+							<NavLink to={`/${dataTypes.radiogenomics}`} onClick={() => {path.setDatatype(dataTypes.radiogenomics)}}>Radiogenomics Data</NavLink>
+							<NavLink to={`/${dataTypes.radiomics}`} onClick={() => {path.setDatatype(dataTypes.radiomics)}}>Radiomics Data</NavLink>
                         </React.Fragment>
                         :
                         <React.Fragment>
-                            {/* <NavLink exact to={`/${path.datatype}/canonical`} >Canonical PSets</NavLink> */}
-                            <NavLink exact to={`/${path.datatype}/search`} >Search and Request</NavLink>
-                            {/* <NavLink exact to={`/${path.datatype}/status`} >Request Status</NavLink> */}
-                            {/* <NavLink exact to={`/${path.datatype}/stats`} >Statistics</NavLink> */}
+                            {/* <NavLink to={`/${path.datatype}/canonical`} >Canonical PSets</NavLink> */}
+                            <NavLink to={`/${path.datatype}/search`} >Search and Request</NavLink>
+                            {/* <NavLink to={`/${path.datatype}/status`} >Request Status</NavLink> */}
+                            {/* <NavLink to={`/${path.datatype}/stats`} >Statistics</NavLink> */}
                         </React.Fragment>
                     }
                 </div>
@@ -94,8 +94,8 @@ const Footer = () => {
                     {
                         path.datatype.length > 0 && 
                         <React.Fragment>
-                            <NavLink exact to={`/${path.datatype}/documentation/overview`} >Documentation</NavLink>
-                            <NavLink exact to={`/${path.datatype}/documentation/datacontribution`} >Contributing your data</NavLink>
+                            <NavLink to={`/${path.datatype}/documentation/overview`} >Documentation</NavLink>
+                            <NavLink to={`/${path.datatype}/documentation/datacontribution`} >Contributing your data</NavLink>
                         </React.Fragment>
                     }
                     <a href="https://github.com/bhklab">GitHub</a>

@@ -1,25 +1,16 @@
-import React, {useContext} from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../hooks/Context';
 
-const PrivateRoute = ({component: Component, location, ...rest}) => {
-    const {user, loading} = useContext(AuthContext);
-    
-    if(loading){
-        return null;
+const PrivateRoute = ({ children, redirect }) => {
+    const { user, loading } = useContext(AuthContext);
+    const location = useLocation();
+
+    if (loading) {
+        return null; // Or a loading spinner/component
     }
 
-    return(
-        <Route 
-            {...rest} 
-            render={props => (
-                user ? 
-                <Component {...props} />
-                :
-                <Redirect to={{pathname: rest.redirect, state:{ from: location }}} />
-            )} 
-        />
-    ) 
+    return user ? children : <Navigate to={redirect} state={{ from: location }} replace />;
 }
 
 export default PrivateRoute;

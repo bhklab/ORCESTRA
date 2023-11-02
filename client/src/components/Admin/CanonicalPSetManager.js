@@ -3,7 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import {trackPromise} from 'react-promise-tracker';
 import {Button} from 'primereact/button';
-import Loader from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 import { AuthContext } from '../../hooks/Context';
 import PSetTable from '../SearchRequest/PSet/PSetTable';
 
@@ -55,7 +55,7 @@ const CanonicalPSetManager = () => {
                     download={false}
                 /> 
                 :
-                <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                <ThreeDots color="#3D405A" height={100} width={100} />
             }
         </React.Fragment>
     );

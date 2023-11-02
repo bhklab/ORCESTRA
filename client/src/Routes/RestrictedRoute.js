@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useContext} from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
-import Loader from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner'; // Corrected import
 import { AuthContext } from '../hooks/Context'
 
 const StyledContainer = styled.div`
@@ -13,45 +13,37 @@ const StyledContainer = styled.div`
     align-items: center;
 `;
 
-const RestrictedRoute = ({component: Component, location, computedMatch, type, ...rest}) => {
+const RestrictedRoute = ({ children, redirect, type }) => {
     const auth = useContext(AuthContext);
     const [authorized, setAuthorized] = useState(null);
+    const location = useLocation();
+    const params = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(location);
-        console.log(type);
-        let url = '';
-        let params = {};
-        switch(type){
-            case 'dataset':
-                url = '/api/data-object/check_private';
-                params = {
-                    datasetType: computedMatch.params.datatype,
-                    doi: `${computedMatch.params.id1}/${computedMatch.params.id2}`,
-                    shareToken: location.search.length > 0 ? location.search.replace('?shared=', '') : null
-                }
-                break;
-            case 'dataSubmission':
-                url = `/api/user/dataset/submit/check_private/${computedMatch.params.id}`;
-                break;
-            default:
-                break;
-        }
-        console.log(params)
+        const url = `/api/${type}` + 
+                    `/check_private/${params.id1}/${params.id2}` + 
+                    `${location.search.length > 0 ? location.search : ''}`;
+                    
         const checkPrivate = async () => {
-            const res = await axios.get(url, {params: params});
-            console.log(res.data);
-            setAuthorized(res.data.authorized);
+            try {
+                const res = await axios.get(url);
+                setAuthorized(res.data.authorized);
+            } catch (error) {
+                console.error(error);
+                navigate(redirect, { state: { from: location }, replace: true });
+            }
         }
+
         checkPrivate();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [params.id1, params.id2, location.search]);
     
     if(authorized === null){
         return(
             <StyledContainer>
                 <h1>Loading...</h1>
-                <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                <ThreeDots color="#3D405A" height={100} width={100} /> {/* Corrected usage */}
             </StyledContainer>
         );
     }
@@ -61,21 +53,10 @@ const RestrictedRoute = ({component: Component, location, computedMatch, type, .
             <StyledContainer>
                 <h1>You do not have access to this page</h1>   
             </StyledContainer>
-            
         );
     }
 
-    return(
-        <Route 
-            {...rest} 
-            render={props => (
-                authorized ? 
-                <Component {...props} />
-                :
-                <Redirect to={{pathname: rest.redirect, state:{ from: location }}} />
-            )} 
-        />
-    );
+    return authorized ? children : <Navigate to={redirect} state={{ from: location }} replace />;
 }
 
 export default RestrictedRoute;

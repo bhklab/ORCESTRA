@@ -1,5 +1,5 @@
 import React from 'react';
-import Loader from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -12,7 +12,7 @@ const Container = styled.div`
 const SearchTableLoader = () => {
     return(
         <Container>
-            <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+            <ThreeDots type="ThreeDots" color="#3D405A" height={100} width={100} />
         </Container>
     );
 }

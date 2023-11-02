@@ -5,7 +5,7 @@ import createPlotlyComponent from "react-plotly.js/factory";
 import {Checkbox} from 'primereact/checkbox';
 import {RadioButton} from 'primereact/radiobutton';
 import UpsetPlot from './UpsetPlot'
-import Loader from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 const Plot = createPlotlyComponent(Plotly);
 
 const DatasetChart = (props) => {
@@ -175,7 +175,7 @@ const DatasetChart = (props) => {
                     </div>
                     :
                     <div className='componentLoaderContainer'>
-                        <Loader type="ThreeDots" color="#3D405A" height={100} width={100} />
+                        <ThreeDots type="ThreeDots" color="#3D405A" height={100} width={100} />
                     </div>
                 }
                 <div className='stats-dataset-chart-control'>
