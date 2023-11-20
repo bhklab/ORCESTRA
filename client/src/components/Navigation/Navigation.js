@@ -55,27 +55,19 @@ const Navigation = () => {
                 <div className='left'>
                     <div className='logo'>
                         <NavLink to='/'>
-                            <img src={process.env.PUBLIC_URL + "/images/trumpet-orcestra.png"} alt='' />
+                            <img src={process.env.PUBLIC_URL + "/images/trumpet-orcestra.png"} alt='ORCESTRA logo' />
                         </NavLink>
                     </div>
                     <NavLink to={`/`} className='link' activeclassname='active-link'>Home</NavLink>
                     {
-                        path.datatype.length > 0 &&
-                        <React.Fragment>
-                            <NavLink to={`/${path.datatype}`} className='link' activeclassname='active-link'>{getDatatype(path.datatype)}</NavLink>
-                            {
-                                path.datatype === dataTypes.pharmacogenomics &&
+                        path.datatype.length > 0 && path.datatype === dataTypes.pharmacogenomics &&
+						(
+							<>
                                 <NavLink to={`/${path.datatype}/search`} className='link' activeclassname='active-link'>Search and Request</NavLink>
-                            }
-                            {
-                                path.datatype === dataTypes.pharmacogenomics &&
                                 <NavLink to={`/${path.datatype}/status`} className='link' activeclassname='active-link'>Request Status</NavLink>
-                            }
-                            {
-                                path.datatype === dataTypes.pharmacogenomics &&
                                 <NavLink to={`/${path.datatype}/stats`} className='link' activeclassname='active-link'>Statistics</NavLink>
-                            }
-                        </React.Fragment>
+							</>
+						)
                     }
                     <NavLink to={`/app/documentation/overview`} className='link' activeclassname='active-link'>Documentation</NavLink>
                     <NavLink to={`/app/contact`} className='link' activeclassname='active-link'>Contact</NavLink>

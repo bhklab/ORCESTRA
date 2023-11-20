@@ -39,7 +39,12 @@ router.post('/admin/data-processing/submit_obj', auth.verifyToken, auth.isAdmin,
 
 // data object
 router.get('/data-objects/search', dataObject.search);
-router.get('/data-object/check_private', dataObject.checkPrivate, (req, res) => {res.send({authorized: req.authorized})});
+router.get('/data-object/check_private/:dataset_type/:doi', dataObject.checkPrivate, (req, res) => {
+
+    console.log('Authorized:', req.authorized);
+    // Continue with your existing response
+    res.send({ authorized: req.authorized });
+});
 router.post('/data-object/download', dataObject.download);
 router.post('/data-object/sharelink', auth.verifyToken, dataObject.createShareLink);
 router.post('/data-object/publish', auth.verifyToken, dataObject.publish);

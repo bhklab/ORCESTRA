@@ -21,13 +21,14 @@ const RestrictedRoute = ({ children, redirect, type }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const url = `/api/${type}` + 
-                    `/check_private/${params.id1}/${params.id2}` + 
-                    `${location.search.length > 0 ? location.search : ''}`;
-                    
+        const url = `/api/${type}/check_private/${params.id1}/${params.id2}${location.search.length > 0 ? location.search : ''}`;
+		console.log(url);
+		const queryParams = new URLSearchParams(location.search);
+		console.log(queryParams);
         const checkPrivate = async () => {
             try {
                 const res = await axios.get(url);
+				console.log(res);
                 setAuthorized(res.data.authorized);
             } catch (error) {
                 console.error(error);

@@ -16,10 +16,11 @@ const User = require('../../db/models/user');
  */
  const search = async (req, res) => {
     let result = [];
+	console.log("here")
     try{
         let queryObj = await dataObjectHelper.getQuery(req.query);
+		console.log(queryObj);
         result  = await DataObject.find(queryObj).lean().populate('dataset', 'name version sensitivity survival');
-
         // get the doi and downloadlink for specific data version. Only applicable to PSets. For other datasets, use 1.0.
         result = result.map(obj => {
             let repo = obj.repositories.find(r => r.version === dataObjectHelper.getDataVersion(req.query.datasetType));
@@ -73,48 +74,60 @@ const download = async (req, res) => {
 }
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ * Checks if a dataset is private and verifies user authorization.
+ * @param {*} req - The request object.
+ * @param {*} res - The response object.
+ * @param {*} next - The next middleware function in the stack.
  */
-const checkPrivate = async (req, res, next) => {
-    try{
-        // check if the dataset is private
-        const dataObject = await DataObject.findOne({
-            datasetType: req.query.datasetType, 
-            'repositories.doi': req.query.doi
-        }).select({name: 1, info: 1, repositories: 1});
+const checkPrivate = async (req, res) => {
+    try {
+        // Extract datasetType and doi from the request query parameters
+        const datasetType = req.query.datasetType;
+        const doi = req.query.doi;
 
-        // // if private, check if the user is authenticated, and owns the dataset
-        if(dataObject.info.private){
+        // Find the data object based on datasetType and doi
+        const dataObject = await DataObject.findOne({
+            datasetType: datasetType, 
+            'repositories.doi': doi
+        }).select({ name: 1, info: 1, repositories: 1 });
+
+        // If the dataObject is not found, return unauthorized
+        if (!dataObject) {
+            return res.status(404).send({ authorized: true, message: "Data object not found." });
+        }
+
+        // Check if the dataset is private
+        if (dataObject.info.private) {
             const username = auth.getUsername(req.cookies.orcestratoken);
-            if(username){
-                const user = await User.findOne({email: username});
-                const userDatasets = user.userDataObjects.map(id => id.toString());
-                let isOwner = userDatasets.includes(dataObject._id.toString());
-                if(isOwner){
-                    req.authorized = true;
-                }else if(req.query.shareToken && req.query.shareToken.length > 0){
-                    req.authorized = req.query.shareToken === dataObject.info.shareToken;
+            if (username) {
+                const user = await User.findOne({ email: username });
+                if (user) {
+                    const userDatasets = user.userDataObjects.map(id => id.toString());
+                    let isOwner = userDatasets.includes(dataObject._id.toString());
+                    if (isOwner) {
+                        req.authorized = true;
+                    } else if (req.query.shareToken && req.query.shareToken.length > 0) {
+                        req.authorized = req.query.shareToken === dataObject.info.shareToken;
+                    }
                 }
-            }else if(req.query.shareToken && req.query.shareToken.length > 0){
+            } else if (req.query.shareToken && req.query.shareToken.length > 0) {
                 req.authorized = req.query.shareToken === dataObject.info.shareToken;
             }
-        }else{
+        } else {
             req.authorized = true;
         }
-    }catch(error){
-        console.log(error);
-        res.status(500);
-    }finally{
-        if(req.authorized){
-            next();
-        }else{
-            res.send({authorized: false});
+
+        if (req.authorized) {
+            return next();
+        } else {
+            return res.status(401).send({ authorized: false, message: "Unauthorized access" });
         }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ message: "Internal Server Error" });
     }
 }
+
 
 /**
  * Creates and returns a sharable link to a private dataset if the authenticated user owns the dataset.

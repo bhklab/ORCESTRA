@@ -64,7 +64,7 @@ const Router = () => {
 					<Route 
 						path='/:datatype/:id1/:id2' 
 						element={
-							<RestrictedRoute type='dataset'>
+							<RestrictedRoute type='data-object' dataType='datatype'>
 								<SingleDataset />
 							</RestrictedRoute>
 						}

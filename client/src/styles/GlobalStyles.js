@@ -11,7 +11,7 @@ const GlobalStyles = createGlobalStyle`
         margin-left: 0;
         margin-right: 0;
         padding-top: 80px;
-        font-family: "Raleway", "Segoe UI", "Roboto", "Oxygen",
+        font-family: "Roboto", "Segoe UI", "Roboto", "Oxygen",
             "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
             sans-serif;
         -webkit-font-smoothing: antialiased;
