@@ -118,12 +118,6 @@ body .p-button {
     padding: 0em 0.5em;
 }
 
-body .p-button:enabled:hover {
-    background-color: #555975;
-    border: 1px solid #555975;
-    color: #F19021;
-}
-
 body .p-button:enabled:focus {
     background-color: #555975;
     border: 1px solid #555975;

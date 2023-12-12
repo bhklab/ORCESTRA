@@ -30,6 +30,8 @@ const LayoutContainer = styled.div`
 	.card-title {
 		font-size: 20px;
 		font-weight: bolder;
+		text-align: center;
+
 	}
 
 	.list-style-card-main {
@@ -50,12 +52,6 @@ const LayoutContainer = styled.div`
 			font-weight: bold;
 		}
 	}
-
-	.hr-style {
-		margin: 5px 0 10px 0;
-		color: red;
-	}
-
 `;
 
 const StyledContainerOuter = styled.div`
@@ -78,6 +74,16 @@ const StyledContainerOuter = styled.div`
 	.card-container:hover {
 		transform: translateY(-2px);
 		box-shadow: 0 5px 20px rgba(0, 0, 0, 1);
+	}
+
+	.hr-container{
+		margin: 0 0 15px 0;
+		justify-content: center;
+	}
+	.hr-style {
+		margin 0 auto;
+		max-width: 200px;
+		color: ${colors.standard_dark_blue};
 	}
 	
 `;
@@ -103,56 +109,60 @@ const StyledContainerInner = styled.div`
 		transform: translateY(-2px);
 		box-shadow: 0 5px 20px rgba(0, 0, 0, 1);
 	}
+
+	.hr-container{
+		margin: 0 0 15px 0;
+		justify-content: center;
+	}
+	.hr-style {
+		margin 0 auto;
+		max-width: 150px;
+		color: ${colors.standard_dark_blue};
+	}
 	
 `;
 
 
 const StyledTopBar = styled.div`
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	flex-direction: column;
     align-items: center;
-    width: 400px;
-    padding: 10px 25px;
-    border-radius: 5px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-    background: ${colors.standard_dark_blue};
-    transition: transform 0.3s, box-shadow 0.3s;
-
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-    }
+	text-align: center;
+	justify-content: center;
+    width: 100%;
+    max-width: 350px;
+    padding: 5px 10px; 
 
     .title {
         font-family: 'Roboto', sans-serif;
-        font-size: 28px;
-        margin: 0;
-        color: ${colors.standard_light_blue};
-        font-weight: 500;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        font-size: 44px;
+		color: ${colors.standard_dark_blue};
+        font-weight: 700;
+        text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2);
+		margin: 10px 0;
     }
 
-    .download-button {
+	.download-button {
         display: flex;
         align-items: center;
-        height: 35px;
-        padding: 5px 15px;
-        border: 1px solid ${colors.standard_light_blue};
-        border-radius: 25px;
-        font-weight: 600;
-        background-color: transparent;
+        padding: 8px 14px;
+        border: none;
+		font-size: 10px;
+        border-radius: 30px;
+        background: linear-gradient(45deg, #36589b, ${colors.standard_dark_blue});
         color: white;
         cursor: pointer;
-        transition: background-color 0.3s, color 0.3s;
-
-        i {
-            margin-right: 5px; // Space between the icon and label
-            font-size: 16px;
-        }
+        transition: transform 0.3s, box-shadow 0.3s;
 
         &:hover {
-            background-color: ${colors.standard_light_blue};
-            color: ${colors.standard_dark_blue};
+            background: linear-gradient(45deg, ${colors.standard_dark_blue}, #36589b);
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
         }
     }
 `;

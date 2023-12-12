@@ -16,7 +16,6 @@ const User = require('../../db/models/user');
  */
  const search = async (req, res) => {
     let result = [];
-	console.log("here")
     try{
         let queryObj = await dataObjectHelper.getQuery(req.query);
 		console.log(queryObj);
