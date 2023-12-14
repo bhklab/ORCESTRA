@@ -55,7 +55,7 @@ const LayoutContainer = styled.div`
 `;
 
 const StyledContainerOuter = styled.div`
-    width: 25%;
+    width: 33%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -89,7 +89,7 @@ const StyledContainerOuter = styled.div`
 `;
 
 const StyledContainerInner = styled.div`
-    width: 50%;
+    width: 33%;
     display: flex;
     flex-direction: column;
     gap: 20px;

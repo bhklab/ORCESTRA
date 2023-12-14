@@ -72,17 +72,11 @@ const useDataTable = (datasetType) => {
     }
 
     const nameColumnTemplate = (rowData, column) => (
-        rowData.doi.length > 0 ? 
         <Link to={`/${datasetType}/${rowData.doi}`} target="_blank">{rowData.name}</Link>
-        :
-        rowData.name
     );
 
     const nameColumnTemplateUserDataset = (rowData, column) => (
-        rowData.doi.length > 0 ? 
-        <Link to={`/${rowData.datasetType.name}/${rowData.doi}`} target="_blank">{rowData.name}</Link>
-        :
-        rowData.name
+        <Link to={`/${rowData.datasetType.name}/${rowData.doi}`}>{rowData.name}</Link>
     );
 
     const downloadTemplate = (rowData, column) => {

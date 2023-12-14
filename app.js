@@ -27,7 +27,7 @@ app.set('js', path.join(__dirname, 'js'));
 app.use('/api', router);
 
 // configure express to use public folder
-app.use(express.static(path.join(__dirname, 'client/build'))); 
+app.use(express.static(path.join(__dirname, '/client/build'))); 
 
 app.get('/*', (req, res) => {
   res.sendFile('index.html', { root: './client/build' });

@@ -13,6 +13,7 @@ const jwt = require('jsonwebtoken');
     let decoded = null;
     try{
         decoded = jwt.verify(req.cookies.orcestratoken, process.env.TOKEN);
+        console.log("valid token")
     }catch(error){
         console.log('invalid token');
     }finally{
@@ -34,8 +35,11 @@ const jwt = require('jsonwebtoken');
 const isAdmin = (req, res, next) => {
     if(req.decoded && req.decoded.admin){
         next();
+        console.log("Admin");
     }else{
         res.send({});
+        console.log("not Admin");
+
     }
 }
 

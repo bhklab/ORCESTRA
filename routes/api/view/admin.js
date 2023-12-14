@@ -84,6 +84,7 @@ const getPipelines = async (req, res) => {
     let result = [];
     try{
         const res = await axios.get(`${process.env.DATA_PROCESSING_API}/api/pipeline/list`);
+        console.log(res);
         result = res.data.pipelines;
         result.sort((a, b) => a.name.localeCompare(b.name));
     }catch(error){
@@ -170,7 +171,6 @@ const submitObject = async (req, res) => {
                 break;
         }
     }catch(error){
-        console.log(error);
         res.status(500);
     }finally{
         res.send(result)

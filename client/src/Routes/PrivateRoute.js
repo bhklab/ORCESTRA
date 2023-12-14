@@ -1,16 +1,24 @@
 import React, { useContext } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../hooks/Context';
 
-const PrivateRoute = ({ children, redirect }) => {
+const PrivateRoute = ({ element: Element, redirect }) => {
     const { user, loading } = useContext(AuthContext);
+    const navigate = useNavigate();
     const location = useLocation();
 
     if (loading) {
-        return null; // Or a loading spinner/component
+        // Render a loader or spinner here if necessary
+        return null;
     }
 
-    return user ? children : <Navigate to={redirect} state={{ from: location }} replace />;
+    if (!user) {
+        navigate(redirect, { replace: true, state: { from: location } });
+        return null;
+    }
+
+    return Element;
 }
+
 
 export default PrivateRoute;

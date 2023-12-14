@@ -94,22 +94,22 @@ const RadioSetSearch = () => {
                                     '*Login or register to save existing RadioSets to your profile.'
                                 }
                             </div>
-                        </SearchReqPanel>
-                        {
-                            ready ?
-                            <RadioSetTable 
-                                datasets={datasets} 
-                                selectedDatasets={selectedDatasets} 
-                                updateDatasetSelection={(e) => {setSelectedDatasets(e.value)}} 
-                                scrollHeight='600px'
-                                authenticated={auth.user ? true : false} 
-                                download={true}
-                            />
-                            :
-                            <SearchTableLoader />
-                        }  
+                        </SearchReqPanel> 
                     </MainPanel>
                 </SearchReqWrapper>
+                {
+                    ready ?
+                    <RadioSetTable 
+                        datasets={datasets} 
+                        selectedDatasets={selectedDatasets} 
+                        updateDatasetSelection={(e) => {setSelectedDatasets(e.value)}} 
+                        scrollHeight='600px'
+                        authenticated={auth.user ? true : false} 
+                        download={true}
+                    />
+                    :
+                    <SearchTableLoader />
+                } 
             </StyledPage>
         </SearchReqContext.Provider>
     );

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const SearchReqWrapper = styled.div`
     display: flex;
+    margin-bottom: 10px
 `;
 
 export const Filter = styled.div`
@@ -29,7 +30,6 @@ export const SearchReqPanel = styled.div`
     display: flex;
     justify-content: space-between;
     max-width: 100%;
-    margin-bottom: 20px;
     border-radius: 10px;
     padding-left: 30px;
     padding-right: 30px;

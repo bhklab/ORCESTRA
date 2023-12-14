@@ -22,7 +22,7 @@ const public = require('./api/public');
 // view/component-specific routes
 router.get('/view/landing', landing.get);
 router.get('/view/data-object-filter', dataObjectFilter.get);
-router.get('/view/single-data-object', dataObject.checkPrivate, singleDataObject.get);
+router.get('/view/single-data-object', singleDataObject.get);
 router.get('/view/canonical-data-objects', canonicalDataObjects.get);
 router.get('/view/statistics', statistics.get);
 router.get('/view/statistics/upset-plot', statistics.upsetPlot);
@@ -39,7 +39,7 @@ router.post('/admin/data-processing/submit_obj', auth.verifyToken, auth.isAdmin,
 
 // data object
 router.get('/data-objects/search', dataObject.search);
-router.get('/data-object/check_private/:dataset_type/:doi', dataObject.checkPrivate, (req, res) => {
+router.get('/data-object/check_private/:dataset_type/:doi', (req, res) => {
 
     console.log('Authorized:', req.authorized);
     // Continue with your existing response
