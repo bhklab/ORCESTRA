@@ -28,16 +28,18 @@ const LayoutContainer = styled.div`
 	.description{
 		margin: 0 0 3px 0;
 		padding: 0 5px;
+		border-left: solid 2px ${colors.light_gray};
 	}
 
 	.subsection{
-		border-bottom: solid 2px ${colors.light_gray};
+		
 	}
 
 	.list-style-card-main {
 		list-style-type: none;
 		margin: 0;
 		padding: 0 0 0 10px;
+		border-left: solid 2px ${colors.light_gray};
 	}
 
 	.list-style-card-sub{
