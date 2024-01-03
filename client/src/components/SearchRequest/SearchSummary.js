@@ -2,12 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledSearchSummary = styled.div`
-    margin-right: 20px;
     .wrapper {
         display: flex;
         align-items: flex-end;
-        margin-top: -25px;
-        margin-bottom: 15px;
     }
     .number {
         font-size: 100px;
@@ -16,7 +13,7 @@ const StyledSearchSummary = styled.div`
     .text {
         font-size: 20px;
         margin-left: 5px;
-        padding-bottom: 15px;
+        align-self: center;
     }
 `;
 

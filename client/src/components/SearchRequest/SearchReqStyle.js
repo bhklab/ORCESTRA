@@ -2,11 +2,12 @@ import styled from 'styled-components';
 
 export const SearchReqWrapper = styled.div`
     display: flex;
+    width: 50%;
     margin-bottom: 10px
 `;
 
 export const Filter = styled.div`
-    width: 300px;
+    max-width: 400px;
     max-height: 620px;
     color: #3D405A;
     background-color: rgba(255, 255, 255, 0.8);
@@ -22,7 +23,7 @@ export const Filter = styled.div`
 `;
 
 export const MainPanel = styled.div`
-    width: 75%;
+    width: 100%;
     margin-left: 20px;
 `;
 
