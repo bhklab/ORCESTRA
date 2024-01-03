@@ -24,6 +24,7 @@ const Header = styled.div`
     }
     .left {
         margin-right: 30px;
+        padding: 5px 8px;
     }
 `;
 
@@ -216,7 +217,7 @@ const useSingleDataset = (datasetType, doi) => {
                         downloadLink={dataset.data.bioComputeObject.downloadLink}
                         mode='bioCompute'
                         label='Download BioCompute Object'
-                        tooltip={`Donwload the BioCompute object of the pipleine used to create ${dataset.data.name}`}
+                        tooltip={`Download the BioCompute object of the pipleine used to create ${dataset.data.name}`}
                     />
                 }
                 { 
