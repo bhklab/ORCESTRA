@@ -73,7 +73,7 @@ const RadiomicSetSearch = () => {
 				</StyledTopBar>
 				<LayoutContainer>
 					<div className="content-row">
-						<StyledContainer style={{width: "40%"}}>
+						<StyledContainer>
 							<div class="card-container">
 								<div class="card-title">
 									About The Dataset
@@ -203,29 +203,35 @@ const RadiomicSetSearch = () => {
 								<div className='hr-container'>
 									<hr className='hr-style'/>
 								</div>
-								<h2>Pipeline Details</h2>
-								<ul className='list-style-card-main'>
-									<li><span>Pipeline:</span> https://github.com/bhklab/RADCURE</li>
-									<li><span>Docker Image:</span> https://hub.docker.com/r/minorunakano/orcestra-snakemake</li>
-									<li><span>{'Data Curation Script(s)'}:</span>
-										<ul className='list-style-card-sub'>
-											<li>Data Source 1: https://github.com/bhklab/script1</li>
-											<li>Data Source 2: https://github.com/bhklab/script2</li>
-											<li>Data Source 3: https://github.com/bhklab/script3</li>
-										</ul>
-									</li>
-								</ul>
-								<h2>Release Notes</h2>
-								<ul className='list-style-card-main'>
-									<li><span>Samples:</span> 2949 samples in this dataset</li>
-									<li><span>Primary Tumours:</span> 2988 primary tumours in this dataset</li>
-									<li><span>Added Samples:</span> 450 samples were added in this iteration</li>
-								</ul>
-								<h2>Badges</h2>
-								<ul className='list-style-card-main'>
-									<li><span>Annotations Standards:</span> Lorem ipsum dolor sit amet</li>
-									<li><span>QC scripts or CO capsule:</span> https://codeocean.com</li>
-								</ul>
+								<div className='subsection'>
+									<h2>Pipeline Details</h2>
+									<ul className='list-style-card-main'>
+										<li><span>Pipeline:</span> https://github.com/bhklab/RADCURE</li>
+										<li><span>Docker Image:</span> https://hub.docker.com/r/minorunakano/orcestra-snakemake</li>
+										<li><span>{'Data Curation Script(s)'}:</span>
+											<ul className='list-style-card-sub'>
+												<li>Data Source 1: https://github.com/bhklab/script1</li>
+												<li>Data Source 2: https://github.com/bhklab/script2</li>
+												<li>Data Source 3: https://github.com/bhklab/script3</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+								<div className='subsection'>
+									<h2>Release Notes</h2>
+									<ul className='list-style-card-main'>
+										<li><span>Samples:</span> 2949 samples in this dataset</li>
+										<li><span>Primary Tumours:</span> 2988 primary tumours in this dataset</li>
+										<li><span>Added Samples:</span> 450 samples were added in this iteration</li>
+									</ul>
+								</div>
+								<div className='subsection'>
+									<h2>Badges</h2>
+									<ul className='list-style-card-main'>
+										<li><span>Annotations Standards:</span> Lorem ipsum dolor sit amet</li>
+										<li><span>QC scripts or CO capsule:</span> https://codeocean.com</li>
+									</ul>
+								</div>
 							</div>
 							<div className='button-container'>
 								<Button className="download-button" icon='pi pi-download' label="Download BioCompute Object" />

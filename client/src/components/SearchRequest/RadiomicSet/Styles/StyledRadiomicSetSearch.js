@@ -2,23 +2,22 @@ import styled from 'styled-components';
 import colors from '../../../../styles/colors';
 
 const LayoutContainer = styled.div`
-	flex-direction: row;
-	justify-content: space-between;
-	background-color: white;
-	padding: 25px 40px;
-	border-radius: 8px;
+
 	font-family: 'Roboto', sans-serif;
 
-	@media (max-width: 800px) {
-		flex-direction: column;
-	}
-
     .content-row {
-        display: flex;
-        flex-direction: row;
+		display: flex;
+		flex-direction: row;
 		gap: 20px;
         width: 100%;
     }
+
+	@media screen and (max-width: 800px) {
+		.content-row {
+			flex-direction: column;
+			align-items: center;
+		}
+	}
 
 	.card-title {
 		font-size: 26px;
@@ -28,18 +27,18 @@ const LayoutContainer = styled.div`
 	.description{
 		margin: 0 0 3px 0;
 		padding: 0 5px;
-		border-left: solid 2px ${colors.light_gray};
+		color: ${colors.standard_light_blue};
 	}
 
 	.subsection{
-		
+		padding: 2px 0;
 	}
 
 	.list-style-card-main {
 		list-style-type: none;
 		margin: 0;
 		padding: 0 0 0 10px;
-		border-left: solid 2px ${colors.light_gray};
+		color: ${colors.standard_light_blue};
 	}
 
 	.list-style-card-sub{
@@ -55,19 +54,28 @@ const LayoutContainer = styled.div`
 	}
 
 	h2{
-		font-size: 22px;
+		font-size: 18px;
 		margin: 10px 0;
 	}
 `;
 
 const StyledContainer = styled.div`
-    width: 30%;
-    display: flex;
-    flex-direction: column;
-    font-size: 14px;
+	display: flex;
+	flex-direction: column;
+	font-size: 14px;
+	margin-bottom: 20px;
+	max-width: 40%;
 
-    .card-container {
-		padding: 15px 5px;
+	@media screen and (max-width: 800px) {
+		max-width: 90%;
+	}
+
+	.card-container {
+		background-color: #f9f9f9;
+		box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+		border-radius: 8px;
+		padding: 20px;
+		margin-bottom: 20px;
 	}
 
 	.hr-container{
@@ -82,6 +90,13 @@ const StyledContainer = styled.div`
 		display: flex;
 		gap: 10px;
 	}
+	.list-style-card-main {
+        padding-left: 20px;
+        margin-top: 10px;
+    }
+    .list-style-card-sub {
+        padding-left: 15px;
+    }
 
 	.download-button {
         display: flex;
@@ -92,7 +107,6 @@ const StyledContainer = styled.div`
 		font-size: 10px;
         border-radius: 4px;
 		background-color: ${colors.standard_dark_blue};
-        /* background-color: linear-gradient(45deg, #36589b, ${colors.standard_dark_blue});*/
         color: white;
         cursor: pointer;
         transition: transform 0.3s, box-shadow 0.3s;
@@ -119,12 +133,10 @@ const StyledTopBar = styled.div`
     width: 100%;
 
     .title {
-        font-size: 48px;
-		color: ${colors.standard_dark_blue};
-        font-weight: 900;
-        text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2);
-		margin: 0 0 10px 0;
+        font-size: 50px;
+        text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
     }
+
 `;
 
 

@@ -58,6 +58,8 @@ const Navigation = () => {
                             <img src={process.env.PUBLIC_URL + "/images/trumpet-orcestra.png"} alt='ORCESTRA logo' />
                         </NavLink>
                     </div>
+				</div>
+				<div className='middle'>
                     <NavLink to={`/`} className='link' activeclassname='active-link'>Home</NavLink>
                     {
                         path.datatype.length > 0 && path.datatype === dataTypes.pharmacogenomics &&
@@ -71,7 +73,7 @@ const Navigation = () => {
                     }
                     <NavLink to={`/app/documentation/overview`} className='link' activeclassname='active-link'>Documentation</NavLink>
                     <NavLink to={`/app/contact`} className='link' activeclassname='active-link'>Contact</NavLink>
-                </div>
+					</div>
                 <div className='right'>
                     {
                         auth.user &&

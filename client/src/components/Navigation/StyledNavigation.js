@@ -16,13 +16,19 @@ export const NavigationWrapper = styled.div`
     margin-left: auto;
     margin-right: auto;
     display: flex;
+	flex-direction: row;
     justify-content: space-between;
     aling-items: center;
 
     .left {
-        display: flex;
+		display: flex;
         align-items: center;
     }
+
+	.middle{
+		display: flex;
+        align-items: center;
+	}
 
     .right {
         position: relative;
@@ -39,11 +45,9 @@ export const NavigationWrapper = styled.div`
     }
 
     .logo {
-        height: 90%;
-        margin-right: 40px;
+
         img {
-            max-width: 100%;
-            max-height: 100%;
+            max-width: 50px;
         }
     }
 
