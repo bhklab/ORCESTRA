@@ -60,28 +60,27 @@ const Navigation = () => {
                     </div>
 				</div>
 				<div className='middle'>
-                    <NavLink to={`/`} className='link' activeclassname='active-link'>Home</NavLink>
+                    <NavLink to={`/`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Home</NavLink>
                     {
                         path.datatype.length > 0 && path.datatype === dataTypes.pharmacogenomics &&
 						(
 							<>
-                                <NavLink to={`/${path.datatype}/search`} className='link' activeclassname='active-link'>Search and Request</NavLink>
-                                <NavLink to={`/${path.datatype}/status`} className='link' activeclassname='active-link'>Request Status</NavLink>
-                                <NavLink to={`/${path.datatype}/stats`} className='link' activeclassname='active-link'>Statistics</NavLink>
+                                <NavLink to={`/${path.datatype}/search`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}> Search and Request </NavLink>                                <NavLink to={`/${path.datatype}/status`} className='link' activeclassname='active-link'>Request Status</NavLink>
+                                <NavLink to={`/${path.datatype}/stats`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Statistics</NavLink>
 							</>
 						)
                     }
-                    <NavLink to={`/app/documentation/overview`} className='link' activeclassname='active-link'>Documentation</NavLink>
-                    <NavLink to={`/app/contact`} className='link' activeclassname='active-link'>Contact</NavLink>
-					</div>
+                    <NavLink to={`/app/documentation/overview`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Documentation</NavLink>
+                    <NavLink to={`/app/contact`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Contact</NavLink>
+				</div>
                 <div className='right'>
                     {
                         auth.user &&
-                        <NavLink to={`/app/data_submission`} className='link' activeclassname='active-link'>Data Submission</NavLink>
+                        <NavLink to={`/app/data_submission`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Data Submission</NavLink>
                     }
                     {
                         auth.user &&
-                        <NavLink to="/app/profile" className='link' activeclassname='active-link'>Profile</NavLink>
+                        <NavLink to="/app/profile" className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Profile</NavLink>
                     }
                     <Button
                         className='button'

@@ -30,6 +30,13 @@ const LayoutContainer = styled.div`
 		color: ${colors.standard_light_blue};
 	}
 
+	.disclaimers{
+		font-size: 14px;
+		margin: 0 0 3px 0;
+		padding: 0 5px;
+		color: ${colors.standard_light_blue};
+	}
+
 	.subsection{
 		padding: 2px 0;
 	}
@@ -37,16 +44,16 @@ const LayoutContainer = styled.div`
 	.list-style-card-main {
 		list-style-type: none;
 		margin: 0;
-		padding: 0 0 0 10px;
 		color: ${colors.standard_light_blue};
+		li {
+			font-size: 14px;
+		}
 	}
 
 	.list-style-card-sub{
 		list-style-type: disc;
 		margin: 0;
-		span {
-			font-weight: bold;
-		}
+		font-size: 13px;
 	}
 
 	span {
@@ -62,12 +69,12 @@ const LayoutContainer = styled.div`
 const StyledContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	font-size: 14px;
+	font-size: 16px;
 	margin-bottom: 20px;
-	max-width: 40%;
+	min-width: 30%;
 
 	@media screen and (max-width: 800px) {
-		max-width: 90%;
+		width: 90%;
 	}
 
 	.card-container {
@@ -75,7 +82,14 @@ const StyledContainer = styled.div`
 		box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 		border-radius: 8px;
 		padding: 20px;
-		margin-bottom: 20px;
+		margin-bottom: 15px;
+
+		transition: transform 0.3s ease, box-shadow 0.3s ease; // Added transition for smooth effect
+
+        &:hover {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2); // More pronounced shadow
+            transform: translateY(-5px); // Lift effect
+        }
 	}
 
 	.hr-container{
@@ -95,16 +109,17 @@ const StyledContainer = styled.div`
         margin-top: 10px;
     }
     .list-style-card-sub {
-        padding-left: 15px;
-    }
+        padding-left: 25px;
+		overflow-wrap: break-word;
+	}
 
 	.download-button {
         display: flex;
         align-items: center;
         padding: 10px 12px;
-		height: 30px;
+		height: 35px;
         border: none;
-		font-size: 10px;
+		font-size: 12px;
         border-radius: 4px;
 		background-color: ${colors.standard_dark_blue};
         color: white;
@@ -112,6 +127,10 @@ const StyledContainer = styled.div`
         transition: transform 0.3s, box-shadow 0.3s;
 		max-width: 175px;
 		margin-top: 10px;
+
+		span {
+			font-weight: bolder;
+		}
 
         &:hover {
             background: #464c77;

@@ -65,10 +65,10 @@ const RadiomicSetSearch = () => {
                 setIsRequest: setIsRequest
             }}
         >
-            <StyledPage style={{marginBottom: "20px", width: "80%" }}>
+            <StyledPage style={{ width: "90%" }}>
 				<StyledTopBar>
 					<h1 className="title">
-						RADCURE
+						CCLE 2019
 					</h1>
 				</StyledTopBar>
 				<LayoutContainer>
@@ -115,7 +115,7 @@ const RadiomicSetSearch = () => {
 									<ul className='list-style-card-main'>
 										<li><span>DOI:</span> 10.5281/zenodo.8332910</li>
 										<li><span>Format:</span> rds file</li>
-										<li><span>Version:</span> RADCURE 2023</li>
+										<li><span>Version:</span> CCLE 2019</li>
 										<li><span>License:</span> Users must abide by the TCIA Data Usage Policy and Restrictions.</li>
 									</ul>
 								</div>
@@ -123,16 +123,16 @@ const RadiomicSetSearch = () => {
 									<h2>
 										Disclaimers
 									</h2>
-									<p className='description'>
+									<p className='disclaimers'>
 										<span>Data Disclaimer: </span>
 										{'The Cleveland data was generated and shared by the Broad Institute CTD^2 Center.' + 
 										'The Haibe-Kains Lab has re-annotated the data to maximize overlap with other radiogenomic datasets.'}
 									</p>
-									<p className='description'>
+									<p className='disclaimers'>
 										<span>Data Usage Policy: </span>
 										{'The CTD^2 releases data in accordance with their data release policy.'}
 									</p>
-									<p className='description'>
+									<p className='disclaimers'>
 										<span>Please Cite the Following: </span>
 										{'Multi-institutional Prognostic Modeling in Head and Neck Cancer: ' +
 										'Evaluating Impact and Generalizability of Deep Learning and Radiomics. Cancer Research Communications 1 ' + 
@@ -144,7 +144,7 @@ const RadiomicSetSearch = () => {
 
 						<StyledContainer>
 							<div class="card-container">
-								<div class="card-title ">Dataset Specifics</div>
+								<div class="card-title ">Dataset Details</div>
 								<div className='hr-container'>
 									<hr className='hr-style'/>
 								</div>
@@ -155,14 +155,14 @@ const RadiomicSetSearch = () => {
 									<ul className='list-style-card-main'>
 										<li><span>{'Raw Data Source(s)'}:</span>
 											<ul className='list-style-card-sub'>
-												<li>Data Source 1: https://NCBI.com</li>
-												<li>Data Source 2: https://github.com</li>
-												<li>Data Source 3: https://EGA.com</li>
+												<li><span>Data Source 1:</span> https://data.broadinstitute.org/ccle/CCLE_RNAseq_rsem_genes_tpm_20180929.txt.gz</li>
+												<li><span>Data Source 2:</span> https://data.broadinstitute.org/ccle/CCLE_RNAseq_rsem_transcripts_tpm_20180929.txt.gz</li>
+												<li><span>Data Source 3:</span> https://data.broadinstitute.org/ccle/CCLE_RNAseq_genes_counts_20180929.gct.gz</li>
 											</ul>
 										</li>
-										<li><span>Processing Tools:</span> Kalisto, ...</li>
+										<li><span>Processing Tools:</span> Kalisto </li>
 										<li><span>Data Transformation:</span> Lorem ipsum dolor sit amet</li>
-										<li><span>Gencode Version:</span> Lorem ipsum dolor sit amet</li>
+										<li><span>Gencode Version:</span> 19 </li>
 									</ul>
 								</div>
 								<div className='subsection'>
@@ -170,14 +170,14 @@ const RadiomicSetSearch = () => {
 									<ul className='list-style-card-main'>
 										<li><span>{'Raw Data Source(s)'}:</span>
 											<ul className='list-style-card-sub'>
-												<li>Data Source 1: https://NCBI.com</li>
-												<li>Data Source 2: https://github.com</li>
-												<li>Data Source 3: https://EGA.com</li>
+												<li><span>Data Source 1:</span> https://NCBI.com</li>
+												<li><span>Data Source 1:</span> https://github.com</li>
+												<li><span>Data Source 1:</span> https://EGA.com</li>
 											</ul>
 										</li>
-										<li><span>Processing Tools:</span> tool 1, tool 2</li>
+										<li><span>Processing Tools:</span> ??? tool 1, tool 2 ???</li>
 										<li><span>Data Transformation:</span> Lorem ipsum dolor sit amet</li>
-										<li><span>Gencode Version:</span> Lorem ipsum dolor sit amet</li>
+										<li><span>Gencode Version:</span> 19 </li>
 									</ul>
 								</div>
 								<div className='subsection'>
@@ -185,13 +185,12 @@ const RadiomicSetSearch = () => {
 									<ul className='list-style-card-main'>
 										<li><span>{'Raw Data Source(s)'}:</span>
 											<ul className='list-style-card-sub'>
-												<li>Data Source 1: https://NCBI.com</li>
-												<li>Data Source 2: https://github.com</li>
-												<li>Data Source 3: https://EGA.com</li>
+												<li>Data Source 1: https://data.broadinstitute.org/ccle_legacy_data/pharmacological_profiling/CCLE_GNF_data_090613.xls</li>
+												<li>Data Source 2: https://data.broadinstitute.org/ccle_legacy_data/pharmacological_profiling/CCLE_NP24.2009_Drug_data_2015.02.24.csv</li>
 											</ul>
 										</li>
-										<li><span>Processing Method:</span> ComputeAAC</li>
-										<li><span>Recist Availability:</span> Lorem ipsum dolor sit amet</li>
+										<li><span>Processing Method:</span> ?</li>
+										<li><span>Recist Availability:</span> ?</li>
 									</ul>
 								</div>
 							</div>
@@ -206,7 +205,7 @@ const RadiomicSetSearch = () => {
 								<div className='subsection'>
 									<h2>Pipeline Details</h2>
 									<ul className='list-style-card-main'>
-										<li><span>Pipeline:</span> https://github.com/bhklab/RADCURE</li>
+										<li><span>Pipeline:</span> https://github.com/jjjermiah/CCLE_PharmacoSet-Pipeline/blob/main/workflow/config/config.yaml</li>
 										<li><span>Docker Image:</span> https://hub.docker.com/r/minorunakano/orcestra-snakemake</li>
 										<li><span>{'Data Curation Script(s)'}:</span>
 											<ul className='list-style-card-sub'>

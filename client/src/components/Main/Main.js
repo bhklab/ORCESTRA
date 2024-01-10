@@ -1,139 +1,105 @@
 import React, { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import { PathContext } from '../../hooks/Context';
-import * as MainStyle from './MainStyle';
+import {
+    Wrapper,
+    HeaderGroup,
+    Row,
+} from './MainStyle';
 import styled from 'styled-components';
 import { dataTypes } from '../Shared/Enums';
 
 const StyledBox = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    background-color:rgb(255, 255, 255,0.5);
-    margin: 0px 10px 10px 10px;
-    padding: 10px 30px 30px 30px;
+    background-color: #ffffff;
+    margin: 10px;
+    padding: 20px;
     border-radius: 10px;
-    width: 30%;
-    height: 250px;
-    min-width: 200px;
-    max-width: 370px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    width: 300px;
+    height: 300px;
+
+    flex-basis: calc(25% - 20px); // Adjust 20px based on your gap/margin
+    max-width: calc(25% - 20px); // Ensures that boxes do not grow beyond this width
+
+    @media screen and (max-width: 900px) {
+        flex-basis: calc(50% - 20px);
+        max-width: calc(50% - 20px);
+    }
+
+    @media screen and (max-width: 600px) {
+        flex-basis: 80%;
+        max-width: 80%;
+    }
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
 
     .header {
-        height: 25%;
-        width: 90%;
+        font-size: 22px;
+        font-weight: 900;
+        text-align: center;
+    }
+
+    .image-container {
+        flex-grow: 1; //ensures it expands to fill the available space, pushing the image to the center.
         display: flex;
         justify-content: center;
         align-items: center;
-        text-align: center;
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-    button {
-        height: 75%;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        background: none;
-
-        :hover .hover-cover {
-            opacity: 0.7;
-        }
-
-        :hover .hover-text {
-            display: block;
-        }
-    }
-
-    .btn-content {
-        position relative;
-        display: flex;
-        justify-content center;
-        align-items: center;
+        width: 100%;
     }
 
     img {
-        width: ${props => (props.imgwidth)};
-        min-width: 130px;
-        margin: 10px;
-    }
+        width: 200px;
+        max-width: 100%;
+        align-self: center;
 
-    .hover-cover {
-        position absolute;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #ffffff;
-        border-radius: 5px;
-        opacity: 0;
-    }
 
-    .hover-text {
-        display: none;
-        position absolute;
-        font-size: 45px;
-        font-weight: bold;
-        color: #3D405A;
-    }
-
-    @media only screen and (max-width: 1000px) {
-        width: 60%;
-        min-width: 360px;
     }
 `;
 
 
 const Main = () => {
     const path = useContext(PathContext);
-    const navigate = useNavigate(); // Use the useNavigate hook
+    const navigate = useNavigate();
 
     useEffect(() => {
         path.setDatatype('');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const DatatypeBox = (props) => (
-        <StyledBox imgwidth={props.imgwidth}>
-            <div className='header'>{props.title}</div>
-            <button 
-                onClick={() => {
-                    path.setDatatype(props.datatype);
-                    navigate(`/${props.datatype}`); // Use navigate instead of history.push
-                }}
-                disabled={props.disabled}
-            >
-                <div className='btn-content'>
-                    <img src={`/images/icons/${props.datatype}.png`} alt='icon'/>
-                    <div className='hover-cover'></div>
-                    <div className='hover-text'>{props.text}</div>
-                </div>
-            </button>
+    const DatatypeBox = ({ title, datatype }) => (
+        <StyledBox onClick={() => navigate(`/${datatype}`)}>
+            <div className='header'>{title}</div>
+            <div className='image-container'>
+                <img src={`/images/icons/${datatype}.png`} alt={title} />
+            </div>
         </StyledBox>
     );
-
+    
+    
     return (
-        <MainStyle.Wrapper>
-            <MainStyle.HeaderGroup>
+        <Wrapper>
+            <HeaderGroup>
                 <h1>ORCESTRA</h1>   
                 <h2>Orchestration platform for reproducing multimodal data</h2>
-            </MainStyle.HeaderGroup>
-            <MainStyle.Row>
-                <DatatypeBox title='Pharmacogenomics Data' datatype={dataTypes.pharmacogenomics} text='GO' imgwidth='45%' />
-                <DatatypeBox title='Toxicogenomics Data' datatype={dataTypes.toxicogenomics} text='GO' imgwidth='70%'/>
-                <DatatypeBox title='Xenographic Pharmacogenomics Data' datatype={dataTypes.xenographic} text='GO' imgwidth='70%'/>
-            </MainStyle.Row>  
-            <MainStyle.Row>
-                <DatatypeBox title='Radiogenomics Data' datatype={dataTypes.radiogenomics} text='GO' imgwidth='45%'/>
-                <DatatypeBox title='Clinical Genomics Data' datatype={dataTypes.clinicalgenomics} text='GO'  imgwidth='45%'/>
-                <DatatypeBox title='Immune Checkpoint Blockade Data' datatype={dataTypes.icb} text='Go' imgwidth='45%'/>
-            </MainStyle.Row>
-            <MainStyle.Row>
-                <DatatypeBox title='Radiomics Data' datatype={dataTypes.radiomics} text='Go' imgwidth='45%'/>
-            </MainStyle.Row>
-        </MainStyle.Wrapper>
+            </HeaderGroup>
+            <Row>
+                <DatatypeBox title='Pharmacogenomics Data' datatype={dataTypes.pharmacogenomics} />
+                <DatatypeBox title='Toxicogenomics Data' datatype={dataTypes.toxicogenomics} />
+                <DatatypeBox title='Xenographic Pharmacogenomics Data' datatype={dataTypes.xenographic} />
+                <DatatypeBox title='Radiogenomics Data' datatype={dataTypes.radiogenomics} />
+                <DatatypeBox title='Clinical Genomics Data' datatype={dataTypes.clinicalgenomics} />
+                <DatatypeBox title='Immune Checkpoint Blockade Data' datatype={dataTypes.icb} />
+                <DatatypeBox title='Radiomics Data' datatype={dataTypes.radiomics}/>
+            </Row>
+        </Wrapper>
     );
 }
 

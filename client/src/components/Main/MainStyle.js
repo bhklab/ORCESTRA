@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+const Wrapper = styled.div`
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     padding-bottom: 200px;
 `
 
-export const HeaderGroup = styled.div`
+const HeaderGroup = styled.div`
     display: flex;
     flex-direction: column;
     h1 {
@@ -37,7 +37,7 @@ export const HeaderGroup = styled.div`
     }
 `
 
-export const DatasetHeaderGroup = styled.div`
+const DatasetHeaderGroup = styled.div`
     display: flex;
     flex-direction: column;
     h1 {
@@ -54,7 +54,7 @@ export const DatasetHeaderGroup = styled.div`
     }
 `
 
-export const Button = styled.a`
+const Button = styled.a`
     background-color: #3D405A;
     border-radius: 5px;
     border: none;
@@ -73,14 +73,17 @@ export const Button = styled.a`
     }
 `
 
-export const Row = styled.div`
-    margin-top: 30px;
+const Row = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-`
+    gap: 10px;
+    margin-top: 30px;
+`;
 
-export const Column = styled.div`
+
+
+const Column = styled.div`
     flex: 28%;
     max-width: 28%;
     display: flex;
@@ -93,7 +96,7 @@ export const Column = styled.div`
     }
 `
 
-export const Item = styled.div`
+const Item = styled.div`
     background-color:rgb(255, 255, 255,0.5);
     margin: 0px 10px 10px 10px;
     padding: 0px 20px 30px 20px;
@@ -127,7 +130,7 @@ export const Item = styled.div`
     }
 `
 
-export const Number = styled.span`
+const Number = styled.span`
     font-size: 70px;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
@@ -147,4 +150,13 @@ export const Number = styled.span`
         color: #555975;
     }
 `
-
+export {
+    Wrapper,
+    HeaderGroup,
+    DatasetHeaderGroup,
+    Button,
+    Row,
+    Column,
+    Item,
+    Number,
+}

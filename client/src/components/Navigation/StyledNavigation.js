@@ -18,9 +18,9 @@ export const NavigationWrapper = styled.div`
     display: flex;
 	flex-direction: row;
     justify-content: space-between;
-    aling-items: center;
 
     .left {
+        flex: 1;
 		display: flex;
         align-items: center;
     }
@@ -28,9 +28,11 @@ export const NavigationWrapper = styled.div`
 	.middle{
 		display: flex;
         align-items: center;
+        justify-content: center;
 	}
 
     .right {
+        flex: 1;
         position: relative;
         display: flex;
         align-items: center;
@@ -58,12 +60,12 @@ export const NavigationWrapper = styled.div`
         font-size: 12px;
         font-weight: bold;
         transition: .2s ease-out;
-        :hover {
-            text-decoration: none;
-            color: #555975;
-            border-bottom: 2px solid rgb(241, 144, 33);
-            transition: .2s ease-out;
-        }
+        text-decoration: none
+    }
+    .link:hover {
+        color: #555975;
+        border-bottom: 2px solid rgb(241, 144, 33);
+        transition: .2s ease-out;
     }
     .active-link{
         text-decoration: none;
