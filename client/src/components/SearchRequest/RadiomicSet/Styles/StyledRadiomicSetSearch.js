@@ -2,140 +2,183 @@ import styled from 'styled-components';
 import colors from '../../../../styles/colors';
 
 const LayoutContainer = styled.div`
-
+	flex-direction: row;
+	justify-content: space-between
+    align-items: center;
+    background-color: transparent;
+    width: 95%;
+	padding: 40px 30px;
 	font-family: 'Roboto', sans-serif;
 
+	@media (max-width: 800px) {
+		flex-direction: column;
+	}
+
     .content-row {
-		display: flex;
-		flex-direction: row;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
 		gap: 20px;
         width: 100%;
     }
 
-	@media screen and (max-width: 800px) {
-		.content-row {
-			flex-direction: column;
-			align-items: center;
-		}
-	}
+	.main-details {
+        flex-grow: 1;
+        flex-shrink: 1;
+    }
 
 	.card-title {
-		font-size: 26px;
+		font-size: 20px;
 		font-weight: bolder;
-	}
+		text-align: center;
 
-	.description{
-		margin: 0 0 3px 0;
-		padding: 0 5px;
-		color: ${colors.standard_light_blue};
-	}
-
-	.disclaimers{
-		font-size: 14px;
-		margin: 0 0 3px 0;
-		padding: 0 5px;
-		color: ${colors.standard_light_blue};
-	}
-
-	.subsection{
-		padding: 2px 0;
 	}
 
 	.list-style-card-main {
 		list-style-type: none;
+		padding-left: 0;
 		margin: 0;
-		color: ${colors.standard_light_blue};
-		li {
-			font-size: 14px;
+
+		span {
+			font-weight: bold;
 		}
 	}
 
 	.list-style-card-sub{
 		list-style-type: disc;
+		padding-left: 20px;
 		margin: 0;
-		font-size: 13px;
+		span {
+			font-weight: bold;
+		}
 	}
 
-	span {
-		font-weight: bolder;
+	.list-style-card-info{
+		list-style-type: none;
+		padding-left: 10px;
+		margin: 0;
+		span {
+			font-weight: bold;
+		}
 	}
 
-	h2{
-		font-size: 18px;
-		margin: 10px 0;
+	a {
+		text-decoration: none;
 	}
+
+	a:hover {
+		color: black;
+		border-bottom: 2px solid rgb(241, 144, 33);
+	}
+
+	a:link, a:visited {
+		color: inherit;
+	}
+
 `;
 
-const StyledContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	font-size: 16px;
-	margin-bottom: 20px;
-	min-width: 30%;
-
-	@media screen and (max-width: 800px) {
-		width: 90%;
-	}
+const StyledContainerOuter = styled.div`
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 14px;
 
 	.card-container {
-		background-color: #f9f9f9;
-		box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 		border-radius: 8px;
-		padding: 20px;
-		margin-bottom: 15px;
+		padding: 25px;
+		box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+		background-color: white;
 
-		transition: transform 0.3s ease, box-shadow 0.3s ease; // Added transition for smooth effect
+		transition: transform 0.3s, box-shadow 0.3s;
+	}
 
-        &:hover {
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2); // More pronounced shadow
-            transform: translateY(-5px); // Lift effect
-        }
+	.card-container:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 5px 20px rgba(0, 0, 0, 1);
 	}
 
 	.hr-container{
 		margin: 0 0 15px 0;
+		justify-content: center;
 	}
 	.hr-style {
 		margin 0 auto;
-		color: ${colors.light_gray};
+		max-width: 200px;
+		color: ${colors.standard_dark_blue};
+	}
+	
+`;
+
+const StyledContainerInner = styled.div`
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 14px;
+
+    .card-container {
+		border-radius: 8px;
+		padding: 20px;
+		box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+		background-color: white;
+
+		transition: transform 0.3s, box-shadow 0.3s;
 	}
 
-	.button-container{
-		display: flex;
-		gap: 10px;
+	.card-container:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 5px 20px rgba(0, 0, 0, 1);
 	}
-	.list-style-card-main {
-        padding-left: 20px;
-        margin-top: 10px;
+
+	.hr-container{
+		margin: 0 0 15px 0;
+		justify-content: center;
+	}
+	.hr-style {
+		margin 0 auto;
+		max-width: 150px;
+		color: ${colors.standard_dark_blue};
+	}
+	
+`;
+
+
+const StyledTopBar = styled.div`
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+	text-align: center;
+	justify-content: center;
+    width: 100%;
+    max-width: 350px;
+    padding: 5px 10px; 
+
+    .title {
+        font-family: 'Roboto', sans-serif;
+        font-size: 44px;
+		color: ${colors.standard_dark_blue};
+        font-weight: 700;
+        text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2);
+		margin: 10px 0;
     }
-    .list-style-card-sub {
-        padding-left: 25px;
-		overflow-wrap: break-word;
-	}
 
 	.download-button {
         display: flex;
         align-items: center;
-        padding: 10px 12px;
-		height: 35px;
+        padding: 8px 14px;
         border: none;
-		font-size: 12px;
-        border-radius: 4px;
-		background-color: ${colors.standard_dark_blue};
+		font-size: 10px;
+        border-radius: 30px;
+        background: linear-gradient(45deg, #36589b, ${colors.standard_dark_blue});
         color: white;
         cursor: pointer;
         transition: transform 0.3s, box-shadow 0.3s;
-		max-width: 175px;
-		margin-top: 10px;
-
-		span {
-			font-weight: bolder;
-		}
 
         &:hover {
-            background: #464c77;
-            transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(45deg, ${colors.standard_dark_blue}, #36589b);
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         &:focus {
@@ -143,25 +186,13 @@ const StyledContainer = styled.div`
             box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
         }
     }
-	
-`;
-
-const StyledTopBar = styled.div`
-    align-items: left;
-	text-align: left;
-    width: 100%;
-
-    .title {
-        font-size: 50px;
-        text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-    }
-
 `;
 
 
 export {
 	LayoutContainer,
-	StyledContainer,
+	StyledContainerOuter,
+	StyledContainerInner,
 	StyledTopBar,
 
 }

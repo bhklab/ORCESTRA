@@ -1,10 +1,12 @@
 /* Style override for PrimeReact UI elements */
-
-body .p-component {
-    font-size: 12px;
+body{
     font-family: "Roboto", "Segoe UI", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+}
+
+body .p-component {
+    font-size: 12px;
 }
 
 /* PSetList comonent */
@@ -200,12 +202,27 @@ body .p-tabview.p-tabview-top .p-tabview-nav li a:not(.p-disabled):focus{
 /* Accordion styling */
 body .p-accordion .p-accordion-header:not(.p-disabled).p-highlight a{
     background-color: #3D405A;
+    color: white;
     border: 1px solid #3D405A;
 }
 
 body .p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover a{
     background-color: #555975;
+    color: white;
     border: 1px solid #555975;
+}
+
+
+.p-accordion .p-accordion-tab {
+    margin-bottom: 10px;
+    border: 0.5px solid #555975;
+    
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        transform: translateY(-5px);
+    }
 }
 
 body .p-accordion .p-accordion-header:not(.p-disabled) a:focus{
