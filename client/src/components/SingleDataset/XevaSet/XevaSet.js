@@ -4,8 +4,8 @@ import DisclaimerTabContent from '../PSet/TabContents/DisclaimerTabContent';
 import DatasetTabContent from './TabContents/DatasetTabContent';
 import RNATabContent from './TabContents/RNATabContent';
 import DNATabContent from './TabContents/DNATabContent';
-import PipelineTabContent from '../PSet/TabContents/PipelineTabContent';
-import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';    
+import ReleaseNoteTabContent from './TabContents/ReleaseNoteTabContent';
+import PipelineTabContent from './TabContents/PipelineTabContent';   
 import { TabContainer } from '../SingleDatasetStyle';
 
 const XevaSet = (props) => {
