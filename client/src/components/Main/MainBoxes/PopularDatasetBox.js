@@ -16,7 +16,7 @@ const PopularDatasetBox = (props) => {
 
     return(
         <MainStyle.Item>
-            <h3>{`${props.datasetName === dataTypes.pharmacogenomics ? 'Top 5 Popular' : 'Popular'} ${props.datasetName}s`}</h3>
+            <h3 className='header'>{`${props.datasetName === dataTypes.pharmacogenomics ? 'Top 5 Popular' : 'Popular'} ${props.datasetName}s`}</h3>
             <div className='content'>
                 <DataTable value={props.statsData} >
                     <Column className='textField' field='numDownload' header='Download' />

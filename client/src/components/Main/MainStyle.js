@@ -65,7 +65,7 @@ const Button = styled.a`
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 30px;
+    margin-top: 5px;
 
     :hover {
         background-color: #555975;
@@ -78,32 +78,28 @@ const Row = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    margin-top: 30px;
+    width: 80%;
+    margin: 30px auto;
 `;
 
 
 
 const Column = styled.div`
-    flex: 28%;
-    max-width: 28%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 10px;
+    max-width: 400px;
 
     @media only screen and (max-width: 1000px) {
-        flex: 50%;
         max-width: 100%;
     }
 `
 
 const Item = styled.div`
     background-color:rgb(255, 255, 255,0.5);
-    margin: 0px 10px 10px 10px;
-    padding: 0px 20px 30px 20px;
+    padding: 20px;
     border-radius: 10px;
-    width: 95%;
-    min-height:200px;
-    min-width: 300px;
+    width: 100%;
 
     .content {
         width: 100%;
@@ -126,7 +122,10 @@ const Item = styled.div`
     }
 
     .link {
-        margin-top: 50px;
+        margin-top: 25px;
+    }
+    .header{
+        margin-top: 0px;
     }
 `
 
@@ -134,7 +133,6 @@ const Number = styled.span`
     font-size: 70px;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
-    width: 35%;
     text-align: center;
     button {
         font-size: 75px;

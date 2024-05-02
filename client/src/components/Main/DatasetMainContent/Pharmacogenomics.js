@@ -71,7 +71,7 @@ const Pharmacogenomics = () => {
             <MainStyle.Row>
                 <MainStyle.Column>
                     <MainStyle.Item>
-                        <h3>Search and Request PSets</h3>
+                        <h3 className='header'>Search and Request PSets</h3>
                         <div className='content'>
                             <div>Design your own PSet using:</div>
                             <div className='line'>
@@ -91,15 +91,13 @@ const Pharmacogenomics = () => {
                             </div>
                         </div>
                     </MainStyle.Item>
+                    <RequestStatusBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} reqStatus={reqStatus}/>
                 </MainStyle.Column>
                 <MainStyle.Column>
-                    <CanonicalBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} />
-                    <RequestStatusBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} reqStatus={reqStatus}/>
-                </MainStyle.Column> 
-                <MainStyle.Column>
                     <PopularDatasetBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} statsData={statsData} />
+                    <CanonicalBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} />
                     <YourOwnDataBox datasetName='PSet' datasetType={dataTypes.pharmacogenomics} />
-                </MainStyle.Column>    
+                </MainStyle.Column>
             </MainStyle.Row> 
             <DatasetDialog visible={datasetVisible} onHide={() => {hideDialog('dataset')}} dataset={searchData.dataset} />
             <RNADialog visible={rnaVisible} onHide={() => {hideDialog('rna')}} rna={{tool: searchData.rnaTool, ref: searchData.rnaRef}} />

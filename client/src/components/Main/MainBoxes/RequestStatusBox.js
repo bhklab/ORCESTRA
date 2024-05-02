@@ -3,7 +3,7 @@ import * as MainStyle from '../MainStyle';
 
 const RequestStatusBox = (props) => (
     <MainStyle.Item style={{ alignSelf: 'flex-start'}}>
-        <h3>{`View ${props.datasetName} Request Status`}</h3>
+        <h3 className='header'>{`View ${props.datasetName} Request Status`}</h3>
         <div className='content'>
             <div>{`ORCESTRA is processing following ${props.datasetName} requests:`}</div>
             <div className='line'>
