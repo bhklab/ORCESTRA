@@ -58,18 +58,18 @@ const submissionSuccessMessage = {
 
 const submissionErrorMessage = {
   severity: 'error', 
-  summary: 'Pipeline Not Submissted', 
+  summary: 'Pipeline Not Submitted', 
   detail: '', 
   sticky: true 
 }
 
-const RunPiepline = () => {
+const RunPipeline = () => {
 
   const [pipelines, setPipelines] = useState([]);
   const [selected, setSelected] = useState(null);
   const [selectedPipeline, setSelectedPipeline] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [showMsg, setShowMsg] = useState(false)
+  const [showMsg, setShowMsg] = useState(false);
   const [submitMessage, setSubmitMessage] = useState({});
 
   useEffect(() => {
@@ -153,60 +153,27 @@ const RunPiepline = () => {
   return(
     <StyledRunPipeline>
       <CustomMessages trigger={showMsg} message={submitMessage} />
-      <h3>Run a Pipeline</h3>
+      <h3>Run Pipeline</h3>
       {
-        pipelines.length > 0 &&
+        pipelines.length > 0 &&  
         <div>
           <CustomSelect 
             selectOne
             selected={selected}
             options={pipelines.map(pipeline => ({label: pipeline.name, value: pipeline.name}))}
             onChange={onSelect}
-            label='Select a pipeline: '
+            label='Select pipeline: '
           />
           {
             selectedPipeline &&
             <React.Fragment>
               <div className='content'>
-                <div className='left'>
-                  <h3>Set run configuration</h3>
+                
                   <CustomCheckbox 
                     label='Run all:' 
                     checked={selectedPipeline.run_all} 
                     onChange={(e) => setSelectedPipeline({...selectedPipeline, run_all: e.checked})}
                   />
-                  <div className='sub-header'>
-                    <h4>Preserved Directories</h4>
-                    {
-                      selectedPipeline.preserved_data.length === 0 &&
-                      <Button icon='pi pi-plus' onClick={addDirectory} />
-                    }
-                  </div>
-                  <div>
-                    {
-                      selectedPipeline.preserved_data.map((item, i) => (
-                        <div className='field' key={i}>
-                          <CustomInputText 
-                            className='textfield'
-                            value={item} 
-                            onChange={updateDirectory(i)}
-                          />
-                          <Button 
-                            className='p-button-danger delete-btn'
-                            icon='pi pi-times' 
-                            onClick={removeDirectory(i)} 
-                          />
-                          {
-                            i === selectedPipeline.preserved_data.length - 1 &&
-                            <Button 
-                              icon='pi pi-plus' 
-                              onClick={addDirectory} 
-                            />
-                          }
-                        </div>
-                      ))
-                    }
-                  </div>
                   {
                     selectedPipeline.additional_parameters &&
                     <div>
@@ -227,22 +194,15 @@ const RunPiepline = () => {
                     </div>
                   }
                 </div>
-                <div className='right'>
-                  <h3>Run Configuration</h3>
-                  <pre>
-                    {
-                      JSON.stringify(selectedPipeline, null, 2)
-                    }
-                  </pre>
-                </div>
-              </div>
+              
               {
                 loading ?
                 <ThreeDots color="#3D405A" height={100} width={100} />
                 :
                 <Button 
                   className='p-button-primary'
-                  label='Run Pipeline' 
+                  label='Run Pipeline'
+                  style={{ fontSize: '1.0em', padding: '10px 20px' }} 
                   onClick={submit} 
                 />
               }
@@ -254,4 +214,4 @@ const RunPiepline = () => {
   );
 }
 
-export default RunPiepline;
+export default RunPipeline;
