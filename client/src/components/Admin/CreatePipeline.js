@@ -169,7 +169,7 @@ const CreatePipeline = () => {
       <CustomInputText 
           className='textfield'
           placeholder='Ex. https://github.com/BHKLAB-DataProcessing/RADCURE_radiomics.git'
-          label='Pipeline Git URL:'
+          label='Pipeline Github Repository (URL):'
           value={pipeline.git_url} 
           onChange={(e) => {setPipeline({...pipeline, git_url: e.target.value})}}
       />
