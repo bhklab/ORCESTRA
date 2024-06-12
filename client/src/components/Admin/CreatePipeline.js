@@ -7,6 +7,7 @@ import { RadioButton } from 'primereact/radiobutton';
 import AdditionalFields from './SubComponents/AdditionalFields';
 import styled from 'styled-components';
 import { ThreeDots } from 'react-loader-spinner';
+import * as MainStyle from '../Main/MainStyle';
 
 const StyledCreatePipeline = styled.div`
   max-width: 1000px;
@@ -193,11 +194,11 @@ const CreatePipeline = () => {
           submitting ?
           <ThreeDots color="#3D405A" height={100} width={100} />
           :
-          <Button 
-            label='Create Pipeline' 
-            style={{ fontSize: '1.0em', padding: '10px 20px' }}
+          <MainStyle.Button 
             onClick={submit} 
-          />
+          >
+			Create Pipeline
+		  </MainStyle.Button>
         }
       </div>
     </StyledCreatePipeline>
