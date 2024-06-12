@@ -7,6 +7,7 @@ import SearchReqContext from '../SearchReqContext';
 import {dataTypes} from '../../Shared/Enums';
 import StyledPage from '../../../styles/StyledPage';
 import { LayoutContainer, StyledContainerOuter, StyledContainerInner, StyledTopBar } from './Styles/StyledRadiomicSetSearch'
+import * as MainStyle from '../../Main/MainStyle';
 
 const RadiomicSetSearch = () => {
     
@@ -70,7 +71,7 @@ const RadiomicSetSearch = () => {
 					<h1 className="title">
 						CCLE 2019
 					</h1>
-					<Button className="download-button" icon='pi pi-download' label="Download Dataset" />
+					<MainStyle.Button className="download-button" icon='pi pi-download' label="Download Dataset" />
 				</StyledTopBar>
 				<LayoutContainer>
 					<div className="content-row">

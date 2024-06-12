@@ -100,8 +100,10 @@ const ClinGenSetSearch = (props) => {
                                     :
                                     '*Login or register to save existing data objects to your profile.'
                                 }
-                            </div>
+                                </div>
                         </SearchReqPanel>
+                        </MainPanel>
+                </SearchReqWrapper>
                         {
                             ready ?
                             <ClinGenSetTable 
@@ -116,8 +118,6 @@ const ClinGenSetSearch = (props) => {
                             :
                             <SearchTableLoader />
                         }  
-                    </MainPanel>
-                </SearchReqWrapper>
             </StyledPage>
         </SearchReqContext.Provider>
     );

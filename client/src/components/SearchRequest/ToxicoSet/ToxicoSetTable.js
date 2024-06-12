@@ -38,6 +38,8 @@ const ToxicoSetTable = (props) => {
             resizableColumns={true} 
             columnResizeMode="fit"
             scrollable={true} 
+            showGridlines
+            size='small'
             scrollHeight={props.scrollHeight }
         >
             {props.authenticated && <Column selectionMode="multiple" style={{width: '30px', textAlign: 'center'}} />}

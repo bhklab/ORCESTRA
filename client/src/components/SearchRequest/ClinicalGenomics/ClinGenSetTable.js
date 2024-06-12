@@ -48,6 +48,8 @@ const ClinGenSetTable = (props) => {
             columnResizeMode="fit"
             scrollable={true} 
             scrollHeight={props.scrollHeight }
+            showGridlines
+            size='small'
         >
             {props.authenticated && <Column selectionMode="multiple" style={{width: '30px', textAlign: 'center'}} />}
             <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplate} sortable={true} />

@@ -13,6 +13,7 @@ import ToxicoSetFilter from './ToxicoSetFilter';
 import ToxicoSetTable from './ToxicoSetTable';
 import StyledPage from '../../../styles/StyledPage';
 
+
 const ToxicoSetSearch = () => {
     
     const auth = useContext(AuthContext);
@@ -71,7 +72,7 @@ const ToxicoSetSearch = () => {
                 setIsRequest: setIsRequest
             }}
         >
-            <StyledPage> 
+            <StyledPage>
                 <div className='page-title'>ORCESTRA for Toxicogenomics</div>
                 <SearchReqWrapper>
                     <ToxicoSetFilter />
@@ -94,8 +95,11 @@ const ToxicoSetSearch = () => {
                                     :
                                     '*Login or register to save existing ToxicoSets to your profile.'
                                 }
-                            </div>
-                        </SearchReqPanel>
+                                </div>
+                            </SearchReqPanel>
+                    </MainPanel>
+                </SearchReqWrapper>
+                            
                         {
                             ready ?
                             <ToxicoSetTable 
@@ -108,9 +112,7 @@ const ToxicoSetSearch = () => {
                             /> 
                             :
                             <SearchTableLoader />
-                        }  
-                    </MainPanel>
-                </SearchReqWrapper>
+                            }
             </StyledPage>
         </SearchReqContext.Provider>
     );

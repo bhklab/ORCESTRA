@@ -58,7 +58,7 @@ const Pharmacogenomics = () => {
                 setRNAVisible(false);
                 break;
             default:
-                break;
+                break; 
         }
     }
 
