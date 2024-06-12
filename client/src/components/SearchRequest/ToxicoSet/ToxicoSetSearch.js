@@ -12,6 +12,7 @@ import SearchSummary from '../SearchSummary';
 import ToxicoSetFilter from './ToxicoSetFilter';
 import ToxicoSetTable from './ToxicoSetTable';
 import StyledPage from '../../../styles/StyledPage';
+import * as MainStyle from '../../Main/MainStyle';
 
 
 const ToxicoSetSearch = () => {
@@ -95,11 +96,10 @@ const ToxicoSetSearch = () => {
                                     :
                                     '*Login or register to save existing ToxicoSets to your profile.'
                                 }
-                                </div>
-                            </SearchReqPanel>
+                            </div>
+                            </SearchReqPanel> 
                     </MainPanel>
                 </SearchReqWrapper>
-                            
                         {
                             ready ?
                             <ToxicoSetTable 

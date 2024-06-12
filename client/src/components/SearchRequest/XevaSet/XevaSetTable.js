@@ -29,6 +29,7 @@ const XevaSetTable = (props) => {
     }, []);
 
     return(
+        <div className="table-container">
         <DataTable 
             value={props.xevasets} 
             selection={props.selectedDatasets} 
@@ -48,6 +49,7 @@ const XevaSetTable = (props) => {
             <Column field='info.numDownload' style={{width:'100px', textAlign: 'center'}} header='Number of Downloads' sortable={true} />
             {props.download && <Column field='downloadLink' body={downloadTemplate} style={{width:'60px', textAlign: 'center'}} header='Download' /> }
         </DataTable>
+        </div>
     );
 
 }
