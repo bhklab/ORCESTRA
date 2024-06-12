@@ -28,6 +28,7 @@ const RadioSetTable = (props) => {
     }, []);
 
     return (
+        <div className="table-container">
         <DataTable 
             value={props.datasets} 
             selection={props.selectedDatasets} 
@@ -47,6 +48,7 @@ const RadioSetTable = (props) => {
             <Column field='info.numDownload' header='Number of Downloads' sortable={true} style={{ textAlign: 'center' }} />
             {props.download && <Column field='downloadLink' header='Download' body={downloadTemplate} style={{ textAlign: 'center' }} />}
         </DataTable>
+        </div>
     );
 }
 

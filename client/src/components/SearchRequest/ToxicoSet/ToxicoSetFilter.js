@@ -5,6 +5,7 @@ import {Filter} from '../SearchReqStyle';
 import FilterInputSwitch from '../../Shared/FilterInputSwitch';
 import CustomSelect from '../../Shared/CustomSelect';
 import {dataTypes} from '../../Shared/Enums';
+import * as MainStyle from '../../Main/MainStyle';
 
 const ToxicoSetFilter = () => {
     

@@ -7,6 +7,7 @@ import { RadioButton } from 'primereact/radiobutton';
 import AdditionalFields from './SubComponents/AdditionalFields';
 import styled from 'styled-components';
 import { ThreeDots } from 'react-loader-spinner';
+import * as MainStyle from '../Main/MainStyle';
 
 const StyledCreatePipeline = styled.div`
   max-width: 1000px;
@@ -42,6 +43,7 @@ const StyledCreatePipeline = styled.div`
   }
   .submit-button {
     margin-top: 30px;
+    margin-bottom: 30px;
   }
 `;
 
@@ -63,7 +65,8 @@ const CreatePipeline = () => {
   const [pipeline, setPipeline] = useState({
     name: "",
     git_url: "",
-    dvc_git: "",
+    path_snakefile: "",
+    path_output: "",
     object_name: "",
     object_names: [''],
     additional_repo: [],
@@ -159,100 +162,43 @@ const CreatePipeline = () => {
       <h3>Create a Pipeline</h3>
       <CustomInputText 
           className='textfield'
-          label='Piepline Name:'
+          placeholder='Ex. PSet_GRAY2013 or PSet_UHNBreast'
+          label='Pipeline Name:'
           value={pipeline.name} 
           onChange={(e) => {setPipeline({...pipeline, name: e.target.value})}}
       />
       <CustomInputText 
           className='textfield'
-          label='Pipeline Git URL:'
+          placeholder='Ex. https://github.com/BHKLAB-DataProcessing/RADCURE_radiomics.git'
+          label='Pipeline Github Repository (URL):'
           value={pipeline.git_url} 
           onChange={(e) => {setPipeline({...pipeline, git_url: e.target.value})}}
       />
       <CustomInputText 
           className='textfield'
-          label='DVC Git URL:'
-          value={pipeline.dvc_git} 
-          onChange={(e) => {setPipeline({...pipeline, dvc_git: e.target.value})}}
+          placeholder='Ex. ./snake'
+          label='Path to snakefile:'
+          value={pipeline.path_snakefile} 
+          onChange={(e) => {setPipeline({...pipeline, path_snakefile: e.target.value})}}
       />
-      <div>
-        <h4>File Name(s)</h4>
-        <div className="radio-buttons">
-          <div className="radio-button-field flex align-items-center">
-            <RadioButton inputId="filename-single" name="filename" value="single" checked={numFiles === 'single'} onChange={(e) => {setNumFiles(e.value)}} />
-            <label htmlFor="filename-single" className="radio-button-label">Single File</label>
-          </div>
-          <div className="radio-button-field flex align-items-center">
-            <RadioButton inputId="filename-multiple" name="filename" value="multiple" checked={numFiles === 'multiple'} onChange={(e) => {setNumFiles(e.value)}} />
-            <label htmlFor="filename-multiple" className="radio-button-label">Multiple Files</label>
-          </div>
-        </div>
-        {
-          numFiles === 'single' &&
-          <CustomInputText 
-            className='textfield'
-            label='File name:'
-            value={pipeline.object_name} 
-            onChange={(e) => {setPipeline({...pipeline, object_name: e.target.value})}}
-          />
-        }
-        {
-          numFiles === 'multiple' &&
-              pipeline.object_names.map((name, i) => (
-                <div className='multiple-file-field' key={i}>
-                  <CustomInputText 
-                    className='multiple-file-textfield'
-                    label='File name:'
-                    value={name} 
-                    onChange={updateFilename(i)}
-                  />
-                  {
-                    i > 0 &&
-                    <Button 
-                      className='p-button-danger delete-btn'
-                      icon='pi pi-times' 
-                      onClick={removeFilename(i)} 
-                    />
-                  }
-                  <Button 
-                    icon='pi pi-plus' 
-                    onClick={addFilename} 
-                  />
-                </div>
-              ))
-        }
-      </div>
-      <div className='additional-fields'>
-        <AdditionalFields 
-          header='Additional Repositories'
-          fieldType='additional_repo'
-          field1={{label: 'Repo Type:', name: 'repo_type'}}
-          field2={{label: 'Git URL:', name: 'git_url'}}
-          pipeline={pipeline}
-          addAdditionalField={addAdditionalField}
-          updateAdditionalField={updateAdditionalField}
-          removeAdditionalField={removeAdditionalField}
-        />
-        <AdditionalFields 
-          header='Additional Parameters'
-          fieldType='additional_parameters'
-          field1={{label: 'Name:', name: 'name'}}
-          field2={{label: 'Value:', name: 'value'}}
-          pipeline={pipeline}
-          addAdditionalField={addAdditionalField}
-          updateAdditionalField={updateAdditionalField}
-          removeAdditionalField={removeAdditionalField}
-        />
-      </div>
+      <CustomInputText 
+          className='textfield'
+          placeholder='Ex. ./results'
+          label='Path to output:'
+          value={pipeline.path_output} 
+          onChange={(e) => {setPipeline({...pipeline, path_output: e.target.value})}}
+      />
+      
       <div className='submit-button'>
         {
           submitting ?
           <ThreeDots color="#3D405A" height={100} width={100} />
           :
-          <Button 
-            label='Create Pipeline' 
+          <MainStyle.Button 
             onClick={submit} 
-          />
+          >
+			Create Pipeline
+		  </MainStyle.Button>
         }
       </div>
     </StyledCreatePipeline>

@@ -12,6 +12,7 @@ import DownloadButton from '../components/Shared/Buttons/DownloadButton';
 import CustomMessages from '../components/Shared/CustomMessages';
 import CustomSelect from '../components/Shared/CustomSelect';
 import { dataTypes } from '../components/Shared/Enums';
+import * as Mainstyle from '../components/Main/MainStyle'
 
 const Header = styled.div`
     width: 100%;
@@ -169,30 +170,32 @@ const useSingleDataset = (datasetType, doi) => {
                             }))}
                             onChange={(e) => {setSelectedObject(e.value)}}
                         />
-                        <DownloadButton 
-                            className='left' 
-                            disabled={typeof selectedObject === 'undefined'} 
-                            datasetType={datasetType} 
-                            doi={dataset.data.doi}
-                            downloadLink={typeof selectedObject !== 'undefined' ? selectedObject.value.link : ''}
-                            mode='dataset'
-                            label='Download Dataset'
-                            tooltip={`Download ${dataset.data.name}(${typeof selectedObject !== 'undefined' ? selectedObject.value.name : ''}) as an R object`}
-                        />
+                        <Mainstyle.Button 
+                        className='left' 
+                        disabled={typeof selectedObject === 'undefined'} 
+                        datasetType={datasetType} 
+                        doi={dataset.data.doi}
+                        downloadLink={typeof selectedObject !== 'undefined' ? selectedObject.value.link : ''}
+                        mode='dataset'
+                        tooltip={`Download ${dataset.data.name}(${typeof selectedObject !== 'undefined' ? selectedObject.value.name : ''}) as an R object`}
+                    > 
+                    Download Dataset
+                    </Mainstyle.Button>
                     </React.Fragment>
                 );
             }
             return(
-                <DownloadButton 
+                <Mainstyle.Button
                     className='left' 
                     disabled={false} 
                     datasetType={datasetType} 
                     doi={dataset.data.doi}
                     downloadLink={dataset.data.downloadLink}
                     mode='dataset'
-                    label='Download Dataset'
                     tooltip={`Download ${dataset.data.name} as an R object`}
-                />
+                >
+                    Download Dataset
+                </Mainstyle.Button>
             );
         // }
         // return '';
@@ -209,16 +212,17 @@ const useSingleDataset = (datasetType, doi) => {
                 }
                 {
                     publicView && dataset.data.bioComputeObject &&
-                    <DownloadButton 
+                    <Mainstyle.Button 
                         className='left' 
                         disabled={false} 
                         datasetType={datasetType} 
                         doi={dataset.data.bioComputeObject.doi}
                         downloadLink={dataset.data.bioComputeObject.downloadLink}
                         mode='bioCompute'
-                        label='Download BioCompute Object'
                         tooltip={`Download the BioCompute object of the pipleine used to create ${dataset.data.name}`}
-                    />
+                    >
+                        Download BioCompute Object
+                    </Mainstyle.Button>
                 }
                 { 
                     ownerView && 

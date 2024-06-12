@@ -80,6 +80,7 @@ const createPipeline = async (req, res) => {
     }
 }
 
+
 const getPipelines = async (req, res) => {
     let result = [];
     try{

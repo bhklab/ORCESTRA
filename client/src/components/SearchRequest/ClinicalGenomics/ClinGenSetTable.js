@@ -38,6 +38,7 @@ const ClinGenSetTable = (props) => {
     }
 
     return(
+        <div className="table-container">
         <DataTable 
             value={props.datasets} 
             selection={props.selectedDatasets} 
@@ -48,6 +49,8 @@ const ClinGenSetTable = (props) => {
             columnResizeMode="fit"
             scrollable={true} 
             scrollHeight={props.scrollHeight }
+            showGridlines
+            size='small'
         >
             {props.authenticated && <Column selectionMode="multiple" style={{width: '30px', textAlign: 'center'}} />}
             <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplate} sortable={true} />
@@ -65,6 +68,7 @@ const ClinGenSetTable = (props) => {
             <Column field='info.numDownload' style={{width:'50px', textAlign: 'center'}} header='Number of Downloads' sortable={true} />
             {props.download && <Column field='downloadLink' body={downloadTemplate} style={{width:'60px', textAlign: 'center'}} header='Download' /> }
         </DataTable>
+        </div>
     );
 
 }

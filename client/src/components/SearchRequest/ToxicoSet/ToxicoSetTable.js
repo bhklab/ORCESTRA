@@ -29,6 +29,7 @@ const ToxicoSetTable = (props) => {
     }, []);
 
     return(
+        <div className="table-container">  
         <DataTable 
             value={props.tsets} 
             selection={props.selectedDatasets} 
@@ -38,6 +39,8 @@ const ToxicoSetTable = (props) => {
             resizableColumns={true} 
             columnResizeMode="fit"
             scrollable={true} 
+            showGridlines
+            size='small'
             scrollHeight={props.scrollHeight }
         >
             {props.authenticated && <Column selectionMode="multiple" style={{width: '30px', textAlign: 'center'}} />}
@@ -49,6 +52,7 @@ const ToxicoSetTable = (props) => {
             <Column field='info.numDownload' style={{width:'100px', textAlign: 'center'}} header='Number of Downloads' sortable={true} />
             {props.download && <Column field='downloadLink' body={downloadTemplate} style={{width:'60px', textAlign: 'center'}} header='Download' /> }
         </DataTable>
+        </div>
     );
 
 }
