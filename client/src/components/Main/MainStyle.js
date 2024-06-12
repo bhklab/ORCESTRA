@@ -77,9 +77,10 @@ const Row = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+	margin-top: 40px;
     gap: 10px;
-    width: 80%;
-    margin: 30px auto;
+    width: 100%;
+	padding: 0 100px;
 `;
 
 

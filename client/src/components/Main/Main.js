@@ -13,28 +13,13 @@ const StyledBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #ffffff;
-    margin: 10px;
+    background-color: rgb(255, 255, 255, 0.3);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
-    width: 300px;
-    height: 300px;
-
-    flex-basis: calc(25% - 20px); // Adjust 20px based on your gap/margin
-    max-width: calc(25% - 20px); // Ensures that boxes do not grow beyond this width
-
-    @media screen and (max-width: 900px) {
-        flex-basis: calc(50% - 20px);
-        max-width: calc(50% - 20px);
-    }
-
-    @media screen and (max-width: 600px) {
-        flex-basis: 80%;
-        max-width: 80%;
-    }
+	width: 300px;
 
     &:hover {
         transform: translateY(-5px);
@@ -48,19 +33,18 @@ const StyledBox = styled.div`
     }
 
     .image-container {
-        flex-grow: 1; //ensures it expands to fill the available space, pushing the image to the center.
+        flex-grow: 1;
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 100%;
+        height: 200px;
+		width: 200px;
     }
 
     img {
         width: 200px;
         max-width: 100%;
         align-self: center;
-
-
     }
 `;
 
