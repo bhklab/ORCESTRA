@@ -12,6 +12,7 @@ import 'primeicons/primeicons.css';
 
 import useAuth from '../../hooks/useAuth';
 import * as Mainstyle from '../Main/MainStyle'
+import { ReactComponent as FindIcon } from '../../styles/img/search-icon.svg';
 
 const errorMessage = {
     severity: 'error', 
@@ -93,13 +94,26 @@ const Authentication = () => {
                         onChange={(e) => setUser({...user, username: e.target.value})} 
                     />
                     <div style={{marginLeft: '10px', marginBottom: '3px'}}>
+                    <div style={{display: 'flex', marginRight: '20px'}}>
                     <Mainstyle.Button 
                         className='btnLoginFind' 
                         icon='pi pi-arrow-right' 
-                        onClick={findUser} 
+                        onClick={findUser}
+                        style={{ display: 'flex'}} 
                         disabled={disableFind()} >
                             Find
+                             <FindIcon style={{ 
+                                    width: '20px', 
+                                    background: 'none', 
+                                    height: '17px', 
+                                    marginLeft: '5px', 
+                                    marginRight: '-3px', 
+                                    marginTop: '-1px', 
+                                    marginBottom: '-4px',
+                               }} 
+                     />
                 </Mainstyle.Button>
+                </div>
                 </div>
                 </div>
                 {user.action.length > 0 &&
@@ -133,8 +147,7 @@ const Authentication = () => {
                                 disabled={disableSubmit()}>
                                     Login
                                     </Mainstyle.Button> 
-                            
-                        </div>
+                                    </div>
                         <div style={{ marginTop: '20px', marginLeft: '-10px' }}>
                             <Mainstyle.Button className='forgotPasswordBtn' onClick={onResetClick}>Reset your password</Mainstyle.Button>
                         </div>

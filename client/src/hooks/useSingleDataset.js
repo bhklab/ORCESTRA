@@ -12,7 +12,8 @@ import DownloadButton from '../components/Shared/Buttons/DownloadButton';
 import CustomMessages from '../components/Shared/CustomMessages';
 import CustomSelect from '../components/Shared/CustomSelect';
 import { dataTypes } from '../components/Shared/Enums';
-import * as Mainstyle from '../components/Main/MainStyle'
+import * as Mainstyle from '../components/Main/MainStyle';
+import { ReactComponent as DownloadIcon } from '../styles/img/download-icon.svg';
 
 const Header = styled.div`
     width: 100%;
