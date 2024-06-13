@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledSearchSummary = styled.div`
+
     .wrapper {
         display: flex;
         align-items: flex-end;
@@ -15,6 +16,12 @@ const StyledSearchSummary = styled.div`
         margin-left: 5px;
         align-self: center;
     }
+	@media (max-width: 1000px) {
+		width: 600px;
+	}
+	@media (max-width: 700px) {
+		width: 340px;
+	}
 `;
 
 const SearchSummary = (props) => {

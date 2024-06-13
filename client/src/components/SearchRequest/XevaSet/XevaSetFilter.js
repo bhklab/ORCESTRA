@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import SearchReqContext from '../SearchReqContext';
 import axios from 'axios';
-import {Filter} from '../SearchReqStyle';
+import {FilterBox} from '../SearchReqStyle';
 import FilterInputSwitch from '../../Shared/FilterInputSwitch';
 import CustomSelect from '../../Shared/CustomSelect';
 import {dataTypes} from '../../Shared/Enums';
@@ -26,28 +26,30 @@ const XevaSetFilter = () => {
         <React.Fragment>
         {
             ready&&
-            <Filter>
-                <h2>XevaSet Parameters</h2>
-                <FilterInputSwitch 
-                    label='Request XevaSet:'
-                    checked={context.isRequest}
-                    tooltip='Currently unavailable'
-                    onChange={(e) => {}}
-                    disabled={true}
-                />
-                <CustomSelect 
-                    id='dataset' 
-                    hidden={false} 
-                    label='Dataset:' 
-                    selectOne={context.isRequest}  
-                    options={datasetSelect.options} 
-                    selected={datasetSelect.selected} 
-                    onChange={(e) => {
-                        setDatasetSelect({...datasetSelect, selected: e.value}); 
-                        context.setParameters(prev => ({...prev, dataset: e.value, search: true}));
-                    }} 
-                />
-            </Filter>
+			<FilterBox>
+				<div className='filter'>
+					<h2>XevaSet Parameters</h2>
+					<FilterInputSwitch 
+						label='Request XevaSet:'
+						checked={context.isRequest}
+						tooltip='Currently unavailable'
+						onChange={(e) => {}}
+						disabled={true}
+					/>
+					<CustomSelect 
+						id='dataset' 
+						hidden={false} 
+						label='Dataset:' 
+						selectOne={context.isRequest}  
+						options={datasetSelect.options} 
+						selected={datasetSelect.selected} 
+						onChange={(e) => {
+							setDatasetSelect({...datasetSelect, selected: e.value}); 
+							context.setParameters(prev => ({...prev, dataset: e.value, search: true}));
+						}} 
+					/>
+				</div>
+			</FilterBox>
         }   
         </React.Fragment>
     );

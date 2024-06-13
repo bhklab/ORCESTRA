@@ -36,7 +36,6 @@ const StyledPage = styled.div`
             width: 100%;
             margin-top: -10px;
         }
-        flex-direction: column;
 `;
 
 export default StyledPage;

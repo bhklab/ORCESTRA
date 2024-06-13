@@ -12,30 +12,37 @@ export const SearchReqWrapper = styled.div`
     }
 `;
 
-export const Filter = styled.div`
-    max-width: 400px;
-    max-height: 620px;
-    color: #3D405A;
-    background-color: rgba(255, 255, 255, 0.8);
-    font-size: 12px;
-    padding-top: 5px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 20px;
-    border-radius: 10px;
-    .form-field {
-        margin-bottom: 20px;
-    }
-    @media only screen and (max-width: 1000px) {
-        display: flex;
-        font-size: 12px;
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 5px;
-        max-width: 100%;
-        margin-bottom: 10px;
-    }
-
+export const FilterBox = styled.div`
+	width: 250px;
+	display: flex;
+	justify-content: center;
+	@media (max-width: 1000px) {
+		width: 100%;
+	}
+	.filter {
+		width: 250px;
+		height: 100%;
+		color: #3D405A;
+		background-color: rgba(255, 255, 255, 0.8);
+		font-size: 12px;
+		padding-top: 5px;
+		padding-left: 20px;
+		padding-right: 20px;
+		padding-bottom: 20px;
+		border-radius: 10px;
+		.form-field {
+			margin-bottom: 20px;
+		}
+		@media only screen and (max-width: 1000px) {
+			width: 660px;
+			font-size: 12px;
+			padding-bottom: 5px;
+			margin-bottom: 10px;
+		}
+		@media (max-width: 700px) {
+			width: 400px;
+		}
+	}
 `;
 
 export const MainPanel = styled.div`
