@@ -45,12 +45,20 @@ const DatasetHeaderGroup = styled.div`
         text-align: left;
         font-size: 50px;
         color: #3D405A;
+		@media (max-width: 1000px) {
+			font-size: 40px;
+			text-align: center;
+		}
     }
     h2 {
         margin: auto;
         text-align:left;
         font-weight: bold;
         color: #3D405A;
+		@media (max-width: 1000px) {
+			font-size: 15px;
+			text-align: center;
+		}
     }
 `
 
@@ -81,6 +89,9 @@ const Row = styled.div`
     gap: 10px;
     width: 100%;
 	padding: 0 100px;
+	@media (max-width: 1000px) {
+		padding: 0;
+	}
 `;
 
 
@@ -92,7 +103,7 @@ const Column = styled.div`
     max-width: 400px;
 
     @media only screen and (max-width: 1000px) {
-        max-width: 100%;
+		padding: 0 10px;
     }
 `
 
