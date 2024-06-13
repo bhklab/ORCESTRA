@@ -1,8 +1,7 @@
 /* Style override for PrimeReact UI elements */
-body{
-    font-family: "Roboto", "Segoe UI", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+body {
+    font-family: 'Roboto', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
 }
 
 body .p-component {
@@ -11,20 +10,20 @@ body .p-component {
 
 /* PSetList comonent */
 
-body .p-datatable .p-datatable-tbody > tr.p-highlight  {
+body .p-datatable .p-datatable-tbody > tr.p-highlight {
     background-color: #ffffff;
     color: #333333;
     font-weight: bold;
 }
 
-body .p-datatable .p-datatable-tbody > tr:nth-child(even).p-highlight  {
+body .p-datatable .p-datatable-tbody > tr:nth-child(even).p-highlight {
     background-color: #f9f9f9;
     color: #333333;
     font-weight: bold;
 }
 
 body .p-datatable .p-sortable-column.p-highlight {
-    background-color: #3D405A;
+    background-color: #3d405a;
     color: #ffffff;
 }
 
@@ -32,7 +31,7 @@ body .p-datatable .p-sortable-column:focus {
     box-shadow: none;
 }
 
-.textField{
+.textField {
     word-wrap: break-word;
 }
 
@@ -40,25 +39,25 @@ body .p-datatable .p-sortable-column:focus {
 
 /* PSetFilter component */
 
-body .p-multiselect:not(.p-disabled).p-focus{
+body .p-multiselect:not(.p-disabled).p-focus {
     border-color: #555975;
     box-shadow: 0 0 0 0.1em #555975;
 }
 
-.p-multiselect-panel .p-multiselect-items{
+.p-multiselect-panel .p-multiselect-items {
     font-size: 12px;
 }
 
-body .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
-    color:#3D405A;
+body .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight {
+    color: #3d405a;
     border-color: #ffffff;
     background-color: #ffffff;
 }
 
 body .p-checkbox .p-checkbox-box.p-highlight {
     color: #ffffff;
-    border-color: #3D405A;
-    background-color: #3D405A;
+    border-color: #3d405a;
+    background-color: #3d405a;
 }
 
 body .p-checkbox .p-checkbox-box.p-highlight:not(.p-disabled):hover {
@@ -67,12 +66,12 @@ body .p-checkbox .p-checkbox-box.p-highlight:not(.p-disabled):hover {
     background-color: #555975;
 }
 
-body .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover{
+body .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover {
     background-color: #ffffff;
 }
 
 body .p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-multiselect-filter-icon {
-    color: #3D405A;
+    color: #3d405a;
 }
 
 body .p-checkbox .p-checkbox-box:not(.p-disabled).p-focus {
@@ -88,12 +87,11 @@ body .p-inputtext:enabled:focus {
 body .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus {
     border-color: #ffffff;
     box-shadow: 0 0 0 0.1em #ffffff;
-
-} 
+}
 
 body .p-radiobutton .p-radiobutton-box.p-highlight {
-    border-color: #3D405A;
-    background-color: #3D405A;
+    border-color: #3d405a;
+    background-color: #3d405a;
     color: #ffffff;
 }
 
@@ -114,10 +112,20 @@ body .p-radiobutton .p-radiobutton-box:not(.p-disabled).p-focus {
 /* Button styling*/
 
 body .p-button {
-    background-color: #3D405A;
-    border: 1px solid #3D405A;
-    font-size: 12px;
-    padding: 0em 0.5em;
+    background-color: #3d405a;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 10px !important;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+
+    &:hover {
+        background-color: #555975;
+        color: rgb(241, 144, 33);
+    }
 }
 
 body .p-button:enabled:focus {
@@ -143,29 +151,29 @@ body .p-inputswitch .p-inputswitch-focus .p-inputswitch-focus .p-inputswitch-sli
 }
 
 body .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
-    background-color: #3D405A;
+    background-color: #3d405a;
 }
 
 body .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
-    background-color: #3D405A;
+    background-color: #3d405a;
 }
 
 /* End of switch styling */
 
 /* End PSetFilter component */
-  
+
 body .p-inputtext {
     font-size: 12px;
 }
 
-body .p-dropdown:not(.p-disabled).p-focus{
+body .p-dropdown:not(.p-disabled).p-focus {
     background-color: #555975;
     border: 1px solid #555975;
     box-shadow: 0 0 0 0.1em #555975;
 }
 
 body .p-dropdown-panel .p-dropdown-filter-container .p-dropdown-filter-icon {
-    color: #3D405A;
+    color: #3d405a;
 }
 
 body .p-dropdown-panel .p-dropdown-filter-container {
@@ -180,51 +188,50 @@ body .p-link:focus {
 }
 
 body .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-    background-color: #3D405A;
+    background-color: #3d405a;
     color: #ffffff;
 }
 
 /* Tab styling */
-body .p-tabview.p-tabview-top .p-tabview-nav li.p-highlight a{
-    background-color: #3D405A;
-    border: 1px solid #3D405A;
+body .p-tabview.p-tabview-top .p-tabview-nav li.p-highlight a {
+    background-color: #3d405a;
+    border: 1px solid #3d405a;
 }
 
-body .p-tabview.p-tabview-top .p-tabview-nav li.p-highlight:hover a{
+body .p-tabview.p-tabview-top .p-tabview-nav li.p-highlight:hover a {
     background-color: #555975;
     border: 1px solid #555975;
 }
 
-body .p-tabview.p-tabview-top .p-tabview-nav li a:not(.p-disabled):focus{
+body .p-tabview.p-tabview-top .p-tabview-nav li a:not(.p-disabled):focus {
     box-shadow: none;
 }
 
 /* Accordion styling */
-body .p-accordion .p-accordion-header:not(.p-disabled).p-highlight a{
-    background-color: #3D405A;
+body .p-accordion .p-accordion-header:not(.p-disabled).p-highlight a {
+    background-color: #3d405a;
     color: white;
-    border: 1px solid #3D405A;
+    border: 1px solid #3d405a;
 }
 
-body .p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover a{
+body .p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover a {
     background-color: #555975;
     color: white;
     border: 1px solid #555975;
 }
 
-
 .p-accordion .p-accordion-tab {
     margin-bottom: 10px;
     border: 0.5px solid #555975;
-    
+
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     &:hover {
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         transform: translateY(-5px);
     }
 }
 
-body .p-accordion .p-accordion-header:not(.p-disabled) a:focus{
+body .p-accordion .p-accordion-header:not(.p-disabled) a:focus {
     box-shadow: none;
 }
