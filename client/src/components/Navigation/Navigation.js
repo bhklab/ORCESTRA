@@ -7,7 +7,7 @@ import useAuth from '../../hooks/useAuth';
 import { StyledHeader, NavigationWrapper, BurgerNav } from './StyledNavigation';
 import { slide as Menu } from 'react-burger-menu';
 import { dataTypes } from '../Shared/Enums';
-import * as Mainstyle from '../Main/MainStyle'
+import * as Mainstyle from '../Main/MainStyle';
 
 const Navigation = () => {
     const location = useLocation();
@@ -19,22 +19,22 @@ const Navigation = () => {
 
     useEffect(() => {
         if (location.pathname !== '/' && path.datatype.length === 0) {
-            path.setDatatype(location.pathname.split('/').filter((el) => (el.length))[0]);
+            path.setDatatype(location.pathname.split('/').filter(el => el.length)[0]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
 
-    const onLoginClick = (event) => {
+    const onLoginClick = event => {
         event.preventDefault();
         navigate('/app/authentication', { state: { path: location.pathname } });
-    }
+    };
 
-    const onLogoutClick = async (event) => {
+    const onLogoutClick = async event => {
         event.preventDefault();
         await logoutUser();
-    }
+    };
 
-    const getDatatype = (datatype) => {
+    const getDatatype = datatype => {
         switch (datatype) {
             case dataTypes.pharmacogenomics:
                 return 'Pharmacogenomics';
@@ -49,13 +49,12 @@ const Navigation = () => {
             default:
                 return '';
         }
-    }
+    };
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
-        
     };
-    
+
     const closeMenu = () => {
         setIsMenuOpen(false);
     };
@@ -63,91 +62,126 @@ const Navigation = () => {
     return (
         <StyledHeader>
             <NavigationWrapper datasetType={path.datatype}>
-                <div className='left'>
-                    <div className='logo'>
-                        <NavLink to='/'>
-                            <img src={process.env.PUBLIC_URL + "/images/trumpet-orcestra.png"} alt='ORCESTRA logo' />
+                <div className="left">
+                    <div className="logo">
+                        <NavLink to="/">
+                            <img src={process.env.PUBLIC_URL + '/images/trumpet-orcestra.png'} alt="ORCESTRA logo" />
                         </NavLink>
                     </div>
-				</div>
-				<div className='middle'>
-                    <NavLink to={`/`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Home</NavLink>
-                    {
-                        path.datatype.length > 0 && path.datatype === dataTypes.pharmacogenomics &&
-						(
-							<>
-                                <NavLink to={`/${path.datatype}/search`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}> Search and Request </NavLink> 
-                                <NavLink to={`/${path.datatype}/status`} className='link' activeclassname='active-link'>Request Status</NavLink>
-                                <NavLink to={`/${path.datatype}/stats`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Statistics</NavLink>
-							</>
-                        )
-                    }
-                    <NavLink to={`/app/documentation/overview`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Documentation</NavLink>
-                    <NavLink to={`/app/contact`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Contact</NavLink>
-				</div>
-                <div className='right'>
-                    {
-                        auth.user &&
-                        <NavLink to={`/app/data_submission`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Data Submission</NavLink>
-                    }
-                    {
-                        auth.user &&
-                        <NavLink to="/app/profile" className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Profile</NavLink>
-                    }
-                    <Mainstyle.Button
-                        className='button'
-                        onClick={auth.user ? onLogoutClick : onLoginClick}
-                    >
-                        {auth.user ? 'Logout' : 'Login/Register'}
-                        </Mainstyle.Button>
-                    {
-                        auth.user ? <div className='loggedIn'>{`Logged in as: ${auth.user.username}`}</div> : ''
-                    }
                 </div>
-                </NavigationWrapper>
+                <div className="middle">
+                    <NavLink to={`/`} className={({ isActive }) => (isActive ? 'link active-link' : 'link')}>
+                        Home
+                    </NavLink>
+                    {path.datatype.length > 0 && path.datatype === dataTypes.pharmacogenomics && (
+                        <>
+                            <NavLink
+                                to={`/${path.datatype}/search`}
+                                className={({ isActive }) => (isActive ? 'link active-link' : 'link')}
+                            >
+                                {' '}
+                                Search and Request{' '}
+                            </NavLink>
+                            <NavLink to={`/${path.datatype}/status`} className="link" activeclassname="active-link">
+                                Request Status
+                            </NavLink>
+                            <NavLink
+                                to={`/${path.datatype}/stats`}
+                                className={({ isActive }) => (isActive ? 'link active-link' : 'link')}
+                            >
+                                Statistics
+                            </NavLink>
+                        </>
+                    )}
+                    <NavLink
+                        to={`/app/documentation/overview`}
+                        className={({ isActive }) => (isActive ? 'link active-link' : 'link')}
+                    >
+                        Documentation
+                    </NavLink>
+                    <NavLink to={`/app/contact`} className={({ isActive }) => (isActive ? 'link active-link' : 'link')}>
+                        Contact
+                    </NavLink>
+                </div>
+                <div className="right">
+                    {auth.user && (
+                        <NavLink
+                            to={`/app/data_submission`}
+                            className={({ isActive }) => (isActive ? 'link active-link' : 'link')}
+                        >
+                            Data Submission
+                        </NavLink>
+                    )}
+                    {auth.user && (
+                        <NavLink
+                            to="/app/profile"
+                            className={({ isActive }) => (isActive ? 'link active-link' : 'link')}
+                        >
+                            Profile
+                        </NavLink>
+                    )}
+                    <Mainstyle.Button className="button" onClick={auth.user ? onLogoutClick : onLoginClick}>
+                        {auth.user ? 'Logout' : 'Login/Register'}
+                    </Mainstyle.Button>
+                    {auth.user ? <div className="loggedIn">{`Logged in as: ${auth.user.username}`}</div> : ''}
+                </div>
+            </NavigationWrapper>
             <BurgerNav>
                 <div onClick={toggleMenu}>
-            <Menu width={200} isOpen={isMenuOpen} onStateChange={(state) => setIsMenuOpen(state.isOpen)}>
-                    {
-                        path.datatype.length > 0 &&
-                        <React.Fragment>
-                            <NavLink  to={'/'} activeclassname='active-link'>Home</NavLink>
-                            <NavLink  to={`/${path.datatype}`} activeclassname='active-link'>{getDatatype(path.datatype)}</NavLink>
-                            {
-                                path.datatype === dataTypes.pharmacogenomics &&
-                                <NavLink to={`/${path.datatype}/search`} activeclassname='active-link'>Search and Request</NavLink>
-                            }
-                            {
-                                path.datatype === dataTypes.pharmacogenomics &&
-                                <NavLink to={`/${path.datatype}/status`} activeclassname='active-link'>Request Status</NavLink>
-                            }
-                            {
-                                path.datatype === dataTypes.pharmacogenomics &&
-                                <NavLink to={`/${path.datatype}/stats`} activeclassname='active-link'>Statistics</NavLink>
-                            }
-                            <NavLink to={`/${path.datatype}/documentation/overview`} activeclassname='active-link'>Documentation</NavLink>
-                        </React.Fragment>
-                    }
-                    {
-                        auth.user && <NavLink to="/app/profile" activeclassname='active-link'>Profile</NavLink>
-                    }
-                    {
-                        location.pathname === "/" &&
-                        <React.Fragment>
-                        <NavLink to='/app/documentation/overview' activeclassname='active-link'>Documentation</NavLink>
-                        <NavLink to='/app/contact' activeclassname='active-link'>Contact</NavLink>
-                        </React.Fragment>
-                    }
-                    <Button
-                        className='button'
-                        label={auth.user ? 'Logout' : 'Login/Register'}
-                        onClick={auth.user ? onLogoutClick : onLoginClick}
-                    />
-                </Menu>
+                    <Menu width={200} isOpen={isMenuOpen} onStateChange={state => setIsMenuOpen(state.isOpen)}>
+                        {path.datatype.length > 0 && (
+                            <React.Fragment>
+                                <NavLink to={'/'} activeclassname="active-link">
+                                    Home
+                                </NavLink>
+                                <NavLink to={`/${path.datatype}`} activeclassname="active-link">
+                                    {getDatatype(path.datatype)}
+                                </NavLink>
+                                {path.datatype === dataTypes.pharmacogenomics && (
+                                    <NavLink to={`/${path.datatype}/search`} activeclassname="active-link">
+                                        Search and Request
+                                    </NavLink>
+                                )}
+                                {path.datatype === dataTypes.pharmacogenomics && (
+                                    <NavLink to={`/${path.datatype}/status`} activeclassname="active-link">
+                                        Request Status
+                                    </NavLink>
+                                )}
+                                {path.datatype === dataTypes.pharmacogenomics && (
+                                    <NavLink to={`/${path.datatype}/stats`} activeclassname="active-link">
+                                        Statistics
+                                    </NavLink>
+                                )}
+                                <NavLink to={`/${path.datatype}/documentation/overview`} activeclassname="active-link">
+                                    Documentation
+                                </NavLink>
+                            </React.Fragment>
+                        )}
+                        {auth.user && (
+                            <NavLink to="/app/profile" activeclassname="active-link">
+                                Profile
+                            </NavLink>
+                        )}
+                        {location.pathname === '/' && (
+                            <React.Fragment>
+                                <NavLink to="/app/documentation/overview" activeclassname="active-link">
+                                    Documentation
+                                </NavLink>
+                                <NavLink to="/app/contact" activeclassname="active-link">
+                                    Contact
+                                </NavLink>
+                            </React.Fragment>
+                        )}
+                        <Mainstyle.Button
+                            className="button"
+                            label={auth.user ? 'Logout' : 'Login/Register'}
+                            onClick={auth.user ? onLogoutClick : onLoginClick}
+                        />
+                    </Menu>
                 </div>
             </BurgerNav>
         </StyledHeader>
     );
-}
+};
 
 export default Navigation;
