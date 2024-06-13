@@ -189,6 +189,7 @@ export const BurgerNav = styled.div`
     /* Styling of overlay */
     .bm-overlay {
         background: rgba(61, 64, 90, 0.5);
+        transition-duration: 2s !important;
     }
 
     @media only screen and (min-width: 900px) {

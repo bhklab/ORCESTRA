@@ -8,8 +8,10 @@ import { Messages } from 'primereact/messages';
 import StyledPage from '../../styles/StyledPage';
 import CustomMessages from '../Shared/CustomMessages';
 import StyledAuthForm from './StyledAuthForm';
+import 'primeicons/primeicons.css';
 
 import useAuth from '../../hooks/useAuth';
+import * as Mainstyle from '../Main/MainStyle'
 
 const errorMessage = {
     severity: 'error', 
@@ -90,13 +92,15 @@ const Authentication = () => {
                         value={user.username} 
                         onChange={(e) => setUser({...user, username: e.target.value})} 
                     />
-                    <Button 
+                    <div style={{marginLeft: '10px', marginBottom: '3px'}}>
+                    <Mainstyle.Button 
                         className='btnLoginFind' 
-                        label='Find' 
                         icon='pi pi-arrow-right' 
                         onClick={findUser} 
-                        disabled={disableFind()} 
-                    />
+                        disabled={disableFind()} >
+                            Find
+                </Mainstyle.Button>
+                </div>
                 </div>
                 {user.action.length > 0 &&
                     <>
@@ -120,17 +124,19 @@ const Authentication = () => {
                             </div>
                         }
                         <div>
-                            <Button 
+                            <Mainstyle.Button 
                                 label={user.action === 'login' ? 'Login' : 'Register'}  
                                 onClick={(e) => {
                                     e.preventDefault();
                                     submitUser(user, location);
                                 }} 
-                                disabled={disableSubmit()} 
-                            />
+                                disabled={disableSubmit()}>
+                                    Login
+                                    </Mainstyle.Button> 
+                            
                         </div>
-                        <div>
-                            <button className='forgotPasswordBtn' onClick={onResetClick}>Reset your password</button>
+                        <div style={{ marginTop: '20px', marginLeft: '-10px' }}>
+                            <Mainstyle.Button className='forgotPasswordBtn' onClick={onResetClick}>Reset your password</Mainstyle.Button>
                         </div>
                     </>
                 }

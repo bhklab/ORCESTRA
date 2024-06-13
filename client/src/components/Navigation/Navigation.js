@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
 
@@ -15,6 +15,7 @@ const Navigation = () => {
     const path = useContext(PathContext);
     const auth = useContext(AuthContext);
     const { logoutUser } = useAuth();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
         if (location.pathname !== '/' && path.datatype.length === 0) {
@@ -50,6 +51,15 @@ const Navigation = () => {
         }
     }
 
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+        
+    };
+    
+    const closeMenu = () => {
+        setIsMenuOpen(false);
+    };
+
     return (
         <StyledHeader>
             <NavigationWrapper datasetType={path.datatype}>
@@ -66,10 +76,11 @@ const Navigation = () => {
                         path.datatype.length > 0 && path.datatype === dataTypes.pharmacogenomics &&
 						(
 							<>
-                                <NavLink to={`/${path.datatype}/search`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}> Search and Request </NavLink>                                <NavLink to={`/${path.datatype}/status`} className='link' activeclassname='active-link'>Request Status</NavLink>
+                                <NavLink to={`/${path.datatype}/search`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}> Search and Request </NavLink> 
+                                <NavLink to={`/${path.datatype}/status`} className='link' activeclassname='active-link'>Request Status</NavLink>
                                 <NavLink to={`/${path.datatype}/stats`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Statistics</NavLink>
 							</>
-						)
+                        )
                     }
                     <NavLink to={`/app/documentation/overview`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Documentation</NavLink>
                     <NavLink to={`/app/contact`} className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Contact</NavLink>
@@ -93,14 +104,15 @@ const Navigation = () => {
                         auth.user ? <div className='loggedIn'>{`Logged in as: ${auth.user.username}`}</div> : ''
                     }
                 </div>
-            </NavigationWrapper>
+                </NavigationWrapper>
             <BurgerNav>
-                <Menu width={200} isOpen={true}>
+                <div onClick={toggleMenu}>
+            <Menu width={200} isOpen={isMenuOpen} onStateChange={(state) => setIsMenuOpen(state.isOpen)}>
                     {
                         path.datatype.length > 0 &&
                         <React.Fragment>
-                            <NavLink to={`/`} activeclassname='active-link'>Home</NavLink>
-                            <NavLink to={`/${path.datatype}`} activeclassname='active-link'>{getDatatype(path.datatype)}</NavLink>
+                            <NavLink  to={'/'} activeclassname='active-link'>Home</NavLink>
+                            <NavLink  to={`/${path.datatype}`} activeclassname='active-link'>{getDatatype(path.datatype)}</NavLink>
                             {
                                 path.datatype === dataTypes.pharmacogenomics &&
                                 <NavLink to={`/${path.datatype}/search`} activeclassname='active-link'>Search and Request</NavLink>
@@ -109,11 +121,22 @@ const Navigation = () => {
                                 path.datatype === dataTypes.pharmacogenomics &&
                                 <NavLink to={`/${path.datatype}/status`} activeclassname='active-link'>Request Status</NavLink>
                             }
+                            {
+                                path.datatype === dataTypes.pharmacogenomics &&
+                                <NavLink to={`/${path.datatype}/stats`} activeclassname='active-link'>Statistics</NavLink>
+                            }
                             <NavLink to={`/${path.datatype}/documentation/overview`} activeclassname='active-link'>Documentation</NavLink>
                         </React.Fragment>
                     }
                     {
                         auth.user && <NavLink to="/app/profile" activeclassname='active-link'>Profile</NavLink>
+                    }
+                    {
+                        location.pathname === "/" &&
+                        <React.Fragment>
+                        <NavLink to='/app/documentation/overview' activeclassname='active-link'>Documentation</NavLink>
+                        <NavLink to='/app/contact' activeclassname='active-link'>Contact</NavLink>
+                        </React.Fragment>
                     }
                     <Button
                         className='button'
@@ -121,6 +144,7 @@ const Navigation = () => {
                         onClick={auth.user ? onLogoutClick : onLoginClick}
                     />
                 </Menu>
+                </div>
             </BurgerNav>
         </StyledHeader>
     );
