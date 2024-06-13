@@ -1,10 +1,10 @@
-import styled from 'styled-components'; 
+import styled from 'styled-components';
 
 const StyledLoginForm = styled.div`
     width: 400px;
     margin-left: auto;
     margin-right: auto;
-    background-color:rgb(255, 255, 255,0.5);
+    background-color: rgb(255, 255, 255, 0.5);
     border-radius: 10px;
     padding-top: 10px;
     padding-left: 30px;
@@ -21,9 +21,10 @@ const StyledLoginForm = styled.div`
         font-size: 12px;
     }
 
-    .emailInput{
+    .emailInput {
         display: flex;
         align-items: center;
+        justify-content: center;
         label {
             margin-right: 10px;
         }
@@ -32,23 +33,25 @@ const StyledLoginForm = styled.div`
             margin-right: 10px;
             width: 80%;
         }
-        .p-button.p-button-text-icon-left .p-button-text {
-            padding: 0.3em 0.5em 0.3em 2.0em;
-        }
     }
 
-    .pwdInput{
+    .pwdInput {
         width: 80%;
         margin-bottom: 20px;
     }
 
-    .forgotPasswordBtn{
+    .forgotPasswordBtn {
         background: none;
         outline: none;
         border: none;
         cursor: pointer;
-        color: #3D405A;
+        color: #3d405a;
         text-decoration: underline;
+
+        &:hover {
+            background-color: transparent;
+            color: rgb(241, 144, 33);
+        }
     }
 `;
 

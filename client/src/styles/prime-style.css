@@ -115,7 +115,7 @@ body .p-button {
     background-color: #3d405a;
     border-radius: 5px;
     border: none;
-    padding: 10px 10px !important;
+    padding: 8px 10px !important;
     color: white;
     text-align: center;
     text-decoration: none;
@@ -124,7 +124,7 @@ body .p-button {
 
     &:hover {
         background-color: #555975;
-        color: rgb(241, 144, 33);
+        color: rgb(241, 144, 33) !important;
     }
 }
 

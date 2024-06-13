@@ -62,18 +62,17 @@ const DatasetHeaderGroup = styled.div`
     }
 `;
 
-const Button = styled.a`
+const Button = styled.button`
     background-color: #3d405a;
     border-radius: 5px;
     border: none;
-    padding: 10px 10px;
+    padding: 8px 10px;
     color: white;
     text-align: center;
     text-decoration: none;
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 5px;
 
     &:hover {
         background-color: #555975;
