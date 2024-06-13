@@ -93,6 +93,8 @@ const XevaSetSearch = () => {
                                 }
                             </div>
                         </SearchReqPanel>
+                        </MainPanel>
+                </SearchReqWrapper>
                         {
                             ready ?
                             <XevaSetTable
@@ -106,8 +108,6 @@ const XevaSetSearch = () => {
                             :
                             <SearchTableLoader />
                         }  
-                    </MainPanel>
-                </SearchReqWrapper>
             </StyledPage>
         </SearchReqContext.Provider>
     );

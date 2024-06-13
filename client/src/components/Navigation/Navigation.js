@@ -7,6 +7,7 @@ import useAuth from '../../hooks/useAuth';
 import { StyledHeader, NavigationWrapper, BurgerNav } from './StyledNavigation';
 import { slide as Menu } from 'react-burger-menu';
 import { dataTypes } from '../Shared/Enums';
+import * as Mainstyle from '../Main/MainStyle'
 
 const Navigation = () => {
     const location = useLocation();
@@ -82,11 +83,12 @@ const Navigation = () => {
                         auth.user &&
                         <NavLink to="/app/profile" className={({ isActive }) => isActive ? 'link active-link' : 'link'}>Profile</NavLink>
                     }
-                    <Button
+                    <Mainstyle.Button
                         className='button'
-                        label={auth.user ? 'Logout' : 'Login/Register'}
                         onClick={auth.user ? onLogoutClick : onLoginClick}
-                    />
+                    >
+                        {auth.user ? 'Logout' : 'Login/Register'}
+                        </Mainstyle.Button>
                     {
                         auth.user ? <div className='loggedIn'>{`Logged in as: ${auth.user.username}`}</div> : ''
                     }

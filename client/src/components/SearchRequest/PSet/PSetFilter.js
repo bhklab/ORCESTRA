@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import SearchReqContext from '../SearchReqContext';
 import axios from 'axios';
-import {Filter} from '../SearchReqStyle';
+import {FilterBox} from '../SearchReqStyle';
 import FilterInputSwitch from '../../Shared/FilterInputSwitch';
 import CustomSelect from '../../Shared/CustomSelect';
 import CustomCheckbox from '../../Shared/CustomCheckbox';
@@ -214,171 +214,173 @@ const PSetFilter = () => {
         <React.Fragment>
         {
             ready&&
-            <Filter>
-                <h2>PSet Parameters</h2>
-                <FilterInputSwitch 
-                    label='Request PSet:'
-                    checked={context.isRequest}
-                    onChange={(e) => {context.setIsRequest(e.value)}}
-                    tooltip='Currently unavailable'
-                    disabled={true}
-                />
-                {
-                    !context.isRequest &&
-                    <CustomCheckbox 
-                        label='Canonical PSets only: '
-                        onChange={(e) => {
-                            setCheckBoxes({...checkBoxes, canonicalOnly: e.checked});
-                            context.setParameters(prev => ({...prev, canonicalOnly: e.checked, search: true}));
-                        }} 
-                        checked={checkBoxes.canonicalOnly} 
-                    />
-                }
-                <CustomSelect 
-                    id='dataset' 
-                    className='form-field'
-                    hidden={false} 
-                    label='Dataset:' 
-                    selectOne={context.isRequest}  
-                    options={datasetSelect.options} 
-                    selected={datasetSelect.selected} 
-                    onChange={(e) => {
-                        console.log(e.value)
-                        setDatasetSelect({...datasetSelect, selected: e.value}); 
-                        context.setParameters(prev => ({...prev, dataset: e.value, search: true}));
-                    }} 
-                />
-                {
-                    (context.isRequest && !dataTypeDisabled) && 
-                    <div className='form-field'>
-                        Molecular Data: 
-                        {
-                            context.parameters.defaultData.length === 1 ?
-                            <span style={{marginLeft: '10px', fontWeight: 'bold'}}>{context.parameters.defaultData[0].label}</span>
-                            :
-                            <ul>
-                            {
-                                context.parameters.defaultData.map(data => {
-                                    return(<li key={Math.random()}>{data.label}</li>);
-                                })
-                            }
-                            </ul>
-                        } 
-                    </div>
-                }
-                <CustomSelect 
-                    id='dataType' 
-                    className='form-field'
-                    hidden={dataTypeSelect.hidden} 
-                    label={ context.isRequest ? 'Optional Molecular Data:' : 'Molecular Data Type:'}
-                    options={dataTypeSelect.options} 
-                    disabled={dataTypeSelect.disabled}
-                    selected={dataTypeSelect.selected} 
-                    onChange={(e) => {
-                        setDataTypeSelect({...dataTypeSelect, selected: e.value});
-                        context.setParameters(prev => ({...prev, dataType: e.value, search: true}));
-                    }} 
-                />
-                <CustomSelect 
-                    id='microarrayOptions' 
-                    className='form-field'
-                    hidden={miArraySelect.hidden} 
-                    label='Microarray Type:'
-                    selectOne={true}
-                    options={miArraySelect.options} 
-                    disabled={miArraySelect.disabled}
-                    selected={miArraySelect.selected} 
-                    onChange={(e) => {
-                        setMiArraySelect({...miArraySelect, selected: e.value});
-                        let dataType = JSON.parse(JSON.stringify(context.parameters.dataType));
-                        dataType.find(item => (item.name === 'microarray')).microarrayType = e.value;
-                        context.setParameters(prev => ({...prev, dataType: dataType, search: false}));
-                    }} 
-                />
-                <CustomSelect 
-                    id='drugSensitivity' 
-                    className='form-field'
-                    hidden={drugSensSelect.hidden} 
-                    label='Drug Sensitivity:' 
-                    selectOne={context.isRequest} 
-                    disabled={drugSensSelect.disabled}
-                    options={drugSensSelect.options} 
-                    selected={drugSensSelect.selected} 
-                    onChange={(e) => {
-                        console.log(e.value)
-                        setDrugSensSelect({...drugSensSelect, selected: e.value});
-                        context.setParameters(prev => ({...prev, drugSensitivity: e.value, search: true}));
-                    }} 
-                />
-                
-                {
-                    context.isRequest ?
-                    !drugSensSelect.disabled &&
-                    <CustomCheckbox 
-                        label='Standardize drug dose range and filter noisy sensitivity curves?'
-                        onChange={(e) => {
-                            setCheckBoxes({...checkBoxes, filteredSensitivity: e.checked});
-                            context.setParameters(prev => ({...prev, filteredSensitivity: e.checked}));
-                        }} 
-                        checked={checkBoxes.filteredSensitivity} 
-                    />
-                    :
-                    <CustomCheckbox 
-                        label='Filtered sensitivity data only: '
-                        onChange={(e) => {
-                            setCheckBoxes({...checkBoxes, filteredSensitivity: e.checked});
-                            context.setParameters(prev => ({...prev, filteredSensitivity: e.checked, search: !context.isRequest}));
-                        }} 
-                        checked={checkBoxes.filteredSensitivity} 
-                    />
-                }
-                
-                <CustomSelect 
-                    id='genome' 
-                    className='form-field'
-                    disabled={toolRefDisabled} 
-                    hidden={false} 
-                    label='Genome:' 
-                    selectOne={context.isRequest} 
-                    options={genomeSelect.options} 
-                    selected={genomeSelect.selected} 
-                    onChange={(e) => {
-                        setGenomeSelect({...genomeSelect, selected: e.value});
-                        // onGenomeSelection(e.value)
-                        context.setParameters(prev => ({...prev, genome: e.value, search: true}));
-                    }} 
-                />
+			<FilterBox>
+				<div className='filter'>
+					<h2>PSet Parameters</h2>
+					<FilterInputSwitch 
+						label='Request PSet:'
+						checked={context.isRequest}
+						onChange={(e) => {context.setIsRequest(e.value)}}
+						tooltip='Currently unavailable'
+						disabled={true}
+					/>
+					{
+						!context.isRequest &&
+						<CustomCheckbox 
+							label='Canonical PSets only: '
+							onChange={(e) => {
+								setCheckBoxes({...checkBoxes, canonicalOnly: e.checked});
+								context.setParameters(prev => ({...prev, canonicalOnly: e.checked, search: true}));
+							}} 
+							checked={checkBoxes.canonicalOnly} 
+						/>
+					}
+					<CustomSelect 
+						id='dataset' 
+						className='form-field'
+						hidden={false} 
+						label='Dataset:' 
+						selectOne={context.isRequest}  
+						options={datasetSelect.options} 
+						selected={datasetSelect.selected} 
+						onChange={(e) => {
+							console.log(e.value)
+							setDatasetSelect({...datasetSelect, selected: e.value}); 
+							context.setParameters(prev => ({...prev, dataset: e.value, search: true}));
+						}} 
+					/>
+					{
+						(context.isRequest && !dataTypeDisabled) && 
+						<div className='form-field'>
+							Molecular Data: 
+							{
+								context.parameters.defaultData.length === 1 ?
+								<span style={{marginLeft: '10px', fontWeight: 'bold'}}>{context.parameters.defaultData[0].label}</span>
+								:
+								<ul>
+								{
+									context.parameters.defaultData.map(data => {
+										return(<li key={Math.random()}>{data.label}</li>);
+									})
+								}
+								</ul>
+							} 
+						</div>
+					}
+					<CustomSelect 
+						id='dataType' 
+						className='form-field'
+						hidden={dataTypeSelect.hidden} 
+						label={ context.isRequest ? 'Optional Molecular Data:' : 'Molecular Data Type:'}
+						options={dataTypeSelect.options} 
+						disabled={dataTypeSelect.disabled}
+						selected={dataTypeSelect.selected} 
+						onChange={(e) => {
+							setDataTypeSelect({...dataTypeSelect, selected: e.value});
+							context.setParameters(prev => ({...prev, dataType: e.value, search: true}));
+						}} 
+					/>
+					<CustomSelect 
+						id='microarrayOptions' 
+						className='form-field'
+						hidden={miArraySelect.hidden} 
+						label='Microarray Type:'
+						selectOne={true}
+						options={miArraySelect.options} 
+						disabled={miArraySelect.disabled}
+						selected={miArraySelect.selected} 
+						onChange={(e) => {
+							setMiArraySelect({...miArraySelect, selected: e.value});
+							let dataType = JSON.parse(JSON.stringify(context.parameters.dataType));
+							dataType.find(item => (item.name === 'microarray')).microarrayType = e.value;
+							context.setParameters(prev => ({...prev, dataType: dataType, search: false}));
+						}} 
+					/>
+					<CustomSelect 
+						id='drugSensitivity' 
+						className='form-field'
+						hidden={drugSensSelect.hidden} 
+						label='Drug Sensitivity:' 
+						selectOne={context.isRequest} 
+						disabled={drugSensSelect.disabled}
+						options={drugSensSelect.options} 
+						selected={drugSensSelect.selected} 
+						onChange={(e) => {
+							console.log(e.value)
+							setDrugSensSelect({...drugSensSelect, selected: e.value});
+							context.setParameters(prev => ({...prev, drugSensitivity: e.value, search: true}));
+						}} 
+					/>
+					
+					{
+						context.isRequest ?
+						!drugSensSelect.disabled &&
+						<CustomCheckbox 
+							label='Standardize drug dose range and filter noisy sensitivity curves?'
+							onChange={(e) => {
+								setCheckBoxes({...checkBoxes, filteredSensitivity: e.checked});
+								context.setParameters(prev => ({...prev, filteredSensitivity: e.checked}));
+							}} 
+							checked={checkBoxes.filteredSensitivity} 
+						/>
+						:
+						<CustomCheckbox 
+							label='Filtered sensitivity data only: '
+							onChange={(e) => {
+								setCheckBoxes({...checkBoxes, filteredSensitivity: e.checked});
+								context.setParameters(prev => ({...prev, filteredSensitivity: e.checked, search: !context.isRequest}));
+							}} 
+							checked={checkBoxes.filteredSensitivity} 
+						/>
+					}
+					
+					<CustomSelect 
+						id='genome' 
+						className='form-field'
+						disabled={toolRefDisabled} 
+						hidden={false} 
+						label='Genome:' 
+						selectOne={context.isRequest} 
+						options={genomeSelect.options} 
+						selected={genomeSelect.selected} 
+						onChange={(e) => {
+							setGenomeSelect({...genomeSelect, selected: e.value});
+							// onGenomeSelection(e.value)
+							context.setParameters(prev => ({...prev, genome: e.value, search: true}));
+						}} 
+					/>
 
-                <CustomSelect 
-                    id='rnaTool' 
-                    className='form-field'
-                    disabled={toolRefDisabled} 
-                    label='RNA Tool:' 
-                    options={rnaToolSelect.options} 
-                    selected={rnaToolSelect.selected} 
-                    onChange={(e) => {
-                        if(context.isRequest && e.value.length > 2){
-                            while(e.value.length > 2){ e.value.shift() }
-                        }
-                        setRNAToolSelect({...rnaToolSelect, selected: e.value});
-                        context.setParameters(prev => ({...prev, rnaTool: e.value, search: true}));
-                    }} 
-                />
+					<CustomSelect 
+						id='rnaTool' 
+						className='form-field'
+						disabled={toolRefDisabled} 
+						label='RNA Tool:' 
+						options={rnaToolSelect.options} 
+						selected={rnaToolSelect.selected} 
+						onChange={(e) => {
+							if(context.isRequest && e.value.length > 2){
+								while(e.value.length > 2){ e.value.shift() }
+							}
+							setRNAToolSelect({...rnaToolSelect, selected: e.value});
+							context.setParameters(prev => ({...prev, rnaTool: e.value, search: true}));
+						}} 
+					/>
 
-                <CustomSelect 
-                    id='rnaRef' 
-                    className='form-field'
-                    disabled={toolRefDisabled} 
-                    label='RNA Ref:' 
-                    selectOne={context.isRequest} 
-                    options={rnaRefSelect.options.filter(item => !item.hidden)} 
-                    selected={rnaRefSelect.selected} 
-                    onChange={(e) => {
-                        setRNARefSelect({...rnaRefSelect, selected: e.value});
-                        context.setParameters(prev => ({...prev, rnaRef: e.value, search: true}));
-                    }} 
-                />
-            </Filter>
+					<CustomSelect 
+						id='rnaRef' 
+						className='form-field'
+						disabled={toolRefDisabled} 
+						label='RNA Ref:' 
+						selectOne={context.isRequest} 
+						options={rnaRefSelect.options.filter(item => !item.hidden)} 
+						selected={rnaRefSelect.selected} 
+						onChange={(e) => {
+							setRNARefSelect({...rnaRefSelect, selected: e.value});
+							context.setParameters(prev => ({...prev, rnaRef: e.value, search: true}));
+						}} 
+					/>
+				</div>
+			</FilterBox>
         }   
         </React.Fragment>
     );
