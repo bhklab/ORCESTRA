@@ -38,6 +38,7 @@ const PSetTable = (props) => {
     }, []);
 
     return(
+        <div className="table-container">
         <DataTable 
             value={psets} 
             selection={selectedPSets} 
@@ -66,6 +67,7 @@ const PSetTable = (props) => {
                 <Column field='downloadLink' body={downloadTemplate} style={{width:'90px', textAlign: 'center'}} header='Download' /> 
             }
         </DataTable>
+        </div>
     );
 
 }

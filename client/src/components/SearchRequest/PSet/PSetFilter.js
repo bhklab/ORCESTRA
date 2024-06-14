@@ -215,6 +215,7 @@ const PSetFilter = () => {
         {
             ready&&
 			<FilterBox>
+                <div className='pset-param'>
 				<div className='filter'>
 					<h2>PSet Parameters</h2>
 					<FilterInputSwitch 
@@ -380,6 +381,7 @@ const PSetFilter = () => {
 						}} 
 					/>
 				</div>
+                </div>
 			</FilterBox>
         }   
         </React.Fragment>
