@@ -62,7 +62,7 @@ const DatasetHeaderGroup = styled.div`
     }
 `;
 
-const Button = styled.button`
+const Button = styled.a`
     background-color: #3d405a;
     border-radius: 5px;
     border: none;
