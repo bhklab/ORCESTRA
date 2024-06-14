@@ -1,9 +1,12 @@
 .documentationContent {
-    display: flex;
     height: 100%;
+    width: 90vw;
+    display: flex;
+    overflow: auto;
 }
 
 .documentationNav {
+    position: sticky;
     width: 17%;
     min-width: 250px;
     margin-right: 20px;
@@ -69,6 +72,8 @@
 
 .documentation-scroll pre {
     font-family: 'Courier';
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 .documentation-scroll * {
