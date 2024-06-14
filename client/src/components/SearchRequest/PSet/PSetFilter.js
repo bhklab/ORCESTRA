@@ -215,7 +215,6 @@ const PSetFilter = () => {
         {
             ready&&
 			<FilterBox>
-                <div className='pset-param'>
 				<div className='filter'>
 					<h2>PSet Parameters</h2>
 					<FilterInputSwitch 
@@ -380,7 +379,6 @@ const PSetFilter = () => {
 							context.setParameters(prev => ({...prev, rnaRef: e.value, search: true}));
 						}} 
 					/>
-				</div>
                 </div>
 			</FilterBox>
         }   

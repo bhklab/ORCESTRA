@@ -5,9 +5,11 @@ import styled from 'styled-components';
 
 const FilterSet = styled.div`
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     // margin-top: 20px;
     // margin-bottom: 20px;
+    max-widthL 100%;
     label {
         margin-right: 10px;
         font-size: 14px;
@@ -26,7 +28,7 @@ const FilterSet = styled.div`
         color: #ffffff;
         font-weight: bold;
         font-size: 12px;
-        display: inline-block;
+        display: block;
     }
 `;
 

@@ -33,47 +33,7 @@ export const FilterBox = styled.div`
 		.form-field {
 			margin-bottom: 20px;
 		}
-    .pset-param {
-        width: 100%;
-        height: 50%;
-    }
-		@media only screen and (max-width: 1000px) {
-			width: 660px;
-			font-size: 12px;
-			padding-bottom: 5px;
-			margin-bottom: 10px;
-		}
-		@media (max-width: 700px) {
-			width: 400px;
-		}
-	}
-`;
-
-export const PsetFilterBox = styled.div`
-	width: 250px;
-	display: flex;
-	justify-content: center;
-	@media (max-width: 1000px) {
-		width: 100%;
-	}
-	.filter {
-		width: 250px;
-		height: 100%;
-		color: #3D405A;
-		background-color: rgba(255, 255, 255, 0.8);
-		font-size: 12px;
-		padding-top: 5px;
-		padding-left: 20px;
-		padding-right: 20px;
-		padding-bottom: 20px;
-		border-radius: 10px;
-		.form-field {
-			margin-bottom: 20px;
-		}
-    .pset-param {
-        width: 100%;
-        height: 50%;
-    }
+        
 		@media only screen and (max-width: 1000px) {
 			width: 660px;
 			font-size: 12px;
