@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export const StyledHeader = styled.header`
     top: 0%;
-    width:100%;
-    background-color:rgb(255,255,255, 0.7);
+    width: 100%;
+    background-color: rgb(255, 255, 255, 0.7);
     height: 60px;
     position: fixed;
     z-index: 999;
@@ -16,20 +16,20 @@ export const NavigationWrapper = styled.div`
     margin-left: auto;
     margin-right: auto;
     display: flex;
-	flex-direction: row;
+    flex-direction: row;
     justify-content: space-between;
 
     .left {
         flex: 1;
-		display: flex;
+        display: flex;
         align-items: center;
     }
 
-	.middle{
-		display: flex;
+    .middle {
+        display: flex;
         align-items: center;
         justify-content: center;
-	}
+    }
 
     .right {
         flex: 1;
@@ -37,7 +37,7 @@ export const NavigationWrapper = styled.div`
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        .loggedIn{
+        .loggedIn {
             position: absolute;
             right: 0;
             top: 1px;
@@ -47,7 +47,6 @@ export const NavigationWrapper = styled.div`
     }
 
     .logo {
-
         img {
             max-width: 50px;
         }
@@ -59,42 +58,42 @@ export const NavigationWrapper = styled.div`
         color: rgb(61, 64, 90);
         font-size: 12px;
         font-weight: bold;
-        transition: .2s ease-out;
-        text-decoration: none
+        transition: 0.2s ease-out;
+        text-decoration: none;
     }
     .link:hover {
         color: #555975;
         border-bottom: 2px solid rgb(241, 144, 33);
-        transition: .2s ease-out;
+        transition: 0.2s ease-out;
     }
-    .active-link{
+    .active-link {
         text-decoration: none;
         color: #555975;
         border-bottom: 2px solid rgb(241, 144, 33);
     }
-    
+
     .home-button {
-        color:rgb(61, 64, 90);
-        font-weight:bold;
+        color: rgb(61, 64, 90);
+        font-weight: bold;
     }
-    
+
     .home-button:hover {
-        cursor:pointer;
+        cursor: pointer;
     }
 
     @media only screen and (max-width: 900px) {
-        .link, .right {
+        .link,
+        .right {
             display: none;
         }
     }
-
 `;
 
 export const PachydermStatus = styled.div`
     display: flex;
     align-items: center;
     font-weight: bold;
-    color: ${props => props.isOnline ? '#0ea353' : '#bb2003'};
+    color: ${props => (props.isOnline ? '#0ea353' : '#bb2003')};
     .icon {
         font-size: 20px;
     }
@@ -119,7 +118,7 @@ export const BurgerNav = styled.div`
 
     /* Color/shape of burger icon bars */
     .bm-burger-bars {
-        background: #3D405A;
+        background: #3d405a;
     }
 
     /* Color/shape of burger icon bars on hover*/
@@ -135,7 +134,7 @@ export const BurgerNav = styled.div`
 
     /* Color/shape of close button cross */
     .bm-cross {
-        background: #3D405A;
+        background: #3d405a;
     }
 
     /*
