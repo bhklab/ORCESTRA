@@ -7,6 +7,8 @@ import { RadioButton } from 'primereact/radiobutton';
 import AdditionalFields from './SubComponents/AdditionalFields';
 import styled from 'styled-components';
 import { ThreeDots } from 'react-loader-spinner';
+import 'primeicons/primeicons.css';
+import { Tooltip } from 'primereact/tooltip';
 import * as MainStyle from '../Main/MainStyle';
 
 const StyledCreatePipeline = styled.div`
@@ -67,10 +69,13 @@ const CreatePipeline = () => {
     git_url: "",
     path_snakefile: "",
     path_output: "",
+    path_config: "",
+    path_conda: "",
     object_name: "",
     object_names: [''],
     additional_repo: [],
-    additional_parameters: []
+    additional_parameters: [],
+    additional_outputs: []
   });
   const [numFiles, setNumFiles] = useState('single');
   const [submitting, setSubmitting] = useState(false);
@@ -78,8 +83,8 @@ const CreatePipeline = () => {
   const [submitMessage, setSubmitMessage] = useState({});
 
   const addAdditionalField = (field) => (e) => {
-    let newItem = { repo_type: '', git_url: '' };
-    if(field === 'additional_parameters'){
+    let newItem = { path_output: '' };
+    if(field === 'additional_outputs'){
       newItem = { name: '', value: '' };
     }
     let fields = [...pipeline[field]];
@@ -177,18 +182,48 @@ const CreatePipeline = () => {
       <CustomInputText 
           className='textfield'
           placeholder='Ex. ./snake'
+          tooltip="Path to Snakefile from project root"
           label='Path to snakefile:'
           value={pipeline.path_snakefile} 
+          icon="/images/icons/info-icon.svg"
           onChange={(e) => {setPipeline({...pipeline, path_snakefile: e.target.value})}}
+      />
+      <CustomInputText 
+          className='textfield'
+          placeholder='Ex. ./config/config.yaml'
+          label='Path to config:'
+          tooltip="Path to configuration from project root"
+          value={pipeline.path_config} 
+          icon="/images/icons/info-icon.svg"
+          onChange={(e) => {setPipeline({...pipeline, path_config: e.target.value})}}
+      />
+      <CustomInputText 
+          className='textfield'
+          placeholder='Ex. ./pipeline.yaml'
+          label='Path to conda env:'
+          tooltip="Path to conda env from project root"
+          value={pipeline.path_conda} 
+          icon="/images/icons/info-icon.svg"
+          onChange={(e) => {setPipeline({...pipeline, path_conda: e.target.value})}}
       />
       <CustomInputText 
           className='textfield'
           placeholder='Ex. ./results'
           label='Path to output:'
+          tooltip="Path to output from project root"
           value={pipeline.path_output} 
+          icon="/images/icons/info-icon.svg"
           onChange={(e) => {setPipeline({...pipeline, path_output: e.target.value})}}
       />
-      
+      <AdditionalFields
+          header='Additional Output Paths'
+          fieldType='additional_outputs'
+          field1={{label: 'Path to output:', name: 'path_output'}}
+          pipeline={pipeline}
+          addAdditionalField={addAdditionalField}
+          updateAdditionalField={updateAdditionalField}
+          removeAdditionalField={removeAdditionalField}
+        />
       <div className='submit-button'>
         {
           submitting ?

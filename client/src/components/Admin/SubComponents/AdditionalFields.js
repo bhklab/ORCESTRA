@@ -15,15 +15,12 @@ const StyledAdditionalField = styled.div`
     align-items: center;
     margin-bottom: 10px;
     .field1 {
-      width: 200px;
-      margin-right: 30px;
-    }
-    .field2 {
-      width: 400px;
-      margin-right: 30px;
+      width: 500px;
+      margin-right: 10px;
     }
     .delete-btn {
       margin-right: 10px;
+      margin-left: 10px;
     }
   }
 `;
@@ -33,7 +30,6 @@ const AdditionalFields = (props) => {
     header,  
     fieldType,
     field1,
-    field2,
     pipeline, 
     addAdditionalField,  
     updateAdditionalField, 
@@ -59,14 +55,9 @@ const AdditionalFields = (props) => {
               <CustomInputText 
                   className='field1'
                   label={field1.label}
+                  placeholder='Ex. ./results'
                   value={field[field1.name]} 
                   onChange={updateAdditionalField(fieldType, i, field1.name)}
-              />
-              <CustomInputText 
-                  className='field2'
-                  label={field2.label}
-                  value={field[field2.name]} 
-                  onChange={updateAdditionalField(fieldType, i, field2.name)}
               />
               <Button 
                 className='p-button-danger delete-btn'
