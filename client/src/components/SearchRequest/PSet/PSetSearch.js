@@ -121,7 +121,10 @@ const PSetSearch = () => {
                                 isRequest &&
                                 <PSetRequestForm onRequestComplete={showMessage} />
                             }
+                            
                         </SearchReqPanel>
+                        </MainPanel>
+                </SearchReqWrapper> 
                         {
                             ready ?
                             <PSetTable 
@@ -134,9 +137,8 @@ const PSetSearch = () => {
                             /> 
                             :
                             <SearchTableLoader />
-                        }  
-                    </MainPanel>
-                </SearchReqWrapper>
+                        } 
+
             </StyledPage>
         </SearchReqContext.Provider>
     );

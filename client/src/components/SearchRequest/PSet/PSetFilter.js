@@ -379,7 +379,7 @@ const PSetFilter = () => {
 							context.setParameters(prev => ({...prev, rnaRef: e.value, search: true}));
 						}} 
 					/>
-				</div>
+                </div>
 			</FilterBox>
         }   
         </React.Fragment>

@@ -33,6 +33,7 @@ export const FilterBox = styled.div`
 		.form-field {
 			margin-bottom: 20px;
 		}
+        
 		@media only screen and (max-width: 1000px) {
 			width: 660px;
 			font-size: 12px;

@@ -1,6 +1,7 @@
 .statContainer{
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 
 .container{
@@ -14,12 +15,14 @@
 }
 
 .rankingTable {
-    max-height: 550px;
+    max-height: 670px;
     width: 100%;
 }
 
 .downloadHistogram{
     width: 100%;
+    max-width: 95vw;
+    max-height: 100vh;
 
 }
 
