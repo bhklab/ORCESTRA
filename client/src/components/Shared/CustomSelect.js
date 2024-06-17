@@ -9,7 +9,6 @@ const FilterSet = styled.div`
     align-items: center;
     // margin-top: 20px;
     // margin-bottom: 20px;
-    max-widthL 100%;
     label {
         margin-right: 10px;
         font-size: 14px;
