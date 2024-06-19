@@ -52,20 +52,7 @@ const createPipeline = async (req, res) => {
     let result = {};
     try{
         let pipeline = req.body;
-        pipeline.additional_outputs = pipeline.additional_outputs.filter(name => name.length > 0);
-        if (pipeline.additional_outputs.length === 0) {
-            pipeline.additional_outputs = null;
-        }
-
-        pipeline.object_names = pipeline.object_names.filter(name => name.length > 0);
-        if(pipeline.object_names.length === 0){
-            pipeline.object_names = null;
-        }
-        // const res = await axios.post(
-        //     `${process.env.DATA_PROCESSING_API}/api/pipeline/create`, 
-        //     pipeline,
-        //     { headers: {'Authorization': process.env.DATA_PROCESSING_TOKEN} }
-        // );
+		console.log(pipeline);
         result = res.data;
     }catch(error){
         console.log(error);
