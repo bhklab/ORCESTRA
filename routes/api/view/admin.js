@@ -51,14 +51,33 @@ const canonicalPSets = async (req, res) => {
 const createPipeline = async (req, res) => {
     let result = {};
     try{
-        let pipeline = req.body;
-        console.log(process.env.FASTAPI_BASE_URL);
-        const res = await axios.post(`${process.env.FASTAPI_BASE_URL}/api/pipelines`, pipeline);
+        let { 
+            pipeline: {
+              pipeline_name,
+              git_url,
+              output_file,
+              output_files,
+              snakefile_path,
+              config_file_path,
+              conda_env_file_path
+            } 
+          } = req.body;
+
+        const pipelineData = {
+            pipeline_name,
+            git_url,
+            output_file,
+            output_files,
+            snakefile_path,
+            config_file_path,
+            conda_env_file_path
+        };
+        console.log(pipelineData);
+        const res = await axios.post(`${process.env.FASTAPI_BASE_URL}/api/pipelines`, pipelineData);
         if (res.status == 200) {
             console.log('API call successful');
         }
-		console.log(pipeline);
-        result = res.data;
+        result = res.data.pipelines;
     }catch(error){
         console.log(error);
         result = error;
