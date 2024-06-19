@@ -52,6 +52,11 @@ const createPipeline = async (req, res) => {
     let result = {};
     try{
         let pipeline = req.body;
+        console.log(process.env.FASTAPI_BASE_URL);
+        const res = await axios.post(`${process.env.FASTAPI_BASE_URL}/api/pipelines`, pipeline);
+        if (res.status == 200) {
+            console.log('API call successful');
+        }
 		console.log(pipeline);
         result = res.data;
     }catch(error){
