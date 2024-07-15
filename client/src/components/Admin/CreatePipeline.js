@@ -40,40 +40,40 @@ const StyledCreatePipeline = styled.div`
 
 const CreatePipeline = () => {
     const [pipeline, setPipeline] = useState({
-        name: '',
+        pipeline_name: '',
         git_url: '',
-        path_snakefile: '',
-        path_output: '',
-        path_config: '',
-        path_conda: '',
-        output_paths: ['']
+        output_file: '',
+        output_files: [''],
+        snakefile_path: '',
+        config_file_path: '',
+        conda_env_file_path: '',
         // additional_parameters: ['']
     });
 
     const addOutputPath = () => {
         setPipeline(prevState => ({
             ...prevState,
-            output_paths: [...prevState.output_paths, '']
+            output_files: [...prevState.output_files, '']
         }));
     };
 
     const removeOutputPath = index => {
         setPipeline(prevState => {
-            const newOutputPaths = prevState.output_paths.filter((_, i) => i !== index);
+            const newOutputPaths = prevState.output_files.filter((_, i) => i !== index);
             return {
                 ...prevState,
-                output_paths: newOutputPaths
+                output_files: newOutputPaths
             };
         });
     };
 
     const handleOutputPathChange = (index, value) => {
         setPipeline(prevState => {
-            const newOutputPaths = [...prevState.output_paths];
+            const newOutputPaths = [...prevState.output_files];
             newOutputPaths[index] = value;
             return {
                 ...prevState,
-                output_paths: newOutputPaths
+                output_files: newOutputPaths
             };
         });
     };
@@ -93,9 +93,9 @@ const CreatePipeline = () => {
                 className="textfield"
                 placeholder="Ex. PSet_GRAY2013 or PSet_UHNBreast"
                 label="Pipeline Name:"
-                value={pipeline.name}
+                value={pipeline.pipeline_name}
                 onChange={e => {
-                    setPipeline({ ...pipeline, name: e.target.value });
+                    setPipeline({ ...pipeline, pipeline_name: e.target.value });
                 }}
             />
             <CustomInputText
@@ -112,10 +112,10 @@ const CreatePipeline = () => {
                 placeholder="Ex. ./snake"
                 tooltip="Path to Snakefile from project root"
                 label="Path to snakefile:"
-                value={pipeline.path_snakefile}
+                value={pipeline.snakefile_path}
                 icon="/images/icons/info-icon.svg"
                 onChange={e => {
-                    setPipeline({ ...pipeline, path_snakefile: e.target.value });
+                    setPipeline({ ...pipeline, snakefile_path: e.target.value });
                 }}
             />
             <CustomInputText
@@ -123,10 +123,10 @@ const CreatePipeline = () => {
                 placeholder="Ex. ./config/config.yaml"
                 label="Path to config:"
                 tooltip="Path to configuration from project root"
-                value={pipeline.path_config}
+                value={pipeline.config_file_path}
                 icon="/images/icons/info-icon.svg"
                 onChange={e => {
-                    setPipeline({ ...pipeline, path_config: e.target.value });
+                    setPipeline({ ...pipeline, config_file_path: e.target.value });
                 }}
             />
             <CustomInputText
@@ -134,13 +134,13 @@ const CreatePipeline = () => {
                 placeholder="Ex. ./pipeline.yaml"
                 label="Path to conda env:"
                 tooltip="Path to conda environment from project root"
-                value={pipeline.path_conda}
+                value={pipeline.conda_env_file_path}
                 icon="/images/icons/info-icon.svg"
                 onChange={e => {
-                    setPipeline({ ...pipeline, path_conda: e.target.value });
+                    setPipeline({ ...pipeline, conda_env_file_path: e.target.value });
                 }}
             />
-            {pipeline.output_paths.map((outputPath, index) => (
+            {pipeline.output_files.map((output_file, index) => (
                 <div className="multiple-file-field" key={index}>
                     <CustomInputText
                         className="multiple-file-textfield"
@@ -148,7 +148,7 @@ const CreatePipeline = () => {
                         label={`Output file path ${index + 1}:`}
                         icon="/images/icons/info-icon.svg"
                         tooltip="Path to output from project root"
-                        value={outputPath}
+                        value={output_file}
                         onChange={e => handleOutputPathChange(index, e.target.value)}
                     />
                     <Button
@@ -166,9 +166,9 @@ const CreatePipeline = () => {
                     disabled={
                         pipeline.name === '' ||
                         pipeline.git_url === '' ||
-                        pipeline.path_snakefile === '' ||
-                        pipeline.path_conda === '' ||
-                        pipeline.output_paths[0] === ''
+                        pipeline.snakefile_path === '' ||
+                        pipeline.conda_env_file_path === '' ||
+                        pipeline.output_files[0] === ''
                     }
                 >
                     Create Pipeline
