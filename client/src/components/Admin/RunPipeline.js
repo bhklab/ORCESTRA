@@ -149,7 +149,7 @@ const RunPipeline = () => {
           selectOne
           selected={selectedPipeline}
           options={(pipelines || []).filter(pipeline => pipeline !== null).map(pipeline => ({label: pipeline, value: pipeline}))}
-          label='Select pipeline: '
+          label='Select Pipeline: '
           value={pipeline.pipeline_name}
           onChange={(e) => {
             setSelectedPipeline(e.value);
@@ -163,7 +163,7 @@ const RunPipeline = () => {
               { label: 'True', value: 'true' },
               { label: 'False', value: 'false' }
             ]}
-            label='Force run:'
+            label='Force Run:'
             value={pipeline.force_run}
             onChange={(e) => {
               setSelectedForceRun(e.value);
