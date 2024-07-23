@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 export const StyledDataDisplay = styled.div`
     box-sizing: border-box;
+    margin-top: 20px;
     max-width: 100%;
     border-radius: 10px;
     padding-top: 20px;

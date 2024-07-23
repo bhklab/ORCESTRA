@@ -4,7 +4,7 @@ import CustomInputText from '../Shared/CustomInputText';
 import { Button } from 'primereact/button';
 import styled from 'styled-components';
 import 'primeicons/primeicons.css';
-import StyledDataDisplay from './SubComponents/DataDisplay';
+import StyledDataDisplay from './SubComponents/DataDisplayCreate';
 import CustomMessages from '../Shared/CustomMessages';
 import { ThreeDots } from 'react-loader-spinner';
 

@@ -7,8 +7,8 @@ const FilterSet = styled.div`
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    // margin-top: 20px;
-    // margin-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     label {
         margin-right: 10px;
         font-size: 14px;
