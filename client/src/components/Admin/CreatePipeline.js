@@ -4,6 +4,10 @@ import CustomInputText from '../Shared/CustomInputText';
 import { Button } from 'primereact/button';
 import styled from 'styled-components';
 import 'primeicons/primeicons.css';
+import StyledDataDisplay from './SubComponents/DataDisplay';
+import CustomMessages from '../Shared/CustomMessages';
+import { ThreeDots } from 'react-loader-spinner';
+
 
 const StyledCreatePipeline = styled.div`
     max-width: 1000px;
@@ -38,17 +42,38 @@ const StyledCreatePipeline = styled.div`
     }
 `;
 
+
+const creationSuccessMessage = {
+    severity: 'success', 
+    summary: 'Pipeline Created', 
+    detail: '', 
+    sticky: true 
+}
+
+  const creationErrorMessage = {
+    severity: 'error', 
+    summary: 'Pipeline Not Created', 
+    detail: '', 
+    sticky: true 
+}
+
 const CreatePipeline = () => {
-    const [pipeline, setPipeline] = useState({
-        pipeline_name: '',
-        git_url: '',
-        output_file: '',
-        output_files: [''],
-        snakefile_path: '',
-        config_file_path: '',
-        conda_env_file_path: '',
-        // additional_parameters: ['']
-    });
+  const initialState = {
+      pipeline_name: '',
+      git_url: '',
+      output_file: '',
+      output_files: [''],
+      snakefile_path: '',
+      config_file_path: '',
+      conda_env_file_path: '',
+      // additional_parameters: ['']
+  };
+
+  const [pipeline, setPipeline] = useState(initialState);
+  const [resData, setResData] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [showMsg, setShowMsg] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState({});
 
     const addOutputPath = () => {
         setPipeline(prevState => ({
@@ -78,16 +103,42 @@ const CreatePipeline = () => {
         });
     };
 
+    const resetForm = () => {
+      setPipeline(initialState);
+  };
+
     const submit = async e => {
         e.preventDefault();
+        setSubmitting(true);
         console.log(pipeline);
         try {
-            axios.post('/api/admin/data-processing/create-pipeline', { pipeline });
-        } catch (error) {}
+            const res = await axios.post('/api/admin/data-processing/create-pipeline', { pipeline });
+            console.log(res.data);
+            if (res.data.clone_status === "Pipeline cloned successfully") {
+                setSubmitMessage({...creationSuccessMessage, detail: "Pipeline created succesfully!"});
+                setResData(res.data);
+                resetForm();
+            } else {
+                setSubmitMessage({...creationErrorMessage, detail: res.data.detail});
+            }
+            setShowMsg(true);
+        } catch (error) {
+            console.log(error.response);
+            if (error.response && error.response.data && error.response.data.detail) {
+                setSubmitMessage({...creationErrorMessage, detail: error.response.data.detail});
+            } else {
+                setSubmitMessage({...creationErrorMessage, detail: "An error occurred"});
+            }
+            setShowMsg(true);
+        } finally {
+            setSubmitting(false);
+            setShowMsg(Math.random());
+        }
     };
 
     return (
         <StyledCreatePipeline>
+            <CustomMessages trigger={showMsg} message={submitMessage} />
             <h3>Create a Pipeline</h3>
             <CustomInputText
                 className="textfield"
@@ -160,22 +211,29 @@ const CreatePipeline = () => {
                 </div>
             ))}
             <Button icon="pi pi-plus" onClick={addOutputPath} label="Add Output Path" />
-            <div className="submit-button">
-                <Button
-                    onClick={submit}
-                    disabled={
-                        pipeline.name === '' ||
-                        pipeline.git_url === '' ||
-                        pipeline.snakefile_path === '' ||
-                        pipeline.conda_env_file_path === '' ||
-                        pipeline.output_files[0] === ''
-                    }
-                >
-                    Create Pipeline
-                </Button>
-            </div>
+<div className="submit-button">
+    {
+    submitting ? (
+        <ThreeDots color="#3D405A" height={100} width={100} />
+    ) : (
+        <Button
+            onClick={submit}
+            disabled={
+                pipeline.name === '' ||
+                pipeline.git_url === '' ||
+                pipeline.snakefile_path === '' ||
+                pipeline.conda_env_file_path === '' ||
+                pipeline.output_files[0] === ''
+            }
+        >
+            Create Pipeline
+        </Button>
+    )
+        }
+        </div>
+        {resData && <StyledDataDisplay data={resData} />}
         </StyledCreatePipeline>
-    );
-};
+    )}
+
 
 export default CreatePipeline;

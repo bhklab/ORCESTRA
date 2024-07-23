@@ -73,18 +73,22 @@ const createPipeline = async (req, res) => {
             conda_env_file_path
         };
         console.log(pipelineData);
-        const res = await axios.post(`${process.env.FASTAPI_BASE_URL}/api/pipelines`, pipelineData);
-        if (res.status == 200) {
-            console.log('API call successful');
+        console.log(process.env.FASTAPI_BASE_URL)
+        const res = await axios.post(`${process.env.FASTAPI_BASE_URL}/api/create-pipeline`, pipelineData);
+        if (res == 200) {
+            console.log(res.data);
         }
-        result = res.data.pipelines;
+        result = res.data;
+        console.log(result);
     }catch(error){
-        console.log(error);
-        result = error;
-        res.status(500);
-    }finally{
-        res.send(result);
+        console.log('Error message:', error.response.data.detail);
+        if (error.response && error.response.data && error.response.data.detail) {
+            return res.status(500).send({ detail: error.response.data.detail });
+        } else {
+            return res.status(500).send({ detail: "An error occurred" });
+        }
     }
+    res.send(result);
 }
 
 
