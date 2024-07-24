@@ -160,7 +160,7 @@ const CreatePipeline = () => {
             />
             <CustomInputText
                 className="textfield"
-                placeholder="Ex. ./snake"
+                placeholder="Ex. Snakefile"
                 tooltip="Path to Snakefile from project root"
                 label="Path to snakefile:"
                 value={pipeline.snakefile_path}
@@ -171,7 +171,7 @@ const CreatePipeline = () => {
             />
             <CustomInputText
                 className="textfield"
-                placeholder="Ex. ./config/config.yaml"
+                placeholder="Ex. config/config.yaml"
                 label="Path to config:"
                 tooltip="Path to configuration from project root"
                 value={pipeline.config_file_path}
@@ -182,7 +182,7 @@ const CreatePipeline = () => {
             />
             <CustomInputText
                 className="textfield"
-                placeholder="Ex. ./pipeline.yaml"
+                placeholder="Ex. pipeline.yaml"
                 label="Path to conda env:"
                 tooltip="Path to conda environment from project root"
                 value={pipeline.conda_env_file_path}
@@ -195,7 +195,7 @@ const CreatePipeline = () => {
                 <div className="multiple-file-field" key={index}>
                     <CustomInputText
                         className="multiple-file-textfield"
-                        placeholder={`Ex. ./output/objects`}
+                        placeholder={`Ex. results/output.txt`}
                         label={`Output file path ${index + 1}:`}
                         icon="/images/icons/info-icon.svg"
                         tooltip="Path to output from project root"
