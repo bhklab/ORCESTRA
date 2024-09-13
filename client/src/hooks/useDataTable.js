@@ -16,15 +16,14 @@ const StyledButton = styled.button`
 /**
  * A custom hook to be used for dataset tables.
  * Contains table cell templates and dataset download function for the download link.
- * @param {*} datasetType 
- * @returns 
+ * @param {*} datasetType
+ * @returns
  */
-const useDataTable = (datasetType) => {
-
-    const downloadDataset = (doi, link) => async (event) => {
+const useDataTable = datasetType => {
+    const downloadDataset = (doi, link) => async event => {
         event.preventDefault();
         console.log('download dataset');
-        await axios.post(`/api/data-object/download`, {datasetDOI: doi});
+        await axios.post(`/api/data-object/download`, { datasetDOI: doi });
         const anchor = document.createElement('a');
         anchor.setAttribute('download', null);
         anchor.style.display = 'none';
@@ -32,84 +31,83 @@ const useDataTable = (datasetType) => {
         document.body.appendChild(anchor);
         anchor.click();
         document.body.removeChild(anchor);
-    }
+    };
 
-    const toolsRefTemplate = (rowData, column) => (
-        <div>
-            {rowData[column.field] ? rowData[column.field] : ''}
-        </div>
-    );
+    const toolsRefTemplate = (rowData, column) => <div>{rowData[column.field] ? rowData[column.field] : ''}</div>;
 
-	const availableDataTemplate = (rowData, column) => {
-		return(
-            <div>
-				CT
-			</div>
-        );
-	}
+    const availableDataTemplate = (rowData, column) => {
+        return <div>CT</div>;
+    };
 
     const dataTypeTemplate = (rowData, column) => {
-        if(datasetType === dataTypes.pharmacogenomics){
-            return(
+        if (datasetType === dataTypes.pharmacogenomics) {
+            return (
                 <div>
-                    {
-                        rowData[column.field] ? 
-                        rowData[column.field].map(item => 
-                            <div key={item.name}>
-                                {item.name}{item.details ? ` [${item.details.microarrayType.label}]` : ''} ({item.genomeType})
-                            </div>
-                        ) 
-                        : ''
-                    }
+                    {rowData[column.field]
+                        ? rowData[column.field].map(item => (
+                              <div key={item.name}>
+                                  {item.name}
+                                  {item.details ? ` [${item.details.microarrayType.label}]` : ''} ({item.genomeType})
+                              </div>
+                          ))
+                        : ''}
                 </div>
             );
         }
 
-        const datatypeArray = rowData[column.field].filter(item => (item.name !== 'drugResponse' && item.name !== 'radiationSensitivity'));
-        return(
-            <div>{datatypeArray.map(item => <div key={item.name}>{item.name} ({item.genomeType})</div>)}</div>
+        const datatypeArray = rowData[column.field].filter(
+            item => item.name !== 'drugResponse' && item.name !== 'radiationSensitivity'
         );
-    }
+        return (
+            <div>
+                {datatypeArray.map(item => (
+                    <div key={item.name}>
+                        {item.name} ({item.genomeType})
+                    </div>
+                ))}
+            </div>
+        );
+    };
 
     const nameColumnTemplate = (rowData, column) => (
-        <Link to={`/${datasetType}/${rowData.doi}`} target="_blank">{rowData.name}</Link>
+        <Link to={`/${datasetType}/${rowData._id}`} target="_blank">
+            {console.log(rowData)}
+
+            {rowData.name}
+        </Link>
     );
 
     const nameColumnTemplateUserDataset = (rowData, column) => (
-        <Link to={`/${rowData.datasetType.name}/${rowData.doi}`}>{rowData.name}</Link>
+        <Link to={`/${rowData.datasetType.name}/${rowData._id}`}>{rowData.name}</Link>
     );
 
     const downloadTemplate = (rowData, column) => {
-        if(rowData.downloadLink){
-            if(Array.isArray(rowData.downloadLink)){
-                return(
-                    <a href={`http://doi.org/${rowData.doi}`} target="_blank" rel='noreferrer'>Multiple Data Objects</a>
+        if (rowData.downloadLink) {
+            if (Array.isArray(rowData.downloadLink)) {
+                return (
+                    <a href={`http://doi.org/${rowData.doi}`} target="_blank" rel="noreferrer">
+                        Multiple Data Objects
+                    </a>
                 );
             }
-            return(
-                <StyledButton id={rowData._id} onClick={downloadDataset(rowData.doi, rowData.downloadLink)} >Download</StyledButton>
+            return (
+                <StyledButton id={rowData._id} onClick={downloadDataset(rowData.doi, rowData.downloadLink)}>
+                    Download
+                </StyledButton>
             );
         }
         return 'Not Available';
     };
 
-    const filteredTemplate = (rowData, column) => (
-        <div>{rowData.info.filteredSensitivity ? 'Yes' : 'No'}</div>
-    );
+    const filteredTemplate = (rowData, column) => <div>{rowData.info.filteredSensitivity ? 'Yes' : 'No'}</div>;
 
-    const canonicalTemplate = (rowData, column) => (
-        <div>{rowData.info.canonical ? 'Yes' : ''}</div>
-    );
+    const canonicalTemplate = (rowData, column) => <div>{rowData.info.canonical ? 'Yes' : ''}</div>;
 
     const sensitivityTemplate = (rowData, column) => {
-        return(
-            <div>{rowData.dataset.sensitivity ? rowData.dataset.sensitivity.version : 'Not Available'}</div>
-        );
-    }
+        return <div>{rowData.dataset.sensitivity ? rowData.dataset.sensitivity.version : 'Not Available'}</div>;
+    };
 
-    const privateTemplate = (rowData, column) => (
-        <div>{rowData.info.private ? 'Yes' : 'No'}</div>
-    );
+    const privateTemplate = (rowData, column) => <div>{rowData.info.private ? 'Yes' : 'No'}</div>;
 
     return {
         toolsRefTemplate,
@@ -121,9 +119,8 @@ const useDataTable = (datasetType) => {
         canonicalTemplate,
         sensitivityTemplate,
         privateTemplate,
-		availableDataTemplate
+        availableDataTemplate
     };
-
-}
+};
 
 export default useDataTable;

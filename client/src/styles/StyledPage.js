@@ -21,7 +21,7 @@ const StyledPage = styled.div`
     .table-container {
         max-height: 600px;
         flex-direction: column;
-        width: 50%;
+        width: 80%;
         margin-top: 10px;
         display: flex;
     }

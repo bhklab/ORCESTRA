@@ -6,4 +6,4 @@ export const dataTypes = {
     radiogenomics: 'radioset',
     radiomics: 'radiomicset',
     icb: 'clinical_icb'
-}
+};

@@ -125,10 +125,20 @@ const getTabData = async (dataObject, dataset, filter) => {
 const get = async (req, res) => {
   let dataObj = {};
   try {
-    const dataObject = await DataObject.findOne({
-      datasetType: req.query.datasetType,
-      "repositories.doi": req.query.doi,
-    }).lean();
+	let dataObject = {};
+  
+	if (req.query.id.includes('zenodo')){ // Deprecated way of retrieving data for a datasets (using doi)
+		dataObject = await DataObject.findOne({
+			datasetType: req.query.datasetType,
+			"repositories.doi": req.query.id,
+		  }).lean();
+	}
+	else{ // Current way of retrieving data for a dataset (using _id)
+		dataObject = await DataObject.findOne({
+			datasetType: req.query.datasetType,
+			"_id": req.query.id,
+		}).lean();
+	}
     if (dataObject) {
       const dataset = await Dataset.findOne({ _id: dataObject.dataset })
         .select(["-stats"])
@@ -150,6 +160,7 @@ const get = async (req, res) => {
           ? `${repo.downloadLink}&access_token=${process.env.ZENODO_ACCESS_TOKEN}`
           : repo.downloadLink,
         bioComputeObject: repo.bioComputeObject,
+		legacy: dataObject.legacy
       };
       dataObj.tabData = [];
       dataObj.tabData = await getTabData(dataObject, dataset, filter);

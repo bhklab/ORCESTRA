@@ -15,12 +15,15 @@ const DownloadButton = props => {
         document.body.appendChild(anchor);
         anchor.click();
         document.body.removeChild(anchor);
-
-        if (mode === 'dataset') {
-            await axios.post('/api/data-object/download', {
-                datasetType: datasetType,
-                datasetDOI: doi
-            });
+        try {
+            if (mode === 'dataset') {
+                await axios.post('/api/data-object/download', {
+                    datasetType: datasetType,
+                    datasetDOI: doi
+                });
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 

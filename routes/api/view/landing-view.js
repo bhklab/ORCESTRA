@@ -54,7 +54,8 @@ const dataObjectHelper = require('../../../helper/data-object');
         data.downloadRanking = canonicals.splice(0, 5).map(item => ({
             name: item.name,
             numDownload: item.info.numDownload,
-            doi: item.repositories.find(repo => repo.version === dataObjectHelper.getDataVersion(req.query.datasetType)).doi
+            doi: item.repositories.find(repo => repo.version === dataObjectHelper.getDataVersion(req.query.datasetType)).doi,
+			id: item._id
         }));
         // Get number of pending/in-process data objects.
         data.reqStatus.pending = objects.filter(item => item.info.status === 'pending').length;

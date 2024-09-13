@@ -64,11 +64,11 @@ const errorMessage = {
     sticky: true
 };
 
-const useSingleDataset = (datasetType, doi) => {
+const useSingleDataset = (datasetType, id) => {
     const { promiseInProgress } = usePromiseTracker();
 
     const [dataset, setDataset] = useState({ ready: false, data: {} });
-    const [selectedObject, setSelectedObject] = useState(undefined);
+    const [selectedObject, setSelectedObject] = useState('');
     const [publicView, setPublicView] = useState(false);
     const [ownerView, setOwnerView] = useState(false);
     const [showPublishDialog, setShowPublishDialog] = useState(false);
@@ -87,6 +87,8 @@ const useSingleDataset = (datasetType, doi) => {
                 return 'RadioSet';
             case dataTypes.clinicalgenomics:
                 return 'ClinicalGenomics Dataset';
+            case dataTypes.icb:
+                return 'Immune Checkpoint Blockade';
             default:
                 return 'Dataset';
         }
@@ -97,11 +99,11 @@ const useSingleDataset = (datasetType, doi) => {
             const res = await axios.get('/api/view/single-data-object', {
                 params: {
                     datasetType: datasetType,
-                    doi: doi,
+                    id: id,
                     shareToken: shareToken ? shareToken.replace('?shared=', '') : null
                 }
             });
-            console.log(res.data);
+            // console.log(res.data);
             setDataset({
                 ready: true,
                 data: res.data
@@ -125,7 +127,7 @@ const useSingleDataset = (datasetType, doi) => {
             res = await trackPromise(
                 axios.post('/api/data-object/publish', {
                     datasetType: datasetType,
-                    doi: doi
+                    id: id
                 })
             );
         } catch (error) {
@@ -145,9 +147,9 @@ const useSingleDataset = (datasetType, doi) => {
         try {
             res = await axios.post('/api/data-object/sharelink', {
                 datasetType: datasetType,
-                doi: doi
+                id: id
             });
-            console.log(res.data);
+            // console.log(res.data);
         } catch (error) {
             console.log(error);
         } finally {
@@ -160,7 +162,6 @@ const useSingleDataset = (datasetType, doi) => {
     };
 
     const renderDataObjectDownload = () => {
-        // if(publicView){
         if (Array.isArray(dataset.data.downloadLink)) {
             return (
                 <React.Fragment>
@@ -179,14 +180,14 @@ const useSingleDataset = (datasetType, doi) => {
                     />
                     <DownloadButton
                         className="left"
-                        disabled={typeof selectedObject === 'undefined'}
+                        disabled={selectedObject === ''}
                         datasetType={datasetType}
                         doi={dataset.data.doi}
-                        downloadLink={typeof selectedObject !== 'undefined' ? selectedObject.value.link : ''}
+                        downloadLink={selectedObject !== '' ? selectedObject.downloadLink : ''}
                         mode="dataset"
                         label="Download Dataset"
                         tooltip={`Download ${dataset.data.name}(${
-                            typeof selectedObject !== 'undefined' ? selectedObject.value.name : ''
+                            typeof selectedObject !== 'undefined' ? selectedObject.name : ''
                         }) as an R object`}
                     />
                 </React.Fragment>
@@ -204,8 +205,6 @@ const useSingleDataset = (datasetType, doi) => {
                 tooltip={`Download ${dataset.data.name} as an R object`}
             />
         );
-        // }
-        // return '';
     };
 
     const getHeader = () => {
@@ -259,39 +258,45 @@ const useSingleDataset = (datasetType, doi) => {
     };
 
     const getGeneralInfoAccordion = data => {
-        return (
-            <StyledAccordion className="generalInfoAccordion" activeIndex={0}>
-                <AccordionTab header="General Information">
-                    <h4>Name: {data.name}</h4>
-                    <div>
-                        <h4>
-                            Dataset DOI:{' '}
-                            <a href={`https://doi.org/${data.doi}`} target="_blank" rel="noreferrer">
-                                {data.doi}
-                            </a>
-                        </h4>
-                        {data.bioComputeObject && (
+        console.log(data);
+        if (data.legacy === false) {
+            return <div>HHHHHHHHH</div>;
+        } else {
+            // Legacy dataset 'General Information' block
+            return (
+                <StyledAccordion className="generalInfoAccordion" activeIndex={0}>
+                    <AccordionTab header="General Information">
+                        <h4>Name: {data.name}</h4>
+                        <div>
                             <h4>
-                                BioCompute Object DOI:{' '}
-                                <a
-                                    href={`https://doi.org/${data.bioComputeObject.doi}`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    {data.bioComputeObject.doi}
+                                Dataset DOI:{' '}
+                                <a href={`https://doi.org/${data.doi}`} target="_blank" rel="noreferrer">
+                                    {data.doi}
                                 </a>
                             </h4>
+                            {data.bioComputeObject && (
+                                <h4>
+                                    BioCompute Object DOI:{' '}
+                                    <a
+                                        href={`https://doi.org/${data.bioComputeObject.doi}`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        {data.bioComputeObject.doi}
+                                    </a>
+                                </h4>
+                            )}
+                        </div>
+                        <h4>Date Created: {data.info.date.created.split('T')[0]}</h4>
+                        {data.info.createdBy && (
+                            <h4>
+                                Created By {data.info.createdBy} {data.info.canonical ? '(Canonical)' : ''}
+                            </h4>
                         )}
-                    </div>
-                    <h4>Date Created: {data.info.date.created.split('T')[0]}</h4>
-                    {data.info.createdBy && (
-                        <h4>
-                            Created By {data.info.createdBy} {data.info.canonical ? '(Canonical)' : ''}
-                        </h4>
-                    )}
-                </AccordionTab>
-            </StyledAccordion>
-        );
+                    </AccordionTab>
+                </StyledAccordion>
+            );
+        }
     };
 
     const publishDialog = () => {

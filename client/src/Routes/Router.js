@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { AuthContext, PathContext } from "../hooks/Context";
+import { AuthContext, PathContext } from '../hooks/Context';
 import useFindUser from '../hooks/useFindUser';
 
-// routes 
+// routes
 import PrivateRoute from './PrivateRoute';
 // import DatasetRoute from './DatasetRoute'; not used
 import RestrictedRoute from './RestrictedRoute';
@@ -18,6 +18,7 @@ import Main from '../components/Main/Main';
 import DatasetMain from '../components/Main/DatasetMain';
 import SearchRequest from '../components/SearchRequest/SearchRequest';
 import SingleDataset from '../components/SingleDataset/SingleDataset';
+import SingleDatasetNew from '../components/SingleDataset/SingleDatasetNew';
 import RequestStatus from '../components/RequestStatus/RequestStatus';
 import Stats from '../components/Stats/Stats';
 import Documentation from '../components/Documentation/Documentation';
@@ -37,31 +38,49 @@ const Router = () => {
     const [datatype, setDatatype] = useState('');
 
     return (
-        <AuthContext.Provider value={{user, setUser, loading}}>
-            <PathContext.Provider value={{datatype, setDatatype}}>
+        <AuthContext.Provider value={{ user, setUser, loading }}>
+            <PathContext.Provider value={{ datatype, setDatatype }}>
                 <Navigation />
                 <Routes>
-                    <Route path='/' element={<Main />} />
-                    <Route path='/:datatype' element={<DatasetMain />} />
-                    <Route path='/:datatype/search' element={<SearchRequest />} />
-                    <Route path='/:datatype/canonical' element={<CanonicalPSets />} />
-                    <Route path='/:datatype/status' element={<RequestStatus />} />
-                    <Route path='/:datatype/stats' element={<Stats />} />
-                    <Route path='/app/documentation/:section' element={<Documentation />} />
-                    <Route path='/app/contact' element={<Contact />} />
-                    <Route path='/app/authentication' element={<Authentication />} />
-                    <Route path='/user/reset/:token' element={<Reset />} />
-                    <Route path='/app/data_submission' element={<PrivateRoute element={<DataSubmission />} redirect='/app/authentication' />} 
-/>                  <Route path='/app/profile' element={<PrivateRoute element={<Profile />} redirect='/app/authentication' />} />
-                    <Route path='/app/admin' element={<AdminRoute element={Admin} redirect='/app/profile' />} />
-                    <Route path='/app/data_submission/submitted/:id' element={<RestrictedRoute element={SingleDataSubmission} redirect='/app/authentication' type='dataSubmission' />} />
-                    <Route path='/:datatype/:id1/:id2' element={<SingleDataset />} />
-                    <Route path='*' element={<NotFound404 />} />
+                    <Route path="/" element={<Main />} />
+                    <Route path="/:datatype" element={<DatasetMain />} />
+                    <Route path="/:datatype/search" element={<SearchRequest />} />
+                    <Route path="/:datatype/canonical" element={<CanonicalPSets />} />
+                    <Route path="/:datatype/status" element={<RequestStatus />} />
+                    <Route path="/:datatype/stats" element={<Stats />} />
+                    <Route path="/app/documentation/:section" element={<Documentation />} />
+                    <Route path="/app/contact" element={<Contact />} />
+                    <Route path="/app/authentication" element={<Authentication />} />
+                    <Route path="/user/reset/:token" element={<Reset />} />
+                    <Route
+                        path="/app/data_submission"
+                        element={<PrivateRoute element={<DataSubmission />} redirect="/app/authentication" />}
+                    />{' '}
+                    <Route
+                        path="/app/profile"
+                        element={<PrivateRoute element={<Profile />} redirect="/app/authentication" />}
+                    />
+                    <Route path="/app/admin" element={<AdminRoute element={Admin} redirect="/app/profile" />} />
+                    <Route
+                        path="/app/data_submission/submitted/:id"
+                        element={
+                            <RestrictedRoute
+                                element={SingleDataSubmission}
+                                redirect="/app/authentication"
+                                type="dataSubmission"
+                            />
+                        }
+                    />
+                    {/* The route below has been deprecated, however it is used if there are still
+					out there that reference the old link type in ORCESTRA */}
+                    <Route path="/:datatype/:id1/:id2" element={<SingleDataset />} />
+                    <Route path="/:datatype/:id" element={<SingleDatasetNew />} />
+                    <Route path="*" element={<NotFound404 />} />
                 </Routes>
                 <Footer />
             </PathContext.Provider>
         </AuthContext.Provider>
     );
-}
+};
 
 export default Router;

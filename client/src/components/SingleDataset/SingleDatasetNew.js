@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import useSingleDataset from '../../hooks/useSingleDataset';
 import { dataTypes } from '../Shared/Enums';
 import PSet from './PSet/PSet';
@@ -10,17 +10,19 @@ import RadioSet from './RadioSet/RadioSet';
 import StyledPage from '../../styles/StyledPage';
 import RadiomicSet from './RadiomicSet/RadiomicSet';
 
-const SingleDataset = () => {
-    const { datatype, id1, id2 } = useParams();
+const SingleDatasetNew = () => {
+    const location = useLocation();
+    const { datatype, id } = useParams();
 
     const { getDataset, getHeader, getGeneralInfoAccordion, datasetMessage, publishDialog, dataset } = useSingleDataset(
         datatype,
-        `${id1}/${id2}`
+        `${id}`
     );
 
     useEffect(() => {
         const getData = async () => {
-            await getDataset();
+            console.log(location.search);
+            await getDataset(location.search);
         };
         getData();
 
@@ -51,4 +53,4 @@ const SingleDataset = () => {
     );
 };
 
-export default SingleDataset;
+export default SingleDatasetNew;

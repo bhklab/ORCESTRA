@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../../hooks/Context';
 import useDatasetSearch from '../../../hooks/useDatasetSearch';
 import SearchReqContext from '../SearchReqContext';
@@ -10,19 +10,18 @@ import PSetTable from './PSetTable';
 import SearchSummary from '../SearchSummary';
 import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 import SearchTableLoader from '../SearchTableLoader';
-import {Messages} from 'primereact/messages';
-import {dataTypes} from '../../Shared/Enums';
+import { Messages } from 'primereact/messages';
+import { dataTypes } from '../../Shared/Enums';
 import StyledPage from '../../../styles/StyledPage';
 
 const PSetSearch = () => {
-    
     const auth = useContext(AuthContext);
     const { searchAll, search } = useDatasetSearch(dataTypes.pharmacogenomics);
 
     const [psets, setPSets] = useState([]);
     const [selectedPSets, setSelectedPSets] = useState([]);
     const [isRequest, setIsRequest] = useState(false);
-    
+
     const [parameters, setParameters] = useState({
         dataset: [],
         drugSensitivity: [],
@@ -38,25 +37,34 @@ const PSetSearch = () => {
         search: false
     });
 
-    const [ready, setReady] = useState(false)
+    const [ready, setReady] = useState(false);
 
     useEffect(() => {
         const initializeView = async () => {
-            const psets = await search({...parameters, status: 'complete', private: false});
+            const psets = await search({ ...parameters, status: 'complete', private: false });
             console.log(psets);
             setPSets(psets);
             setReady(true);
-        }
+        };
         initializeView();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {   
+    useEffect(() => {
         const searchPSets = async () => {
             console.log('search');
             let copy = JSON.parse(JSON.stringify(parameters));
             Object.keys(copy).forEach(key => {
-                if(!Array.isArray(copy[key]) && !(key === 'canonicalOnly' || key === 'filteredSensitivity' || key === 'search' || key === 'name' || key === 'email')){
+                if (
+                    !Array.isArray(copy[key]) &&
+                    !(
+                        key === 'canonicalOnly' ||
+                        key === 'filteredSensitivity' ||
+                        key === 'search' ||
+                        key === 'name' ||
+                        key === 'email'
+                    )
+                ) {
                     copy[key] = [copy[key]];
                 }
             });
@@ -69,11 +77,11 @@ const PSetSearch = () => {
             delete copy.defaultData;
             delete copy.name;
             delete copy.email;
-            const psets = await search({...copy, status: 'complete', private: false});
+            const psets = await search({ ...copy, status: 'complete', private: false });
             setPSets(psets);
-        }
+        };
 
-        if(parameters.search){
+        if (parameters.search) {
             searchPSets();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,67 +89,62 @@ const PSetSearch = () => {
 
     const showMessage = (status, data) => {
         let severity = status ? 'success' : 'error';
-        PSetSearch.messages.show({severity: severity, summary: data.summary, detail: data.message, sticky: true});
+        PSetSearch.messages.show({ severity: severity, summary: data.summary, detail: data.message, sticky: true });
         setSelectedPSets([]);
-    }
-        
-    return(
-        <SearchReqContext.Provider 
-            value={{ 
-                parameters: parameters, 
-                setParameters: setParameters, 
-                isRequest: isRequest, 
+    };
+
+    return (
+        <SearchReqContext.Provider
+            value={{
+                parameters: parameters,
+                setParameters: setParameters,
+                isRequest: isRequest,
                 setIsRequest: setIsRequest
             }}
         >
             <StyledPage>
-                <SearchReqWrapper>
-                    <PSetFilter />
+                <SearchReqWrapper style={{ flexDirection: 'column', gap: '10px' }}>
                     <MainPanel>
-                        <Messages ref={(el) => PSetSearch.messages = el} />
+                        <Messages ref={el => (PSetSearch.messages = el)} />
                         <SearchReqPanel>
                             <div>
-                                <SearchSummary 
-                                    title='Search or Request Pharmacogenomic Datasets (PSets)' 
-                                    searchAll={searchAll} 
-                                    matchNum={psets.length} 
+                                <SearchSummary
+                                    title="Search or Request Pharmacogenomic Datasets (PSets)"
+                                    searchAll={searchAll}
+                                    matchNum={psets.length}
                                 />
-                                {
-                                    auth.user ?
-                                    <SaveDatasetButton 
-                                        selectedDatasets={selectedPSets} 
-                                        disabled={selectedPSets.length > 0 ? false : true} 
-                                        onSaveComplete={showMessage} 
+                                {auth.user ? (
+                                    <SaveDatasetButton
+                                        selectedDatasets={selectedPSets}
+                                        disabled={selectedPSets.length > 0 ? false : true}
+                                        onSaveComplete={showMessage}
                                     />
-                                    :
+                                ) : (
                                     '*Login or register to save existing PSets to your profile.'
-                                }
+                                )}
                             </div>
-                            {
-                                isRequest &&
-                                <PSetRequestForm onRequestComplete={showMessage} />
-                            }
-                            
+                            {isRequest && <PSetRequestForm onRequestComplete={showMessage} />}
                         </SearchReqPanel>
-                        </MainPanel>
-                </SearchReqWrapper> 
-                        {
-                            ready ?
-                            <PSetTable 
-                                psets={psets} 
-                                selectedPSets={selectedPSets} 
-                                updatePSetSelection={(e) => {setSelectedPSets(e.value)}} 
-                                scrollHeight='600px'
-                                authenticated={auth.user ? true : false} 
-                                download={true}
-                            /> 
-                            :
-                            <SearchTableLoader />
-                        } 
-
+                    </MainPanel>
+                    <PSetFilter />
+                </SearchReqWrapper>
+                {ready ? (
+                    <PSetTable
+                        psets={psets}
+                        selectedPSets={selectedPSets}
+                        updatePSetSelection={e => {
+                            setSelectedPSets(e.value);
+                        }}
+                        scrollHeight="600px"
+                        authenticated={auth.user ? true : false}
+                        download={true}
+                    />
+                ) : (
+                    <SearchTableLoader />
+                )}
             </StyledPage>
         </SearchReqContext.Provider>
     );
-}
+};
 
 export default PSetSearch;

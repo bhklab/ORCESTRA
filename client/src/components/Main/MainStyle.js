@@ -7,7 +7,15 @@ const Wrapper = styled.div`
     max-width: 1700px;
     color: #3d405a;
     min-height: 100vh;
-    padding-bottom: 200px;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    @media only screen and (min-width: 1500px) {
+        padding-bottom: 400px;
+    }
 `;
 
 const HeaderGroup = styled.div`
@@ -24,6 +32,7 @@ const HeaderGroup = styled.div`
         text-align: left;
         font-weight: bold;
         color: #3d405a;
+        font-size: 40px;
     }
 
     @media only screen and (max-width: 700px) {
@@ -85,7 +94,7 @@ const Row = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 40px;
-    gap: 10px;
+    gap: 20px;
     width: 100%;
     padding: 0 100px;
     @media (max-width: 1000px) {

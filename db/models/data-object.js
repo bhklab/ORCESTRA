@@ -42,7 +42,8 @@ const dataObjectSchema = new Schema(
             name: String,
             genomeType: String,
             details: Object
-        }]
+        }],
+		legacy: Boolean
     },
     options
 );
