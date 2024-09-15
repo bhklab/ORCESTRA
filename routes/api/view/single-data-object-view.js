@@ -27,6 +27,9 @@ const getTabData = async (dataObject, dataset, filter) => {
         filteredSensitivity: dataObject.info.filteredSensitivity,
       },
       genome: dataObject.genome,
+	  description: dataset.description,
+	  rna: dataset.rna,
+	  drugResponse: dataset.drugResponse
     },
   };
   if (dataset.datasetType === enums.dataTypes.toxicogenomics) {
@@ -160,7 +163,7 @@ const get = async (req, res) => {
           ? `${repo.downloadLink}&access_token=${process.env.ZENODO_ACCESS_TOKEN}`
           : repo.downloadLink,
         bioComputeObject: repo.bioComputeObject,
-		legacy: dataObject.legacy
+		legacy: dataObject.legacy,
       };
       dataObj.tabData = [];
       dataObj.tabData = await getTabData(dataObject, dataset, filter);

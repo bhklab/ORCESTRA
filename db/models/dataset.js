@@ -59,6 +59,21 @@ const datasetSchema = new Schema({
     ],
     additionalNotes: Object,
   },
+  drugResponse: [
+	{
+		name: String,
+		description: String,
+		url: String
+	},
+  ],
+  rna: [
+	{
+		name: String,
+		description: String,
+		url: String
+	},
+  ],
+  description: String,
 });
 
 module.exports = mongoose.model("Dataset", datasetSchema);

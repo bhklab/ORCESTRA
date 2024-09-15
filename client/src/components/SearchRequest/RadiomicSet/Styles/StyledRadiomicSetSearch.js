@@ -6,7 +6,7 @@ const LayoutContainer = styled.div`
 	justify-content: space-between
     align-items: center;
     background-color: transparent;
-    width: 95%;
+    width: 100%;
 	padding: 40px 30px;
 	font-family: 'Roboto', sans-serif;
 
@@ -41,6 +41,7 @@ const LayoutContainer = styled.div`
 
 		span {
 			font-weight: bold;
+			font-size: 13px;
 		}
 	}
 
@@ -50,6 +51,7 @@ const LayoutContainer = styled.div`
 		margin: 0;
 		span {
 			font-weight: bold;
+			font-size: 13px;
 		}
 	}
 
@@ -59,6 +61,7 @@ const LayoutContainer = styled.div`
 		margin: 0;
 		span {
 			font-weight: bold;
+			font-size: 13px;
 		}
 	}
 
@@ -78,7 +81,7 @@ const LayoutContainer = styled.div`
 `;
 
 const StyledContainerOuter = styled.div`
-    width: 30%;
+    width: 35%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -89,6 +92,7 @@ const StyledContainerOuter = styled.div`
 		padding: 25px;
 		box-shadow: 0 2px 5px rgba(0,0,0,0.6);
 		background-color: white;
+		font-size: 12px;
 
 		transition: transform 0.3s, box-shadow 0.3s;
 	}
@@ -111,7 +115,7 @@ const StyledContainerOuter = styled.div`
 `;
 
 const StyledContainerInner = styled.div`
-    width: 40%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -122,6 +126,7 @@ const StyledContainerInner = styled.div`
 		padding: 20px;
 		box-shadow: 0 2px 5px rgba(0,0,0,0.6);
 		background-color: white;
+		font-size: 12px;
 
 		transition: transform 0.3s, box-shadow 0.3s;
 	}
@@ -143,32 +148,31 @@ const StyledContainerInner = styled.div`
 	
 `;
 
-
 const StyledTopBar = styled.div`
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-	text-align: center;
-	justify-content: center;
+    text-align: center;
+    justify-content: center;
     width: 100%;
     max-width: 350px;
-    padding: 5px 10px; 
+    padding: 5px 10px;
 
     .title {
         font-family: 'Roboto', sans-serif;
         font-size: 44px;
-		color: ${colors.standard_dark_blue};
+        color: ${colors.standard_dark_blue};
         font-weight: 700;
         text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2);
-		margin: 10px 0;
+        margin: 10px 0;
     }
 
-	.download-button {
+    .download-button {
         display: flex;
         align-items: center;
         padding: 8px 14px;
         border: none;
-		font-size: 10px;
+        font-size: 10px;
         border-radius: 30px;
         background: linear-gradient(45deg, #36589b, ${colors.standard_dark_blue});
         color: white;
@@ -188,11 +192,4 @@ const StyledTopBar = styled.div`
     }
 `;
 
-
-export {
-	LayoutContainer,
-	StyledContainerOuter,
-	StyledContainerInner,
-	StyledTopBar,
-
-}
+export { LayoutContainer, StyledContainerOuter, StyledContainerInner, StyledTopBar };
