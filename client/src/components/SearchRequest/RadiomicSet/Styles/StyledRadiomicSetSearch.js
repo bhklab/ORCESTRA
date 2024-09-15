@@ -7,7 +7,7 @@ const LayoutContainer = styled.div`
     align-items: center;
     background-color: transparent;
     width: 100%;
-	padding: 40px 30px;
+	padding: 40px 0px;
 	font-family: 'Roboto', sans-serif;
 
 	@media (max-width: 800px) {
@@ -41,7 +41,7 @@ const LayoutContainer = styled.div`
 
 		span {
 			font-weight: bold;
-			font-size: 13px;
+			font-size: 15px;
 		}
 	}
 
@@ -51,7 +51,7 @@ const LayoutContainer = styled.div`
 		margin: 0;
 		span {
 			font-weight: bold;
-			font-size: 13px;
+			font-size: 15px;
 		}
 	}
 
@@ -92,7 +92,7 @@ const StyledContainerOuter = styled.div`
 		padding: 25px;
 		box-shadow: 0 2px 5px rgba(0,0,0,0.6);
 		background-color: white;
-		font-size: 12px;
+		font-size: 14px;
 
 		transition: transform 0.3s, box-shadow 0.3s;
 	}
@@ -126,7 +126,7 @@ const StyledContainerInner = styled.div`
 		padding: 20px;
 		box-shadow: 0 2px 5px rgba(0,0,0,0.6);
 		background-color: white;
-		font-size: 12px;
+		font-size: 14px;
 
 		transition: transform 0.3s, box-shadow 0.3s;
 	}

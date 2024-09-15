@@ -55,13 +55,6 @@ const SingleDatasetNew = () => {
                             <div className="content-row">
                                 <StyledContainerOuter>
                                     <div class="card-container">
-                                        <div class="card-title ">Description</div>
-                                        <div className="hr-container">
-                                            <hr className="hr-style" />
-                                        </div>
-                                        {datasetTab.data.description}
-                                    </div>
-                                    <div class="card-container">
                                         <div class="card-title ">About The Dataset</div>
                                         <div className="hr-container">
                                             <hr className="hr-style" />
@@ -74,13 +67,13 @@ const SingleDatasetNew = () => {
                                                 <span>Curated By:</span> BHK lab
                                             </li>
                                             <li>
-                                                <span>Curated On:</span> Coming soon
+                                                <span>Curated On:</span> Coming soon!
                                             </li>
                                             <li>
-                                                <span>DOI:</span> Coming soon
+                                                <span>DOI:</span> Coming soon!
                                             </li>
                                             <li>
-                                                <span>Format:</span> rds file
+                                                <span>Format:</span> Coming soon!
                                             </li>
                                             <li>
                                                 <span>Version:</span> {dataset.data.name}
@@ -171,10 +164,19 @@ const SingleDatasetNew = () => {
 
                                 <StyledContainerOuter>
                                     <div class="card-container">
-                                        <div class="card-title ">Pipeline Details</div>
-                                        {/* <div className="hr-container">
+                                        <div class="card-title ">Description</div>
+                                        <div className="hr-container">
                                             <hr className="hr-style" />
                                         </div>
+                                        {datasetTab.data.description}
+                                    </div>
+                                    <div class="card-container">
+                                        <div class="card-title ">Pipeline Details</div>
+                                        {
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            /* 
                                         <ul className="list-style-card-main">
                                             <li>
                                                 <span>Pipeline:</span> https://github.com/bhklab/CCLE_2019
@@ -200,17 +202,19 @@ const SingleDatasetNew = () => {
                                             <li>
                                                 <span>Data Transformation:</span>?
                                             </li>
-                                        </ul> */}
+                                        </ul> */
+                                        }
                                         <div
                                             style={{
-                                                fontSize: '20px',
+                                                fontSize: '24px',
                                                 fontWeight: '600',
                                                 textAlign: 'center',
                                                 width: '100%',
-                                                marginTop: '20px'
+                                                marginTop: '20px',
+                                                marginTop: '10px'
                                             }}
                                         >
-                                            Coming soon!
+                                            Pipeline Details Coming soon!
                                         </div>
                                     </div>
                                     <div class="card-container">
@@ -226,6 +230,10 @@ const SingleDatasetNew = () => {
                                                         {note.name.toLowerCase()}
                                                     </li>
                                                 ))}
+                                            <li>
+                                                <span>Primary Tumours:</span> sarcoma (including soft tissue and bone
+                                                subtypes)
+                                            </li>
                                         </ul>
                                     </div>
                                     {/* <div class="card-container">

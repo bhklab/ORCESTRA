@@ -196,7 +196,7 @@ const useSingleDataset = (datasetType, id) => {
         return (
             <DownloadButton
                 className="left"
-                disabled={false}
+                disabled={dataset.data.downloadLink !== '' ? false : true}
                 datasetType={datasetType}
                 doi={dataset.data.doi}
                 downloadLink={dataset.data.downloadLink}
