@@ -24,6 +24,7 @@ const User = require('../../db/models/user');
         result = result.map(obj => {
             let repo = obj.repositories.find(r => r.version === dataObjectHelper.getDataVersion(req.query.datasetType));
             delete obj.repositories;
+			console.log(repo);
             return({
                 ...obj,
                 doi: repo.doi,

@@ -23,6 +23,7 @@ const get = async (req, res) => {
             let repo = obj.repositories.find(repo => repo.version === repoVer);
             if(repo){
                 return({
+					id: obj._id,
                     download: obj.info.numDownload,
                     name: obj.name,
                     doi: repo.doi,

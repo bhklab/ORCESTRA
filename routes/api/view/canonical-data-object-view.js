@@ -12,6 +12,7 @@ const formatDataObjects = (objects, toolRefLabels) => {
             let reference = obj.references ? toolRefLabels.references.find(ref => ref.name === obj.references.rna) : null;
             return({
                 ...obj,
+				id: obj._id,
                 doi: repository.doi,
                 downloadLink: repository.downloadLink,
                 tools: {

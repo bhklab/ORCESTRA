@@ -79,10 +79,6 @@ const SingleDatasetNew = () => {
                                                 <span>Version:</span> {dataset.data.name}
                                             </li>
                                             <li>
-                                                <span>License:</span> Users must abide by the National Cancer Institute
-                                                Data Usage Policy and Restrictions.
-                                            </li>
-                                            <li>
                                                 <span>Data Disclaimer: </span>
                                                 {disclaimerTab.data.disclaimer}
                                             </li>
@@ -231,7 +227,7 @@ const SingleDatasetNew = () => {
                                                     </li>
                                                 ))}
                                             <li>
-                                                <span>Primary Tumours:</span> sarcoma (including soft tissue and bone
+                                                <span>Primary Tumours:</span> Sarcoma (including soft tissue and bone
                                                 subtypes)
                                             </li>
                                         </ul>

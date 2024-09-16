@@ -29,6 +29,7 @@ const ClinGenSetTable = props => {
     const clinEndpointTemplate = (rowData, column) => {
         return (
             <div>
+                {console.log(rowData.dataset)}
                 {rowData.dataset.survival.clinicalEndpoints
                     ? rowData.dataset.survival.clinicalEndpoints
                     : 'Not Available'}
@@ -51,7 +52,6 @@ const ClinGenSetTable = props => {
                 showGridlines
                 size="small"
             >
-                {console.log(props.datasets)}
                 {props.authenticated && (
                     <Column selectionMode="multiple" style={{ width: '30px', textAlign: 'center' }} />
                 )}
