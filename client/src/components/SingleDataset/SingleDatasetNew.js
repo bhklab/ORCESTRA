@@ -111,13 +111,13 @@ const SingleDatasetNew = () => {
                                         <div className="hr-container">
                                             <hr className="hr-style" />
                                         </div>
-                                        <ul className="list-style-card-main">
-                                            <li>
-                                                <span>Expression:</span>
-                                                <ul className="list-style-card-sub">
-                                                    {console.log(datasetTab.data.rna)}
-                                                    {datasetTab.data.rna.length > 0 &&
-                                                        datasetTab.data.rna.map((rna, i) => (
+                                        {datasetTab.data.rna.length > 0 && (
+                                            <ul className="list-style-card-main">
+                                                <li>
+                                                    <span>Expression:</span>
+                                                    <ul className="list-style-card-sub">
+                                                        {console.log(datasetTab.data.rna)}
+                                                        {datasetTab.data.rna.map((rna, i) => (
                                                             <li>
                                                                 <a href={`${rna.url}`} target="_blank" rel="noreferrer">
                                                                     <span>{rna.name}: </span>
@@ -125,22 +125,24 @@ const SingleDatasetNew = () => {
                                                                 {`${rna.description}`}
                                                             </li>
                                                         ))}
-                                                </ul>
-                                            </li>
-                                        </ul>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        )}
                                     </div>
-                                    <div class="card-container">
-                                        <div class="card-title ">Drug Response</div>
-                                        <div className="hr-container">
-                                            <hr className="hr-style" />
-                                        </div>
-                                        <ul className="list-style-card-main">
-                                            <li>
-                                                <span>Response:</span>
-                                                <ul className="list-style-card-sub">
-                                                    {console.log(datasetTab.data.drugResponse)}
-                                                    {datasetTab.data.drugResponse.length > 0 &&
-                                                        datasetTab.data.drugResponse.map((drugResponse, i) => (
+
+                                    {datasetTab.data.drugResponse.length > 0 && (
+                                        <div class="card-container">
+                                            <div class="card-title ">Drug Response</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            <ul className="list-style-card-main">
+                                                <li>
+                                                    <span>Response:</span>
+                                                    <ul className="list-style-card-sub">
+                                                        {console.log(datasetTab.data.drugResponse)}
+                                                        {datasetTab.data.drugResponse.map((drugResponse, i) => (
                                                             <li>
                                                                 <a
                                                                     href={`${drugResponse.url}`}
@@ -152,10 +154,11 @@ const SingleDatasetNew = () => {
                                                                 {`${drugResponse.description}`}
                                                             </li>
                                                         ))}
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    )}
                                 </StyledContainerInner>
 
                                 <StyledContainerOuter>
