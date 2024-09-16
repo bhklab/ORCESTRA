@@ -107,7 +107,7 @@ const SingleDatasetNew = () => {
 
                                 <StyledContainerInner>
                                     <div class="card-container">
-                                        <div class="card-title ">RNA Seq</div>
+                                        <div class="card-title ">RNA</div>
                                         <div className="hr-container">
                                             <hr className="hr-style" />
                                         </div>
