@@ -27,7 +27,7 @@
     "doasync": "^2.0.1",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.8",
-    "express": "^4.16.4",
+    "express": "^4.21.0",
     "express-fileupload": "^1.1.9",
     "file-api": "^0.10.4",
     "fs": "0.0.1-security",
