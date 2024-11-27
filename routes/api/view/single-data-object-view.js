@@ -29,7 +29,9 @@ const getTabData = async (dataObject, dataset, filter) => {
       genome: dataObject.genome,
 	  description: dataset.description,
 	  rna: dataset.rna,
-	  drugResponse: dataset.drugResponse
+	  drugResponse: dataset.drugResponse,
+	  imagingFeatures: dataset.imagingFeatures,
+	  imaging: dataset.imaging,
     },
   };
   if (dataset.datasetType === enums.dataTypes.toxicogenomics) {
@@ -158,12 +160,14 @@ const get = async (req, res) => {
         _id: dataObject._id,
         name: dataObject.name,
         info: dataObject.info,
+		pipeline: dataObject.info.other.pipeline,
         doi: repo.doi,
         downloadLink: dataObject.info.private
           ? `${repo.downloadLink}&access_token=${process.env.ZENODO_ACCESS_TOKEN}`
           : repo.downloadLink,
         bioComputeObject: repo.bioComputeObject,
 		legacy: dataObject.legacy,
+		tools: dataObject.tools
       };
       dataObj.tabData = [];
       dataObj.tabData = await getTabData(dataObject, dataset, filter);

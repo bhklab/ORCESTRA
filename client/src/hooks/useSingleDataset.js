@@ -259,7 +259,9 @@ const useSingleDataset = (datasetType, id) => {
 
     const getGeneralInfoAccordion = data => {
         console.log(data);
-        if (data.legacy === false) {
+        if (data.legacy === false && data.downloadLink !== '') {
+            return;
+        } else if (data.legacy === false) {
             return <h1 style={{ fontSize: '30px' }}>Full Dataset Coming Soon!</h1>;
         } else {
             // Legacy dataset 'General Information' block

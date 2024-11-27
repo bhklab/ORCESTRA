@@ -43,6 +43,8 @@ const SingleDatasetNew = () => {
         // console.log(disclaimerTab.data);
         const releaseTab = dataset.data.tabData.find(tab => tab.header === 'Release Notes');
         // console.log(releaseTab.data);
+
+        console.log(datasetTab.data);
         return (
             <StyledPage>
                 {dataset.ready && (
@@ -67,14 +69,21 @@ const SingleDatasetNew = () => {
                                                 <span>Curated By:</span> BHK lab
                                             </li>
                                             <li>
-                                                <span>Curated On:</span> Coming soon!
+                                                <span>Curated On: </span>
+                                                {dataset.data?.info?.date?.created ? (
+                                                    new String(dataset.data?.info?.date.created).substring(0, 10)
+                                                ) : (
+                                                    <>Coming Soon!</>
+                                                )}
                                             </li>
+
                                             <li>
-                                                <span>DOI:</span> Coming soon!
+                                                <span>DOI: </span>
+                                                {dataset.data?.doi ? dataset.data?.doi : <>Coming Soon!</>}
                                             </li>
-                                            <li>
+                                            {/* <li>
                                                 <span>Format:</span> Coming soon!
-                                            </li>
+                                            </li> */}
                                             <li>
                                                 <span>Version:</span> {dataset.data.name}
                                             </li>
@@ -89,10 +98,13 @@ const SingleDatasetNew = () => {
                                             <li>
                                                 <span>Please Cite the Following: </span>
                                                 {disclaimerTab.data.citations.map((item, i) => (
-                                                    <div key={item}>{item}</div>
+                                                    <div key={item}>
+                                                        <span className="font-semibold">{i + 1}: </span>
+                                                        {item}
+                                                    </div>
                                                 ))}
                                             </li>
-                                            {datasetTab.data.usefulLinks > 0 && (
+                                            {/* {datasetTab.data.usefulLinks > 0 && (
                                                 <li>
                                                     <span>Useful Links:</span>
                                                     <ul className="list-style-card-sub">
@@ -100,36 +112,41 @@ const SingleDatasetNew = () => {
                                                         <li>Link 2: https://google.com</li>
                                                     </ul>
                                                 </li>
-                                            )}
+                                            )} */}
                                         </ul>
                                     </div>
                                 </StyledContainerOuter>
 
                                 <StyledContainerInner>
-                                    <div class="card-container">
-                                        <div class="card-title ">RNA</div>
-                                        <div className="hr-container">
-                                            <hr className="hr-style" />
+                                    {datasetTab.data.drugResponse.length > 0 && (
+                                        <div class="card-container">
+                                            <div class="card-title ">RNA</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.rna.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <span>Expression:</span>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.rna.map((rna, i) => (
+                                                                <li>
+                                                                    <a
+                                                                        href={`${rna.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{rna.name}: </span>
+                                                                    </a>
+                                                                    {`${rna.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
                                         </div>
-                                        {datasetTab.data.rna.length > 0 && (
-                                            <ul className="list-style-card-main">
-                                                <li>
-                                                    <span>Expression:</span>
-                                                    <ul className="list-style-card-sub">
-                                                        {console.log(datasetTab.data.rna)}
-                                                        {datasetTab.data.rna.map((rna, i) => (
-                                                            <li>
-                                                                <a href={`${rna.url}`} target="_blank" rel="noreferrer">
-                                                                    <span>{rna.name}: </span>
-                                                                </a>
-                                                                {`${rna.description}`}
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        )}
-                                    </div>
+                                    )}
 
                                     {datasetTab.data.drugResponse.length > 0 && (
                                         <div class="card-container">
@@ -141,7 +158,6 @@ const SingleDatasetNew = () => {
                                                 <li>
                                                     <span>Response:</span>
                                                     <ul className="list-style-card-sub">
-                                                        {console.log(datasetTab.data.drugResponse)}
                                                         {datasetTab.data.drugResponse.map((drugResponse, i) => (
                                                             <li>
                                                                 <a
@@ -159,6 +175,64 @@ const SingleDatasetNew = () => {
                                             </ul>
                                         </div>
                                     )}
+
+                                    {datasetTab.data.imagingFeatures.length > 0 && (
+                                        <div class="card-container">
+                                            <div class="card-title ">Imaging Features</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.imagingFeatures.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.imagingFeatures.map((img, i) => (
+                                                                <li>
+                                                                    <a
+                                                                        href={`${img.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{img.name}: </span>
+                                                                    </a>
+                                                                    {`${img.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {datasetTab.data.imaging.length > 0 && (
+                                        <div class="card-container">
+                                            <div class="card-title ">Imaging</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.imaging.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.imaging.map((img, i) => (
+                                                                <li>
+                                                                    <a
+                                                                        href={`${img.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{img.name}: </span>
+                                                                    </a>
+                                                                    {`${img.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
                                 </StyledContainerInner>
 
                                 <StyledContainerOuter>
@@ -171,12 +245,55 @@ const SingleDatasetNew = () => {
                                     </div>
                                     <div class="card-container">
                                         <div class="card-title ">Pipeline Details</div>
-                                        {
-                                            <div className="hr-container">
-                                                <hr className="hr-style" />
+
+                                        <div className="hr-container">
+                                            <hr className="hr-style" />
+                                        </div>
+
+                                        {dataset.data.info.other.pipeline.url !== '' ? (
+                                            <div>
+                                                <a href={dataset.data.pipeline.url} target="_blank" rel="noreferrer">
+                                                    <span className="pipeline">Pipeline: </span>
+                                                </a>
+                                                <span>{dataset.data.pipeline.commit_id}</span>
+
+                                                {dataset.data.tools.length > 0 && (
+                                                    <ul className="list-style-card-main">
+                                                        <li>
+                                                            <span>Tools:</span>
+                                                            <ul className="list-style-card-sub">
+                                                                {dataset.data.tools.map((tool, i) => (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={tool.url}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{tool.name}: </span>
+                                                                        </a>
+                                                                        {tool.description}
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                )}
                                             </div>
-                                            /* 
-                                        <ul className="list-style-card-main">
+                                        ) : (
+                                            <div
+                                                style={{
+                                                    fontSize: '24px',
+                                                    fontWeight: '600',
+                                                    textAlign: 'center',
+                                                    width: '100%',
+                                                    marginTop: '20px'
+                                                }}
+                                            >
+                                                Pipeline Details Coming Soon!
+                                            </div>
+                                        )}
+
+                                        {/* <ul className="list-style-card-main">
                                             <li>
                                                 <span>Pipeline:</span> https://github.com/bhklab/CCLE_2019
                                             </li>
@@ -201,20 +318,7 @@ const SingleDatasetNew = () => {
                                             <li>
                                                 <span>Data Transformation:</span>?
                                             </li>
-                                        </ul> */
-                                        }
-                                        <div
-                                            style={{
-                                                fontSize: '24px',
-                                                fontWeight: '600',
-                                                textAlign: 'center',
-                                                width: '100%',
-                                                marginTop: '20px',
-                                                marginTop: '10px'
-                                            }}
-                                        >
-                                            Pipeline Details Coming soon!
-                                        </div>
+                                        </ul> */}
                                     </div>
                                     <div class="card-container">
                                         <div class="card-title ">Release Notes</div>
@@ -229,10 +333,10 @@ const SingleDatasetNew = () => {
                                                         {note.name.toLowerCase()}
                                                     </li>
                                                 ))}
-                                            <li>
+                                            {/* <li>
                                                 <span>Primary Tumours:</span> Sarcoma (including soft tissue and bone
                                                 subtypes)
-                                            </li>
+                                            </li> */}
                                         </ul>
                                     </div>
                                     {/* <div class="card-container">

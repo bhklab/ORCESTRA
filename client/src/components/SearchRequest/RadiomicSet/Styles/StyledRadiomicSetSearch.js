@@ -111,6 +111,10 @@ const StyledContainerOuter = styled.div`
 		max-width: 200px;
 		color: ${colors.standard_dark_blue};
 	}
+
+	.pipeline {
+		font-weight: 700;
+	}
 	
 `;
 
