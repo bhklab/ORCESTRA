@@ -85,7 +85,7 @@ const SingleDatasetNew = () => {
                                                 <span>Format:</span> Coming soon!
                                             </li> */}
                                             <li>
-                                                <span>Version:</span> {dataset.data.name}
+                                                <span>Version:</span> {datasetTab.data.dataset.version}
                                             </li>
                                             <li>
                                                 <span>Data Disclaimer: </span>
