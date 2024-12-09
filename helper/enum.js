@@ -4,6 +4,7 @@ const dataTypes = {
     xenographic: 'xevaset',
     clinicalgenomics: 'clinicalgenomics',
     radiogenomics: 'radioset',
+	radiomics: 'radiomicset',
     icb: 'clinical_icb'
 }
 

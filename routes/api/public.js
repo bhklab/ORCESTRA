@@ -36,7 +36,7 @@ const parseDataObject = (dataObject, repoVersion) => {
 }
 
 const getDatasets = async (req, res) => {
-    let datasetType = req.params.datasetType === 'clinicalgenomics' ? req.params.datasetType : req.params.datasetType.replace(/s([^s]*)$/, '$1');
+    let datasetType = req.params.datasetType;
     let dataTypes = Object.values(enums.dataTypes);
     let results = [];
     try{
