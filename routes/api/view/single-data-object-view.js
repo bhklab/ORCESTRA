@@ -160,8 +160,8 @@ const get = async (req, res) => {
         _id: dataObject._id,
         name: dataObject.name,
         info: dataObject.info,
-		pipeline: dataObject.info.other.pipeline,
-        doi: repo.doi,
+		pipeline: dataObject.info.other?.pipeline ?? undefined,
+		doi: repo.doi,
         downloadLink: dataObject.info.private
           ? `${repo.downloadLink}&access_token=${process.env.ZENODO_ACCESS_TOKEN}`
           : repo.downloadLink,
