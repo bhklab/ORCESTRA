@@ -79,7 +79,17 @@ const SingleDatasetNew = () => {
 
                                             <li>
                                                 <span>DOI: </span>
-                                                {dataset.data?.doi ? dataset.data?.doi : <>Coming Soon!</>}
+                                                {dataset.data?.doi ? (
+                                                    <a
+                                                        href={`https://doi.org/${dataset.data?.doi}`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >
+                                                        {dataset.data?.doi}
+                                                    </a>
+                                                ) : (
+                                                    <>Coming Soon!</>
+                                                )}
                                             </li>
                                             {/* <li>
                                                 <span>Format:</span> Coming soon!
@@ -244,7 +254,7 @@ const SingleDatasetNew = () => {
                                         {dataset.data.info.other.pipeline.url !== '' ||
                                         dataset.data.tools.length > 0 ? (
                                             <div>
-                                                {dataset.data.info.other.pipeline.url === '' && (
+                                                {dataset.data.info.other.pipeline.url !== '' && (
                                                     <>
                                                         <a
                                                             href={dataset.data.pipeline.url}
