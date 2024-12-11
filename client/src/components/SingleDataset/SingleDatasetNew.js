@@ -104,15 +104,6 @@ const SingleDatasetNew = () => {
                                                     </div>
                                                 ))}
                                             </li>
-                                            {/* {datasetTab.data.usefulLinks > 0 && (
-                                                <li>
-                                                    <span>Useful Links:</span>
-                                                    <ul className="list-style-card-sub">
-                                                        <li>Link 1: https://github.com</li>
-                                                        <li>Link 2: https://google.com</li>
-                                                    </ul>
-                                                </li>
-                                            )} */}
                                         </ul>
                                     </div>
                                 </StyledContainerOuter>
@@ -250,12 +241,21 @@ const SingleDatasetNew = () => {
                                             <hr className="hr-style" />
                                         </div>
 
-                                        {dataset.data.info.other.pipeline.url !== '' ? (
+                                        {dataset.data.info.other.pipeline.url !== '' ||
+                                        dataset.data.tools.length > 0 ? (
                                             <div>
-                                                <a href={dataset.data.pipeline.url} target="_blank" rel="noreferrer">
-                                                    <span className="pipeline">Pipeline: </span>
-                                                </a>
-                                                <span>{dataset.data.pipeline.commit_id}</span>
+                                                {dataset.data.info.other.pipeline.url === '' && (
+                                                    <>
+                                                        <a
+                                                            href={dataset.data.pipeline.url}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                        >
+                                                            <span className="pipeline">Pipeline: </span>
+                                                        </a>
+                                                        <span>{dataset.data.pipeline.commit_id}</span>
+                                                    </>
+                                                )}
 
                                                 {dataset.data.tools.length > 0 && (
                                                     <ul className="list-style-card-main">
