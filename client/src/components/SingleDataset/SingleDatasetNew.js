@@ -105,26 +105,29 @@ const SingleDatasetNew = () => {
                                                 <span>Data Usage Policy: </span>
                                                 {disclaimerTab.data.usagePolicy}
                                             </li>
-                                            <li>
-                                                <span>Please Cite the Following: </span>
-                                                {disclaimerTab.data.citations.map((item, i) => (
-                                                    <div key={item}>
-                                                        <span className="font-semibold">{i + 1}: </span>
-                                                        {item}
-                                                    </div>
-                                                ))}
-                                            </li>
+                                            {disclaimerTab.data.citations.length > 0 && (
+                                                <li>
+                                                    <span>Please Cite the Following: </span>
+                                                    {disclaimerTab.data.citations.map((item, i) => (
+                                                        <div key={item}>
+                                                            <span className="font-semibold">{i + 1}: </span>
+                                                            {item}
+                                                        </div>
+                                                    ))}
+                                                </li>
+                                            )}
                                         </ul>
                                     </div>
                                 </StyledContainerOuter>
 
                                 <StyledContainerInner>
-                                    {datasetTab.data.drugResponse.length > 0 && (
+                                    {datasetTab.data.rna.length > 0 && (
                                         <div class="card-container">
                                             <div class="card-title ">RNA</div>
                                             <div className="hr-container">
                                                 <hr className="hr-style" />
                                             </div>
+                                            {console.log(datasetTab.data.rna)}
                                             {datasetTab.data.rna.length > 0 && (
                                                 <ul className="list-style-card-main">
                                                     <li>

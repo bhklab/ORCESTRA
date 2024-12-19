@@ -24,7 +24,6 @@ const User = require('../../db/models/user');
         result = result.map(obj => {
             let repo = obj.repositories.find(r => r.version === dataObjectHelper.getDataVersion(req.query.datasetType));
             delete obj.repositories;
-			console.log(repo);
             return({
                 ...obj,
                 doi: repo.doi,
@@ -40,9 +39,14 @@ const User = require('../../db/models/user');
         if(req.query.datasetType === 'pset'){
             const filter = await DataFilter.findOne({datasetType: 'pset'}).lean();
             result = result.map(obj => {
-                if(obj.tools){
-                    obj.tools.rna = filter.tools.find(item => item.name === obj.tools.rna).label;
-                }
+                if (typeof obj.tools === 'object' && obj.tools !== null) {
+					if (obj.tools.rna) {
+						obj.tools.rna = filter.tools.find(item => item.name === obj.tools.rna)?.label;
+					}
+				}
+				else if(typeof obj.tools !== 'object' && obj.tools !== null){
+					console.log("new tool style, add new tool rendering");
+				}
                 if(obj.references){
                     obj.references.rna = filter.references.find(item => item.name === obj.references.rna).label;
                 }
