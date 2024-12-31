@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import img from './img/bg3.png'
+import img from './img/bg3.png';
 
 const GlobalStyles = createGlobalStyle`
     html, body{
@@ -31,6 +31,13 @@ const GlobalStyles = createGlobalStyle`
     h1, h2, h3, h4, h5{
         color: #3D405A;
     }
+	.p-column-header-content {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0; /* Remove extra padding if necessary */
+	}
+
 `;
 
 export default GlobalStyles;

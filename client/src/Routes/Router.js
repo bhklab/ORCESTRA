@@ -31,6 +31,7 @@ import Authentication from '../components/Authentication/Authentication';
 import Reset from '../components/Authentication/Reset';
 import CanonicalPSets from '../components/CanonicalPSets/CanonicalPSets';
 import NotFound404 from '../components/Shared/NotFound404';
+import TclTable from '../components/Tcl/TclTable';
 // import Test from '../components/Test/Test';
 
 const Router = () => {
@@ -76,6 +77,7 @@ const Router = () => {
                     <Route path="/:datatype/:id1/:id2" element={<SingleDataset />} />
                     <Route path="/:datatype/:id" element={<SingleDatasetNew />} />
                     <Route path="*" element={<NotFound404 />} />
+                    <Route path="/tcl/table" element={<TclTable />} />
                 </Routes>
                 <Footer />
             </PathContext.Provider>

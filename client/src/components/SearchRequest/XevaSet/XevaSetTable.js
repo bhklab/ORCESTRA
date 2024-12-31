@@ -44,7 +44,7 @@ const XevaSetTable = props => {
                     className="textField"
                     field="name"
                     header="Name"
-                    style={{ width: '150px' }}
+                    style={{ textAlign: 'center' }}
                     body={nameColumnTemplate}
                     sortable={true}
                 />
@@ -52,25 +52,20 @@ const XevaSetTable = props => {
                     className="textField"
                     field="dataset.name"
                     header="Dataset"
-                    style={{ width: '100px' }}
+                    style={{ textAlign: 'center' }}
                     sortable={true}
                 />
-                <Column body={sensitivityTemplate} style={{ width: '100px' }} header="Drug Response" />
+                <Column body={sensitivityTemplate} style={{ textAlign: 'center' }} header="Drug Response" />
                 <Column
                     field="availableDatatypes"
                     body={dataTypeTemplate}
-                    style={{ width: '100px' }}
+                    style={{ textAlign: 'center' }}
                     header="Molecular Data"
                 />
-                <Column
-                    field="canonical"
-                    body={canonicalTemplate}
-                    style={{ width: '90px', textAlign: 'center' }}
-                    header="Canonical"
-                />
+                <Column field="canonical" body={canonicalTemplate} style={{ textAlign: 'center' }} header="Canonical" />
                 <Column
                     field="info.numDownload"
-                    style={{ width: '100px', textAlign: 'center' }}
+                    style={{ textAlign: 'center' }}
                     header="Number of Downloads"
                     sortable={true}
                 />
@@ -78,7 +73,7 @@ const XevaSetTable = props => {
                     <Column
                         field="downloadLink"
                         body={downloadTemplate}
-                        style={{ width: '60px', textAlign: 'center' }}
+                        style={{ textAlign: 'center' }}
                         header="Download"
                     />
                 )}

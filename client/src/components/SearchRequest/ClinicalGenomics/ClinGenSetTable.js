@@ -59,7 +59,7 @@ const ClinGenSetTable = props => {
                     className="textField"
                     field="name"
                     header="Name"
-                    style={{ width: '150px' }}
+                    style={{ textAlign: 'center' }}
                     body={nameColumnTemplate}
                     sortable={true}
                 />
@@ -67,29 +67,24 @@ const ClinGenSetTable = props => {
                     className="textField"
                     field="dataset.name"
                     header="Dataset"
-                    style={{ width: '100px' }}
+                    style={{ textAlign: 'center' }}
                     sortable={true}
                 />
-                <Column body={recistTemplate} style={{ width: '90px' }} header="RECIST Criteria" />
-                <Column body={clinEndpointTemplate} style={{ width: '90px' }} header="Clinical Endpoints" />
+                <Column body={recistTemplate} style={{ textAlign: 'center' }} header="RECIST Criteria" />
+                <Column body={clinEndpointTemplate} style={{ textAlign: 'center' }} header="Clinical Endpoints" />
                 <Column
                     field="availableDatatypes"
                     body={dataTypeTemplate}
-                    style={{ width: '100px' }}
+                    style={{ textAlign: 'center' }}
                     header="Molecular Data"
                 />
                 {props.datasetType === 'clinical_icb' ? (
-                    <Column field="info.other.rna_ref" header="RNA Ref" style={{ width: '80px' }} />
+                    <Column field="info.other.rna_ref" header="RNA Ref" style={{ textAlign: 'center' }} />
                 ) : undefined}
-                <Column
-                    field="canonical"
-                    body={canonicalTemplate}
-                    style={{ width: '70px', textAlign: 'center' }}
-                    header="Canonical"
-                />
+                <Column field="canonical" body={canonicalTemplate} style={{ textAlign: 'center' }} header="Canonical" />
                 <Column
                     field="info.numDownload"
-                    style={{ width: '50px', textAlign: 'center' }}
+                    style={{ textAlign: 'center' }}
                     header="Number of Downloads"
                     sortable={true}
                 />
@@ -97,7 +92,7 @@ const ClinGenSetTable = props => {
                     <Column
                         field="downloadLink"
                         body={downloadTemplate}
-                        style={{ width: '60px', textAlign: 'center' }}
+                        style={{ textAlign: 'center' }}
                         header="Download"
                     />
                 )}

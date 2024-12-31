@@ -36,13 +36,14 @@ const PSetTable = props => {
                 columnResizeMode="fit"
                 scrollable={true}
                 scrollHeight={scrollHeight}
+                showGridlines
             >
-                {authenticated && <Column selectionMode="multiple" style={{ width: '40px', textAlign: 'center' }} />}
+                {authenticated && <Column selectionMode="multiple" style={{ textAlign: 'center' }} />}
                 <Column
                     className="textField"
                     field="name"
                     header="Name"
-                    style={{ width: '150px' }}
+                    style={{ textAlign: 'center' }}
                     body={nameColumnTemplate}
                     sortable={true}
                 />
@@ -50,41 +51,41 @@ const PSetTable = props => {
                     className="textField"
                     field="dataset.name"
                     header="Dataset"
-                    style={{ width: '100px' }}
+                    style={{ textAlign: 'center' }}
                     sortable={true}
                 />
                 <Column
                     className="textField"
                     field="dataset.sensitivity.version"
                     header="Drug Sensitivity"
-                    style={{ width: '120px' }}
+                    style={{ textAlign: 'center' }}
                     sortable={true}
                 />
                 <Column
                     field="info.filteredSensitivity"
                     body={filteredTemplate}
-                    style={{ width: '90px', textAlign: 'center' }}
+                    style={{ textAlign: 'center' }}
                     header="Filtered Drug Sensitivity"
                 />
-                <Column field="tools.rna" style={{ width: '120px' }} header="RNA Tool" sortable={true} />
-                <Column field="references.rna" style={{ width: '120px' }} header="RNA Ref" sortable={true} />
+                <Column field="tools.rna" style={{ textAlign: 'center' }} header="RNA Tool" sortable={true} />
+                <Column field="references.rna" style={{ textAlign: 'center' }} header="RNA Ref" sortable={true} />
                 <Column
                     field="availableDatatypes"
                     body={dataTypeTemplate}
-                    style={{ width: '125px' }}
+                    style={{ textAlign: 'center' }}
                     header="Molecular Data"
                 />
                 <Column
                     field="info.canonical"
                     body={canonicalTemplate}
-                    style={{ width: '90px', textAlign: 'center' }}
+                    style={{ textAlign: 'center' }}
                     header="Canonical"
                 />
                 {download && (
                     <Column
                         field="downloadLink"
                         body={downloadTemplate}
-                        style={{ width: '90px', textAlign: 'center' }}
+                        style={{ textAlign: 'center' }}
                         header="Download"
                     />
                 )}

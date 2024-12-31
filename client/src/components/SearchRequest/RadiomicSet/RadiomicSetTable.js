@@ -35,14 +35,12 @@ const RadiomicSetTable = props => {
                 showGridlines
                 size="small"
             >
-                {props.authenticated && (
-                    <Column selectionMode="multiple" style={{ width: '30px', textAlign: 'center' }} />
-                )}
+                {props.authenticated && <Column selectionMode="multiple" style={{ textAlign: 'center' }} />}
                 <Column
                     className="textField"
                     field="name"
                     header="Name"
-                    style={{ width: '75px' }}
+                    style={{ textAlign: 'center' }}
                     body={nameColumnTemplate}
                     sortable={true}
                 />
@@ -50,24 +48,19 @@ const RadiomicSetTable = props => {
                     className="textField"
                     field="dataset.name"
                     header="Dataset"
-                    style={{ width: '75px' }}
+                    style={{ textAlign: 'center' }}
                     sortable={true}
                 />
                 <Column
                     field="availableDatatypes"
                     body={availableDataTemplate}
-                    style={{ width: '75px' }}
+                    style={{ textAlign: 'center' }}
                     header="Image Modality"
                 />
-                <Column
-                    field="canonical"
-                    body={canonicalTemplate}
-                    style={{ width: '75px', textAlign: 'center' }}
-                    header="Canonical"
-                />
+                <Column field="canonical" body={canonicalTemplate} style={{ textAlign: 'center' }} header="Canonical" />
                 <Column
                     field="info.numDownload"
-                    style={{ width: '25px', textAlign: 'center' }}
+                    style={{ textAlign: 'center' }}
                     header="Number of Downloads"
                     sortable={true}
                 />
@@ -75,7 +68,7 @@ const RadiomicSetTable = props => {
                     <Column
                         field="downloadLink"
                         body={downloadTemplate}
-                        style={{ width: '60px', textAlign: 'center' }}
+                        style={{ textAlign: 'center' }}
                         header="Download"
                     />
                 )}

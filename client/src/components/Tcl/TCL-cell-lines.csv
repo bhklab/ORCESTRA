@@ -1,0 +1,41 @@
+Cell line name,Cellosaurus ID,Disease type in Cellosaurus,Subtype in this resource,Public datasets,Omics availability across datasets,Single-agent testing,Number of single-agents,,Number of drug combinations,,,Dataset on ORCESTRA
+,,,,,,,Across datasets on PharmacoDB,TCL38 PSet only,TCL38 PSet,SYNERGxDB,DrugComb,
+ALL-SIL,CVCL_1805,Childhood T acute lymphoblastic leukemia,T-ALL,"CCLE, GDSC2, GDSC1, CTRPv2, TCL38","rnaseq, microarray, cnv, mutation, acgh, atacseq",Yes,676,173,17,0,0,Yes
+CCRF-H-SB2,CVCL_1859,Childhood T acute lymphoblastic leukemia,T-ALL,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+DEL,CVCL_1170,Anaplastic large cell lymphoma,ALCL,"CCLE, GDSC2, CTRPv2, gCSI, GDSC1, TCL38","rnaseq, microarray, cnv, mutation, acgh, atacseq",Yes,785,173,17,0,0,Yes
+DERL-2,CVCL_2016,Hepatosplenic T-cell lymphoma,gamma-delta,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+DERL-7,CVCL_2017,Hepatosplenic T-cell lymphoma,gamma-delta,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+DL-40,CVCL_2889,"Anaplastic large cell lymphoma, ALK-negative",ALCL,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+DND-41,CVCL_2022,Childhood T acute lymphoblastic leukemia,T-ALL,"CCLE, GDSC2, GDSC1, CTRPv2, TCL38","rnaseq, microarray, cnv, mutation, acgh, atacseq",Yes,715,173,17,0,0,Yes
+H9,CVCL_1240,Mycosis fungoides and Sezary syndrome,CTCL,"GDSC2, GDSC1, TCL38","rnaseq, microarray, cnv, mutation, acgh, atacseq",Yes,440,173,17,0,0,Yes
+HH,CVCL_1280,Cutaneous T-cell non-Hodgkin lymphoma,CTCL,"CCLE, GDSC2, CTRPv2, gCSI, GDSC1, TCL38","rnaseq, microarray, cnv, mutation, acgh, atacseq",Yes,623,173,17,0,0,Yes
+HUT-78,CVCL_0337,Mycosis fungoides and Sezary syndrome,CTCL,"CCLE, CTRPv2, TCL38","rnaseq, microarray, cnv, mutation, acgh, atacseq",Yes,438,173,17,0,0,Yes
+Jurkat,CVCL_0065,Childhood T acute lymphoblastic leukemia,T-ALL,"GDSC2, GDSC1, CTRPv2, TCL38","rnaseq, acgh, atacseq, cnv",Yes,684,173,17,0,0,Yes
+Jurkat E6.1,CVCL_0367,Childhood T acute lymphoblastic leukemia,,"CCLE, GDSC2, gCSI","rnaseq, microarray, cnv, mutation",Yes,24,0,0,0,0,Yes
+Karpas 299,CVCL_1324,Anaplastic large cell lymphoma,ALCL,"CCLE, GDSC2, CTRPv2, gCSI, GDSC1, TCL38","rnaseq, microarray, cnv, mutation, acgh, atacseq",Yes,683,173,17,0,0,Yes
+Karpas 384,CVCL_2541,Primary cutaneous T-cell non-Hodgkin lymphoma,gamma-delta,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+KHYG-1,CVCL_2976,Natural killer cell lymphoblastic leukemia/lymphoma,NK,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+KOPT-K1,CVCL_4965,Childhood T acute lymphoblastic leukemia,T-ALL,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+L-82,CVCL_2098,"Anaplastic large cell lymphoma, ALK-positive",ALCL,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+Loucy,CVCL_1380,Adult T acute lymphoblastic leukemia,T-ALL,"CCLE, GDSC2, CTRPv2, TCL38","rnaseq, microarray, cnv, mutation, acgh, atacseq",Yes,433,173,17,0,0,Yes
+Mac1,CVCL_H631,Primary cutaneous T-cell non-Hodgkin lymphoma,ALCL,TCL38,"rnaseq, acgh, atacseq, cnv",,0,173,17,0,0,No
+Mac2a,CVCL_H637,"Anaplastic large cell lymphoma, ALK-negative",ALCL,TCL38,"rnaseq, acgh, atacseq, cnv",,0,173,17,0,0,No
+MOLT-4,CVCL_0013,Adult T acute lymphoblastic leukemia,T-ALL,TCL38,"rnaseq, acgh, atacseq, cnv",,0,173,17,4910,5099,No
+MOTN-1,CVCL_2127,T-cell large granular lymphocyte leukemia,T-LGLL,"CCLE, CTRPv2, TCL38","rnaseq, acgh, atacseq, cnv",Yes,455,173,17,0,0,Yes
+MTA,CVCL_3032,Natural killer cell lymphoblastic leukemia/lymphoma,NK,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+MyLa,NA,NA,CTCL,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+NK-92,CVCL_2142,Natural killer cell lymphoblastic leukemia/lymphoma,NK,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+NKL,CVCL_0466,Natural killer cell lymphoblastic leukemia/lymphoma,NK,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+NK-YS,CVCL_8461,Nasal type extranodal NK/T-cell lymphoma,NK,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+OCI-Ly13.2,CVCL_8797,Diffuse large B-cell lymphoma,ALCL,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+Peer,CVCL_1913,Childhood T acute lymphoblastic leukemia,T-ALL,"CCLE, CTRPv2, TCL38","rnaseq, microarray, cnv, mutation, acgh, atacseq",Yes,450,173,17,0,0,Yes
+SeAx,CVCL_5363,Sezary syndrome,CTCL,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+SMZ-1,CVCL_RL84,"Systemic lupus erythematosus,T-cell non-Hodgkin lymphoma",PTCL-NOS,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+SNK-6,CVCL_A673,Nasal type extranodal NK/T-cell lymphoma,NK,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+SU-DHL-1,CVCL_0538,Anaplastic large cell lymphoma,ALCL,"CCLE, GDSC2, CTRPv2, gCSI, GDSC1, TCL38","rnaseq, microarray, cnv, mutation, acgh, atacseq",Yes,623,173,17,0,0,Yes
+SUP-M2,CVCL_2209,Anaplastic large cell lymphoma,ALCL,"CCLE, GDSC2, CTRPv2, GDSC1, TCL38","rnaseq, microarray, cnv, mutation, acgh, atacseq",Yes,691,173,17,0,0,Yes
+SUP-T11,CVCL_2210,Adult T acute lymphoblastic leukemia,T-ALL,"CCLE, CTRPv2, TCL38","rnaseq, microarray, cnv, mutation, acgh, atacseq",Yes,450,173,17,0,0,Yes
+SUP-T13,CVCL_9973,Childhood T acute lymphoblastic leukemia,T-ALL,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+TLBR-1,CVCL_L177,"Anaplastic large cell lymphoma, ALK-negative",ALCL,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+TLBR-2,CVCL_A1EY,"Anaplastic large cell lymphoma, ALK-negative",ALCL,TCL38,"rnaseq, acgh, atacseq, cnv",Yes,0,173,17,0,0,No
+YT,CVCL_1797,Natural killer cell lymphoblastic leukemia/lymphoma,NK,"GDSC2, GDSC1, TCL38","rnaseq, acgh, atacseq, cnv",Yes,380,173,17,0,0,Yes
