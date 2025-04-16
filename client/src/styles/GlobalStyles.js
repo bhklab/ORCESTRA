@@ -16,11 +16,7 @@ const GlobalStyles = createGlobalStyle`
             sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale; 
-        background: linear-gradient(
-            to right top,
-            rgba(255, 255, 255, 0.5),
-            rgba(255, 255, 255, 0.5)
-            ),url(${img});
+
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;

@@ -14,7 +14,7 @@ import Navigation from '../components/Navigation/Navigation';
 import Footer from '../components/Footer/Footer';
 
 // views
-import Main from '../components/Main/Main';
+import MainRev from '../components/Main/MainRev';
 import DatasetMain from '../components/Main/DatasetMain';
 import SearchRequest from '../components/SearchRequest/SearchRequest';
 import SingleDataset from '../components/SingleDataset/SingleDataset';
@@ -43,7 +43,7 @@ const Router = () => {
             <PathContext.Provider value={{ datatype, setDatatype }}>
                 <Navigation />
                 <Routes>
-                    <Route path="/" element={<Main />} />
+                    <Route path="/" element={<MainRev />} />
                     <Route path="/:datatype" element={<DatasetMain />} />
                     <Route path="/:datatype/search" element={<SearchRequest />} />
                     <Route path="/:datatype/canonical" element={<CanonicalPSets />} />
@@ -79,7 +79,6 @@ const Router = () => {
                     <Route path="*" element={<NotFound404 />} />
                     <Route path="/tcl/table" element={<TclTable />} />
                 </Routes>
-                <Footer />
             </PathContext.Provider>
         </AuthContext.Provider>
     );
