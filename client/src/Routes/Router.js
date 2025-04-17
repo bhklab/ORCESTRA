@@ -10,7 +10,7 @@ import RestrictedRoute from './RestrictedRoute';
 import AdminRoute from './AdminRoute';
 
 // navigation and footer
-import Navigation from '../components/Navigation/Navigation';
+import NavigationRev from '../components/Navigation/NavigationRev';
 import Footer from '../components/Footer/Footer';
 
 // views
@@ -41,7 +41,7 @@ const Router = () => {
     return (
         <AuthContext.Provider value={{ user, setUser, loading }}>
             <PathContext.Provider value={{ datatype, setDatatype }}>
-                <Navigation />
+                <NavigationRev />
                 <Routes>
                     <Route path="/" element={<MainRev />} />
                     <Route path="/:datatype" element={<DatasetMain />} />

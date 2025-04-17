@@ -14,7 +14,12 @@ export default {
         },
         extend: {
             colors: {
-                open_border: '#B6B6B6'
+                background: '#FFFFFF',
+                mainText: '#000814',
+                darkBlue: '#001D3D',
+                lightBlue: '#003566',
+                darkYellow: '#FFC300',
+                lightYellow: '#FFD60A'
             },
             fontSize: {
                 heading4Xl: ['40px', '48px'],

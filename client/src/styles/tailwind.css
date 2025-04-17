@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-    --primary-color: #fafafa;
-}
 [type='text']:focus,
 [type='email']:focus,
 [type='url']:focus,

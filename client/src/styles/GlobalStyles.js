@@ -11,15 +11,13 @@ const GlobalStyles = createGlobalStyle`
         margin-left: 0;
         margin-right: 0;
         padding-top: 80px;
-        font-family: "Roboto", "Segoe UI", "Roboto", "Oxygen",
+        font-family: inter, "Segoe UI", "Roboto", "Oxygen",
             "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
             sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale; 
 
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
+        background-color: #FAFAFA;
     }
     code {
         font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;

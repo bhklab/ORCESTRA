@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import './styles/tailwind.css';
 import './styles/prime-style.css';
-import GlobalStyles from './styles/GlobalStyles';
+import './styles/main.css';
+// import GlobalStyles from './styles/GlobalStyles';
 import Router from './Routes/Router';
 
 const App = () => {
@@ -17,7 +18,7 @@ const App = () => {
 
     return (
         <React.Fragment>
-            <GlobalStyles />
+            {/* <GlobalStyles /> */}
             <Router />
         </React.Fragment>
     );
