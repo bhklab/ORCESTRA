@@ -83,8 +83,11 @@ const NavigationRev = () => {
                     </div>
                 </div>
             </div>
-            <button className="flex font-semibold text-headingMd text-gray-600 duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold">
-                Log in
+            <button
+                onClick={auth.user ? onLogoutClick : onLoginClick}
+                className="flex font-semibold text-headingMd text-gray-600 duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold"
+            >
+                {auth.user ? 'Logout' : 'Login/Register'}
             </button>
         </div>
     );
