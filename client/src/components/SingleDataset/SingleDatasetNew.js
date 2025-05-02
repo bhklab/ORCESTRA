@@ -14,7 +14,6 @@ import {
     StyledContainerOuter,
     StyledContainerInner
 } from '../SearchRequest/RadiomicSet/Styles/StyledRadiomicSetSearch';
-import * as MainStyle from '../Main/MainStyle';
 
 const SingleDatasetNew = () => {
     const location = useLocation();

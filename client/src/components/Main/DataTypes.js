@@ -4,6 +4,7 @@ import { PathContext } from '../../hooks/Context';
 
 const DataTypes = () => {
     const path = useContext(PathContext);
+    const navigate = useNavigate();
 
     const data = [
         {
@@ -74,7 +75,10 @@ const DataTypes = () => {
             <div className="flex flex-row flex-wrap gap-4 justify-center">
                 {data.map(type => (
                     // Or this one<div className="group w-[300px] hover:h-[400px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden">
-                    <div className="group w-[300px] h-[320px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden hover:cursor-pointer">
+                    <div
+                        onClick={() => navigate('/radiomicset/6759d669d4ed32294de67010')}
+                        className="group w-[300px] h-[320px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden hover:cursor-pointer"
+                    >
                         <div className="w-full h-[150px] rounded-t-3xl flex flex-col justify-center items-center overflow-hidden">
                             <img src={`/images/new-icons/${type.img}`} />
                         </div>
