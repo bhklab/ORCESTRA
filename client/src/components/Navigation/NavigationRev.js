@@ -57,18 +57,28 @@ const NavigationRev = () => {
         <div className="flex flex-row justify-between items-center px-10 py-2 drop-shadow bg-white">
             <div className="flex flex-row gap-10">
                 <img
+                    onClick={() => navigate('/')}
                     src="/images/orcestra-icon.svg"
                     alt="orc ic"
                     className="w-20 ease-in-out duration-300 hover:cursor-pointer hover:scale-110"
                 />
                 <div className="flex flex-row justify-center items-center gap-4">
-                    <div className="h-full flex items-center px-1 text-darkBlue text-opacity-80 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-semibold">
+                    <div
+                        onClick={() => navigate('/datatypes')}
+                        className="h-full flex items-center px-1 text-darkBlue text-opacity-80 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-semibold"
+                    >
                         <span>Data types</span>
                     </div>
-                    <div className="h-full flex items-center px-1 text-darkBlue text-opacity-80 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-semibold">
+                    <div
+                        onClick={() => navigate('/app/documentation/overview')}
+                        className="h-full flex items-center px-1 text-darkBlue text-opacity-80 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-semibold"
+                    >
                         <span>Documentation</span>
                     </div>
-                    <div className="h-full flex items-center px-1 text-darkBlue text-opacity-80 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-semibold">
+                    <div
+                        onClick={() => navigate('/app/contact')}
+                        className="h-full flex items-center px-1 text-darkBlue text-opacity-80 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-semibold"
+                    >
                         <span>Contact</span>
                     </div>
                 </div>
