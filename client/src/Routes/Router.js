@@ -32,6 +32,7 @@ import Reset from '../components/Authentication/Reset';
 import CanonicalPSets from '../components/CanonicalPSets/CanonicalPSets';
 import NotFound404 from '../components/Shared/NotFound404';
 import TclTable from '../components/Tcl/TclTable';
+import DataTypes from '../components/Main/DataTypes';
 // import Test from '../components/Test/Test';
 
 const Router = () => {
@@ -44,6 +45,7 @@ const Router = () => {
                 <NavigationRev />
                 <Routes>
                     <Route path="/" element={<MainRev />} />
+                    <Route path="/datatypes" element={<DataTypes />} />
                     <Route path="/:datatype" element={<DatasetMain />} />
                     <Route path="/:datatype/search" element={<SearchRequest />} />
                     <Route path="/:datatype/canonical" element={<CanonicalPSets />} />

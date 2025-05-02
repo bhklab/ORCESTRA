@@ -19,11 +19,14 @@ const MainRev = () => {
         >
             <div className="flex flex-col">
                 <img src="/images/orcestra-logo-test.svg" className="w-full" />
-                <h2 className="text-[3em] text-darkYellow text-center">
+                <h2 className="text-[3.5em] text-darkYellow text-center">
                     Creating and sharing standardized datasets for computational analysis
                 </h2>
             </div>
-            <button className="flex bg-darkBlue  text-headingXl text-white px-5 py-3 ease-in-out duration-200 hover:cursor-pointer hover:scale-110 hover:bg-lightYellow hover:text-darkBlue hover:font-semibold">
+            <button
+                onClick={() => navigate('/datatypes')}
+                className="flex bg-darkBlue  text-headingXl text-white px-5 py-3 ease-in-out duration-200 hover:cursor-pointer hover:scale-110 hover:bg-lightYellow hover:text-darkBlue hover:font-semibold"
+            >
                 View Data Types
             </button>
 
