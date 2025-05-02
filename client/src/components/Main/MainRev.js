@@ -25,7 +25,7 @@ const MainRev = () => {
             </div>
             <button
                 onClick={() => navigate('/datatypes')}
-                className="flex bg-darkBlue  text-headingXl text-white px-5 py-3 ease-in-out duration-200 hover:cursor-pointer hover:scale-110 hover:bg-lightYellow hover:text-darkBlue hover:font-semibold"
+                className="flex bg-darkBlue  text-headingXl text-white px-5 py-3 rounded-3xl ease-in-out duration-200 hover:cursor-pointer hover:scale-110 hover:bg-lightYellow hover:text-darkBlue hover:font-semibold"
             >
                 View Data Types
             </button>

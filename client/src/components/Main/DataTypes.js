@@ -9,7 +9,7 @@ const DataTypes = () => {
         {
             name: 'Pharmacogenomics',
             fieldTotals: ['Datasets: 33', 'Canonical: 16', 'TCL Cell Lines: 39'],
-            contains: ['rna-seq', 'cnv', 'mutation', 'methylation'],
+            contains: ['rnaseq', 'cnv', 'mutation', 'methylation'],
             description:
                 "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
             img: 'pharmacogenomics.png'
@@ -39,15 +39,15 @@ const DataTypes = () => {
             img: 'toxicogenomics.png'
         },
         {
-            name: 'Pharmacogenomics',
+            name: 'Xenographic Pharmacogenomics',
             fieldTotals: ['Datasets: 33', 'Canonical: 16', 'TCL Cell Lines: 39'],
-            contains: ['rna-seq', 'cnv', 'mutation', 'methylation'],
+            contains: ['rnaseq', 'cnv', 'mutation', 'methylation'],
             description:
                 "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
             img: 'pharmacogenomics.png'
         },
         {
-            name: 'Toxicogenomics',
+            name: 'Radiogenomics',
             fieldTotals: ['Datasets: 4', 'Canonical: 4'],
             contains: ['microarray', 'drug response'],
             description:
@@ -55,20 +55,12 @@ const DataTypes = () => {
             img: 'toxicogenomics.png'
         },
         {
-            name: 'Clinical Genomics',
+            name: 'Immune Checkpoint Blockade',
             fieldTotals: ['Datasets: 23', 'Canonical: 23'],
             contains: ['rnaseq', 'microarray'],
             description:
                 "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
             img: 'pharmacogenomics.png'
-        },
-        {
-            name: 'Radiomics',
-            fieldTotals: ['Datasets: 3', 'Canonical: 3'],
-            contains: ['CT imaging'],
-            description:
-                "Data focused on how the genome is involved in the body's response to environmental stressors and toxicants.",
-            img: 'toxicogenomics.png'
         }
     ];
 
@@ -78,10 +70,7 @@ const DataTypes = () => {
     }, []);
 
     return (
-        <div
-            className="min-h-screen flex flex-col margin-auto justify-center items-center gap-10 px-60 lg:px-36 smd:px-4 bg-gray-50"
-            id="landing"
-        >
+        <div className="min-h-screen flex flex-col items-center gap-10 mb-10 mt-16 px-60 lg:px-20 smd:px-4 bg-gray-50">
             <div className="flex flex-row flex-wrap gap-4 justify-center">
                 {data.map(type => (
                     // Or this one<div className="group w-[300px] hover:h-[400px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden">

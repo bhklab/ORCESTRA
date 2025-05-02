@@ -66,7 +66,7 @@ const NavigationRev = () => {
                     <NavLink
                         to="/datatypes"
                         className={({ isActive }) =>
-                            `h-full flex items-center px-1 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
+                            `h-full flex font-semibold items-center px-1 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
                                 isActive ? 'text-darkYellow font-semibold' : 'text-darkBlue text-opacity-80'
                             }`
                         }
@@ -76,7 +76,7 @@ const NavigationRev = () => {
                     <NavLink
                         to="/app/documentation/overview"
                         className={({ isActive }) =>
-                            `h-full flex items-center px-1 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
+                            `h-full flex font-semibold items-center px-1 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
                                 isActive ? 'text-darkYellow font-semibold' : 'text-darkBlue text-opacity-80'
                             }`
                         }
@@ -86,7 +86,7 @@ const NavigationRev = () => {
                     <NavLink
                         to="/app/contact"
                         className={({ isActive }) =>
-                            `h-full flex items-center px-1 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
+                            `h-full flex font-semibold items-center px-1 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
                                 isActive ? 'text-darkYellow font-semibold' : 'text-darkBlue text-opacity-80'
                             }`
                         }
