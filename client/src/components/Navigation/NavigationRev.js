@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { PathContext, AuthContext } from '../../hooks/Context';
 import useAuth from '../../hooks/useAuth';
 import { dataTypes } from '../Shared/Enums';
@@ -63,32 +63,48 @@ const NavigationRev = () => {
                     className="w-20 ease-in-out duration-300 hover:cursor-pointer hover:scale-110"
                 />
                 <div className="flex flex-row justify-center items-center gap-4">
-                    <div
-                        onClick={() => navigate('/datatypes')}
-                        className="h-full flex items-center px-1 text-darkBlue text-opacity-80 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-semibold"
+                    <NavLink
+                        to="/datatypes"
+                        className={({ isActive }) =>
+                            `h-full flex items-center px-1 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
+                                isActive ? 'text-darkYellow font-semibold' : 'text-darkBlue text-opacity-80'
+                            }`
+                        }
                     >
-                        <span>Data types</span>
-                    </div>
-                    <div
-                        onClick={() => navigate('/app/documentation/overview')}
-                        className="h-full flex items-center px-1 text-darkBlue text-opacity-80 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-semibold"
+                        Data types
+                    </NavLink>
+                    <NavLink
+                        to="/app/documentation/overview"
+                        className={({ isActive }) =>
+                            `h-full flex items-center px-1 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
+                                isActive ? 'text-darkYellow font-semibold' : 'text-darkBlue text-opacity-80'
+                            }`
+                        }
                     >
-                        <span>Documentation</span>
-                    </div>
-                    <div
-                        onClick={() => navigate('/app/contact')}
-                        className="h-full flex items-center px-1 text-darkBlue text-opacity-80 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-semibold"
+                        Documentation
+                    </NavLink>
+                    <NavLink
+                        to="/app/contact"
+                        className={({ isActive }) =>
+                            `h-full flex items-center px-1 text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
+                                isActive ? 'text-darkYellow font-semibold' : 'text-darkBlue text-opacity-80'
+                            }`
+                        }
                     >
-                        <span>Contact</span>
-                    </div>
+                        Contact
+                    </NavLink>
                 </div>
             </div>
-            <button
-                onClick={auth.user ? onLogoutClick : onLoginClick}
-                className="flex font-semibold text-headingMd text-gray-600 duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold"
+            <NavLink
+                to="/app/authentication"
+                className={({ isActive }) =>
+                    `flex font-semibold text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
+                        isActive ? 'text-darkYellow font-bold' : 'text-gray-600'
+                    }`
+                }
             >
-                {auth.user ? 'Logout' : 'Login/Register'}
-            </button>
+                {auth.user ? <span onClick={onLogoutClick}>Logout</span> : 'Login/Register'}
+            </NavLink>
         </div>
     );
 };
