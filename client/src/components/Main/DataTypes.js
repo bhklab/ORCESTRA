@@ -4,64 +4,71 @@ import { PathContext } from '../../hooks/Context';
 
 const DataTypes = () => {
     const path = useContext(PathContext);
-    const total = 6;
 
     const data = [
         {
             name: 'Pharmacogenomics',
             fieldTotals: ['Datasets: 33', 'Canonical: 16', 'TCL Cell Lines: 39'],
             contains: ['rna-seq', 'cnv', 'mutation', 'methylation'],
-            description: '',
+            description:
+                "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
             img: 'pharmacogenomics.png'
         },
         {
             name: 'Toxicogenomics',
             fieldTotals: ['Datasets: 4', 'Canonical: 4'],
             contains: ['microarray', 'drug response'],
-            description: '',
-            img: ''
+            description:
+                "Data focused with how the genome is involved in the body's response to environmental stressors and toxicant",
+            img: 'toxicogenomics.png'
         },
         {
             name: 'Clinical Genomics',
             fieldTotals: ['Datasets: 23', 'Canonical: 23'],
             contains: ['rnaseq', 'microarray'],
-            description: '',
-            img: ''
+            description:
+                "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
+            img: 'pharmacogenomics.png'
         },
         {
             name: 'Radiomics',
             fieldTotals: ['Datasets: 3', 'Canonical: 3'],
             contains: ['CT imaging'],
-            description: '',
-            img: ''
+            description:
+                "Data focused on how the genome is involved in the body's response to environmental stressors and toxicant",
+            img: 'toxicogenomics.png'
         },
         {
             name: 'Pharmacogenomics',
             fieldTotals: ['Datasets: 33', 'Canonical: 16', 'TCL Cell Lines: 39'],
             contains: ['rna-seq', 'cnv', 'mutation', 'methylation'],
-            description: '',
+            description:
+                "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
             img: 'pharmacogenomics.png'
         },
         {
             name: 'Toxicogenomics',
             fieldTotals: ['Datasets: 4', 'Canonical: 4'],
             contains: ['microarray', 'drug response'],
-            description: '',
-            img: ''
+            description:
+                "Data focused on how the genome is involved in the body's response to environmental stressors and toxicant",
+            img: 'toxicogenomics.png'
         },
         {
             name: 'Clinical Genomics',
             fieldTotals: ['Datasets: 23', 'Canonical: 23'],
             contains: ['rnaseq', 'microarray'],
-            description: '',
-            img: ''
+            description:
+                "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
+            img: 'pharmacogenomics.png'
         },
         {
             name: 'Radiomics',
             fieldTotals: ['Datasets: 3', 'Canonical: 3'],
             contains: ['CT imaging'],
-            description: '',
-            img: ''
+            description:
+                "Data focused on how the genome is involved in the body's response to environmental stressors and toxicant",
+            img: 'toxicogenomics.png'
         }
     ];
 
@@ -79,7 +86,7 @@ const DataTypes = () => {
                 {data.map(type => (
                     <div className="w-[300px] h-[300px] flex flex-col rounded-3xl drop-shadow-md bg-white">
                         <div className="w-full h-[100px] rounded-t-3xl flex flex-col justify-center items-center overflow-hidden">
-                            <img src="/images/new-icons/pharmacogenomics.png" />
+                            <img src={`/images/new-icons/${type.img}`} />
                         </div>
                         <div className="flex flex-col gap-2 p-3">
                             <h2 className="text-headingXl font-semibold text-lightBlue">{type.name}</h2>
