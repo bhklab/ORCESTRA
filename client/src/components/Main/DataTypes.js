@@ -84,26 +84,38 @@ const DataTypes = () => {
         >
             <div className="flex flex-row flex-wrap gap-4 justify-center">
                 {data.map(type => (
-                    <div className="w-[300px] h-[300px] flex flex-col rounded-3xl drop-shadow-md bg-white">
-                        <div className="w-full h-[100px] rounded-t-3xl flex flex-col justify-center items-center overflow-hidden">
+                    // Or this one<div className="group w-[300px] hover:h-[400px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden">
+                    <div className="group w-[300px] h-[320px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden">
+                        <div className="w-full h-[150px] rounded-t-3xl flex flex-col justify-center items-center overflow-hidden">
                             <img src={`/images/new-icons/${type.img}`} />
                         </div>
-                        <div className="flex flex-col gap-2 p-3">
-                            <h2 className="text-headingXl font-semibold text-lightBlue">{type.name}</h2>
-                            <div className="flex flex-row flex-wrap gap-2">
-                                {type.fieldTotals.map(field => (
-                                    <div className="flex flex-row bg-lightYellow bg-opacity-60 px-2 py-1 rounded-lg">
-                                        <span className="text-bodyMd text-darkBlue">{field}</span>
-                                    </div>
-                                ))}
+                        <div className="flex flex-col p-3">
+                            <div className="flex flex-col min-h-[170px] gap-2">
+                                <h2 className="text-headingXl font-semibold text-lightBlue">{type.name}</h2>
+
+                                <div className="flex flex-row flex-wrap gap-2">
+                                    {type.contains.map(field => (
+                                        <div key={field} className="flex flex-row bg-lightBlue px-2 py-1 rounded-lg">
+                                            <span className="text-bodySm font-bold text-white">{field}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="flex flex-row flex-wrap gap-2">
+                                    {type.fieldTotals.map(field => (
+                                        <div
+                                            key={field}
+                                            className="flex flex-row bg-lightYellow bg-opacity-60 px-2 py-1 rounded-lg"
+                                        >
+                                            <span className="text-bodySm text-darkBlue font-bold">{field}</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                            <div className="flex flex-row flex-wrap gap-2">
-                                {type.contains.map(field => (
-                                    <div className="flex flex-row bg-lightBlue px-2 py-1 rounded-lg">
-                                        <span className="text-bodyMd text-white">{field}</span>
-                                    </div>
-                                ))}
-                            </div>
+
+                            <p className="text-bodySm text-gray-700 opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-all duration-700 overflow-hidden">
+                                {type.description}
+                            </p>
                         </div>
                     </div>
                 ))}
