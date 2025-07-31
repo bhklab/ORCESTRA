@@ -13,7 +13,7 @@ const DataTypes = () => {
             contains: ['rnaseq', 'cnv', 'mutation', 'methylation'],
             description:
                 "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
-            img: 'pharmacogenomics.png'
+            img: 'pharmacogenomics-2.png'
         },
         {
             name: 'Toxicogenomics',
@@ -21,23 +21,7 @@ const DataTypes = () => {
             contains: ['microarray', 'drug response'],
             description:
                 "Data focused with how the genome is involved in the body's response to environmental stressors and toxicants.",
-            img: 'toxicogenomics.png'
-        },
-        {
-            name: 'Clinical Genomics',
-            fieldTotals: ['Datasets: 23', 'Canonical: 23'],
-            contains: ['rnaseq', 'microarray'],
-            description:
-                "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
-            img: 'pharmacogenomics.png'
-        },
-        {
-            name: 'Radiomics',
-            fieldTotals: ['Datasets: 3', 'Canonical: 3'],
-            contains: ['CT imaging'],
-            description:
-                "Data focused on how the genome is involved in the body's response to environmental stressors and toxicants.",
-            img: 'toxicogenomics.png'
+            img: 'toxicogenomics-2.png'
         },
         {
             name: 'Xenographic Pharmacogenomics',
@@ -45,7 +29,7 @@ const DataTypes = () => {
             contains: ['rnaseq', 'cnv', 'mutation', 'methylation'],
             description:
                 "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
-            img: 'pharmacogenomics.png'
+            img: 'xenographicpharmacogenomics.png'
         },
         {
             name: 'Radiogenomics',
@@ -53,7 +37,15 @@ const DataTypes = () => {
             contains: ['microarray', 'drug response'],
             description:
                 "Data focused on how the genome is involved in the body's response to environmental stressors and toxicants.",
-            img: 'toxicogenomics.png'
+            img: 'radiogenomics.png'
+        },
+        {
+            name: 'Clinical Genomics',
+            fieldTotals: ['Datasets: 23', 'Canonical: 23'],
+            contains: ['rnaseq', 'microarray'],
+            description:
+                "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
+            img: 'clinicalgenomics.png'
         },
         {
             name: 'Immune Checkpoint Blockade',
@@ -61,7 +53,15 @@ const DataTypes = () => {
             contains: ['rnaseq', 'microarray'],
             description:
                 "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
-            img: 'pharmacogenomics.png'
+            img: 'toxicogenomics.png'
+        },
+        {
+            name: 'Radiomics',
+            fieldTotals: ['Datasets: 3', 'Canonical: 3'],
+            contains: ['CT imaging'],
+            description:
+                "Data focused on how the genome is involved in the body's response to environmental stressors and toxicants.",
+            img: 'radiomics.png'
         }
     ];
 
