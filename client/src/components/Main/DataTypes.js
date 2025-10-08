@@ -13,7 +13,8 @@ const DataTypes = () => {
             contains: ['rnaseq', 'cnv', 'mutation', 'methylation'],
             description:
                 "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
-            img: 'pharmacogenomics-2.png'
+            img: 'pharmacogenomics.png',
+            path: 'pset'
         },
         {
             name: 'Toxicogenomics',
@@ -21,23 +22,26 @@ const DataTypes = () => {
             contains: ['microarray', 'drug response'],
             description:
                 "Data focused with how the genome is involved in the body's response to environmental stressors and toxicants.",
-            img: 'toxicogenomics-2.png'
+            img: 'toxicogenomics.png',
+            path: 'toxicoset'
         },
         {
             name: 'Xenographic Pharmacogenomics',
-            fieldTotals: ['Datasets: 33', 'Canonical: 16', 'TCL Cell Lines: 39'],
+            fieldTotals: ['Datasets: 1', 'Canonical: 1'],
             contains: ['rnaseq', 'cnv', 'mutation', 'methylation'],
             description:
                 "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
-            img: 'xenographicpharmacogenomics.png'
+            img: 'xenographicpharmacogenomics.png',
+            path: 'xevaset'
         },
         {
             name: 'Radiogenomics',
-            fieldTotals: ['Datasets: 4', 'Canonical: 4'],
+            fieldTotals: ['Datasets: 1', 'Canonical: 1'],
             contains: ['microarray', 'drug response'],
             description:
                 "Data focused on how the genome is involved in the body's response to environmental stressors and toxicants.",
-            img: 'radiogenomics.png'
+            img: 'radiogenomics.png',
+            path: 'radioset'
         },
         {
             name: 'Clinical Genomics',
@@ -45,15 +49,17 @@ const DataTypes = () => {
             contains: ['rnaseq', 'microarray'],
             description:
                 "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
-            img: 'clinicalgenomics.png'
+            img: 'clinicalgenomics.png',
+            path: 'clinicalgenomics'
         },
         {
             name: 'Immune Checkpoint Blockade',
-            fieldTotals: ['Datasets: 23', 'Canonical: 23'],
+            fieldTotals: ['Datasets: 21', 'Canonical: 21'],
             contains: ['rnaseq', 'microarray'],
             description:
                 "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
-            img: 'toxicogenomics.png'
+            img: 'clinical_icb.png',
+            path: 'clinical_icb'
         },
         {
             name: 'Radiomics',
@@ -61,7 +67,8 @@ const DataTypes = () => {
             contains: ['CT imaging'],
             description:
                 "Data focused on how the genome is involved in the body's response to environmental stressors and toxicants.",
-            img: 'radiomics.png'
+            img: 'radiomics.png',
+            path: 'radiomicset'
         }
     ];
 
@@ -76,7 +83,8 @@ const DataTypes = () => {
                 {data.map(type => (
                     // Or this one<div className="group w-[300px] hover:h-[400px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden">
                     <div
-                        onClick={() => navigate('/radiomicset/6759d669d4ed32294de67010')}
+                        // onClick={() => navigate('/radiomicset/6759d669d4ed32294de67010')}
+                        onClick={() => navigate(`/${type.path}`)}
                         className="group w-[300px] h-[320px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden hover:cursor-pointer"
                     >
                         <div className="w-full h-[150px] rounded-t-3xl flex flex-col justify-center items-center overflow-hidden">
