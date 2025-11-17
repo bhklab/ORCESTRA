@@ -180,6 +180,35 @@ const SingleDatasetNew = () => {
                                         </div>
                                     )}
 
+                                    {datasetTab.data.proteomics.length > 0 && (
+                                        <div class="card-container">
+                                            <div class="card-title ">Proteomics</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.proteomics.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.proteomics.map((proteomic, i) => (
+                                                                <li>
+                                                                    <a
+                                                                        href={`${proteomic.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{proteomic.name}: </span>
+                                                                    </a>
+                                                                    {`${proteomic.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+
                                     {datasetTab.data.drugResponse.length > 0 && (
                                         <div class="card-container">
                                             <div class="card-title ">Drug Response</div>
