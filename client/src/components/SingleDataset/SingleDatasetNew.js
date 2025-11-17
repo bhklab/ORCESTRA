@@ -131,7 +131,6 @@ const SingleDatasetNew = () => {
                                             {datasetTab.data.rna.length > 0 && (
                                                 <ul className="list-style-card-main">
                                                     <li>
-                                                        <span>Expression:</span>
                                                         <ul className="list-style-card-sub">
                                                             {datasetTab.data.rna.map((rna, i) => (
                                                                 <li>
@@ -143,6 +142,35 @@ const SingleDatasetNew = () => {
                                                                         <span>{rna.name}: </span>
                                                                     </a>
                                                                     {`${rna.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {datasetTab.data.dna.length > 0 && (
+                                        <div class="card-container">
+                                            <div class="card-title ">DNA</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.dna.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.dna.map((dna, i) => (
+                                                                <li>
+                                                                    <a
+                                                                        href={`${dna.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{dna.name}: </span>
+                                                                    </a>
+                                                                    {`${dna.description}`}
                                                                 </li>
                                                             ))}
                                                         </ul>
