@@ -399,8 +399,7 @@ const SingleDatasetNew = () => {
                                             {releaseTab.data.releaseNotes.counts.length > 0 &&
                                                 releaseTab.data.releaseNotes.counts.map((note, i) => (
                                                     <li key={note.name}>
-                                                        <span>{note.name}:</span> {note.current} total{' '}
-                                                        {note.name.toLowerCase()}
+                                                        <span>{note.name}:</span> {note.current}
                                                     </li>
                                                 ))}
                                             {/* <li>
