@@ -27,7 +27,6 @@ const SingleDatasetNew = () => {
 
     useEffect(() => {
         const getData = async () => {
-            console.log(location.search);
             await getDataset(location.search);
         };
         getData();
@@ -43,8 +42,9 @@ const SingleDatasetNew = () => {
         // console.log(disclaimerTab.data);
         const releaseTab = dataset.data.tabData.find(tab => tab.header === 'Release Notes');
         // console.log(releaseTab.data);
+        console.log(releaseTab.data.releaseNotes);
 
-        console.log(datasetTab.data);
+        // console.log(datasetTab.data);
         return (
             <StyledPage>
                 {dataset.ready && (
@@ -56,8 +56,8 @@ const SingleDatasetNew = () => {
                         <LayoutContainer>
                             <div className="content-row">
                                 <StyledContainerOuter>
-                                    <div class="card-container">
-                                        <div class="card-title ">About The Dataset</div>
+                                    <div className="card-container">
+                                        <div className="card-title ">About The Dataset</div>
                                         <div className="hr-container">
                                             <hr className="hr-style" />
                                         </div>
@@ -119,18 +119,17 @@ const SingleDatasetNew = () => {
 
                                 <StyledContainerInner>
                                     {datasetTab.data.rna.length > 0 && (
-                                        <div class="card-container">
-                                            <div class="card-title ">RNA</div>
+                                        <div className="card-container">
+                                            <div className="card-title ">RNA</div>
                                             <div className="hr-container">
                                                 <hr className="hr-style" />
                                             </div>
-                                            {console.log(datasetTab.data.rna)}
                                             {datasetTab.data.rna.length > 0 && (
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
                                                             {datasetTab.data.rna.map((rna, i) => (
-                                                                <li>
+                                                                <li key={i}>
                                                                     <a
                                                                         href={`${rna.url}`}
                                                                         target="_blank"
@@ -149,8 +148,8 @@ const SingleDatasetNew = () => {
                                     )}
 
                                     {datasetTab.data.dna.length > 0 && (
-                                        <div class="card-container">
-                                            <div class="card-title ">DNA</div>
+                                        <div className="card-container">
+                                            <div className="card-title ">DNA</div>
                                             <div className="hr-container">
                                                 <hr className="hr-style" />
                                             </div>
@@ -159,7 +158,7 @@ const SingleDatasetNew = () => {
                                                     <li>
                                                         <ul className="list-style-card-sub">
                                                             {datasetTab.data.dna.map((dna, i) => (
-                                                                <li>
+                                                                <li key={i}>
                                                                     <a
                                                                         href={`${dna.url}`}
                                                                         target="_blank"
@@ -178,8 +177,8 @@ const SingleDatasetNew = () => {
                                     )}
 
                                     {datasetTab.data.proteomics.length > 0 && (
-                                        <div class="card-container">
-                                            <div class="card-title ">Proteomics</div>
+                                        <div className="card-container">
+                                            <div className="card-title ">Proteomics</div>
                                             <div className="hr-container">
                                                 <hr className="hr-style" />
                                             </div>
@@ -188,7 +187,7 @@ const SingleDatasetNew = () => {
                                                     <li>
                                                         <ul className="list-style-card-sub">
                                                             {datasetTab.data.proteomics.map((proteomic, i) => (
-                                                                <li>
+                                                                <li key={i}>
                                                                     <a
                                                                         href={`${proteomic.url}`}
                                                                         target="_blank"
@@ -207,8 +206,8 @@ const SingleDatasetNew = () => {
                                     )}
 
                                     {datasetTab.data.drugResponse.length > 0 && (
-                                        <div class="card-container">
-                                            <div class="card-title ">Drug Response</div>
+                                        <div className="card-container">
+                                            <div className="card-title ">Drug Response</div>
                                             <div className="hr-container">
                                                 <hr className="hr-style" />
                                             </div>
@@ -217,7 +216,7 @@ const SingleDatasetNew = () => {
                                                     <span>Response:</span>
                                                     <ul className="list-style-card-sub">
                                                         {datasetTab.data.drugResponse.map((drugResponse, i) => (
-                                                            <li>
+                                                            <li key={i}>
                                                                 <a
                                                                     href={`${drugResponse.url}`}
                                                                     target="_blank"
@@ -235,8 +234,8 @@ const SingleDatasetNew = () => {
                                     )}
 
                                     {datasetTab.data.imagingFeatures.length > 0 && (
-                                        <div class="card-container">
-                                            <div class="card-title ">Imaging Features</div>
+                                        <div className="card-container">
+                                            <div className="card-title ">Imaging Features</div>
                                             <div className="hr-container">
                                                 <hr className="hr-style" />
                                             </div>
@@ -245,7 +244,7 @@ const SingleDatasetNew = () => {
                                                     <li>
                                                         <ul className="list-style-card-sub">
                                                             {datasetTab.data.imagingFeatures.map((img, i) => (
-                                                                <li>
+                                                                <li key={i}>
                                                                     <a
                                                                         href={`${img.url}`}
                                                                         target="_blank"
@@ -264,8 +263,8 @@ const SingleDatasetNew = () => {
                                     )}
 
                                     {datasetTab.data.imaging.length > 0 && (
-                                        <div class="card-container">
-                                            <div class="card-title ">Imaging</div>
+                                        <div className="card-container">
+                                            <div className="card-title ">Imaging</div>
                                             <div className="hr-container">
                                                 <hr className="hr-style" />
                                             </div>
@@ -274,7 +273,7 @@ const SingleDatasetNew = () => {
                                                     <li>
                                                         <ul className="list-style-card-sub">
                                                             {datasetTab.data.imaging.map((img, i) => (
-                                                                <li>
+                                                                <li key={i}>
                                                                     <a
                                                                         href={`${img.url}`}
                                                                         target="_blank"
@@ -294,15 +293,15 @@ const SingleDatasetNew = () => {
                                 </StyledContainerInner>
 
                                 <StyledContainerOuter>
-                                    <div class="card-container">
-                                        <div class="card-title ">Description</div>
+                                    <div className="card-container">
+                                        <div className="card-title ">Description</div>
                                         <div className="hr-container">
                                             <hr className="hr-style" />
                                         </div>
                                         {datasetTab.data.description}
                                     </div>
-                                    <div class="card-container">
-                                        <div class="card-title ">Pipeline Details</div>
+                                    <div className="card-container">
+                                        <div className="card-title ">Pipeline Details</div>
 
                                         <div className="hr-container">
                                             <hr className="hr-style" />
@@ -353,73 +352,133 @@ const SingleDatasetNew = () => {
                                                     fontWeight: '600',
                                                     textAlign: 'center',
                                                     width: '100%',
-                                                    marginTop: '20px'
+                                                    marginTop: '16px'
                                                 }}
                                             >
                                                 Pipeline Details Coming Soon!
                                             </div>
                                         )}
-
-                                        {/* <ul className="list-style-card-main">
-                                            <li>
-                                                <span>Pipeline:</span> https://github.com/bhklab/CCLE_2019
-                                            </li>
-                                            <li>
-                                                <span>Docker Image:</span>{' '}
-                                                https://hub.docker.com/r/minorunakano/orcestra-snakemake
-                                            </li>
-                                            <li>
-                                                <span>{'Data Curation Script(s)'}:</span>
-                                                <ul className="list-style-card-sub">
-                                                    <li>Source 1: https://github.com/bhklab/script1</li>
-                                                    <li>Source 2: https://github.com/bhklab/script2</li>
-                                                    <li>Source 3: https://github.com/bhklab/script3</li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <span>Processing Tools:</span> Kalisto, ...
-                                            </li>
-                                            <li>
-                                                <span>Gencode Version:</span>GRCh37
-                                            </li>
-                                            <li>
-                                                <span>Data Transformation:</span>?
-                                            </li>
-                                        </ul> */}
                                     </div>
-                                    <div class="card-container">
-                                        <div class="card-title ">Release Notes</div>
-                                        <div className="hr-container">
-                                            <hr className="hr-style" />
+                                    <div className="card-container">
+                                        <div className="card-title ">Release Notes</div>
+                                        <hr className="hr-style" />
+                                        <div className="release-notes">
+                                            {releaseTab.data.releaseNotes.cellLines && (
+                                                <div style={{ marginBottom: '10px' }}>
+                                                    <h4
+                                                        style={{
+                                                            fontSize: '16px',
+                                                            fontWeight: 'Bold',
+                                                            margin: '0 0 3px 0'
+                                                        }}
+                                                    >
+                                                        Cell Lines
+                                                    </h4>
+                                                    <ul className="list-style-card-sub">
+                                                        {releaseTab.data.releaseNotes.cellLines &&
+                                                            releaseTab.data.releaseNotes.cellLines.map((note, i) => (
+                                                                <li key={i}>
+                                                                    <span>{note.current} </span>
+                                                                    {note.name.toLowerCase()}
+                                                                </li>
+                                                            ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                            {releaseTab.data.releaseNotes.samples && (
+                                                <div style={{ marginBottom: '10px' }}>
+                                                    <h4
+                                                        style={{
+                                                            fontSize: '16px',
+                                                            fontWeight: 'Bold',
+                                                            margin: '0 0 3px 0'
+                                                        }}
+                                                    >
+                                                        Samples
+                                                    </h4>
+                                                    <ul className="list-style-card-sub">
+                                                        {releaseTab.data.releaseNotes.samples &&
+                                                            releaseTab.data.releaseNotes.samples.map((note, i) => (
+                                                                <li key={i}>
+                                                                    <span>{note.current} </span>
+                                                                    {note.name.toLowerCase()}
+                                                                </li>
+                                                            ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                            {releaseTab.data.releaseNotes.drugs && (
+                                                <div style={{ marginBottom: '10px' }}>
+                                                    <h4
+                                                        style={{
+                                                            fontSize: '16px',
+                                                            fontWeight: 'Bold',
+                                                            margin: '0 0 3px 0'
+                                                        }}
+                                                    >
+                                                        Drugs
+                                                    </h4>
+                                                    <ul className="list-style-card-sub">
+                                                        {releaseTab.data.releaseNotes.drugs &&
+                                                            releaseTab.data.releaseNotes.drugs.map((note, i) => (
+                                                                <li key={i}>
+                                                                    <span>{note.current} </span>
+                                                                    {note.name.toLowerCase()}
+                                                                </li>
+                                                            ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                            {releaseTab.data.releaseNotes.drugExperiments && (
+                                                <div style={{ marginBottom: '10px' }}>
+                                                    <h4
+                                                        style={{
+                                                            fontSize: '16px',
+                                                            fontWeight: 'Bold',
+                                                            margin: '0 0 3px 0'
+                                                        }}
+                                                    >
+                                                        Drug Experiments
+                                                    </h4>
+                                                    <ul className="list-style-card-sub">
+                                                        {releaseTab.data.releaseNotes.drugExperiments &&
+                                                            releaseTab.data.releaseNotes.drugExperiments.map(
+                                                                (note, i) => (
+                                                                    <li key={i}>
+                                                                        <span>{note.current} </span>
+                                                                        {note.name.toLowerCase()}
+                                                                    </li>
+                                                                )
+                                                            )}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                            {releaseTab.data.releaseNotes.molecularData && (
+                                                <div style={{ marginBottom: '10px' }}>
+                                                    <h4
+                                                        style={{
+                                                            fontSize: '16px',
+                                                            fontWeight: 'Bold',
+                                                            margin: '0 0 3px 0'
+                                                        }}
+                                                    >
+                                                        Molecular Data
+                                                    </h4>
+                                                    <ul className="list-style-card-sub">
+                                                        {releaseTab.data.releaseNotes.molecularData &&
+                                                            releaseTab.data.releaseNotes.molecularData.map(
+                                                                (note, i) => (
+                                                                    <li key={i}>
+                                                                        <span>{note.current} </span>
+                                                                        {note.name.toLowerCase()}
+                                                                    </li>
+                                                                )
+                                                            )}
+                                                    </ul>
+                                                </div>
+                                            )}
                                         </div>
-                                        <ul className="list-style-card-main">
-                                            {releaseTab.data.releaseNotes.counts.length > 0 &&
-                                                releaseTab.data.releaseNotes.counts.map((note, i) => (
-                                                    <li key={note.name}>
-                                                        <span>{note.name}:</span> {note.current} total{' '}
-                                                        {note.name.toLowerCase()}
-                                                    </li>
-                                                ))}
-                                            {/* <li>
-                                                <span>Primary Tumours:</span> Sarcoma (including soft tissue and bone
-                                                subtypes)
-                                            </li> */}
-                                        </ul>
                                     </div>
-                                    {/* <div class="card-container">
-                                        <div class="card-title ">Badges</div>
-                                        <div className="hr-container">
-                                            <hr className="hr-style" />
-                                        </div>
-                                        <ul className="list-style-card-main">
-                                            <li>
-                                                <span>Annotations Standards:</span> Lorem ipsum dolor sit amet
-                                            </li>
-                                            <li>
-                                                <span>QC scripts or CO capsule:</span> https://codeocean.com
-                                            </li>
-                                        </ul>
-                                    </div> */}
                                 </StyledContainerOuter>
                             </div>
                         </LayoutContainer>
