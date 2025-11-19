@@ -1,15 +1,15 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { PathContext } from '../../hooks/Context';
 import styled from 'styled-components';
-import {dataTypes} from '../Shared/Enums';
+import { dataTypes } from '../Shared/Enums';
 
 const StyledFooter = styled.div`
     position: relative;
     clear: both;
     bottom: 0%;
     width: 100%;
-    background-color: rgb(255,255,255, 0.7);
+    background-color: rgb(255, 255, 255, 0.7);
     height: 220px;
     font-size: calc(0.7em + 0.2vw);
     padding: 10px 0;
@@ -21,16 +21,17 @@ const StyledFooter = styled.div`
         width: 95%;
         margin-left: auto;
         margin-right: auto;
-        display:flex;
+        display: flex;
         font-size: 12px;
     }
-    
+
     .footerLinks {
-        width:200px;
-        a, div {
+        width: 200px;
+        a,
+        div {
             display: block;
             margin-bottom: 5px;
-            color: #3D405A;
+            color: #3d405a;
         }
         a:hover {
             color: #555975;
@@ -41,81 +42,132 @@ const StyledFooter = styled.div`
         flex-grow: 1;
         text-align: left;
     }
-    
-    .footerSupport{
+
+    .footerSupport {
         flex-grow: 1;
         text-align: left;
     }
-    
+
     .footerContact {
         flex-grow: 1;
         text-align: left;
     }
-    
-    .contactInfo{
+
+    .contactInfo {
         font-size: calc(0.7em + 0.2vw);
         line-height: 20px;
         margin-top: -5px;
     }
-`
+`;
 
 const Footer = () => {
-
     const path = useContext(PathContext);
 
-    return(
+    return (
         <StyledFooter>
-            <div className='footerContainer'>
+            <div className="footerContainer">
                 <div className="footerMenu footerLinks">
                     <h3>Menu</h3>
-                    <NavLink to="/" onClick={() => {path.setDatatype('')}}>Home</NavLink>
-                    {
-                        path.datatype.length === 0 ? 
+                    <NavLink
+                        to="/"
+                        onClick={() => {
+                            path.setDatatype('');
+                        }}
+                    >
+                        Home
+                    </NavLink>
+                    {path.datatype.length === 0 ? (
                         <React.Fragment>
-                            <NavLink to={`/${dataTypes.pharmacogenomics}`} onClick={() => {path.setDatatype(dataTypes.pharmacogenomics)}}>Pharmacogenomics Data</NavLink>
-                            <NavLink to={`/${dataTypes.toxicogenomics}`} onClick={() => {path.setDatatype(dataTypes.toxicogenomics)}}>Toxicogenomics Data</NavLink>
-                            <NavLink to={`/${dataTypes.xenographic}`} onClick={() => {path.setDatatype(dataTypes.xenographic)}}>Xenographic Pharmacogenomics Data</NavLink>
-                            <NavLink to={`/${dataTypes.clinicalgenomics}`} onClick={() => {path.setDatatype(dataTypes.clinicalgenomics)}}>Clinical Genomics Data</NavLink>
-                            <NavLink to={`/${dataTypes.icb}`} onClick={() => {path.setDatatype(dataTypes.icb)}}>Immune Checkpoint Blockade Data</NavLink>
-							<NavLink to={`/${dataTypes.radiogenomics}`} onClick={() => {path.setDatatype(dataTypes.radiogenomics)}}>Radiogenomics Data</NavLink>
-							<NavLink to={`/${dataTypes.radiomics}`} onClick={() => {path.setDatatype(dataTypes.radiomics)}}>Radiomics Data</NavLink>
+                            <NavLink
+                                to={`/${dataTypes.pharmacogenomics}`}
+                                onClick={() => {
+                                    path.setDatatype(dataTypes.pharmacogenomics);
+                                }}
+                            >
+                                Pharmacogenomics Data
+                            </NavLink>
+                            <NavLink
+                                to={`/${dataTypes.toxicogenomics}`}
+                                onClick={() => {
+                                    path.setDatatype(dataTypes.toxicogenomics);
+                                }}
+                            >
+                                Toxicogenomics Data
+                            </NavLink>
+                            <NavLink
+                                to={`/${dataTypes.xenographic}`}
+                                onClick={() => {
+                                    path.setDatatype(dataTypes.xenographic);
+                                }}
+                            >
+                                Xenographic Pharmacogenomics Data
+                            </NavLink>
+                            <NavLink
+                                to={`/${dataTypes.clinicalgenomics}`}
+                                onClick={() => {
+                                    path.setDatatype(dataTypes.clinicalgenomics);
+                                }}
+                            >
+                                Clinical Genomics Data
+                            </NavLink>
+                            <NavLink
+                                to={`/${dataTypes.icb}`}
+                                onClick={() => {
+                                    path.setDatatype(dataTypes.icb);
+                                }}
+                            >
+                                Immune Checkpoint Blockade Data
+                            </NavLink>
+                            <NavLink
+                                to={`/${dataTypes.radiogenomics}`}
+                                onClick={() => {
+                                    path.setDatatype(dataTypes.radiogenomics);
+                                }}
+                            >
+                                Radiogenomics Data
+                            </NavLink>
+                            <NavLink
+                                to={`/${dataTypes.radiomics}`}
+                                onClick={() => {
+                                    path.setDatatype(dataTypes.radiomics);
+                                }}
+                            >
+                                Radiomics Data
+                            </NavLink>
                         </React.Fragment>
-                        :
+                    ) : (
                         <React.Fragment>
                             {/* <NavLink to={`/${path.datatype}/canonical`} >Canonical PSets</NavLink> */}
-                            <NavLink to={`/${path.datatype}/search`} >Search and Request</NavLink>
+                            <NavLink to={`/${path.datatype}/search`}>Search and Request</NavLink>
                             {/* <NavLink to={`/${path.datatype}/status`} >Request Status</NavLink> */}
                             {/* <NavLink to={`/${path.datatype}/stats`} >Statistics</NavLink> */}
                         </React.Fragment>
-                    }
+                    )}
                 </div>
                 <div className="footerSupport footerLinks">
                     <h3>Support</h3>
-                    {
-                        path.datatype.length > 0 && 
+                    {path.datatype.length > 0 && (
                         <React.Fragment>
-                            <NavLink to={`/${path.datatype}/documentation/overview`} >Documentation</NavLink>
-                            <NavLink to={`/${path.datatype}/documentation/datacontribution`} >Contributing your data</NavLink>
+                            <NavLink to={`/app/documentation/overview`}>Documentation</NavLink>
+                            {/* <NavLink to={`/${path.datatype}/documentation/datacontribution`} >Contributing your data</NavLink> */}
                         </React.Fragment>
-                    }
+                    )}
                     <a href="https://github.com/bhklab">GitHub</a>
                     <a href="https://bhklab.ca/">BHKLab</a>
-                    <a href='mailto: support@orcestra.ca'>support@orcestra.ca</a>
+                    <a href="mailto: support@orcestra.ca">support@orcestra.ca</a>
                 </div>
                 <div className="footerContact">
                     <h3>BHKLab</h3>
-                    <div className='contactInfo'>
+                    <div className="contactInfo">
                         The MaRS center
                         <br />
-                        101 College St, Toronto ON
-                        {' '}
-                        <br />
+                        101 College St, Toronto ON <br />
                         TMDT RM 11-310
                     </div>
                 </div>
             </div>
         </StyledFooter>
     );
-} 
+};
 
 export default Footer;
