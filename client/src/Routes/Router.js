@@ -5,7 +5,7 @@ import useFindUser from '../hooks/useFindUser';
 
 // routes
 import PrivateRoute from './PrivateRoute';
-// import DatasetRoute from './DatasetRoute'; not used
+// import DatasetRoute from './DatasetRoute'; // no longer used
 import RestrictedRoute from './RestrictedRoute';
 import AdminRoute from './AdminRoute';
 

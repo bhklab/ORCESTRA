@@ -12,7 +12,7 @@ const DataTypes = () => {
             fieldTotals: ['Datasets: 33', 'Canonical: 16', 'TCL Cell Lines: 39'],
             contains: ['rnaseq', 'cnv', 'mutation', 'methylation'],
             description:
-                "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
+                "Data focused on how an individual's genetic attributes affect the likely response to therapeutic drugs.",
             img: 'pharmacogenomics.png',
             path: 'pset'
         },
@@ -21,7 +21,7 @@ const DataTypes = () => {
             fieldTotals: ['Datasets: 4', 'Canonical: 4'],
             contains: ['microarray', 'drug response'],
             description:
-                "Data focused with how the genome is involved in the body's response to environmental stressors and toxicants.",
+                "Data focused on how the genome is involved in the body's response to environmental stressors and toxicants.",
             img: 'toxicogenomics.png',
             path: 'toxicoset'
         },
@@ -30,7 +30,7 @@ const DataTypes = () => {
             fieldTotals: ['Datasets: 1', 'Canonical: 1'],
             contains: ['rnaseq', 'cnv', 'mutation', 'methylation'],
             description:
-                "Data focused with how an individual's genetic attributes affect the likely response to therapeutic drugs.",
+                "Data focused on how an individual's genetic attributes affect the likely response to therapeutic drugs.",
             img: 'xenographicpharmacogenomics.png',
             path: 'xevaset'
         },
@@ -78,14 +78,14 @@ const DataTypes = () => {
     }, []);
 
     return (
-        <div className="min-h-screen flex flex-col items-center gap-10 mb-10 mt-16 px-60 lg:px-20 smd:px-4 bg-gray-50">
+        <div className="min-h-screen flex flex-col items-center gap-10 mx-auto pt-24 max-w-[1300px] bg-gray-50">
             <div className="flex flex-row flex-wrap gap-4 justify-center">
                 {data.map(type => (
                     // Or this one<div className="group w-[300px] hover:h-[400px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden">
                     <div
                         // onClick={() => navigate('/radiomicset/6759d669d4ed32294de67010')}
                         onClick={() => navigate(`/${type.path}`)}
-                        className="group w-[300px] h-[320px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden hover:cursor-pointer"
+                        className="group w-[380px] h-[320px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden hover:cursor-pointer"
                     >
                         <div className="w-full h-[150px] rounded-t-3xl flex flex-col justify-center items-center overflow-hidden">
                             <img src={`/images/new-icons/${type.img}`} />
@@ -114,7 +114,7 @@ const DataTypes = () => {
                                 </div>
                             </div>
 
-                            <p className="text-bodySm text-gray-700 opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-all duration-700 overflow-hidden">
+                            <p className="text-bodyMd text-gray-600 opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-all duration-700 overflow-hidden">
                                 {type.description}
                             </p>
                         </div>

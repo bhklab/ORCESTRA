@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client'; // Import from 'react-dom/client'
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import './styles/tailwind.css';
+import './styles/prime-style.css';
+import './styles/main.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import * as serviceWorker from './components/serviceWorker';

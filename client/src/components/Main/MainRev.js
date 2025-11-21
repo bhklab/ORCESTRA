@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PathContext } from '../../hooks/Context';
-import { dataTypes } from '../Shared/Enums';
 
 const MainRev = () => {
     const path = useContext(PathContext);
