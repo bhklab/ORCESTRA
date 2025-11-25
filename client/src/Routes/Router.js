@@ -33,6 +33,7 @@ import CanonicalPSets from '../components/CanonicalPSets/CanonicalPSets';
 import NotFound404 from '../components/Shared/NotFound404';
 import TclTable from '../components/Tcl/TclTable';
 import DataTypes from '../components/Main/DataTypes';
+import SetSearch from '../components/SearchRequest/All/SetSearch';
 // import Test from '../components/Test/Test';
 
 const Router = () => {
@@ -64,6 +65,7 @@ const Router = () => {
                         element={<PrivateRoute element={<Profile />} redirect="/app/authentication" />}
                     />
                     <Route path="/app/admin" element={<AdminRoute element={Admin} redirect="/app/profile" />} />
+                    <Route path="/datatypes/:datatype" element={<SetSearch />} />
                     <Route
                         path="/app/data_submission/submitted/:id"
                         element={
