@@ -8,8 +8,8 @@ import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 import { SearchReqWrapper, MainPanel, SearchReqPanel } from '../SearchReqStyle';
 import SearchTableLoader from '../SearchTableLoader';
 import SearchSummary from '../SearchSummary';
-import RadiomicSetFilter from './RadiomicSetFilter';
-import RadiomicSetTable from './RadiomicSetTable';
+import RadiomicSetFilter from '../RadiomicSet/RadiomicSetFilter';
+import RadiomicSetTable from '../RadiomicSet/RadiomicSetTable';
 import { dataTypes } from '../../Shared/Enums';
 import StyledPage from '../../../styles/StyledPage';
 
@@ -56,7 +56,7 @@ const SetSearch = () => {
 
     const showMessage = (status, data) => {
         let severity = status ? 'success' : 'error';
-        RadiomicSetSearch.messages.show({
+        SetSearch.messages.show({
             severity: severity,
             summary: data.summary,
             detail: data.message,
@@ -79,7 +79,7 @@ const SetSearch = () => {
                 <SearchReqWrapper>
                     <RadiomicSetFilter />
                     <MainPanel>
-                        <Messages ref={el => (RadiomicSetSearch.messages = el)} />
+                        <Messages ref={el => (SetSearch.messages = el)} />
                         <SearchReqPanel>
                             <div>
                                 <SearchSummary
