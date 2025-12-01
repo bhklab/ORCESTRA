@@ -7,7 +7,6 @@ const StyledPage = styled.div`
     width: 95%;
     margin-left: auto;
     margin-right: auto;
-    min-height: 100vh;
     padding-bottom: 200px;
     color: #3D405A;
 	display: flex;

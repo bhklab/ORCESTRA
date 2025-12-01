@@ -2,19 +2,23 @@ import React from 'react';
 import { MultiSelect } from 'primereact/multiselect';
 import { Dropdown } from 'primereact/dropdown';
 import styled from 'styled-components';
+import colors from '../../styles/colors';
 
 const FilterSet = styled.div`
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    // margin-top: 20px;
-    // margin-bottom: 20px;
+
     label {
         margin-right: 10px;
         font-size: 14px;
     }
     .dropdown {
         flex-grow: 1;
+        background-color: #fafafa;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 8px;
     }
     .item-token {
         padding-left: 3px;
@@ -23,8 +27,7 @@ const FilterSet = styled.div`
         margin-left: 2px;
         margin-right: 2px;
         border-radius: 2px;
-        background-color: #3d405a;
-        color: #ffffff;
+        color: ${colors.standard_med_blue};
         font-weight: bold;
         font-size: 12px;
         display: block;

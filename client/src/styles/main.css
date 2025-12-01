@@ -4,3 +4,11 @@ html {
     background-color: #FAFAFA;
     font-family: 'Roboto';
 }
+
+.dropdown {
+    flex-grow: 1;
+    background-color: #fafafa;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+}
