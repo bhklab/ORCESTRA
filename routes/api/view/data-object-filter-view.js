@@ -78,6 +78,20 @@ const get = async (req, res) => {
     }
 }
 
+const getNew = async (req, res) => {
+
+	try {
+		console.log(req.params.datatype);
+		const dataset = await Dataset.find({ datasetType: req.params.datatype}).select('-__v -_id -stats -availableData').lean()
+		console.log(dataset)
+		res.send((dataset))
+	} catch (error) {
+		console.log(error)
+	}
+	
+}
+
 module.exports = {
-    get
+    get,
+	getNew
 }

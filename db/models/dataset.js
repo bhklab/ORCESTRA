@@ -2,78 +2,104 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const datasetSchema = new Schema({
-  name: { type: String, required: true },
-  version: { type: String, required: true },
-  datasetType: String,
-  info: {
-    includedData: String,
-    pachydermPipeline: String,
-    geoAccession: String,
-  },
-  status: {
-    unavailable: Boolean,
-    disabled: Boolean,
-    requestDisabled: Boolean,
-  },
-  publications: [
-    {
-      citation: String,
-      link: String,
-    },
-  ],
-  sensitivity: {
-    source: String,
-    data: String,
-    version: String,
-  },
-  survival: {
-    recistCriteria: Boolean,
-    clinicalEndpoints: String,
-  },
-  availableData: [
-    {
-      name: String,
-      datatype: String,
-      source: String,
-      expCount: { type: Number, required: false },
-      noUpdates: { type: Boolean, required: false },
-      options: [{ name: String, label: String }],
-    },
-  ],
-  datasetNote: { type: mongoose.Schema.Types.ObjectId, ref: "DatasetNote" },
-  stats: {
-    cellLines: [String],
-    drugs: [String],
-    tissues: [String],
-    numExperiments: Number,
-    numGenes: Number,
-  },
-  releaseNotes: {
-    counts: [
-      {
-        name: String,
-        current: Number,
-        new: Number,
-        removed: Number,
-      },
-    ],
-    additionalNotes: Object,
-  },
-  drugResponse: [
-	{
-		name: String,
-		description: String,
-		url: String
+	name: String,
+	version: String,
+	description: String,
+	datasetType: String,
+	status: {
+		unavailable: Boolean,
+		disabled: Boolean,
+		requestDisabled: Boolean,
 	},
-  ],
-  rna: [
-	{
-		name: String,
-		description: String,
-		url: String
+	publications: [
+		{
+			citation: String,
+			link: String,
+		},
+	],
+	survival: {
+		recistCriteria: Boolean,
+		clinicalEndpoints: String,
 	},
-  ],
-  description: String,
+	datasetNote: { type: mongoose.Schema.Types.ObjectId, ref: "DatasetNote" },
+	data: {
+		drugResponse: [
+			{
+				name: String,
+				description: String,
+				url: String
+			},
+		],
+		rna: [
+			{
+				name: String,
+				description: String,
+				url: String
+			},
+		],
+		dna: [
+			{
+				name: String,
+				description: String,
+				url: String
+			},
+		],
+		proteomics: [
+			{
+				name: String,
+				description: String,
+				url: String
+			},
+		],
+		imagingFeatures: [
+			{
+				name: String,
+				description: String,
+				url: String
+			},
+		],
+		imaging: [
+			{
+				name: String,
+				description: String,
+				url: String
+			},
+		],
+	},
+	releaseNotes: {
+		cellLines:[
+			{
+				name: String,
+				value: Number
+			},
+		],
+		samples: [
+			{
+				name: String,
+				value: Number
+			},
+		],
+		drugs: [
+			{
+				name: String,
+				value: Number
+			},
+		],
+		drugExperiments: [
+			[
+				{
+					name: String,
+					value: Number
+				},
+			]
+		],
+		molecularData: [
+			{
+				name: String,
+				value: Number
+			},
+		]
+	}
 });
 
 module.exports = mongoose.model("Dataset", datasetSchema);

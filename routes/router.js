@@ -22,6 +22,7 @@ const public = require('./api/public');
 // view/component-specific routes
 router.get('/view/landing', landing.get);
 router.get('/view/data-object-filter', dataObjectFilter.get);
+router.get('/view/search/:datatype', dataObjectFilter.getNew);
 router.get('/view/single-data-object', singleDataObject.get);
 router.get('/view/canonical-data-objects', canonicalDataObjects.get);
 router.get('/view/statistics', statistics.get);
