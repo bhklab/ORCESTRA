@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactGA from 'react-ga4';
-// import GlobalStyles from './styles/GlobalStyles';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primeicons/primeicons.css';
 import Router from './Routes/Router';
 
 const App = () => {
