@@ -1,6 +1,25 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* 1. Declare the layer order up front */
+@layer tailwind-base, primereact, tailwind-utilities;
+
+/* 2. Global icon font – layer order doesn’t really matter here */
+@import 'primeicons/primeicons.css';
+
+/* 3. PrimeReact theme in its own layer */
+@layer primereact {
+    @import 'primereact/resources/themes/lara-light-indigo/theme.css';
+}
+
+/* 4. Tailwind base/components/utilities in their layers */
+@layer tailwind-base {
+    @tailwind base;
+}
+
+@layer tailwind-utilities {
+    @tailwind components;
+    @tailwind utilities;
+}
+
+/* 5. Your custom styles (these come after, but are fairly specific anyway) */
 
 [type='text']:focus,
 [type='email']:focus,
@@ -24,10 +43,12 @@ select:focus {
     width: 100%;
     padding: 0px;
 }
+
 .react-datepicker__day.react-datepicker__day--keyboard-selected {
     background: none;
     color: black;
 }
+
 input:focus,
 textarea:focus {
     outline: none !important;
