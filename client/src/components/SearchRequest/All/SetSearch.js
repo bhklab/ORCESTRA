@@ -6,6 +6,7 @@ import { Column } from 'primereact/column';
 import { AuthContext } from '../../../hooks/Context';
 
 import { Button } from 'primereact/button';
+import { MultiSelect } from 'primereact/multiselect';
 
 const SetSearch = () => {
     const auth = useContext(AuthContext);
@@ -18,17 +19,17 @@ const SetSearch = () => {
     useEffect(() => {
         const initialize = async () => {
             const res = await axios.get(`/api/view/search/${datatype}`);
-            setSelectedDatasets(res.data);
+            console.log(res.data);
+            setDatasets(res.data);
         };
         initialize();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <div className="min-h-screen">
-            <div></div>
-            <Button> here </Button>
-            <DataTable value={selectedDatasets} tableStyle={{ minWidth: '50rem' }}>
+        <div className="min-h-screen px-32 py-10">
+            <MultiSelect />
+            <DataTable value={datasets} tableStyle={{ minWidth: '50rem' }}>
                 <Column field="name" header="Name"></Column>
                 <Column field="description" header="Description"></Column>
             </DataTable>
