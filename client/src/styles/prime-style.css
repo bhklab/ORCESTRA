@@ -1,1 +1,23 @@
 /* Style override for PrimeReact UI elements */
+
+.p-focus{
+	box-shadow: 0 0 0 0 white !important;
+}
+
+.p-multiselect{
+	border: 1px solid #DCE0F2 !important;
+}
+
+.p-multiselect-panel {
+	border: 1px solid #DCE0F2 !important;
+}
+
+.p-checkbox-box {
+	border: 1px solid #DCE0F2 !important;
+}
+
+.p-datatable {
+	border: 1px solid #DCE0F2 !important;
+	border-radius: 6px;
+	overflow: hidden;
+}
