@@ -34,6 +34,7 @@ const getTabData = async (dataObject, dataset, filter) => {
 	  proteomics: dataset.proteomics,
 	  imagingFeatures: dataset.imagingFeatures,
 	  imaging: dataset.imaging,
+	  qualityControl: dataset.qualityControl
     },
   };
   if (dataset.datasetType === enums.dataTypes.toxicogenomics) {
