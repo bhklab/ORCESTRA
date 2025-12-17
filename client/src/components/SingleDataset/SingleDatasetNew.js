@@ -14,7 +14,6 @@ import {
     StyledContainerOuter,
     StyledContainerInner
 } from '../SearchRequest/RadiomicSet/Styles/StyledRadiomicSetSearch';
-import * as MainStyle from '../Main/MainStyle';
 
 const SingleDatasetNew = () => {
     const location = useLocation();
@@ -34,6 +33,15 @@ const SingleDatasetNew = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const QualityControlPage = url => {
+        try {
+            const res = axios.post('data-object/test-route', (url = url));
+			const sqlPage = 
+        } catch (error) {
+
+		}
+    };
+
     //If the dataset is not a legacy dataset, use the new DNL
     if (dataset.data.legacy === false) {
         const datasetTab = dataset.data.tabData.find(tab => tab.header === 'Dataset');
@@ -42,9 +50,9 @@ const SingleDatasetNew = () => {
         // console.log(disclaimerTab.data);
         const releaseTab = dataset.data.tabData.find(tab => tab.header === 'Release Notes');
         // console.log(releaseTab.data);
-        console.log(releaseTab.data.releaseNotes);
+        // console.log(releaseTab.data.releaseNotes);
 
-        // console.log(datasetTab.data);
+        console.log(datasetTab.data);
         return (
             <StyledPage>
                 {dataset.ready && (
@@ -88,9 +96,6 @@ const SingleDatasetNew = () => {
                                                     <>Coming Soon!</>
                                                 )}
                                             </li>
-                                            {/* <li>
-                                                <span>Format:</span> Coming soon!
-                                            </li> */}
                                             <li>
                                                 <span>Version:</span> {datasetTab.data.dataset.version}
                                             </li>
@@ -115,6 +120,24 @@ const SingleDatasetNew = () => {
                                             )}
                                         </ul>
                                     </div>
+                                    {datasetTab.data.qualityControl.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Dataset Quality Control</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            <ul className="list-style-card-sub">
+                                                {datasetTab.data.qualityControl.map((qc, i) => (
+                                                    <li key={i}>
+                                                        <div onClick={() => QualityControlPage(qc.url)}>
+                                                            <span>{qc.name}: </span>
+                                                        </div>
+                                                        {`${qc.description}`}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
                                 </StyledContainerOuter>
 
                                 <StyledContainerInner>
@@ -213,7 +236,6 @@ const SingleDatasetNew = () => {
                                             </div>
                                             <ul className="list-style-card-main">
                                                 <li>
-                                                    <span>Response:</span>
                                                     <ul className="list-style-card-sub">
                                                         {datasetTab.data.drugResponse.map((drugResponse, i) => (
                                                             <li key={i}>
@@ -363,7 +385,7 @@ const SingleDatasetNew = () => {
                                         <div className="card-title ">Release Notes</div>
                                         <hr className="hr-style" />
                                         <div className="release-notes">
-                                            {releaseTab.data.releaseNotes.cellLines && (
+                                            {releaseTab.data.releaseNotes.cellLines.length > 0 && (
                                                 <div style={{ marginBottom: '10px' }}>
                                                     <h4
                                                         style={{
@@ -385,7 +407,7 @@ const SingleDatasetNew = () => {
                                                     </ul>
                                                 </div>
                                             )}
-                                            {releaseTab.data.releaseNotes.samples && (
+                                            {releaseTab.data.releaseNotes.samples.length > 0 && (
                                                 <div style={{ marginBottom: '10px' }}>
                                                     <h4
                                                         style={{
@@ -407,7 +429,7 @@ const SingleDatasetNew = () => {
                                                     </ul>
                                                 </div>
                                             )}
-                                            {releaseTab.data.releaseNotes.drugs && (
+                                            {releaseTab.data.releaseNotes.drugs.length > 0 && (
                                                 <div style={{ marginBottom: '10px' }}>
                                                     <h4
                                                         style={{
@@ -429,7 +451,7 @@ const SingleDatasetNew = () => {
                                                     </ul>
                                                 </div>
                                             )}
-                                            {releaseTab.data.releaseNotes.drugExperiments && (
+                                            {releaseTab.data.releaseNotes.drugExperiments.length > 0 && (
                                                 <div style={{ marginBottom: '10px' }}>
                                                     <h4
                                                         style={{
@@ -453,7 +475,7 @@ const SingleDatasetNew = () => {
                                                     </ul>
                                                 </div>
                                             )}
-                                            {releaseTab.data.releaseNotes.molecularData && (
+                                            {releaseTab.data.releaseNotes.molecularData.length > 0 && (
                                                 <div style={{ marginBottom: '10px' }}>
                                                     <h4
                                                         style={{
