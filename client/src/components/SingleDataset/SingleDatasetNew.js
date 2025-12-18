@@ -236,7 +236,7 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.metabolomics.map((mutation, i) => (
+                                                            {datasetTab.data.mutation.map((mutation, i) => (
                                                                 <li key={i}>
                                                                     <a
                                                                         href={`${mutation.url}`}
