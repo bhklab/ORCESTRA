@@ -33,14 +33,13 @@ const SingleDatasetNew = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const QualityControlPage = url => {
-        try {
-            const res = axios.post('data-object/test-route', (url = url));
-			const sqlPage = 
-        } catch (error) {
-
-		}
-    };
+    // const QualityControlPage = url => {
+    //     try {
+    //         const res = axios.post('data-object/test-route', (url = url));
+    // 		const sqlPage =
+    //     } catch (error) {
+    // 	}
+    // };
 
     //If the dataset is not a legacy dataset, use the new DNL
     if (dataset.data.legacy === false) {
@@ -120,7 +119,7 @@ const SingleDatasetNew = () => {
                                             )}
                                         </ul>
                                     </div>
-                                    {datasetTab.data.qualityControl.length > 0 && (
+                                    {/* datasetTab.data.qualityControl.length > 0 && (
                                         <div className="card-container">
                                             <div className="card-title ">Dataset Quality Control</div>
                                             <div className="hr-container">
@@ -137,7 +136,7 @@ const SingleDatasetNew = () => {
                                                 ))}
                                             </ul>
                                         </div>
-                                    )}
+                                    )*/}
                                 </StyledContainerOuter>
 
                                 <StyledContainerInner>
@@ -169,6 +168,34 @@ const SingleDatasetNew = () => {
                                             )}
                                         </div>
                                     )}
+                                    {datasetTab.data.microRna.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Micro Rna</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.microRna.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.microRna.map((microRna, i) => (
+                                                                <li key={i}>
+                                                                    <a
+                                                                        href={`${microRna.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{microRna.name}: </span>
+                                                                    </a>
+                                                                    {`${microRna.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
 
                                     {datasetTab.data.dna.length > 0 && (
                                         <div className="card-container">
@@ -190,6 +217,151 @@ const SingleDatasetNew = () => {
                                                                         <span>{dna.name}: </span>
                                                                     </a>
                                                                     {`${dna.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {datasetTab.data.mutation.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Mutation</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.mutation.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.metabolomics.map((mutation, i) => (
+                                                                <li key={i}>
+                                                                    <a
+                                                                        href={`${mutation.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{mutation.name}: </span>
+                                                                    </a>
+                                                                    {`${mutation.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {datasetTab.data.metabolomics.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Metabolomics</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.metabolomics.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.metabolomics.map((metabolomics, i) => (
+                                                                <li key={i}>
+                                                                    <a
+                                                                        href={`${metabolomics.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{metabolomics.name}: </span>
+                                                                    </a>
+                                                                    {`${metabolomics.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {datasetTab.data.methylation.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Methylation</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.methylation.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.methylation.map((methylation, i) => (
+                                                                <li key={i}>
+                                                                    <a
+                                                                        href={`${methylation.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{methylation.name}: </span>
+                                                                    </a>
+                                                                    {`${methylation.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {datasetTab.data.fusion.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Fusion</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.fusion.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.fusion.map((fusion, i) => (
+                                                                <li key={i}>
+                                                                    <a
+                                                                        href={`${fusion.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{fusion.name}: </span>
+                                                                    </a>
+                                                                    {`${fusion.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {datasetTab.data.chromatin.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Chromatin</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.chromatin.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.chromatin.map((chromatin, i) => (
+                                                                <li key={i}>
+                                                                    <a
+                                                                        href={`${chromatin.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{chromatin.name}: </span>
+                                                                    </a>
+                                                                    {`${chromatin.description}`}
                                                                 </li>
                                                             ))}
                                                         </ul>
