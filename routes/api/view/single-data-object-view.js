@@ -28,13 +28,20 @@ const getTabData = async (dataObject, dataset, filter) => {
       },
       genome: dataObject.genome,
 	  description: dataset.description,
-	  rna: dataset.rna,
-	  dna: dataset.dna,
-	  drugResponse: dataset.drugResponse,
-	  proteomics: dataset.proteomics,
-	  imagingFeatures: dataset.imagingFeatures,
-	  imaging: dataset.imaging,
-	  qualityControl: dataset.qualityControl
+	  rna: dataset?.rna || [],
+	  microRna: dataset?.microRna || [],
+	  dna: dataset?.dna || [],
+	  cnv: dataset?.cnv || [],
+	  mutation: dataset?.mutation || [],
+	  drugResponse: dataset?.drugResponse || [],
+	  chromatin: dataset?.chromatin || [],
+	  fusion: dataset?.fusion || [],
+	  methylation: dataset?.methylation || [],
+	  metabolomics: dataset?.metabolomics || [],
+	  proteomics: dataset?.proteomics || [],
+	  imagingFeatures: dataset?.imagingFeatures || [],
+	  imaging: dataset?.imaging || [],
+	  qualityControl: dataset?.qualityControl || []
     },
   };
   if (dataset.datasetType === enums.dataTypes.toxicogenomics) {
@@ -257,6 +264,17 @@ const get = async (req, res) => {
   }
 };
 
+// const qualityControl = async (req, res) => {
+
+
+// 	try {
+		
+// 	} catch (error) {
+		
+// 	}
+// }
+
 module.exports = {
   get,
+//   qualityControl
 };
