@@ -23,6 +23,7 @@ const public = require('./api/public');
 router.get('/view/landing', landing.get);
 router.get('/view/data-object-filter', dataObjectFilter.get);
 router.get('/view/single-data-object', singleDataObject.get);
+router.post('/view/single-data-object/qc', singleDataObject.qualityControlHTML);
 router.get('/view/canonical-data-objects', canonicalDataObjects.get);
 router.get('/view/statistics', statistics.get);
 router.get('/view/statistics/upset-plot', statistics.upsetPlot);

@@ -264,17 +264,39 @@ const get = async (req, res) => {
   }
 };
 
-// const qualityControl = async (req, res) => {
+const qualityControlHTML = async (req, res) => {
+	try {
+		const { url } = req.body;
+		const parsed = new URL(url);
 
+		// Ensuring malicious links cannot be passed back to the user
+		if (!parsed.pathname.includes('/records/') || !parsed.pathname.includes('/files/') || !parsed.hostname.includes('zenodo') ) {
+			return res.status(400).send('URL path not allowed');
+		}
 
-// 	try {
-		
-// 	} catch (error) {
-		
-// 	}
-// }
+		const upstream = await fetch(parsed.toString(), {
+			redirect: 'follow',
+			headers: {
+				Accept: 'text/html,*/*',
+				'User-Agent': 'qc-proxy/1.0',
+			},
+		});
+
+		if (!upstream.ok) {
+			const msg = `Upstream error: ${upstream.status} ${upstream.statusText}`;
+			return res.status(upstream.status).send(msg);
+		}
+
+		const html = await upstream.text();
+		res.setHeader('Content-Type', 'text/html; charset=utf-8');
+		return res.status(200).send(html);
+	} catch (err) {
+		console.error(err);
+		return res.status(500).send('Server error');
+	} 
+};
 
 module.exports = {
   get,
-//   qualityControl
+  qualityControlHTML
 };
