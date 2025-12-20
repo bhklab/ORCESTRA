@@ -292,7 +292,7 @@ const qualityControlHTML = async (req, res) => {
 		return res.status(200).send(html);
 	} catch (err) {
 		console.error(err);
-		return res.status(500).send('Server error');
+		return res.status(500).send(err?.stack || String(err));
 	} 
 };
 
