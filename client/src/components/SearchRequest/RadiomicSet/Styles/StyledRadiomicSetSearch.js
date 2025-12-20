@@ -118,6 +118,33 @@ const StyledContainerOuter = styled.div`
 	
 `;
 
+const StyledQualityControl = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    .qc-button {
+        border: 1px solid #e5e5e5ff;
+        background-color: white;
+        border-radius: 10px;
+        padding: 5px 10px;
+        color: ${colors.standard_dark_blue};
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .qc-button:hover {
+        border: 1px solid rgb(241, 144, 33);
+        color: ${colors.standard_dark_blue};
+        background-color: white;
+    }
+`;
+
 const StyledContainerInner = styled.div`
     width: 30%;
     display: flex;
@@ -196,4 +223,4 @@ const StyledTopBar = styled.div`
     }
 `;
 
-export { LayoutContainer, StyledContainerOuter, StyledContainerInner, StyledTopBar };
+export { LayoutContainer, StyledContainerOuter, StyledContainerInner, StyledTopBar, StyledQualityControl };

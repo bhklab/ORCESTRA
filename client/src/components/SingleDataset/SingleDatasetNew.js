@@ -12,8 +12,10 @@ import RadiomicSet from './RadiomicSet/RadiomicSet';
 import {
     LayoutContainer,
     StyledContainerOuter,
-    StyledContainerInner
+    StyledContainerInner,
+    StyledQualityControl
 } from '../SearchRequest/RadiomicSet/Styles/StyledRadiomicSetSearch';
+import axios from 'axios';
 
 const SingleDatasetNew = () => {
     const location = useLocation();
@@ -33,13 +35,20 @@ const SingleDatasetNew = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // const QualityControlPage = url => {
-    //     try {
-    //         const res = axios.post('data-object/test-route', (url = url));
-    // 		const sqlPage =
-    //     } catch (error) {
-    // 	}
-    // };
+    const QualityControlPage = async url => {
+        try {
+            const res = await axios.post('/api/view/single-data-object/qc', { url }, { responseType: 'text' });
+            const html = res.data;
+
+            const blob = new Blob([html], { type: 'text/html' });
+            const blobUrl = URL.createObjectURL(blob);
+
+            window.open(blobUrl, '_blank', 'noopener,noreferrer');
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 30_000);
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     //If the dataset is not a legacy dataset, use the new DNL
     if (dataset.data.legacy === false) {
@@ -119,24 +128,24 @@ const SingleDatasetNew = () => {
                                             )}
                                         </ul>
                                     </div>
-                                    {/* datasetTab.data.qualityControl.length > 0 && (
+                                    {datasetTab.data.qualityControl.length > 0 && (
                                         <div className="card-container">
-                                            <div className="card-title ">Dataset Quality Control</div>
+                                            <div className="card-title ">Validation</div>
                                             <div className="hr-container">
                                                 <hr className="hr-style" />
                                             </div>
-                                            <ul className="list-style-card-sub">
+                                            <StyledQualityControl>
                                                 {datasetTab.data.qualityControl.map((qc, i) => (
-                                                    <li key={i}>
-                                                        <div onClick={() => QualityControlPage(qc.url)}>
-                                                            <span>{qc.name}: </span>
-                                                        </div>
-                                                        {`${qc.description}`}
-                                                    </li>
+                                                    <button
+                                                        className="qc-button"
+                                                        onClick={() => QualityControlPage(qc.url)}
+                                                    >
+                                                        <span>{qc.name} quality control</span>
+                                                    </button>
                                                 ))}
-                                            </ul>
+                                            </StyledQualityControl>
                                         </div>
-                                    )*/}
+                                    )}
                                 </StyledContainerOuter>
 
                                 <StyledContainerInner>
@@ -512,8 +521,8 @@ const SingleDatasetNew = () => {
                                                             rel="noreferrer"
                                                         >
                                                             <span className="pipeline">Pipeline: </span>
+                                                            <span>{dataset.data.pipeline.commit_id}</span>
                                                         </a>
-                                                        <span>{dataset.data.pipeline.commit_id}</span>
                                                     </>
                                                 )}
 
