@@ -372,6 +372,32 @@ const SingleDatasetNew = () => {
                                             )}
                                         </div>
                                     )}
+                                    {datasetTab.data.exon.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Exon</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            <ul className="list-style-card-main">
+                                                <li>
+                                                    <ul className="list-style-card-sub">
+                                                        {datasetTab.data.exon.map((exon, i) => (
+                                                            <li key={i}>
+                                                                <a
+                                                                    href={`${exon.url}`}
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                >
+                                                                    <span>{exon.name}: </span>
+                                                                </a>
+                                                                {`${exon.description}`}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    )}
 
                                     {datasetTab.data.proteomics.length > 0 && (
                                         <div className="card-container">
