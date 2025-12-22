@@ -123,9 +123,10 @@ const SingleDatasetNew = () => {
                                                 {datasetTab.data.qualityControl.map((qc, i) => (
                                                     <a
                                                         className="qc-button"
-                                                        href={`${
-                                                            process.env.REACT_APP_API_BASE
-                                                        }/api/view/single-data-object/qc?url=${encodeURIComponent(
+                                                        href={`${(process.env.REACT_APP_API_BASE || '').replace(
+                                                            /\/$/,
+                                                            ''
+                                                        )}/api/view/single-data-object/qc?url=${encodeURIComponent(
                                                             qc.url
                                                         )}`}
                                                         target="_blank"
