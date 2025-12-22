@@ -35,21 +35,6 @@ const SingleDatasetNew = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const QualityControlPage = async url => {
-        try {
-            const res = await axios.post('/api/view/single-data-object/qc', { url }, { responseType: 'text' });
-            const html = res.data;
-
-            const blob = new Blob([html], { type: 'text/html' });
-            const blobUrl = URL.createObjectURL(blob);
-
-            window.open(blobUrl, '_blank', 'noopener,noreferrer');
-            setTimeout(() => URL.revokeObjectURL(blobUrl), 30_000);
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
     //If the dataset is not a legacy dataset, use the new DNL
     if (dataset.data.legacy === false) {
         const datasetTab = dataset.data.tabData.find(tab => tab.header === 'Dataset');
@@ -136,12 +121,19 @@ const SingleDatasetNew = () => {
                                             </div>
                                             <StyledQualityControl>
                                                 {datasetTab.data.qualityControl.map((qc, i) => (
-                                                    <button
+                                                    <a
                                                         className="qc-button"
-                                                        onClick={() => QualityControlPage(qc.url)}
+                                                        href={`${
+                                                            process.env.REACT_APP_API_BASE
+                                                        }/api/view/single-data-object/qc?url=${encodeURIComponent(
+                                                            qc.url
+                                                        )}`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        key={i}
                                                     >
                                                         <span>{qc.name} quality control</span>
-                                                    </button>
+                                                    </a>
                                                 ))}
                                             </StyledQualityControl>
                                         </div>

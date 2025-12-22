@@ -266,11 +266,13 @@ const get = async (req, res) => {
 
 const qualityControlHTML = async (req, res) => {
 	try {
-		const { url } = req.body;
+		const { url } = req.query;
+		if(!url) return res.status(400).send('No valid QC url')
+
 		const parsed = new URL(url);
 
 		// Ensuring malicious links cannot be passed back to the user
-		if (!parsed.pathname.includes('/records/') || !parsed.pathname.includes('/files/') || !parsed.hostname.includes('zenodo') ) {
+		if (!parsed.pathname.includes('/records/') || !parsed.pathname.includes('/files/') || !parsed.hostname.includes('zenodo.org') ) {
 			return res.status(400).send('URL path not allowed');
 		}
 
