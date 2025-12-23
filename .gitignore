@@ -5,7 +5,7 @@ mock-pachyderm-api/package-lock.json
 #api/pachyderm-config/pachyderm-config/
 #api/pachyderm-config/
 node_modules
-.env
+.env*
 old-db/db-scripts/data
 db/data
 .DS_Store
