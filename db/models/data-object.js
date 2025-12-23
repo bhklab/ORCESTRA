@@ -1,83 +1,56 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const options = { typekey: '$type', discriminatorKey: 'dataObjType' } // discriminator key to get all schema in one place
-
-const dataObjectSchema = new Schema(
-    {
-        datasetType: String,
-        name: {
-            type: String,
-            required: true,
-            trim: true
-        },
-        dataset: { type: mongoose.Schema.Types.ObjectId, ref: 'Dataset' },
-        info: {
-            status: {type: String, required: true},
-            private: Boolean,
-            canonical: Boolean,
-            numDownload: Number,
-            createdBy: String,
-            email: String,
-            shareToken: String,
-            filteredSensitivity: Boolean,
-            commitID: String,
-            date: {
-                submitted: Date,
-                processed: Date,
-                created: Date
-            },
-            other: Object
-        },
-        repositories: [{
-            version: String,
-            doi: String,
-            downloadLink: Schema.Types.Mixed,
-            bioComputeObject: {
-                doi: String,
-                downloadLink: String
-            }
-        }],
-        availableDatatypes: [{
-            name: String,
-            genomeType: String,
-            details: Object
-        }],
-		legacy: Boolean
+const dataObjectSchema = new Schema({
+    name: { type: String, required: true },
+	datasetType: { type: String, required: true },
+    info: {
+        status: {type: String, required: true},
+        private: Boolean,
+        canonical: Boolean,
+        numDownload: Number,
+        createdBy: String,
+        shareToken: String,
+        dateCreated: Date,
+        other: Object
     },
-    options
-);
+    repositories: {
+		github: {
+			commitId: String,
+			url: String
+		},
+		zenodo: {
+			version: String,
+			doi: String,
+			downloadLink: String
+		},
+        bioComputeObject: {
+            doi: String,
+            downloadLink: String
+        },
+	},
+	releaseNotes: [
+		{
+			heading: String,
+			notes: {
+				name: String,
+				description: String,
+				url: String
+			}
+		}	
+	],
+	tools: [
+		{
+			name: String,
+			description: String,
+			url: String
+		}
+	],
+	dataset: { type: mongoose.Schema.Types.ObjectId, ref: 'Dataset' }
+});
 
 const DataObject = mongoose.model("DataObject", dataObjectSchema);
 
-// Data objects without genome tools and references.
-// Currently used to represent ToxicoSets, XevaSets, ClinicalGenomics and ICB data objects
-const BaseDataObject = DataObject.discriminator(
-    'BaseDataObject',
-    new Schema()
-);
-
-// Data objects without genome tools and references.
-// Currently used to represent PSets and RadioSets.
-const GenomeDataObject = DataObject.discriminator(
-    'GenomeDataObject',
-    new Schema(
-        {
-            tools: {
-                rna: String,
-                dna: String
-            },
-            references: {
-                rna: String,
-                dna: String
-            },
-            genome: String
-        }
-    )
-);
-
 module.exports = {
     DataObject,
-    BaseDataObject,
-    GenomeDataObject
 }

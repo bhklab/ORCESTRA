@@ -5,7 +5,10 @@ const datasetNoteSchema = new Schema({
     name: String,
     disclaimer: String,
     usagePolicy: String,
-    citations: [String]
+    citations: [{
+		citation: String,
+		url: String
+	}]
 });
 
 module.exports = mongoose.model('DatasetNote', datasetNoteSchema);
