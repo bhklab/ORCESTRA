@@ -5,7 +5,8 @@ const dataTypes = {
     clinicalgenomics: 'clinicalgenomics',
     radiogenomics: 'radioset',
 	radiomics: 'radiomicset',
-    icb: 'clinical_icb'
+    icb: 'clinical_icb',
+	annotations: 'annotations'
 }
 
 module.exports = {

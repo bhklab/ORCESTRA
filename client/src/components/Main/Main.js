@@ -78,6 +78,7 @@ const Main = () => {
                 <DatatypeBox title="Clinical Genomics Data" datatype={dataTypes.clinicalgenomics} />
                 <DatatypeBox title="Immune Checkpoint Blockade Data" datatype={dataTypes.icb} />
                 <DatatypeBox title="Radiomics Data" datatype={dataTypes.radiomics} />
+                <DatatypeBox title="Annotation Data" datatype={dataTypes.annotations} />
             </Row>
         </Wrapper>
     );

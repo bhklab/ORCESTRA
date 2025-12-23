@@ -9,11 +9,12 @@ import XevaSetSearch from '../SearchRequest/XevaSet/XevaSetSearch';
 import ClinGenSearch from '../SearchRequest/ClinicalGenomics/ClinGenSetSearch';
 import RadioSetSearch from '../SearchRequest/RadioSet/RadioSetSearch';
 import RadiomicSetSearch from '../SearchRequest/RadiomicSet/RadiomicSetSearch';
+import AnnotationSetSearch from '../SearchRequest/AnnotationSet/AnnotationSetSearch';
 
 const DatasetMain = () => {
     const { datatype } = useParams(); // Using useParams to access route parameters
 
-    return(
+    return (
         <React.Fragment>
             {datatype === dataTypes.pharmacogenomics && <Pharmacogenomics />}
             {datatype === dataTypes.toxicogenomics && <ToxicoSetSearch />}
@@ -22,8 +23,9 @@ const DatasetMain = () => {
             {datatype === dataTypes.radiogenomics && <RadioSetSearch />}
             {datatype === dataTypes.icb && <ClinGenSearch datasetType={dataTypes.icb} />}
             {datatype === dataTypes.radiomics && <RadiomicSetSearch datasetType={dataTypes.radiomics} />}
+            {datatype === dataTypes.annotations && <AnnotationSetSearch datasetType={dataTypes.annotations} />}
         </React.Fragment>
     );
-}
+};
 
 export default DatasetMain;
