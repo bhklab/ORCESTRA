@@ -608,21 +608,30 @@ const SingleDatasetNew = () => {
                                         </div>
                                         {datasetTab.data.description && <p>{datasetTab.data.description}</p>}
                                         {datasetTab.data?.descriptionExpanded?.length > 0 && (
-                                            <Accordion multiple>
-                                                {datasetTab.data.descriptionExpanded.map((item, index) => {
-                                                    const paragraphs = (item.body ?? '')
-                                                        .split(/\r?\n/)
-                                                        .map(s => s.trim())
-                                                        .filter(Boolean);
+                                            <Accordion multiple activeIndex={[0]}>
+                                                {datasetTab.data.descriptionExpanded.map((entry, entryIndex) => (
+                                                    <AccordionTab key={entryIndex} header={entry.title}>
+                                                        {entry.content.map((item, itemIndex) => {
+                                                            const paragraphs = (item.body ?? '')
+                                                                .split(/\r?\n/)
+                                                                .map(s => s.trim())
+                                                                .filter(Boolean);
 
-                                                    return (
-                                                        <AccordionTab key={index} header={item.header}>
-                                                            {paragraphs.map((text, i) => (
-                                                                <p key={i}>{text}</p>
-                                                            ))}
-                                                        </AccordionTab>
-                                                    );
-                                                })}
+                                                            return (
+                                                                <div key={itemIndex} style={{ marginBottom: '1rem' }}>
+                                                                    <h3 style={{ marginBottom: '0.5rem' }}>
+                                                                        {item.header}
+                                                                    </h3>
+                                                                    {paragraphs.map((text, i) => (
+                                                                        <p key={i} className="text-bodyMd mb-2">
+                                                                            {text}
+                                                                        </p>
+                                                                    ))}
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </AccordionTab>
+                                                ))}
                                             </Accordion>
                                         )}
                                     </div>
@@ -761,6 +770,31 @@ const SingleDatasetNew = () => {
                                                         </ul>
                                                     </div>
                                                 )}
+                                            {releaseTab.data.releaseNotes.compounds &&
+                                                releaseTab.data.releaseNotes?.compounds.length > 0 && (
+                                                    <div style={{ marginBottom: '10px' }}>
+                                                        <h4
+                                                            style={{
+                                                                fontSize: '16px',
+                                                                fontWeight: 'Bold',
+                                                                margin: '0 0 3px 0'
+                                                            }}
+                                                        >
+                                                            Compounds
+                                                        </h4>
+                                                        <ul className="list-style-card-sub">
+                                                            {releaseTab.data.releaseNotes.compounds &&
+                                                                releaseTab.data.releaseNotes.compounds.map(
+                                                                    (note, i) => (
+                                                                        <li key={i}>
+                                                                            <span>{note.current} </span>
+                                                                            {note.name.toLowerCase()}
+                                                                        </li>
+                                                                    )
+                                                                )}
+                                                        </ul>
+                                                    </div>
+                                                )}
                                             {releaseTab.data.releaseNotes.drugExperiments &&
                                                 releaseTab.data.releaseNotes?.drugExperiments.length > 0 && (
                                                     <div style={{ marginBottom: '10px' }}>
@@ -811,8 +845,8 @@ const SingleDatasetNew = () => {
                                                         </ul>
                                                     </div>
                                                 )}
-                                            {releaseTab.data.releaseNotes.molecularData &&
-                                                releaseTab.data.releaseNotes?.molecularData?.length > 0 && (
+                                            {releaseTab.data.releaseNotes.toxicology &&
+                                                releaseTab.data.releaseNotes?.toxicology?.length > 0 && (
                                                     <div style={{ marginBottom: '10px' }}>
                                                         <h4
                                                             style={{
