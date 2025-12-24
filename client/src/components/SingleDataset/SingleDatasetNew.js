@@ -204,13 +204,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -247,13 +251,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -290,13 +298,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -333,13 +345,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -376,13 +392,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -419,13 +439,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -462,13 +486,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -503,13 +531,17 @@ const SingleDatasetNew = () => {
 
                                                             return (
                                                                 <li key={i}>
-                                                                    <a
-                                                                        href={`${item.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
+                                                                    {item.url ? (
+                                                                        <a
+                                                                            href={item.url}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                    ) : (
                                                                         <span>{item.name}</span>
-                                                                    </a>
+                                                                    )}
                                                                     {paragraphs.map((text, i) => (
                                                                         <p index={i} style={{ margin: '5px 0 5px 0' }}>
                                                                             {text}
@@ -542,13 +574,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -584,13 +620,17 @@ const SingleDatasetNew = () => {
 
                                                             return (
                                                                 <li key={i}>
-                                                                    <a
-                                                                        href={`${item.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
+                                                                    {item.url ? (
+                                                                        <a
+                                                                            href={item.url}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                    ) : (
                                                                         <span>{item.name}</span>
-                                                                    </a>
+                                                                    )}
                                                                     {paragraphs.map((text, i) => (
                                                                         <p index={i} style={{ margin: '5px 0 5px 0' }}>
                                                                             {text}
@@ -623,13 +663,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -666,13 +710,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -708,13 +756,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -749,13 +801,17 @@ const SingleDatasetNew = () => {
                                                                     .filter(Boolean);
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -791,13 +847,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -833,13 +893,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
@@ -875,13 +939,17 @@ const SingleDatasetNew = () => {
 
                                                                 return (
                                                                     <li key={i}>
-                                                                        <a
-                                                                            href={`${item.url}`}
-                                                                            target="_blank"
-                                                                            rel="noreferrer"
-                                                                        >
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
                                                                             <span>{item.name}</span>
-                                                                        </a>
+                                                                        )}
                                                                         {paragraphs.map((text, i) => (
                                                                             <p
                                                                                 index={i}
