@@ -43,6 +43,10 @@ const LayoutContainer = styled.div`
 			font-weight: bold;
 			font-size: 15px;
 		}
+		a:hover {
+			color: black;
+			border-bottom: 2px solid rgb(241, 144, 33);
+		}
 	}
 
 	.list-style-card-sub{
@@ -69,8 +73,7 @@ const LayoutContainer = styled.div`
 		text-decoration: none;
 	}
 
-	a:hover {
-		color: black;
+	.pipeline-hover:hover {
 		border-bottom: 2px solid rgb(241, 144, 33);
 	}
 

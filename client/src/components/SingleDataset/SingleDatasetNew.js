@@ -606,11 +606,7 @@ const SingleDatasetNew = () => {
                                         <div className="hr-container">
                                             <hr className="hr-style" />
                                         </div>
-
-                                        {/* Always-visible short description */}
-                                        <p>{datasetTab.data.description}</p>
-
-                                        {/* Accordion for extended content */}
+                                        {datasetTab.data.description && <p>{datasetTab.data.description}</p>}
                                         {datasetTab.data?.descriptionExpanded?.length > 0 && (
                                             <Accordion multiple>
                                                 {datasetTab.data.descriptionExpanded.map((item, index) => {
@@ -622,9 +618,7 @@ const SingleDatasetNew = () => {
                                                     return (
                                                         <AccordionTab key={index} header={item.header}>
                                                             {paragraphs.map((text, i) => (
-                                                                <p key={i} className="text-bodyMd mb-2">
-                                                                    {text}
-                                                                </p>
+                                                                <p key={i}>{text}</p>
                                                             ))}
                                                         </AccordionTab>
                                                     );
@@ -648,6 +642,7 @@ const SingleDatasetNew = () => {
                                                             href={dataset.data.pipeline.url}
                                                             target="_blank"
                                                             rel="noreferrer"
+                                                            className="pipeline-hover"
                                                         >
                                                             <span className="pipeline">Pipeline: </span>
                                                             <span>{dataset.data.pipeline.commit_id}</span>
