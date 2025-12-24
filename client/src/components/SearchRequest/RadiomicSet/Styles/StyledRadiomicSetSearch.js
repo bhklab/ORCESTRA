@@ -34,15 +34,16 @@ const LayoutContainer = styled.div`
 
 	}
 
+	span {
+		font-weight: bold;
+		font-size: 15px;
+	}
+
 	.list-style-card-main {
 		list-style-type: none;
 		padding-left: 0;
 		margin: 0;
 
-		span {
-			font-weight: bold;
-			font-size: 15px;
-		}
 		a:hover {
 			color: black;
 			border-bottom: 2px solid rgb(241, 144, 33);
@@ -53,20 +54,13 @@ const LayoutContainer = styled.div`
 		list-style-type: disc;
 		padding-left: 20px;
 		margin: 0;
-		span {
-			font-weight: bold;
-			font-size: 15px;
-		}
 	}
 
 	.list-style-card-info{
 		list-style-type: none;
 		padding-left: 10px;
 		margin: 0;
-		span {
-			font-weight: bold;
-			font-size: 13px;
-		}
+
 	}
 
 	a {
@@ -84,7 +78,7 @@ const LayoutContainer = styled.div`
 `;
 
 const StyledContainerOuter = styled.div`
-    width: 35%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -148,6 +142,12 @@ const StyledContainerOuter = styled.div`
 
 	.pipeline {
 		font-weight: 700;
+
+	}
+
+	.commitId {
+		font-weight: normal;
+		font-size: 13px;
 	}
 	
 `;
@@ -180,7 +180,7 @@ const StyledQualityControl = styled.div`
 `;
 
 const StyledContainerInner = styled.div`
-    width: 30%;
+    width: 40%;
     display: flex;
     flex-direction: column;
     gap: 20px;

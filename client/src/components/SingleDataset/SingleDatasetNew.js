@@ -20,7 +20,6 @@ import {
 const SingleDatasetNew = () => {
     const location = useLocation();
     const { datatype, id } = useParams();
-    const [expanded, setExpanded] = useState(false);
 
     const { getDataset, getHeader, getGeneralInfoAccordion, datasetMessage, publishDialog, dataset } = useSingleDataset(
         datatype,
@@ -134,7 +133,9 @@ const SingleDatasetNew = () => {
                                                         rel="noreferrer"
                                                         key={i}
                                                     >
-                                                        <span>{qc.name} quality control</span>
+                                                        <span style={{ fontSize: '13px' }}>
+                                                            {qc.name} quality control
+                                                        </span>
                                                     </a>
                                                 ))}
                                             </StyledQualityControl>
@@ -153,18 +154,32 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.rna.map((rna, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${rna.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{rna.name}: </span>
-                                                                    </a>
-                                                                    {`${rna.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.rna.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -181,18 +196,32 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.microRna.map((microRna, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${microRna.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{microRna.name}: </span>
-                                                                    </a>
-                                                                    {`${microRna.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.microRna.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -210,18 +239,32 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.dna.map((dna, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${dna.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{dna.name}: </span>
-                                                                    </a>
-                                                                    {`${dna.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.dna.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -239,18 +282,32 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.mutation.map((mutation, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${mutation.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{mutation.name}: </span>
-                                                                    </a>
-                                                                    {`${mutation.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.mutation.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -268,18 +325,32 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.metabolomics.map((metabolomics, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${metabolomics.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{metabolomics.name}: </span>
-                                                                    </a>
-                                                                    {`${metabolomics.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.metabolomics.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -297,18 +368,32 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.methylation.map((methylation, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${methylation.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{methylation.name}: </span>
-                                                                    </a>
-                                                                    {`${methylation.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.methylation.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -326,18 +411,32 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.fusion.map((fusion, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${fusion.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{fusion.name}: </span>
-                                                                    </a>
-                                                                    {`${fusion.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.fusion.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -355,18 +454,32 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.chromatin.map((chromatin, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${chromatin.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{chromatin.name}: </span>
-                                                                    </a>
-                                                                    {`${chromatin.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.chromatin.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -382,18 +495,29 @@ const SingleDatasetNew = () => {
                                             <ul className="list-style-card-main">
                                                 <li>
                                                     <ul className="list-style-card-sub">
-                                                        {datasetTab.data.exon.map((exon, i) => (
-                                                            <li key={i}>
-                                                                <a
-                                                                    href={`${exon.url}`}
-                                                                    target="_blank"
-                                                                    rel="noreferrer"
-                                                                >
-                                                                    <span>{exon.name}: </span>
-                                                                </a>
-                                                                {`${exon.description}`}
-                                                            </li>
-                                                        ))}
+                                                        {datasetTab.data.exon.map((item, i) => {
+                                                            const paragraphs = (item.description ?? '')
+                                                                .split(/\n/)
+                                                                .map(s => s.trim())
+                                                                .filter(Boolean);
+
+                                                            return (
+                                                                <li key={i}>
+                                                                    <a
+                                                                        href={`${item.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{item.name}</span>
+                                                                    </a>
+                                                                    {paragraphs.map((text, i) => (
+                                                                        <p index={i} style={{ margin: '5px 0 5px 0' }}>
+                                                                            {text}
+                                                                        </p>
+                                                                    ))}
+                                                                </li>
+                                                            );
+                                                        })}
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -410,18 +534,32 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.proteomics.map((proteomic, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${proteomic.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{proteomic.name}: </span>
-                                                                    </a>
-                                                                    {`${proteomic.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.proteomics.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -438,18 +576,29 @@ const SingleDatasetNew = () => {
                                             <ul className="list-style-card-main">
                                                 <li>
                                                     <ul className="list-style-card-sub">
-                                                        {datasetTab.data.drugResponse.map((drugResponse, i) => (
-                                                            <li key={i}>
-                                                                <a
-                                                                    href={`${drugResponse.url}`}
-                                                                    target="_blank"
-                                                                    rel="noreferrer"
-                                                                >
-                                                                    <span>{drugResponse.name}: </span>
-                                                                </a>
-                                                                {`${drugResponse.description}`}
-                                                            </li>
-                                                        ))}
+                                                        {datasetTab.data.drugResponse.map((item, i) => {
+                                                            const paragraphs = (item.description ?? '')
+                                                                .split(/\n/)
+                                                                .map(s => s.trim())
+                                                                .filter(Boolean);
+
+                                                            return (
+                                                                <li key={i}>
+                                                                    <a
+                                                                        href={`${item.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{item.name}</span>
+                                                                    </a>
+                                                                    {paragraphs.map((text, i) => (
+                                                                        <p index={i} style={{ margin: '5px 0 5px 0' }}>
+                                                                            {text}
+                                                                        </p>
+                                                                    ))}
+                                                                </li>
+                                                            );
+                                                        })}
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -466,18 +615,32 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.imagingFeatures.map((img, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${img.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{img.name}: </span>
-                                                                    </a>
-                                                                    {`${img.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.imagingFeatures.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -495,46 +658,115 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.imaging.map((img, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${img.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{img.name}: </span>
-                                                                    </a>
-                                                                    {`${img.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.imaging.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
                                             )}
                                         </div>
                                     )}
-                                    {datasetTab.data.hepatotoxicity?.length > 0 && (
+                                    {datasetTab.data.compoundMetadata?.length > 0 && (
                                         <div className="card-container">
-                                            <div className="card-title ">Hepatotoxicity</div>
+                                            <div className="card-title ">Compound Metadata</div>
                                             <div className="hr-container">
                                                 <hr className="hr-style" />
                                             </div>
-                                            {datasetTab.data.hepatotoxicity.length > 0 && (
+                                            {datasetTab.data.compoundMetadata.length > 0 && (
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.hepatotoxicity.map((item, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${item.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{item.name}: </span>
-                                                                    </a>
-                                                                    {`${item.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.compoundMetadata.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+                                    {datasetTab.data.expAssays?.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Experiments or Assays</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.expAssays.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.expAssays.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -551,18 +783,74 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.compoundOverview.map((item, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${item.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{item.name}: </span>
-                                                                    </a>
-                                                                    {`${item.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.compoundOverview.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+                                    {datasetTab.data.hepatotoxicity?.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Hepatotoxicity</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.hepatotoxicity.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.hepatotoxicity.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -579,18 +867,32 @@ const SingleDatasetNew = () => {
                                                 <ul className="list-style-card-main">
                                                     <li>
                                                         <ul className="list-style-card-sub">
-                                                            {datasetTab.data.drugStatus.map((item, i) => (
-                                                                <li key={i}>
-                                                                    <a
-                                                                        href={`${item.url}`}
-                                                                        target="_blank"
-                                                                        rel="noreferrer"
-                                                                    >
-                                                                        <span>{item.name}: </span>
-                                                                    </a>
-                                                                    {`${item.description}`}
-                                                                </li>
-                                                            ))}
+                                                            {datasetTab.data.drugStatus.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        <a
+                                                                            href={`${item.url}`}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -607,7 +909,7 @@ const SingleDatasetNew = () => {
                                             <hr className="hr-style" />
                                         </div>
                                         {datasetTab.data.description && <p>{datasetTab.data.description}</p>}
-                                        {datasetTab.data?.descriptionExpanded?.length > 0 && (
+                                        {/* {datasetTab.data?.descriptionExpanded?.length > 0 && (
                                             <Accordion multiple activeIndex={[0]}>
                                                 {datasetTab.data.descriptionExpanded.map((entry, entryIndex) => (
                                                     <AccordionTab key={entryIndex} header={entry.title}>
@@ -633,7 +935,7 @@ const SingleDatasetNew = () => {
                                                     </AccordionTab>
                                                 ))}
                                             </Accordion>
-                                        )}
+                                        )} */}
                                     </div>
                                     <div className="card-container">
                                         <div className="card-title ">Pipeline Details</div>
@@ -654,7 +956,9 @@ const SingleDatasetNew = () => {
                                                             className="pipeline-hover"
                                                         >
                                                             <span className="pipeline">Pipeline: </span>
-                                                            <span>{dataset.data.pipeline.commit_id}</span>
+                                                            <span className="commitId">
+                                                                {dataset.data.pipeline.commit_id}
+                                                            </span>
                                                         </a>
                                                     </>
                                                 )}

@@ -47,6 +47,8 @@ const getTabData = async (dataObject, dataset, filter) => {
 	  compoundOverview: dataset?.compoundOverview || [],
 	  hepatotoxicity: dataset?.hepatotoxicity || [],
 	  drugStatus: dataset?.drugStatus || [],
+	  compoundMetadata: dataset?.compoundMetadata || [],
+	  expAssays: dataset?.expAssays || [],
     },
   };
   if (dataset.datasetType === enums.dataTypes.toxicogenomics) {
