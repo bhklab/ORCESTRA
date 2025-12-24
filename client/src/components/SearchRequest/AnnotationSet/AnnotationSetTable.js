@@ -52,12 +52,6 @@ const AnnotationSetTable = props => {
                     style={{ textAlign: 'center' }}
                     sortable={true}
                 />
-                <Column
-                    field="availableDatatypes"
-                    body={availableDataTemplate}
-                    style={{ textAlign: 'center' }}
-                    header="Image Modality"
-                />
                 <Column field="canonical" body={canonicalTemplate} style={{ textAlign: 'center' }} header="Canonical" />
                 <Column
                     field="info.numDownload"
