@@ -202,23 +202,29 @@ body .p-tabview.p-tabview-top .p-tabview-nav li.p-highlight:hover a {
 body .p-tabview.p-tabview-top .p-tabview-nav li a:not(.p-disabled):focus {
     box-shadow: none;
 }
+.p-accordion-header-link{
+	border-radius: 8px !important;
+}
 
 /* Accordion styling */
 body .p-accordion .p-accordion-header:not(.p-disabled).p-highlight a {
     background-color: #3d405a;
     color: white;
     border: 1px solid #3d405a;
+	border-radius: 8px !important;
 }
 
 body .p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover a {
     background-color: #555975;
     color: white;
     border: 1px solid #555975;
+	border-radius: 8px !important;
 }
 
 .p-accordion .p-accordion-tab {
     margin-bottom: 10px;
     border: 0.5px solid #555975;
+	border-radius: 8px;
 
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
@@ -230,6 +236,7 @@ body .p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover a {
 
 body .p-accordion .p-accordion-header:not(.p-disabled) a:focus {
     box-shadow: none;
+	border-radius: 8px !important;
 }
 
 .p-tabview-nav-link:hover{

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Accordion, AccordionTab } from 'primereact/accordion';
 import { useLocation, useParams } from 'react-router-dom';
 import useSingleDataset from '../../hooks/useSingleDataset';
 import { dataTypes } from '../Shared/Enums';
@@ -15,11 +16,11 @@ import {
     StyledContainerInner,
     StyledQualityControl
 } from '../SearchRequest/RadiomicSet/Styles/StyledRadiomicSetSearch';
-import axios from 'axios';
 
 const SingleDatasetNew = () => {
     const location = useLocation();
     const { datatype, id } = useParams();
+    const [expanded, setExpanded] = useState(false);
 
     const { getDataset, getHeader, getGeneralInfoAccordion, datasetMessage, publishDialog, dataset } = useSingleDataset(
         datatype,
@@ -512,15 +513,124 @@ const SingleDatasetNew = () => {
                                             )}
                                         </div>
                                     )}
+                                    {datasetTab.data.hepatotoxicity?.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Hepatotoxicity</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.hepatotoxicity.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.hepatotoxicity.map((item, i) => (
+                                                                <li key={i}>
+                                                                    <a
+                                                                        href={`${item.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{item.name}: </span>
+                                                                    </a>
+                                                                    {`${item.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+                                    {datasetTab.data.compoundOverview.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Compound Overview</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.compoundOverview.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.compoundOverview.map((item, i) => (
+                                                                <li key={i}>
+                                                                    <a
+                                                                        href={`${item.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{item.name}: </span>
+                                                                    </a>
+                                                                    {`${item.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+                                    {datasetTab.data.drugStatus?.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Drug Status</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.drugStatus.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.drugStatus.map((item, i) => (
+                                                                <li key={i}>
+                                                                    <a
+                                                                        href={`${item.url}`}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <span>{item.name}: </span>
+                                                                    </a>
+                                                                    {`${item.description}`}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
                                 </StyledContainerInner>
 
                                 <StyledContainerOuter>
                                     <div className="card-container">
-                                        <div className="card-title ">Description</div>
+                                        <div className="card-title">Description</div>
+
                                         <div className="hr-container">
                                             <hr className="hr-style" />
                                         </div>
-                                        {datasetTab.data.description}
+
+                                        {/* Always-visible short description */}
+                                        <p>{datasetTab.data.description}</p>
+
+                                        {/* Accordion for extended content */}
+                                        {datasetTab.data?.descriptionExpanded?.length > 0 && (
+                                            <Accordion multiple>
+                                                {datasetTab.data.descriptionExpanded.map((item, index) => {
+                                                    const paragraphs = (item.body ?? '')
+                                                        .split(/\r?\n/)
+                                                        .map(s => s.trim())
+                                                        .filter(Boolean);
+
+                                                    return (
+                                                        <AccordionTab key={index} header={item.header}>
+                                                            {paragraphs.map((text, i) => (
+                                                                <p key={i} className="text-bodyMd mb-2">
+                                                                    {text}
+                                                                </p>
+                                                            ))}
+                                                        </AccordionTab>
+                                                    );
+                                                })}
+                                            </Accordion>
+                                        )}
                                     </div>
                                     <div className="card-container">
                                         <div className="card-title ">Pipeline Details</div>
@@ -696,6 +806,31 @@ const SingleDatasetNew = () => {
                                                         <ul className="list-style-card-sub">
                                                             {releaseTab.data.releaseNotes.molecularData &&
                                                                 releaseTab.data.releaseNotes.molecularData.map(
+                                                                    (note, i) => (
+                                                                        <li key={i}>
+                                                                            <span>{note.current} </span>
+                                                                            {note.name.toLowerCase()}
+                                                                        </li>
+                                                                    )
+                                                                )}
+                                                        </ul>
+                                                    </div>
+                                                )}
+                                            {releaseTab.data.releaseNotes.molecularData &&
+                                                releaseTab.data.releaseNotes?.molecularData?.length > 0 && (
+                                                    <div style={{ marginBottom: '10px' }}>
+                                                        <h4
+                                                            style={{
+                                                                fontSize: '16px',
+                                                                fontWeight: 'Bold',
+                                                                margin: '0 0 3px 0'
+                                                            }}
+                                                        >
+                                                            Toxicology
+                                                        </h4>
+                                                        <ul className="list-style-card-sub">
+                                                            {releaseTab.data.releaseNotes.toxicology &&
+                                                                releaseTab.data.releaseNotes.toxicology.map(
                                                                     (note, i) => (
                                                                         <li key={i}>
                                                                             <span>{note.current} </span>

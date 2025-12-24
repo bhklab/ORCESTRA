@@ -28,6 +28,7 @@ const getTabData = async (dataObject, dataset, filter) => {
       },
       genome: dataObject.genome,
 	  description: dataset.description,
+	  descriptionExpanded: dataset?.descriptionExpanded || [],
 	  rna: dataset?.rna || [],
 	  microRna: dataset?.microRna || [],
 	  dna: dataset?.dna || [],
@@ -42,7 +43,10 @@ const getTabData = async (dataObject, dataset, filter) => {
 	  proteomics: dataset?.proteomics || [],
 	  imagingFeatures: dataset?.imagingFeatures || [],
 	  imaging: dataset?.imaging || [],
-	  qualityControl: dataset?.qualityControl || []
+	  qualityControl: dataset?.qualityControl || [],
+	  compoundOverview: dataset?.compoundOverview || [],
+	  hepatotoxicity: dataset?.hepatotoxicity || [],
+	  drugStatus: dataset?.drugStatus || [],
     },
   };
   if (dataset.datasetType === enums.dataTypes.toxicogenomics) {

@@ -87,20 +87,51 @@ const StyledContainerOuter = styled.div`
     gap: 20px;
     font-size: 14px;
 
-	.card-container {
-		border-radius: 8px;
-		padding: 25px;
-		box-shadow: 0 2px 5px rgba(0,0,0,0.6);
-		background-color: white;
-		font-size: 14px;
+.card-container {
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+    background-color: white;
+    font-size: 14px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+}
 
-		transition: transform 0.3s, box-shadow 0.3s;
-	}
+.card-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 1);
+}
 
-	.card-container:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 5px 20px rgba(0, 0, 0, 1);
-	}
+/* Collapsing behavior */
+.card-container.collapsed .description-expanded {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.card-container.expanded .description-expanded {
+  	overflow: visible;
+}
+
+.description-expanded {
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+}
+
+/* Button styling */
+.expand-button {
+    margin-top: 12px;
+    background: none;
+    border: none;
+    color: #2563eb; /* blue-ish */
+    cursor: pointer;
+    font-weight: 500;
+    padding: 0;
+}
+
+.expand-button:hover {
+    text-decoration: underline;
+}
+
 
 	.hr-container{
 		margin: 0 0 15px 0;
