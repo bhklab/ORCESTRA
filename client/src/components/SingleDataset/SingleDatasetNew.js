@@ -1242,6 +1242,31 @@ const SingleDatasetNew = () => {
                                                         </ul>
                                                     </div>
                                                 )}
+                                            {releaseTab.data.releaseNotes.experiment &&
+                                                releaseTab.data.releaseNotes?.experiment?.length > 0 && (
+                                                    <div style={{ marginBottom: '10px' }}>
+                                                        <h4
+                                                            style={{
+                                                                fontSize: '16px',
+                                                                fontWeight: 'Bold',
+                                                                margin: '0 0 3px 0'
+                                                            }}
+                                                        >
+                                                            Experiments
+                                                        </h4>
+                                                        <ul className="list-style-card-sub">
+                                                            {releaseTab.data.releaseNotes.experiment &&
+                                                                releaseTab.data.releaseNotes.experiment.map(
+                                                                    (note, i) => (
+                                                                        <li key={i}>
+                                                                            <span>{note.current} </span>
+                                                                            {note.name.toLowerCase()}
+                                                                        </li>
+                                                                    )
+                                                                )}
+                                                        </ul>
+                                                    </div>
+                                                )}
                                         </div>
                                     </div>
                                 </StyledContainerOuter>
