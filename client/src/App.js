@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import ReactGA from 'react-ga4';
-// import GlobalStyles from './styles/GlobalStyles';
 import Router from './Routes/Router';
 
 const App = () => {
@@ -15,7 +14,6 @@ const App = () => {
 
     return (
         <React.Fragment>
-            {/* <GlobalStyles /> */}
             <Router />
         </React.Fragment>
     );

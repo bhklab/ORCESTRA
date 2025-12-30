@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"engines": {
-		"node": ">=24.12"
+		"node": ">=24"
 	},
 	"dependencies": {
 		"@upsetjs/react": "^1.11.0",
@@ -50,6 +50,6 @@
 		]
 	},
 	"devDependencies": {
-		"tailwindcss": "3"
+		"tailwindcss": "^3.4.19"
 	}
 }

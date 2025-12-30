@@ -1,45 +1,94 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer tailwind-base, primereact, tailwind-utilities;
 
-[type='text']:focus,
-[type='email']:focus,
-[type='url']:focus,
-[type='password']:focus,
-[type='number']:focus,
-[type='date']:focus,
-[type='search']:focus,
-[type='checkbox']:focus,
-[type='radio']:focus,
-[multiple]:focus,
-textarea:focus,
-select:focus {
-    --tw-ring-color: var(--primary-color);
-    border-color: var(--primary-color);
+@layer tailwind-base {
+  @tailwind base;
 }
 
-.react-datepicker-wrapper .react-datepicker__input-container input {
-    background-color: transparent;
-    border: none;
-    width: 100%;
-    padding: 0px;
-}
-.react-datepicker__day.react-datepicker__day--keyboard-selected {
-    background: none;
-    color: black;
-}
-input:focus,
-textarea:focus {
-    outline: none !important;
-    outline-offset: 0 !important;
-    --tw-ring-offset-width: none !important;
-    border-color: #8899fc;
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
 }
 
-li:focus-visible {
-    outline: none;
+@layer primereact {
+
+	/* GENERAL STYLING */
+
+	/* Focus (when an item is pressed) box shadow and border colour across all components */
+	.p-component:not(.p-disabled).p-focus {
+		box-shadow: None !important;
+		border-color: #E3E5E6 !important;
+	}
+
+	/* Hover border colour across all components */
+	.p-component:hover {
+		border-color: #E3E5E6 !important;
+	}
+
+	/* MULTISELECT (selected text colour, hover background colour) */
+	.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
+		background: none !important;
+		color: #001D3D !important;
+	}
+	.p-multiselect-items.p-component{
+		padding: 0 !important;
+	}
+	.p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled).p-focus {
+		background: none !important;
+	}
+	.p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext {
+		box-shadow: None !important;
+	}
+
+
+	/* CHECKBOX (background colour selected, border colour hover) */
+	.p-checkbox.p-highlight .p-checkbox-box{
+		border-color: #001D3D !important;
+		background-color: #001D3D !important;
+	}
+	.p-checkbox.p-focus .p-checkbox-box{
+		border-color: #001D3D !important;
+
+	}
+	.p-checkbox:not(.p-disabled):has(.p-checkbox-input:hover) .p-checkbox-box {
+		border-color: #001D3D !important;
+	}
+
+	/* INPUT TEXT (removal of hover)*/ 
+	.p-inputtext:focus {
+		border-color: #E3E5E6 !important;
+	}
+
+
+	/* DATA TABLE COMPONENT (Rounding borders)*/
+	.p-datatable.p-datatable-gridlines {
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	.p-datatable .p-datatable-wrapper > table,
+	.p-datatable .p-datatable-scrollable-header table,
+	.p-datatable .p-datatable-scrollable-body table {
+		border-collapse: separate;
+		border-spacing: 0;
+		overflow: hidden;
+	}
+
+	.p-datatable.p-datatable-gridlines .p-datatable-thead > tr > th:first-child {
+		border-top-left-radius: 8px;
+	}
+
+	.p-datatable.p-datatable-gridlines .p-datatable-thead > tr > th:last-child {
+		border-top-right-radius: 8px;
+	}
+
+	.p-datatable.p-datatable-gridlines
+    .p-datatable-tbody > tr:last-child > td:first-child {
+		border-bottom-left-radius: 8px;
+	}
+
+	.p-datatable.p-datatable-gridlines
+		.p-datatable-tbody > tr:last-child > td:last-child {
+		border-bottom-right-radius: 8px;
+	}
 }
 
-li:hover {
-    cursor: pointer;
-}
