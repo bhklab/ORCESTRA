@@ -3,7 +3,7 @@
  */
 
 const enums = require('./enum');
-const Dataset = require('../db/models/dataset');
+const Dataset = require('../db/models/dataset-object');
 
 let baseQuery = {
     'info.status': 'complete',

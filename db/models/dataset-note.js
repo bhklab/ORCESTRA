@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const datasetNoteSchema = new Schema({
-    name: String,
+	name: String,
+	dataVersion: String,
     disclaimer: String,
     usagePolicy: String,
     citations: [{

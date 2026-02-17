@@ -24,6 +24,7 @@
 		border-color: #E3E5E6 !important;
 	}
 
+
 	/* MULTISELECT (selected text colour, hover background colour) */
 	.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
 		background: none !important;
@@ -59,12 +60,13 @@
 	}
 
 
-	/* DATA TABLE COMPONENT (Rounding borders)*/
+	/* DATA TABLE COMPONENT (Rounding borders and cell centering)*/
+
+	/* Borders */
 	.p-datatable.p-datatable-gridlines {
 		border-radius: 8px;
 		overflow: hidden;
 	}
-
 	.p-datatable .p-datatable-wrapper > table,
 	.p-datatable .p-datatable-scrollable-header table,
 	.p-datatable .p-datatable-scrollable-body table {
@@ -72,23 +74,33 @@
 		border-spacing: 0;
 		overflow: hidden;
 	}
-
 	.p-datatable.p-datatable-gridlines .p-datatable-thead > tr > th:first-child {
 		border-top-left-radius: 8px;
 	}
-
 	.p-datatable.p-datatable-gridlines .p-datatable-thead > tr > th:last-child {
 		border-top-right-radius: 8px;
 	}
-
 	.p-datatable.p-datatable-gridlines
     .p-datatable-tbody > tr:last-child > td:first-child {
 		border-bottom-left-radius: 8px;
 	}
-
 	.p-datatable.p-datatable-gridlines
 		.p-datatable-tbody > tr:last-child > td:last-child {
 		border-bottom-right-radius: 8px;
+	}
+
+	/* Cell centering */
+	.p-column-header-content {
+		display: flex;
+		justify-content: center;
+		text-align: center;
+	}
+	.p-datatable-tbody > tr > td {
+		text-align: center !important;
+	}
+
+	.p-datatable {
+		font-size: 13px !important;
 	}
 }
 
