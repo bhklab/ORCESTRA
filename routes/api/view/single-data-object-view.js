@@ -169,10 +169,9 @@ const get = async (req, res) => {
       const filter = await DataFilter.findOne({ datasetType: "pset" }).lean();
 
       // get the doi and downloadlink for specific data version. Only applicable to PSets. For other datasets, use 1.0.
-      let repo = dataObject.repositories.find(
-        (r) =>
-          r.version === dataObjectHelper.getDataVersion(req.query.datasetType)
-      );
+		let repo = dataObject.repositories.find(
+			(r) => r.version === dataObjectHelper.getDataVersion(req.query.datasetType)
+		);
       dataObj = {
         _id: dataObject._id,
         name: dataObject.name,
@@ -184,7 +183,10 @@ const get = async (req, res) => {
           : repo.downloadLink,
         bioComputeObject: repo.bioComputeObject,
 		legacy: dataObject.legacy,
-		tools: dataObject.tools
+		tools: dataObject.tools,
+		csvs: dataObject.info.private && repo.csvLinks
+          ? `${repo.downloadLink}&access_token=${process.env.ZENODO_ACCESS_TOKEN}`
+          : repo.csvLinks,
       };
       dataObj.tabData = [];
       dataObj.tabData = await getTabData(dataObject, dataset, filter);

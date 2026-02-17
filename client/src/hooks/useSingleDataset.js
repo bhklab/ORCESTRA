@@ -9,6 +9,8 @@ import { usePromiseTracker } from 'react-promise-tracker';
 import { trackPromise } from 'react-promise-tracker';
 
 import DownloadButton from '../components/Shared/Buttons/DownloadButton';
+import DownloadAllButton from '../components/Shared/Buttons/DownloadAllButton';
+
 import CustomMessages from '../components/Shared/CustomMessages';
 import CustomSelect from '../components/Shared/CustomSelect';
 import { dataTypes } from '../components/Shared/Enums';
@@ -69,6 +71,7 @@ const useSingleDataset = (datasetType, id) => {
 
     const [dataset, setDataset] = useState({ ready: false, data: {} });
     const [selectedObject, setSelectedObject] = useState('');
+    const [selectedCSV, setSelectedCSV] = useState('');
     const [publicView, setPublicView] = useState(false);
     const [ownerView, setOwnerView] = useState(false);
     const [showPublishDialog, setShowPublishDialog] = useState(false);
@@ -185,7 +188,7 @@ const useSingleDataset = (datasetType, id) => {
                         doi={dataset.data.doi}
                         downloadLink={selectedObject !== '' ? selectedObject.downloadLink : ''}
                         mode="dataset"
-                        label="Download Dataset"
+                        label="Download Dataset RDS"
                         tooltip={`Download ${dataset.data.name}(${
                             typeof selectedObject !== 'undefined' ? selectedObject.name : ''
                         }) as an R object`}
@@ -201,7 +204,7 @@ const useSingleDataset = (datasetType, id) => {
                 doi={dataset.data.doi}
                 downloadLink={dataset.data.downloadLink}
                 mode="dataset"
-                label="Download Dataset"
+                label="Download Dataset RDS"
                 tooltip={`Download ${dataset.data.name} as an R object`}
             />
         );
@@ -226,6 +229,36 @@ const useSingleDataset = (datasetType, id) => {
                         tooltip={`Download the BioCompute object of the pipleine used to create ${dataset.data.name}`}
                     />
                 )}
+                {dataset.data.csvs && (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: '4px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row', gap: '4px', alignItems: 'start' }}>
+                            <CustomSelect
+                                selectOne={true}
+                                selected={selectedCSV}
+                                options={dataset.data.csvs.map((link, ind) => ({
+                                    label: `${ind + 1}. ` + link.split('/files/')[1].split('?')[0],
+                                    value: link
+                                }))}
+                                onChange={e => {
+                                    setSelectedCSV(e.value);
+                                }}
+                            />
+                            <DownloadButton
+                                disabled={!selectedCSV}
+                                datasetType={datasetType}
+                                doi={dataset.data.doi}
+                                downloadLink={selectedCSV !== '' ? selectedCSV : ''}
+                                mode="dataset"
+                            />
+                        </div>
+
+                        {/* <DownloadAllButton
+                            downloadLinks={dataset.data.csvs ? dataset.data.csvs : []}
+                            label={`Download All CSVs`}
+                        /> */}
+                    </div>
+                )}
+
                 {ownerView && (
                     <Button
                         className="left"
