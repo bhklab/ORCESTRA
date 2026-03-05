@@ -6,6 +6,7 @@
 		"node": ">=24"
 	},
 	"dependencies": {
+		"@tailwindcss/line-clamp": "^0.4.4",
 		"@upsetjs/react": "^1.11.0",
 		"ajv": "^8.12.0",
 		"axios": "^1.6.0",
