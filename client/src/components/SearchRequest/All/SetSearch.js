@@ -22,6 +22,7 @@ const SetSearch = () => {
         const getDatasets = async () => {
             try {
                 const res = await axios.get(`/api/view/data-object-filter/${datatype}`);
+                console.log(res.data);
                 setDatasets(res.data);
                 setSelectedDatasets(res.data);
             } catch (error) {
@@ -33,10 +34,10 @@ const SetSearch = () => {
 
     return (
         <div className="flex flex-col p-10 z-10 items-center min-h-screen">
-            <div className="flex flex-col gap-8 bg-white border-1 drop-shadow-sm rounded-lg p-10">
+            <div className="flex flex-col gap-8 bg-white border-1 drop-shadow-sm rounded-lg p-10 w-full">
                 <div>
                     <h2 className="text-headingXl font-bold text-lightBlue">
-                        Explore multimodal {dataTypes[datatype].heading}
+                        Explore Multimodal {dataTypes[datatype].heading} Datasets
                     </h2>
                     <div className="flex flex-col">
                         {auth.user ? (
@@ -54,15 +55,43 @@ const SetSearch = () => {
                 </div>
                 <DatasetSelect />
                 <DataTable value={selectedDatasets} size="small" showGridlines={true} stripedRows>
-                    <Column field="name" header="Object Name" />
-                    <Column field="version" header="Version" />
-                    <Column field="category" header="Dataset" />
-                    <Column field="description" header="Description" />
-                    {/* <Column field="category" header="Molecular Data" />
-                    <Column field="category" header="Tools" />
-                    <Column field="category" header="RNA Ref" />
-                    <Column field="quantity" header="Total Downloads" /> */}
-                    <Column field="quantity" header="Download" />
+                    <Column
+                        body={rowData => <h2 className="font-bold text-headingSm text-darkYellow">{rowData.name}</h2>}
+                        header="Object Name"
+                        style={{ width: '5%' }}
+                    />
+                    <Column field="version" header="Version" style={{ width: '5%' }} />
+                    <Column field="category" header="Dataset" style={{ width: '5%' }} />
+                    <Column
+                        body={rowData => <p className="line-clamp-3">{rowData.description}</p>}
+                        header="Description"
+                        style={{ width: '30%' }}
+                    />
+                    <Column
+                        body={rowData => <p className="line-clamp-3">{Object.keys(rowData.dataSources).join(', ')}</p>}
+                        header="Molecular Data"
+                        style={{ width: '15%' }}
+                    />
+                    <Column
+                        body={rowData => <p className="line-clamp-3">{Object.keys(rowData.dataSources).join(', ')}</p>}
+                        header="Release Notes"
+                        style={{ width: '15%' }}
+                    />
+                    <Column
+                        body={rowData => (
+                            <div className="flex flex-col justify-center items-center">
+                                <a
+                                    className="flex flex-col py-1 px-4 rounded-full justify-center items-center bg-lightBlue text-darkYellow font-bold"
+                                    href={rowData.repositories.downloadLink}
+                                    target="_blank"
+                                >
+                                    Download Dataset
+                                </a>
+                            </div>
+                        )}
+                        header="Download"
+                        style={{ width: '5%' }}
+                    />
                 </DataTable>
             </div>
         </div>
