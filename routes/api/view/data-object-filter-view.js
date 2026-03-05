@@ -9,13 +9,17 @@ const DatasetNote = require('../../../db/models/dataset-note')
 const get = async (req, res) => {
 	const { datatype } = req.params
 	console.log(datatype)
-    try{
-		const datasetObjects = await DatasetObject.find({datasetType: datatype}).lean();
-		console.log(typeof(datasetObjects['dataset']))
-		// datasetObjects.datasetNote = await DatasetNote.find({_id: datasetObjects.datasetNote})
-		console.log(datasetObjects)
+    try {
+		const datasetObjects = await DatasetObject.find({datasetType: datatype});
+		const noteIDs = datasetObjects.map(obj =>  { // Store all ids for notes needed for datasetObjects
+			return obj.datasetNote
+		});
+		const datasetNotes = await DatasetNote.find({ _id: { $in: noteIDs } }); // Retrieve needed dataset notes
+		const noteMap = new Map(datasetNotes.map(note => [note._id, note])); // create map/dictionary for needed noteIDs --> note
+		datasetObjects.forEach(obj => {
+			obj.DatasetNote = noteMap.get(obj.datasetNote);
+		});
 		res.send(datasetObjects)
-
     } catch (err){
         console.log(err);
         res.status(500);

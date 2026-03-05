@@ -11,7 +11,7 @@ export const DatasetSelect = ({ datasets }) => {
         { name: 'Paris', code: 'PRS' }
     ];
     return (
-        <div className="card flex justify-content-center">
+        <div className="flex justify-start items-start w-1/4 smd:w-full">
             <MultiSelect
                 value={selectedCities}
                 onChange={e => setSelectedCities(e.value)}
