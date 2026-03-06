@@ -60,20 +60,25 @@ const SetSearch = () => {
                         header="Object Name"
                         style={{ width: '5%' }}
                     />
+                    <Column
+                        body={rowData => <p className="line-clamp-3">{rowData.datasetNote?.name}</p>}
+                        header="Dataset"
+                        style={{ width: '5%' }}
+                    />
+                    <Column header="Date Created" style={{ width: '5%' }} />
                     <Column field="version" header="Version" style={{ width: '5%' }} />
-                    <Column field="category" header="Dataset" style={{ width: '5%' }} />
                     <Column
                         body={rowData => <p className="line-clamp-3">{rowData.description}</p>}
                         header="Description"
-                        style={{ width: '30%' }}
+                        style={{ width: '25%' }}
                     />
                     <Column
                         body={rowData => <p className="line-clamp-3">{Object.keys(rowData.dataSources).join(', ')}</p>}
-                        header="Molecular Data"
+                        header="Data"
                         style={{ width: '15%' }}
                     />
                     <Column
-                        body={rowData => <p className="line-clamp-3">{Object.keys(rowData.dataSources).join(', ')}</p>}
+                        body={rowData => <p className="line-clamp-3">{Object.keys(rowData.releaseNotes).join(', ')}</p>}
                         header="Release Notes"
                         style={{ width: '15%' }}
                     />
@@ -85,11 +90,11 @@ const SetSearch = () => {
                                     href={rowData.repositories.downloadLink}
                                     target="_blank"
                                 >
-                                    Download Dataset
+                                    Download
                                 </a>
                             </div>
                         )}
-                        header="Download"
+                        header="Dataset Download"
                         style={{ width: '5%' }}
                     />
                 </DataTable>
