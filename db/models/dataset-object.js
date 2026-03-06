@@ -40,16 +40,7 @@ const datasetObjectSchema = new Schema({
             downloadLink: String
         },
 	},
-	releaseNotes: [
-		{
-			heading: String,
-			notes: {
-				name: String,
-				description: String,
-				url: String
-			}
-		}	
-	],
+	releaseNotes: { type: Schema.Types.Mixed, default: {} },
 	tools: [
 		{
 			name: String,
