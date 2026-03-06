@@ -69,6 +69,14 @@ const DataTypes = () => {
                 "Data focused on how the genome is involved in the body's response to environmental stressors and toxicants.",
             img: 'radiomics.png',
             path: 'radiomicset'
+        },
+        {
+            name: 'Annotations',
+            fieldTotals: ['Datasets: 1', 'Canonical: 1'],
+            contains: ['Drug Toxicity', 'BioAssays'],
+            description: '',
+            img: 'radiomics.png',
+            path: 'annotations'
         }
     ];
 
