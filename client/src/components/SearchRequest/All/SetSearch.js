@@ -56,29 +56,35 @@ const SetSearch = () => {
                 <DatasetSelect />
                 <DataTable value={selectedDatasets} size="small" showGridlines={true} stripedRows>
                     <Column
-                        body={rowData => <h2 className="font-bold text-headingSm text-darkYellow">{rowData.name}</h2>}
+                        body={rowData => <h2 className="font-bold text-headingSm text-darkYellow">{rowData?.name}</h2>}
                         header="Object Name"
                         style={{ width: '5%' }}
                     />
                     <Column
-                        body={rowData => <p className="line-clamp-3">{rowData.datasetNote?.name}</p>}
+                        body={rowData => <p className="line-clamp-3">{rowData?.datasetNote?.name}</p>}
                         header="Dataset"
                         style={{ width: '5%' }}
                     />
                     <Column header="Date Created" style={{ width: '5%' }} />
                     <Column field="version" header="Version" style={{ width: '5%' }} />
                     <Column
-                        body={rowData => <p className="line-clamp-3">{rowData.description}</p>}
+                        body={rowData => <p className="line-clamp-3">{rowData?.description}</p>}
                         header="Description"
                         style={{ width: '25%' }}
                     />
                     <Column
-                        body={rowData => <p className="line-clamp-3">{Object.keys(rowData.dataSources).join(', ')}</p>}
+                        body={rowData => (
+                            <p className="line-clamp-3">
+                                {rowData?.dataSources && Object.keys(rowData?.dataSources).join(', ')}
+                            </p>
+                        )}
                         header="Data"
                         style={{ width: '15%' }}
                     />
                     <Column
-                        body={rowData => <p className="line-clamp-3">{Object.keys(rowData.releaseNotes).join(', ')}</p>}
+                        body={rowData => (
+                            <p className="line-clamp-3">{Object.keys(rowData?.releaseNotes).join(', ')}</p>
+                        )}
                         header="Release Notes"
                         style={{ width: '15%' }}
                     />
@@ -87,7 +93,7 @@ const SetSearch = () => {
                             <div className="flex flex-col justify-center items-center">
                                 <a
                                     className="flex flex-col py-1 px-4 rounded-full justify-center items-center bg-lightBlue text-darkYellow font-bold"
-                                    href={rowData.repositories.downloadLink}
+                                    href={rowData?.repositories.downloadLink}
                                     target="_blank"
                                 >
                                     Download
