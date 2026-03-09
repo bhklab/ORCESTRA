@@ -22,7 +22,6 @@ const SetSearch = () => {
         const getDatasets = async () => {
             try {
                 const res = await axios.get(`/api/view/data-object-filter/${datatype}`);
-                console.log(res.data);
                 setDatasets(res.data);
                 setSelectedDatasets(res.data);
             } catch (error) {
@@ -54,18 +53,32 @@ const SetSearch = () => {
                     </div>
                 </div>
                 <DatasetSelect />
-                <DataTable value={selectedDatasets} size="small" showGridlines={true} stripedRows>
+                <DataTable value={selectedDatasets} sortMode="single" size="small" showGridlines={true} stripedRows>
                     <Column
-                        body={rowData => <h2 className="font-bold text-headingSm text-darkYellow">{rowData?.name}</h2>}
+                        sortField="name"
+                        body={rowData => <h2 className=" text-headingSm text-darkYellow break-all">{rowData?.name}</h2>}
                         header="Object Name"
-                        style={{ width: '5%' }}
+                        style={{ width: '15%' }}
+                        sortable
                     />
                     <Column
+                        sortField="datasetNote.name"
                         body={rowData => <p className="line-clamp-3">{rowData?.datasetNote?.name}</p>}
                         header="Dataset"
                         style={{ width: '5%' }}
+                        sortable
                     />
-                    <Column header="Date Created" style={{ width: '5%' }} />
+                    <Column
+                        sortField="info.dateCreated"
+                        body={rowData => (
+                            <p className="line-clamp-3">
+                                {rowData?.info?.dateCreated ? (rowData?.info?.dateCreated).slice(0, 10) : ''}
+                            </p>
+                        )}
+                        header="Date Created"
+                        style={{ width: '5%' }}
+                        sortable
+                    />
                     <Column field="version" header="Version" style={{ width: '5%' }} />
                     <Column
                         body={rowData => <p className="line-clamp-3">{rowData?.description}</p>}
