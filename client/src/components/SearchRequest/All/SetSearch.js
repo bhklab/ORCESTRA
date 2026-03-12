@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../hooks/Context';
 import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 // import { dataTypes } from '../../Shared/Enums';
@@ -14,6 +14,7 @@ import { Column } from 'primereact/column';
 const SetSearch = () => {
     const auth = useContext(AuthContext);
     const { datatype } = useParams();
+    const navigate = useNavigate();
 
     const [datasets, setDatasets] = useState([]);
     const [selectedDatasets, setSelectedDatasets] = useState([]);
@@ -22,6 +23,7 @@ const SetSearch = () => {
         const getDatasets = async () => {
             try {
                 const res = await axios.get(`/api/view/data-object-filter/${datatype}`);
+                console.log(res.data);
                 setDatasets(res.data);
                 setSelectedDatasets(res.data);
             } catch (error) {
@@ -56,7 +58,14 @@ const SetSearch = () => {
                 <DataTable value={selectedDatasets} sortMode="single" size="small" showGridlines={true} stripedRows>
                     <Column
                         sortField="name"
-                        body={rowData => <h2 className=" text-headingSm text-darkYellow break-all">{rowData?.name}</h2>}
+                        body={rowData => (
+                            <h2
+                                className="font-bold text-headingSm text-darkYellow break-all hover:cursor-pointer underline underline-offset-[3px] decoration-[1.5px]"
+                                onClick={() => navigate(`/${datatype}/${rowData._id}`)}
+                            >
+                                {rowData?.name}
+                            </h2>
+                        )}
                         header="Object Name"
                         style={{ width: '15%' }}
                         sortable
