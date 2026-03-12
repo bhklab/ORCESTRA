@@ -6,7 +6,7 @@ const router = express.Router();
 
 // const landing = require('./api/view/landing-view');
 const dataObjectFilter = require('./api/view/data-object-filter-view');
-// const singleDataObject = require('./api/view/single-data-object-view');
+const singleDataObject = require('./api/view/single-data-object-view');
 // const canonicalDataObjects = require('./api/view/canonical-data-object-view');
 // const statistics = require('./api/view/statistics-view');
 // const profile = require('./api/view/profile-view');
@@ -22,7 +22,7 @@ const auth = require('./api/auth');
 // view/component-specific routes
 // router.get('/view/landing', landing.get);
 router.get('/view/data-object-filter/:datatype', dataObjectFilter.get);
-// router.get('/view/single-data-object', singleDataObject.get);
+router.get('/view/single-data-object/:datatype/:dataset_id', singleDataObject.get);
 // router.get('/view/canonical-data-objects', canonicalDataObjects.get);
 // router.get('/view/statistics', statistics.get);
 // router.get('/view/statistics/upset-plot', statistics.upsetPlot);

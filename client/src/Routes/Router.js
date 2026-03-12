@@ -79,7 +79,7 @@ const Router = () => {
                     {/* The route below has been deprecated, however it is used if there are still
 					out there that reference the old link type in ORCESTRA */}
                     <Route path="/:datatype/:id1/:id2" element={<SingleDataset />} />
-                    <Route path="/:datatype/:id" element={<SingleDatasetNew />} />
+                    <Route path="/:datatype/:dataset_id" element={<SingleDatasetNew />} />
                     <Route path="*" element={<NotFound404 />} />
                     <Route path="/tcl/table" element={<TclTable />} />
                 </Routes>
