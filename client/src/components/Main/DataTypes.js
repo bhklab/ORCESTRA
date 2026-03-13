@@ -96,7 +96,7 @@ const DataTypes = () => {
                         className="group w-[380px] h-[320px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden hover:cursor-pointer"
                     >
                         <div className="w-full h-[150px] rounded-t-3xl flex flex-col justify-center items-center overflow-hidden">
-                            <img src={`/images/new-icons/${type.img}`} />
+                            <img src={`/images/datatype-icons/${type.img}`} />
                         </div>
                         <div className="flex flex-col p-3">
                             <div className="flex flex-col min-h-[170px] gap-2">

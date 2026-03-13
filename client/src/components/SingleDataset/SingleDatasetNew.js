@@ -5,7 +5,7 @@ import { Accordion, AccordionTab } from 'primereact/accordion';
 import { classNames } from 'primereact/utils';
 
 const TechnicalInformation = ({ header, info }) => (
-    <div className="flex justify-between w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm">
+    <div className="flex justify-between items-center w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm">
         <h3 className="text-gray-600 text-headingMd">{header}</h3>
         <span className="text-black text-headingMd font-semibold">{info}</span>
     </div>
@@ -112,6 +112,18 @@ const SingleDatasetNew = () => {
                                     info={datasetData.info.dateCreated.slice(0, 10)}
                                 />
                                 <TechnicalInformation header="User Downloads" info={datasetData.info.numDownload} />
+                                <div className="flex justify-between items-center w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm">
+                                    <img src="/images/icons/github.png" className="w-6 h-6" />
+                                    <a
+                                        href={datasetData.info.other.pipeline.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <span className="text-black text-headingXs font-semibold hover:text-darkYellow">
+                                            {datasetData.info.other.pipeline.commit_id}
+                                        </span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div className="flex flex-col items-start w-full gap-2" id="citations">
@@ -174,6 +186,22 @@ const SingleDatasetNew = () => {
                                 ))}
                             </Accordion>
                         </div>
+                        <div className="flex flex-col items-start w-full gap-2" id="citations">
+                            <h1 className="text-headingXl text-lightBlue">Citations</h1>
+                            <div className="flex flex-col gap-2">
+                                {datasetData?.qualityControl &&
+                                    Object.entries(datasetData.qualityControl).map(qc, ind => {
+                                        return (
+                                            <div
+                                                className="text-bodyMd font-bold text-black py-2 px-4 border-1 border-gray-200 rounded-full bg-white"
+                                                key={ind}
+                                            >
+                                                {qc.name}
+                                            </div>
+                                        );
+                                    })}
+                            </div>
+                        </div>
                         <div className="flex flex-col items-start w-full gap-2" id="policy">
                             <h1 className="text-headingXl text-lightBlue">Usage Policy</h1>
                             <div className="flex flex-col items-start">
@@ -207,21 +235,80 @@ const SingleDatasetNew = () => {
                             </div>
                         </div>
                     </div>
-                    <div>
-                        {datasetData.releaseNotes &&
-                            Object.entries(datasetData.releaseNotes).map(([noteType, notes]) => {
-                                return (
-                                    <div>
-                                        <h2 key={noteType}>{noteType}</h2>
-                                        {console.log(notes)}
-                                        {notes.map((note, ind) => (
-                                            <p key={ind}>
-                                                {note.name}: {note.current}
-                                            </p>
-                                        ))}
-                                    </div>
-                                );
-                            })}
+                    <div className="flex flex-col w-full gap-2">
+                        <div className="flex flex-col w-full gap-2">
+                            <h1 className="text-headingXl text-lightBlue">Data</h1>
+                            {datasetData.releaseNotes &&
+                                Object.entries(datasetData.dataSources).map(([noteType, notes]) => {
+                                    return (
+                                        <div className="flex flex-col gap-2">
+                                            <h2 className="text-headingMd text-gray-700 font-semibold" key={noteType}>
+                                                {noteType}
+                                            </h2>
+                                            <div className="flex flex-row gap-2 flex-wrap">
+                                                {notes.map((note, ind) => (
+                                                    <div
+                                                        className="flex flex-col gap-2 w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm"
+                                                        key={ind}
+                                                    >
+                                                        <h3 className="text-gray-600 text-headingMd">{note.name}</h3>
+                                                        <div className="flex flex-row justify-between items-center gap-2">
+                                                            <a
+                                                                href={note.url}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                <span className="text-black text-headingMd font-semibold hover:text-darkYellow">
+                                                                    {note.description}
+                                                                </span>
+                                                            </a>
+                                                            <div>
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    fill="none"
+                                                                    viewBox="0 0 24 24"
+                                                                    stroke-width="1.5"
+                                                                    stroke="currentColor"
+                                                                    class="size-5"
+                                                                >
+                                                                    <path
+                                                                        stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
+                                                                    />
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                        </div>
+                        <div className="flex flex-col w-full gap-2">
+                            <h1 className="text-headingXl text-lightBlue">Release Notes</h1>
+                            {datasetData.dataSources &&
+                                Object.entries(datasetData.releaseNotes).map(([noteType, notes]) => {
+                                    return (
+                                        <div className="flex flex-col gap-2">
+                                            <h2 className="text-headingMd text-gray-700 font-semibold" key={noteType}>
+                                                {noteType}
+                                            </h2>
+                                            <div className="flex flex-row gap-2 flex-wrap">
+                                                {notes.map((note, ind) => (
+                                                    <div
+                                                        className="text-bodyMd font-bold text-black py-2 px-4 border-1 border-gray-200 rounded-full bg-white"
+                                                        key={ind}
+                                                    >
+                                                        {note.name}: {note.current}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                        </div>
                     </div>
                 </div>
             </div>
