@@ -29,6 +29,6 @@ export const dataTypes = {
     },
     annotations: {
         heading: 'Annotation',
-        set: 'Annotation Set'
+        set: 'AnnotationSet'
     }
 };

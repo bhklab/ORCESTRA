@@ -55,7 +55,14 @@ const SetSearch = () => {
                     </div>
                 </div>
                 <DatasetSelect />
-                <DataTable value={selectedDatasets} sortMode="single" size="small" showGridlines={true} stripedRows>
+                <DataTable
+                    value={selectedDatasets}
+                    sortMode="single"
+                    sortField="Date Created"
+                    size="small"
+                    showGridlines={true}
+                    stripedRows
+                >
                     <Column
                         sortField="name"
                         body={rowData => (
