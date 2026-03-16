@@ -18,7 +18,7 @@ export const DatasetSelect = ({ datasets }) => {
                 options={cities}
                 optionLabel="name"
                 filterDelay={400}
-                placeholder="Select Cities"
+                placeholder="Select Dataset(s)"
                 className="w-full md:w-20rem"
                 maxSelectedLabels={5}
                 filter

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 
 const TechnicalInformation = ({ header, info }) => (
@@ -12,7 +12,6 @@ const TechnicalInformation = ({ header, info }) => (
 
 const SingleDatasetNew = () => {
     // router
-    const location = useLocation();
     const { datatype, dataset_id } = useParams();
 
     // dataset state
@@ -49,13 +48,13 @@ const SingleDatasetNew = () => {
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
-                                stroke-width="2.5"
+                                strokeWidth="2.5"
                                 stroke="currentColor"
-                                class="size-4"
+                                className="size-4"
                             >
                                 <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
                                     d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
                                 />
                             </svg>
@@ -99,7 +98,7 @@ const SingleDatasetNew = () => {
                             <h1 className="text-headingXl text-lightBlue">Technical Information</h1>
                             <div className="flex flex-col items-start w-full gap-2">
                                 {datasetData.repositories.downloadLink.length > 0 &&
-                                datasetData.repositories.csvLinks.length > 0 ? (
+                                datasetData.repositories?.csvLinks?.length > 0 ? (
                                     <TechnicalInformation header="Format" info="RDS and CSV" />
                                 ) : (
                                     <TechnicalInformation header="Format" info="RDS" />
@@ -165,13 +164,13 @@ const SingleDatasetNew = () => {
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         fill="none"
                                                         viewBox="0 0 24 24"
-                                                        stroke-width="2"
+                                                        strokeWidth="2"
                                                         stroke="currentColor"
-                                                        class="size-4"
+                                                        className="size-4"
                                                     >
                                                         <path
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
                                                             d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
                                                         />
                                                     </svg>
@@ -186,11 +185,11 @@ const SingleDatasetNew = () => {
                                 ))}
                             </Accordion>
                         </div>
-                        <div className="flex flex-col items-start w-full gap-2" id="citations">
-                            <h1 className="text-headingXl text-lightBlue">Citations</h1>
-                            <div className="flex flex-col gap-2">
-                                {datasetData?.qualityControl &&
-                                    datasetData.qualityControl.map((qc, ind) => (
+                        {datasetData?.qualityControl?.length > 0 && (
+                            <div className="flex flex-col items-start w-full gap-2" id="quality control">
+                                <h1 className="text-headingXl text-lightBlue">Quality Control</h1>
+                                <div className="flex flex-col gap-2">
+                                    {datasetData.qualityControl.map((qc, ind) => (
                                         <a
                                             className="text-bodyMd font-bold text-black py-2 px-4 border-1 border-gray-200 rounded-full bg-white"
                                             key={ind}
@@ -201,8 +200,10 @@ const SingleDatasetNew = () => {
                                             {qc.name}
                                         </a>
                                     ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
+
                         <div className="flex flex-col items-start w-full gap-2" id="policy">
                             <h1 className="text-headingXl text-lightBlue">Usage Policy</h1>
                             <div className="flex flex-col items-start">
@@ -240,9 +241,9 @@ const SingleDatasetNew = () => {
                         <div className="flex flex-col w-full gap-2">
                             <h1 className="text-headingXl text-lightBlue">Data</h1>
                             {datasetData.releaseNotes &&
-                                Object.entries(datasetData.dataSources).map(([noteType, notes]) => {
+                                Object.entries(datasetData.dataSources).map(([noteType, notes], ind) => {
                                     return (
-                                        <div className="flex flex-col gap-2">
+                                        <div className="flex flex-col gap-2" key={ind}>
                                             <h2 className="text-headingMd text-gray-700 font-semibold" key={noteType}>
                                                 {noteType}
                                             </h2>
@@ -268,13 +269,13 @@ const SingleDatasetNew = () => {
                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                     fill="none"
                                                                     viewBox="0 0 24 24"
-                                                                    stroke-width="1.5"
+                                                                    strokeWidth="1.5"
                                                                     stroke="currentColor"
-                                                                    class="size-5"
+                                                                    className="size-5"
                                                                 >
                                                                     <path
-                                                                        stroke-linecap="round"
-                                                                        stroke-linejoin="round"
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
                                                                         d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
                                                                     />
                                                                 </svg>
@@ -290,9 +291,9 @@ const SingleDatasetNew = () => {
                         <div className="flex flex-col w-full gap-2">
                             <h1 className="text-headingXl text-lightBlue">Release Notes</h1>
                             {datasetData.dataSources &&
-                                Object.entries(datasetData.releaseNotes).map(([noteType, notes]) => {
+                                Object.entries(datasetData.releaseNotes).map(([noteType, notes], ind) => {
                                     return (
-                                        <div className="flex flex-col gap-2">
+                                        <div className="flex flex-col gap-2" key={ind}>
                                             <h2 className="text-headingMd text-gray-700 font-semibold" key={noteType}>
                                                 {noteType}
                                             </h2>
