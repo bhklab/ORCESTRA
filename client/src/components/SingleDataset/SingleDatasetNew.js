@@ -10,11 +10,6 @@ const TechnicalInformation = ({ header, info }) => (
     </div>
 );
 
-const qcRender = link => {
-    const encoded = encodeURIComponent(link);
-    window.open(`/qc-viewer?url=${encoded}`, '_blank', 'noopener,noreferrer');
-};
-
 const SingleDatasetNew = () => {
     // router
     const location = useLocation();
@@ -47,6 +42,7 @@ const SingleDatasetNew = () => {
                         <a
                             href={datasetData.repositories.downloadLink[0]}
                             target="_blank"
+                            rel="noopener noreferrer"
                             className="flex flex-row items-center justify-center gap-2 border-1 px-3 py-1.5 text-headingSm rounded-md font-bold bg-white text-darkBlue hover:-translate-y-1 hover:space-y-1 duration-300 ease-in-out"
                         >
                             <svg
@@ -195,13 +191,15 @@ const SingleDatasetNew = () => {
                             <div className="flex flex-col gap-2">
                                 {datasetData?.qualityControl &&
                                     datasetData.qualityControl.map((qc, ind) => (
-                                        <button
+                                        <a
                                             className="text-bodyMd font-bold text-black py-2 px-4 border-1 border-gray-200 rounded-full bg-white"
                                             key={ind}
-                                            onClick={() => qcRender(qc.url)}
+                                            href={`/qc-viewer?url=${encodeURIComponent(qc.url)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                         >
                                             {qc.name}
-                                        </button>
+                                        </a>
                                     ))}
                             </div>
                         </div>
