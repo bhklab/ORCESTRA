@@ -67,7 +67,7 @@ const SetSearch = () => {
                         sortField="name"
                         body={rowData => (
                             <h2
-                                className="font-bold text-headingSm text-darkYellow break-all hover:cursor-pointer underline underline-offset-[3px] decoration-[1.5px]"
+                                className="font-bold text-headingSm text-darkYellow break-all hover:cursor-pointer hover:underline underline-offset-[3px] decoration-[1.5px]"
                                 onClick={() => navigate(`/${datatype}/${rowData._id}`)}
                             >
                                 {rowData?.name}

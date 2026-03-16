@@ -15,7 +15,7 @@ const SingleDatasetNew = () => {
     const { datatype, dataset_id } = useParams();
 
     // dataset state
-    const [datasetData, setDatasetData] = useState(null);
+    const [dataset, setDataset] = useState(null);
 
     // component state
     const [showDescription, setShowDescription] = useState(false);
@@ -25,21 +25,21 @@ const SingleDatasetNew = () => {
     useEffect(() => {
         const getDataset = async () => {
             const res = await axios.get(`/api/view/single-data-object/${datatype}/${dataset_id}`);
-            setDatasetData(res.data);
+            setDataset(res.data);
         };
         getDataset();
     }, []);
 
-    if (!datasetData) return null;
+    if (!dataset) return null;
 
     return (
         <div className="flex flex-col m-auto min-h-screen bg-gray-100">
             <div className="flex py-4 px-24 flex-col bg-lightBlue gap-4">
-                <div className="flex flex-row gap-8 items-center">
-                    <h1 className="font-bold text-heading2Xl text-darkYellow">{datasetData.name}</h1>
-                    <div>
+                <div className="flex flex-row flex-wrap gap-8 items-center">
+                    <h1 className="font-bold text-heading2Xl text-darkYellow">{dataset.name}</h1>
+                    <div className="">
                         <a
-                            href={datasetData.repositories.downloadLink[0]}
+                            href={dataset.repositories.downloadLink[0]}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex flex-row items-center justify-center gap-2 border-1 px-3 py-1.5 text-headingSm rounded-md font-bold bg-white text-darkBlue hover:-translate-y-1 hover:space-y-1 duration-300 ease-in-out"
@@ -62,9 +62,9 @@ const SingleDatasetNew = () => {
                         </a>
                     </div>
                 </div>
-                <div className="flex flex-row gap-2">
-                    {datasetData?.dataSources &&
-                        Object.keys(datasetData?.dataSources).map((categoryName, ind) => (
+                <div className="flex flex-row flex-wrap gap-2">
+                    {dataset?.dataSources &&
+                        Object.keys(dataset?.dataSources).map((categoryName, ind) => (
                             <div
                                 className={`flex px-3 py-2 rounded-full bg-white hover:-translate-y-1 hover:cursor-pointer duration-300 ease-in-out transition`}
                                 key={ind}
@@ -84,7 +84,7 @@ const SingleDatasetNew = () => {
                                 <p
                                     className={`text-bodyMd ${showDescription ? '' : 'line-clamp-4'} duration-300 transition`}
                                 >
-                                    {datasetData.description}
+                                    {dataset.description}
                                 </p>
                                 <button
                                     className="text-bodySm text-blue-600 font-bold"
@@ -97,29 +97,25 @@ const SingleDatasetNew = () => {
                         <div className="flex flex-col items-start w-full gap-2" id="technical">
                             <h1 className="text-headingXl text-lightBlue">Technical Information</h1>
                             <div className="flex flex-col items-start w-full gap-2">
-                                {datasetData.repositories.downloadLink.length > 0 &&
-                                datasetData.repositories?.csvLinks?.length > 0 ? (
+                                {dataset.repositories.downloadLink.length > 0 &&
+                                dataset.repositories?.csvLinks?.length > 0 ? (
                                     <TechnicalInformation header="Format" info="RDS and CSV" />
                                 ) : (
                                     <TechnicalInformation header="Format" info="RDS" />
                                 )}
-                                <TechnicalInformation header="Version" info={datasetData.version} />
+                                <TechnicalInformation header="Version" info={dataset.version} />
                                 <TechnicalInformation header="License" info="CC BY 4.0" />
-                                <TechnicalInformation header="Author" info={datasetData.info.createdBy} />
+                                <TechnicalInformation header="Author" info={dataset.info.createdBy} />
                                 <TechnicalInformation
                                     header="Date Uploaded"
-                                    info={datasetData.info.dateCreated.slice(0, 10)}
+                                    info={dataset.info.dateCreated.slice(0, 10)}
                                 />
-                                <TechnicalInformation header="User Downloads" info={datasetData.info.numDownload} />
+                                <TechnicalInformation header="User Downloads" info={dataset.info.numDownload} />
                                 <div className="flex justify-between items-center w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm">
                                     <img src="/images/icons/github.png" className="w-6 h-6" />
-                                    <a
-                                        href={datasetData.info.other.pipeline.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
+                                    <a href={dataset.info.other.pipeline.url} target="_blank" rel="noopener noreferrer">
                                         <span className="text-black text-headingXs font-semibold hover:text-darkYellow">
-                                            {datasetData.info.other.pipeline.commit_id}
+                                            {dataset.info.other.pipeline.commit_id}
                                         </span>
                                     </a>
                                 </div>
@@ -147,7 +143,7 @@ const SingleDatasetNew = () => {
                                 header="Citations"
                                 className="w-full flex flex-col gap-2"
                             >
-                                {datasetData.datasetNote.citations.map((citation, index) => (
+                                {dataset.datasetNote.citations.map((citation, index) => (
                                     <AccordionTab
                                         key={index}
                                         header={
@@ -185,13 +181,13 @@ const SingleDatasetNew = () => {
                                 ))}
                             </Accordion>
                         </div>
-                        {datasetData?.qualityControl?.length > 0 && (
+                        {dataset?.qualityControl?.length > 0 && (
                             <div className="flex flex-col items-start w-full gap-2" id="quality control">
                                 <h1 className="text-headingXl text-lightBlue">Quality Control</h1>
-                                <div className="flex flex-col gap-2">
-                                    {datasetData.qualityControl.map((qc, ind) => (
+                                <div className="flex flex-row flex-wrap gap-2">
+                                    {dataset.qualityControl.map((qc, ind) => (
                                         <a
-                                            className="text-bodyMd font-bold text-black py-2 px-4 border-1 border-gray-200 rounded-full bg-white"
+                                            className="text-bodyMd font-bold text-lightYellow py-2 px-4 rounded-full bg-darkBlue"
                                             key={ind}
                                             href={`/qc-viewer?url=${encodeURIComponent(qc.url)}`}
                                             target="_blank"
@@ -210,7 +206,7 @@ const SingleDatasetNew = () => {
                                 <p
                                     className={`text-bodyMd ${showPolicy ? '' : 'line-clamp-2'} duration-300 transition`}
                                 >
-                                    {datasetData.datasetNote.usagePolicy}
+                                    {dataset.datasetNote.usagePolicy}
                                 </p>
                                 <button
                                     className="text-bodySm text-blue-600 font-bold"
@@ -226,7 +222,7 @@ const SingleDatasetNew = () => {
                                 <p
                                     className={`text-bodyMd ${showDisclaimer ? '' : 'line-clamp-2'} duration-300 transition`}
                                 >
-                                    {datasetData.datasetNote.disclaimer}
+                                    {dataset.datasetNote.disclaimer}
                                 </p>
                                 <button
                                     className="text-bodySm text-blue-600 font-bold"
@@ -240,8 +236,8 @@ const SingleDatasetNew = () => {
                     <div className="flex flex-col w-full gap-2">
                         <div className="flex flex-col w-full gap-2">
                             <h1 className="text-headingXl text-lightBlue">Data</h1>
-                            {datasetData.releaseNotes &&
-                                Object.entries(datasetData.dataSources).map(([noteType, notes], ind) => {
+                            {dataset.releaseNotes &&
+                                Object.entries(dataset.dataSources).map(([noteType, notes], ind) => {
                                     return (
                                         <div className="flex flex-col gap-2" key={ind}>
                                             <h2 className="text-headingMd text-gray-700 font-semibold" key={noteType}>
@@ -253,33 +249,30 @@ const SingleDatasetNew = () => {
                                                         className="flex flex-col gap-2 w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm"
                                                         key={ind}
                                                     >
-                                                        <h3 className="text-gray-600 text-headingMd">{note.name}</h3>
-                                                        <div className="flex flex-row justify-between items-center gap-2">
-                                                            <a
-                                                                href={note.url}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
+                                                        <a
+                                                            href={note.url}
+                                                            className="flex justify-between text-gray-600 hover:text-darkYellow hover:cursor-pointer"
+                                                        >
+                                                            <h3 className="text-headingMd">{note.name}</h3>
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none"
+                                                                viewBox="0 0 24 24"
+                                                                strokeWidth="2"
+                                                                stroke="currentColor"
+                                                                className="size-6"
                                                             >
-                                                                <span className="text-black text-headingMd font-semibold hover:text-darkYellow">
-                                                                    {note.description}
-                                                                </span>
-                                                            </a>
-                                                            <div>
-                                                                <svg
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    fill="none"
-                                                                    viewBox="0 0 24 24"
-                                                                    strokeWidth="1.5"
-                                                                    stroke="currentColor"
-                                                                    className="size-5"
-                                                                >
-                                                                    <path
-                                                                        strokeLinecap="round"
-                                                                        strokeLinejoin="round"
-                                                                        d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
-                                                                    />
-                                                                </svg>
-                                                            </div>
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                                                                />
+                                                            </svg>
+                                                        </a>
+                                                        <div className="flex flex-row justify-between items-center gap-2">
+                                                            <span className="text-black text-headingMd font-semibold">
+                                                                {note.description}
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -290,8 +283,8 @@ const SingleDatasetNew = () => {
                         </div>
                         <div className="flex flex-col w-full gap-2">
                             <h1 className="text-headingXl text-lightBlue">Release Notes</h1>
-                            {datasetData.dataSources &&
-                                Object.entries(datasetData.releaseNotes).map(([noteType, notes], ind) => {
+                            {dataset.dataSources &&
+                                Object.entries(dataset.releaseNotes).map(([noteType, notes], ind) => {
                                     return (
                                         <div className="flex flex-col gap-2" key={ind}>
                                             <h2 className="text-headingMd text-gray-700 font-semibold" key={noteType}>
