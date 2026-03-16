@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useParams } from 'react-router-dom';
 import { Accordion, AccordionTab } from 'primereact/accordion';
-import { classNames } from 'primereact/utils';
 
 const TechnicalInformation = ({ header, info }) => (
     <div className="flex justify-between items-center w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm">
@@ -10,6 +9,11 @@ const TechnicalInformation = ({ header, info }) => (
         <span className="text-black text-headingMd font-semibold">{info}</span>
     </div>
 );
+
+const qcRender = link => {
+    const encoded = encodeURIComponent(link);
+    window.open(`/qc-viewer?url=${encoded}`, '_blank', 'noopener,noreferrer');
+};
 
 const SingleDatasetNew = () => {
     // router
@@ -190,16 +194,15 @@ const SingleDatasetNew = () => {
                             <h1 className="text-headingXl text-lightBlue">Citations</h1>
                             <div className="flex flex-col gap-2">
                                 {datasetData?.qualityControl &&
-                                    Object.entries(datasetData.qualityControl).map(qc, ind => {
-                                        return (
-                                            <div
-                                                className="text-bodyMd font-bold text-black py-2 px-4 border-1 border-gray-200 rounded-full bg-white"
-                                                key={ind}
-                                            >
-                                                {qc.name}
-                                            </div>
-                                        );
-                                    })}
+                                    datasetData.qualityControl.map((qc, ind) => (
+                                        <button
+                                            className="text-bodyMd font-bold text-black py-2 px-4 border-1 border-gray-200 rounded-full bg-white"
+                                            key={ind}
+                                            onClick={() => qcRender(qc.url)}
+                                        >
+                                            {qc.name}
+                                        </button>
+                                    ))}
                             </div>
                         </div>
                         <div className="flex flex-col items-start w-full gap-2" id="policy">

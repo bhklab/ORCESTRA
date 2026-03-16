@@ -23,6 +23,7 @@ const auth = require('./api/auth');
 // router.get('/view/landing', landing.get);
 router.get('/view/data-object-filter/:datatype', dataObjectFilter.get);
 router.get('/view/single-data-object/:datatype/:dataset_id', singleDataObject.get);
+router.get('/view/single-data-object/qc', singleDataObject.qualityControl);
 // router.get('/view/canonical-data-objects', canonicalDataObjects.get);
 // router.get('/view/statistics', statistics.get);
 // router.get('/view/statistics/upset-plot', statistics.upsetPlot);
