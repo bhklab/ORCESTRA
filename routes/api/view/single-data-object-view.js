@@ -34,6 +34,7 @@ const getTabData = async (dataObject, dataset, filter) => {
 	  dna: dataset?.dna || [],
 	  cnv: dataset?.cnv || [],
 	  mutation: dataset?.mutation || [],
+	  microArray: dataset?.microArray || [],
 	  drugResponse: dataset?.drugResponse || [],
 	  chromatin: dataset?.chromatin || [],
 	  exon: dataset?.exon || [],

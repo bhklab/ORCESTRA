@@ -232,6 +232,52 @@ const SingleDatasetNew = () => {
                                             )}
                                         </div>
                                     )}
+                                    {datasetTab.data.microArray && datasetTab.data.microArray.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Micro Array</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.microArray.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.microArray.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
+                                                                            <span>{item.name}</span>
+                                                                        )}
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
 
                                     {datasetTab.data.dna.length > 0 && (
                                         <div className="card-container">
@@ -291,6 +337,53 @@ const SingleDatasetNew = () => {
                                                     <li>
                                                         <ul className="list-style-card-sub">
                                                             {datasetTab.data.mutation.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
+                                                                            <span>{item.name}</span>
+                                                                        )}
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <p
+                                                                                index={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                            >
+                                                                                {text}
+                                                                            </p>
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {datasetTab.data.cnv.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">CNV</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.cnv.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.cnv.map((item, i) => {
                                                                 const paragraphs = (item.description ?? '')
                                                                     .split(/\n/)
                                                                     .map(s => s.trim())
