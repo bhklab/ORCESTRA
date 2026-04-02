@@ -141,40 +141,6 @@ const SingleDatasetNew = () => {
                                             </StyledQualityControl>
                                         </div>
                                     )}
-
-                                    {dataset.data.plots && dataset.data.plots.length > 0 && (
-                                        <div
-                                            style={{
-                                                overflowX: 'auto',
-                                                overflowY: 'hidden',
-                                                maxWidth: '100%',
-                                                background: 'white'
-                                            }}
-                                            className="card-container"
-                                        >
-                                            <div className="card-title ">Plots</div>
-                                            <div className="hr-container">
-                                                <hr className="hr-style" />
-                                            </div>
-                                            {dataset.data.plots.map(plot => (
-                                                <>
-                                                    {console.log(plot)}
-                                                    <img
-                                                        src={`/images/plots/${plot}`}
-                                                        alt="Plot"
-                                                        style={{
-                                                            display: 'block',
-                                                            height: 'auto',
-                                                            width: 'auto',
-                                                            maxHeight: '500px',
-                                                            maxWidth: 'none',
-                                                            border: '1px solid black'
-                                                        }}
-                                                    />
-                                                </>
-                                            ))}
-                                        </div>
-                                    )}
                                 </StyledContainerOuter>
 
                                 <StyledContainerInner>
@@ -1398,6 +1364,44 @@ const SingleDatasetNew = () => {
                                     </div>
                                 </StyledContainerOuter>
                             </div>
+                            {dataset.data.plots && dataset.data.plots.length > 0 && (
+                                <div className="plot-container" style={{ marginTop: '20px' }}>
+                                    <div className="card-title">Plots</div>
+                                    <div className="hr-container">
+                                        <hr className="hr-style" />
+                                    </div>
+
+                                    {dataset.data.plots.map((plot, ind) => (
+                                        <div
+                                            key={ind}
+                                            style={{
+                                                width: '100%',
+                                                overflowX: 'auto',
+                                                overflowY: 'hidden',
+                                                marginBottom: '16px'
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    width: 'fit-content',
+                                                    margin: '0 auto',
+                                                    border: '1px solid black'
+                                                }}
+                                            >
+                                                <img
+                                                    src={`/images/plots/${plot}`}
+                                                    alt="Plot"
+                                                    style={{
+                                                        display: 'block',
+                                                        height: '700px',
+                                                        width: 'auto'
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </LayoutContainer>
                     </>
                 )}

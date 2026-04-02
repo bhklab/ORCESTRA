@@ -63,6 +63,25 @@ const LayoutContainer = styled.div`
 
 	}
 
+	.plot-container {
+		border-radius: 8px;
+		padding: 25px;
+		box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+		background-color: white;
+		font-size: 14px;
+		transition: transform 0.3s, box-shadow 0.3s;
+		position: relative;
+	}
+	.hr-container{
+		margin: 0 0 15px 0;
+		justify-content: center;
+	}
+	.hr-style {
+		margin 0 auto;
+		max-width: 200px;
+		color: ${colors.standard_dark_blue};
+	}
+
 	a {
 		text-decoration: none;
 	}
@@ -84,72 +103,62 @@ const StyledContainerOuter = styled.div`
     gap: 20px;
     font-size: 14px;
 
-.card-container {
-    border-radius: 8px;
-    padding: 25px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.6);
-    background-color: white;
-    font-size: 14px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    position: relative;
-}
+    .card-container {
+        border-radius: 8px;
+        padding: 25px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+        background-color: white;
+        font-size: 14px;
+        transition:
+            transform 0.3s,
+            box-shadow 0.3s;
+        position: relative;
+    }
 
-.card-container:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 1);
-}
+    .card-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 1);
+    }
 
-/* Collapsing behavior */
-.card-container.collapsed .description-expanded {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-}
+    /* Collapsing behavior */
+    .card-container.collapsed .description-expanded {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+    }
 
-.card-container.expanded .description-expanded {
-  	overflow: visible;
-}
+    .card-container.expanded .description-expanded {
+        overflow: visible;
+    }
 
-.description-expanded {
-    transition: max-height 0.4s ease, opacity 0.3s ease;
-}
+    .description-expanded {
+        transition:
+            max-height 0.4s ease,
+            opacity 0.3s ease;
+    }
 
-/* Button styling */
-.expand-button {
-    margin-top: 12px;
-    background: none;
-    border: none;
-    color: #2563eb; /* blue-ish */
-    cursor: pointer;
-    font-weight: 500;
-    padding: 0;
-}
+    /* Button styling */
+    .expand-button {
+        margin-top: 12px;
+        background: none;
+        border: none;
+        color: #2563eb; /* blue-ish */
+        cursor: pointer;
+        font-weight: 500;
+        padding: 0;
+    }
 
-.expand-button:hover {
-    text-decoration: underline;
-}
+    .expand-button:hover {
+        text-decoration: underline;
+    }
+    .pipeline {
+        font-weight: 700;
+    }
 
-
-	.hr-container{
-		margin: 0 0 15px 0;
-		justify-content: center;
-	}
-	.hr-style {
-		margin 0 auto;
-		max-width: 200px;
-		color: ${colors.standard_dark_blue};
-	}
-
-	.pipeline {
-		font-weight: 700;
-
-	}
-
-	.commitId {
-		font-weight: normal;
-		font-size: 13px;
-	}
-	
+    .commitId {
+        font-weight: normal;
+        font-size: 13px;
+    }
 `;
 
 const StyledQualityControl = styled.div`
@@ -187,30 +196,21 @@ const StyledContainerInner = styled.div`
     font-size: 14px;
 
     .card-container {
-		border-radius: 8px;
-		padding: 20px;
-		box-shadow: 0 2px 5px rgba(0,0,0,0.6);
-		background-color: white;
-		font-size: 14px;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+        background-color: white;
+        font-size: 14px;
 
-		transition: transform 0.3s, box-shadow 0.3s;
-	}
+        transition:
+            transform 0.3s,
+            box-shadow 0.3s;
+    }
 
-	.card-container:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 5px 20px rgba(0, 0, 0, 1);
-	}
-
-	.hr-container{
-		margin: 0 0 15px 0;
-		justify-content: center;
-	}
-	.hr-style {
-		margin 0 auto;
-		max-width: 150px;
-		color: ${colors.standard_dark_blue};
-	}
-	
+    .card-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 1);
+    }
 `;
 
 const StyledTopBar = styled.div`
@@ -242,7 +242,9 @@ const StyledTopBar = styled.div`
         background: linear-gradient(45deg, #36589b, ${colors.standard_dark_blue});
         color: white;
         cursor: pointer;
-        transition: transform 0.3s, box-shadow 0.3s;
+        transition:
+            transform 0.3s,
+            box-shadow 0.3s;
 
         &:hover {
             background: linear-gradient(45deg, ${colors.standard_dark_blue}, #36589b);
