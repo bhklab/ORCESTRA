@@ -188,6 +188,7 @@ const get = async (req, res) => {
 		csvs: dataObject.info.private && repo.csvLinks
           ? `${repo.downloadLink}&access_token=${process.env.ZENODO_ACCESS_TOKEN}`
           : repo.csvLinks,
+		plots: dataObject.plots
       };
       dataObj.tabData = [];
       dataObj.tabData = await getTabData(dataObject, dataset, filter);

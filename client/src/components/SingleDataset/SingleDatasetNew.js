@@ -45,7 +45,7 @@ const SingleDatasetNew = () => {
         // console.log(releaseTab.data);
         // console.log(releaseTab.data.releaseNotes);
 
-        console.log(datasetTab.data);
+        // console.log(datasetTab.data);
         return (
             <StyledPage>
                 {dataset.ready && (
@@ -139,6 +139,40 @@ const SingleDatasetNew = () => {
                                                     </a>
                                                 ))}
                                             </StyledQualityControl>
+                                        </div>
+                                    )}
+
+                                    {dataset.data.plots && dataset.data.plots.length > 0 && (
+                                        <div
+                                            style={{
+                                                overflowX: 'auto',
+                                                overflowY: 'hidden',
+                                                maxWidth: '100%',
+                                                background: 'white'
+                                            }}
+                                            className="card-container"
+                                        >
+                                            <div className="card-title ">Plots</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {dataset.data.plots.map(plot => (
+                                                <>
+                                                    {console.log(plot)}
+                                                    <img
+                                                        src={`/images/plots/${plot}`}
+                                                        alt="Plot"
+                                                        style={{
+                                                            display: 'block',
+                                                            height: 'auto',
+                                                            width: 'auto',
+                                                            maxHeight: '500px',
+                                                            maxWidth: 'none',
+                                                            border: '1px solid black'
+                                                        }}
+                                                    />
+                                                </>
+                                            ))}
                                         </div>
                                     )}
                                 </StyledContainerOuter>
