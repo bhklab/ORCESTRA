@@ -163,6 +163,10 @@ const StyledContainerOuter = styled.div`
         a {
             color: blue;
         }
+        a:hover {
+            color: blue;
+            border-bottom: none;
+        }
         p {
             margin: 0;
             display: inline;
