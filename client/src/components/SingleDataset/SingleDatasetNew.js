@@ -104,9 +104,13 @@ const SingleDatasetNew = () => {
                                                 <li>
                                                     <span>Please Cite the Following: </span>
                                                     {disclaimerTab.data.citations.map((item, i) => (
-                                                        <div key={item}>
+                                                        <div key={item} className="citations">
                                                             <span className="font-semibold">{i + 1}: </span>
-                                                            {item}
+                                                            <p
+                                                                dangerouslySetInnerHTML={{
+                                                                    __html: item
+                                                                }}
+                                                            />
                                                         </div>
                                                     ))}
                                                 </li>

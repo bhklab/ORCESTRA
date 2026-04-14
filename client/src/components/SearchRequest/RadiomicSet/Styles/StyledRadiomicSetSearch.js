@@ -159,6 +159,15 @@ const StyledContainerOuter = styled.div`
         font-weight: normal;
         font-size: 13px;
     }
+    .citations {
+        a {
+            color: blue;
+        }
+        p {
+            margin: 0;
+            display: inline;
+        }
+    }
 `;
 
 const StyledQualityControl = styled.div`
