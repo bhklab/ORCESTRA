@@ -111,9 +111,11 @@ const SetSearch = () => {
                         style={{ width: '15%' }}
                     />
                     <Column
-                        body={rowData => (
-                            <p className="line-clamp-3">{Object.keys(rowData?.releaseNotes).join(', ')}</p>
-                        )}
+                        body={rowData =>
+                            rowData?.releaseNotes && (
+                                <p className="line-clamp-3">{Object.keys(rowData?.releaseNotes).join(', ')}</p>
+                            )
+                        }
                         header="Release Notes"
                         style={{ width: '15%' }}
                     />

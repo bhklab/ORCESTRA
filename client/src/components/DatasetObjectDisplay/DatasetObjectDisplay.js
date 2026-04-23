@@ -20,7 +20,7 @@ const DatasetObjectDisplay = ({ dataset }) => {
     const [showDisclaimer, setShowDisclaimer] = useState(false);
 
     return (
-        <div className="flex flex-col m-auto">
+        <div className="flex flex-col">
             <div className="flex py-4 px-24 flex-col bg-lightBlue gap-4 min-h-20">
                 <div className="flex flex-col flex-wrap gap-4">
                     <h1 className="font-bold text-heading3Xl text-darkYellow">{dataset.name}</h1>
@@ -140,22 +140,25 @@ const DatasetObjectDisplay = ({ dataset }) => {
             <div className="flex flex-col px-24 py-10" id="main">
                 <div className="flex flex-row gap-10" id="general">
                     <div className="flex flex-col items-start gap-4 max-w-[400px]" id="description">
-                        <div className="flex flex-col gap-2 items-start">
-                            <h1 className="text-headingXl text-lightBlue">Description</h1>
-                            <div className="flex flex-col items-start w-full">
-                                <p
-                                    className={`text-bodyMd ${showDescription ? '' : 'line-clamp-4'} duration-300 transition`}
-                                >
-                                    {dataset.description}
-                                </p>
-                                <button
-                                    className="text-bodySm text-blue-600 font-bold"
-                                    onClick={() => setShowDescription(!showDescription)}
-                                >
-                                    {showDescription ? 'show less' : 'show more'}
-                                </button>
+                        {dataset.description && (
+                            <div className="flex flex-col gap-2 items-start">
+                                <h1 className="text-headingXl text-lightBlue">Description</h1>
+                                <div className="flex flex-col items-start w-full">
+                                    <p
+                                        className={`text-bodyMd ${showDescription ? '' : 'line-clamp-4'} duration-300 transition`}
+                                    >
+                                        {dataset.description}
+                                    </p>
+                                    <button
+                                        className="text-bodySm text-blue-600 font-bold"
+                                        onClick={() => setShowDescription(!showDescription)}
+                                    >
+                                        {showDescription ? 'show less' : 'show more'}
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        )}
+
                         <div className="flex flex-col items-start w-full gap-2" id="technical">
                             <h1 className="text-headingXl text-lightBlue">Technical Information</h1>
                             <div className="flex flex-col items-start w-full gap-2">
@@ -173,14 +176,20 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                     info={dataset.info.dateCreated.slice(0, 10)}
                                 />
                                 <TechnicalInformation header="User Downloads" info={dataset.info.numDownload} />
-                                <div className="flex justify-between items-center w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm">
-                                    <img src="/images/icons/github.png" className="w-6 h-6" />
-                                    <a href={dataset.info.other.pipeline.url} target="_blank" rel="noopener noreferrer">
-                                        <span className="text-black text-headingXs font-semibold hover:text-darkYellow">
-                                            {dataset.info.other.pipeline.commit_id}
-                                        </span>
-                                    </a>
-                                </div>
+                                {dataset.info?.other?.pipeline?.url && (
+                                    <div className="flex justify-between items-center w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm">
+                                        <img src="/images/icons/github.png" className="w-6 h-6" />
+                                        <a
+                                            href={dataset.info.other.pipeline.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            <span className="text-black text-headingXs font-semibold hover:text-darkYellow">
+                                                {dataset.info.other.pipeline.commit_id}
+                                            </span>
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         {dataset?.datasetNote?.citations > 0 && (
