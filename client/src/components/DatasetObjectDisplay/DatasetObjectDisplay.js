@@ -177,18 +177,49 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                 />
                                 <TechnicalInformation header="User Downloads" info={dataset.info.numDownload} />
                                 {dataset.info?.other?.pipeline?.url && (
-                                    <div className="flex justify-between items-center w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm">
-                                        <img src="/images/icons/github.png" className="w-6 h-6" />
-                                        <a
-                                            href={dataset.info.other.pipeline.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            <span className="text-black text-headingXs font-semibold hover:text-darkYellow">
-                                                {dataset.info.other.pipeline.commit_id}
-                                            </span>
-                                        </a>
-                                    </div>
+                                    <TechnicalInformation
+                                        header={
+                                            <>
+                                                <img src="/images/icons/github.png" className="w-6 h-6" />
+                                            </>
+                                        }
+                                        info={
+                                            <div className="text-wrap break-normal text-right">
+                                                <a
+                                                    href={`${dataset.info.other.pipeline.url.replace('.git', '')}/tree/${dataset.info.other.pipeline.commit_id}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-right"
+                                                >
+                                                    <span className="text-black text-headingXs font-semibold hover:text-darkYellow">
+                                                        {dataset.info.other.pipeline.commit_id}
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        }
+                                    />
+                                )}
+                                {dataset.info?.other?.additionalRepo && (
+                                    <TechnicalInformation
+                                        header={
+                                            <>
+                                                <img src="/images/icons/additional-repo.png" className="w-6 h-6" />
+                                            </>
+                                        }
+                                        info={dataset.info?.other?.additionalRepo.map((repo, index) => (
+                                            <div className="text-wrap text-right">
+                                                <a
+                                                    href={`${repo.git_url.replace('.git', '')}/tree/${repo.commit_id}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    <span className="text-black text-headingXs font-semibold hover:text-darkYellow">
+                                                        {repo.commit_id} ({repo.repo_type})
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        ))}
+                                    />
                                 )}
                             </div>
                         </div>
@@ -278,10 +309,9 @@ const DatasetObjectDisplay = ({ dataset }) => {
                             <h1 className="text-headingXl text-lightBlue">Usage Policy</h1>
                             <div className="flex flex-col items-start">
                                 <p
-                                    className={`text-bodyMd ${showPolicy ? '' : 'line-clamp-2'} duration-300 transition`}
-                                >
-                                    {dataset.datasetNote.usagePolicy}
-                                </p>
+                                    dangerouslySetInnerHTML={{ __html: dataset.datasetNote.usagePolicy }}
+                                    className={`text-bodyMd ${showPolicy ? '' : 'line-clamp-2'} duration-300 transition [&_a]:text-blue-600 [&_a]:underline`}
+                                />
                                 <button
                                     className="text-bodySm text-blue-600 font-bold"
                                     onClick={() => setShowPolicy(!showPolicy)}
@@ -294,10 +324,9 @@ const DatasetObjectDisplay = ({ dataset }) => {
                             <h1 className="text-headingXl text-lightBlue">Data Disclaimer</h1>
                             <div className="flex flex-col items-start">
                                 <p
-                                    className={`text-bodyMd ${showDisclaimer ? '' : 'line-clamp-2'} duration-300 transition`}
-                                >
-                                    {dataset.datasetNote.disclaimer}
-                                </p>
+                                    dangerouslySetInnerHTML={{ __html: dataset.datasetNote.disclaimer }}
+                                    className={`text-bodyMd ${showDisclaimer ? '' : 'line-clamp-2'} duration-300 transition [&_a]:text-blue-600 [&_a]:underline`}
+                                />
                                 <button
                                     className="text-bodySm text-blue-600 font-bold"
                                     onClick={() => setShowDisclaimer(!showDisclaimer)}
@@ -310,7 +339,7 @@ const DatasetObjectDisplay = ({ dataset }) => {
                     <div className="flex flex-col w-full gap-2">
                         <div className="flex flex-col w-full gap-2">
                             <h1 className="text-headingXl text-lightBlue">Data</h1>
-                            {dataset.releaseNotes &&
+                            {dataset.dataSources &&
                                 Object.entries(dataset.dataSources).map(([noteType, notes], ind) => {
                                     return (
                                         <div className="flex flex-col gap-2" key={ind}>
@@ -347,7 +376,7 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                                             </svg>
                                                         </div>
                                                         <div className="flex flex-row justify-between items-center gap-2">
-                                                            <span className="text-black text-headingMd font-semibold">
+                                                            <span className="text-black text-headingSm font-semibold">
                                                                 {note.description}
                                                             </span>
                                                         </div>
@@ -359,8 +388,46 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                 })}
                         </div>
                         <div className="flex flex-col w-full gap-2">
+                            <h1 className="text-headingXl text-lightBlue">Tools</h1>
+                            {dataset.tools &&
+                                dataset.tools.map((tool, ind) => (
+                                    <a
+                                        className="flex flex-col gap-2 w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm group hover:cursor-pointer"
+                                        key={ind}
+                                        href={tool.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <div href={tool.url} className="flex justify-between text-gray-600">
+                                            <h3 className="text-headingMd">
+                                                {tool.name} ({tool.version})
+                                            </h3>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth="2"
+                                                stroke="currentColor"
+                                                className="size-5 group-hover:text-darkYellow"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <div className="flex flex-row justify-between items-center gap-2">
+                                            <span className="text-black text-headingMd font-semibold">
+                                                {tool.description}
+                                            </span>
+                                        </div>
+                                    </a>
+                                ))}
+                        </div>
+                        <div className="flex flex-col w-full gap-2">
                             <h1 className="text-headingXl text-lightBlue">Release Notes</h1>
-                            {dataset.dataSources &&
+                            {dataset.releaseNotes &&
                                 Object.entries(dataset.releaseNotes).map(([noteType, notes], ind) => {
                                     return (
                                         <div className="flex flex-col gap-2" key={ind}>
