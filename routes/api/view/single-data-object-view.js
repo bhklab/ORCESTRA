@@ -28,7 +28,6 @@ const get = async (req, res) => {
  * @param {*} res HTML page of rendered qc 
  */
 const qualityControl = async (req, res) => {
-	console.log("here")
 	try {
 		const { url } = req.query;
 		if(!url) return res.status(400).send('No valid QC url')
