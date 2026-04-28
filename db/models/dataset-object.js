@@ -41,6 +41,7 @@ const datasetObjectSchema = new Schema({
         },
 	},
 	releaseNotes: { type: Schema.Types.Mixed, default: {} },
+	dataSources: { type: Schema.Types.Mixed, default: {} },
 	tools: [
 		{
 			name: String,
