@@ -34,7 +34,13 @@ const QualityControlViewer = () => {
             </div>
         );
 
-    return <iframe title="QC Viewer" srcDoc={html} style={{ width: '100%', height: '100vh', border: 'none' }} />;
+    return (
+        <iframe
+            title="QC Viewer"
+            srcDoc={html}
+            style={{ width: '100%', height: '100vh', border: 'none', paddingTop: '96px' }}
+        />
+    );
 };
 
 export default QualityControlViewer;

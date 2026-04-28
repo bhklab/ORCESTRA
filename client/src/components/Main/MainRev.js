@@ -13,7 +13,7 @@ const MainRev = () => {
 
     return (
         <div
-            className="min-h-screen flex flex-col pt-24 justify-center items-center gap-20 px-72 lg:px-60 smd:px-4 bg-white"
+            className="min-h-screen flex flex-col pt-28 justify-center items-center gap-28 px-72 lg:px-60 smd:px-4 bg-white"
             id="landing"
         >
             <div className="flex flex-col gap-6 items-center">
