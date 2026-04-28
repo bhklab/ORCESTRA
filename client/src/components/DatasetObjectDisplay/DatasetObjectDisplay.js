@@ -310,7 +310,7 @@ const DatasetObjectDisplay = ({ dataset }) => {
                             <div className="flex flex-col items-start">
                                 <p
                                     dangerouslySetInnerHTML={{ __html: dataset.datasetNote.usagePolicy }}
-                                    className={`text-bodyMd ${showPolicy ? '' : 'line-clamp-2'} duration-300 transition [&_a]:text-blue-600 [&_a]:underline`}
+                                    className={`text-bodyMd ${showPolicy ? '' : 'line-clamp-2'} duration-300 transition break-all [&_a]:text-blue-600 [&_a]:underline`}
                                 />
                                 <button
                                     className="text-bodySm text-blue-600 font-bold"
@@ -325,7 +325,7 @@ const DatasetObjectDisplay = ({ dataset }) => {
                             <div className="flex flex-col items-start">
                                 <p
                                     dangerouslySetInnerHTML={{ __html: dataset.datasetNote.disclaimer }}
-                                    className={`text-bodyMd ${showDisclaimer ? '' : 'line-clamp-2'} duration-300 transition [&_a]:text-blue-600 [&_a]:underline`}
+                                    className={`text-bodyMd ${showDisclaimer ? '' : 'line-clamp-2'} duration-300 transition break-all [&_a]:text-blue-600 [&_a]:underline`}
                                 />
                                 <button
                                     className="text-bodySm text-blue-600 font-bold"
@@ -337,10 +337,10 @@ const DatasetObjectDisplay = ({ dataset }) => {
                         </div>
                     </div>
                     <div className="flex flex-col w-full gap-2">
-                        <div className="flex flex-col w-full gap-2">
-                            <h1 className="text-headingXl text-lightBlue">Data</h1>
-                            {dataset.dataSources &&
-                                Object.entries(dataset.dataSources).map(([noteType, notes], ind) => {
+                        {dataset.dataSources && (
+                            <div className="flex flex-col w-full gap-2">
+                                <h1 className="text-headingXl text-lightBlue">Data</h1>
+                                {Object.entries(dataset.dataSources).map(([noteType, notes], ind) => {
                                     return (
                                         <div className="flex flex-col gap-2" key={ind}>
                                             <h2 className="text-headingMd text-gray-700 font-semibold" key={noteType}>
@@ -386,11 +386,12 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                         </div>
                                     );
                                 })}
-                        </div>
-                        <div className="flex flex-col w-full gap-2">
-                            <h1 className="text-headingXl text-lightBlue">Tools</h1>
-                            {dataset.tools &&
-                                dataset.tools.map((tool, ind) => (
+                            </div>
+                        )}
+                        {dataset.tools > 0 && (
+                            <div className="flex flex-col w-full gap-2">
+                                <h1 className="text-headingXl text-lightBlue">Tools</h1>
+                                {dataset.tools.map((tool, ind) => (
                                     <a
                                         className="flex flex-col gap-2 w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm group hover:cursor-pointer"
                                         key={ind}
@@ -424,11 +425,13 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                         </div>
                                     </a>
                                 ))}
-                        </div>
-                        <div className="flex flex-col w-full gap-2">
-                            <h1 className="text-headingXl text-lightBlue">Release Notes</h1>
-                            {dataset.releaseNotes &&
-                                Object.entries(dataset.releaseNotes).map(([noteType, notes], ind) => {
+                            </div>
+                        )}
+
+                        {dataset.releaseNotes && (
+                            <div className="flex flex-col w-full gap-2">
+                                <h1 className="text-headingXl text-lightBlue">Release Notes</h1>
+                                {Object.entries(dataset.releaseNotes).map(([noteType, notes], ind) => {
                                     return (
                                         <div className="flex flex-col gap-2" key={ind}>
                                             <h2 className="text-headingMd text-gray-700 font-semibold" key={noteType}>
@@ -447,7 +450,8 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                         </div>
                                     );
                                 })}
-                        </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
