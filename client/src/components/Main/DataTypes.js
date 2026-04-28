@@ -86,7 +86,7 @@ const DataTypes = () => {
     }, []);
 
     return (
-        <div className="min-h-screen flex flex-col items-center gap-10 mx-auto pt-24 max-w-[1300px] bg-gray-50">
+        <div className="min-h-screen flex flex-col items-center gap-10 mx-auto max-w-[1300px] bg-gray-50 py-40">
             <div className="flex flex-row flex-wrap gap-4 justify-center">
                 {data.map(type => (
                     // Or this one<div className="group w-[300px] hover:h-[400px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden">

@@ -29,23 +29,6 @@ const NavigationRev = () => {
         await logoutUser();
     };
 
-    const getDatatype = datatype => {
-        switch (datatype) {
-            case dataTypes.pharmacogenomics:
-                return 'Pharmacogenomics';
-            case dataTypes.toxicogenomics:
-                return 'Toxicogenomics';
-            case dataTypes.xenographic:
-                return 'Xenographic Pharmacogenomics';
-            case dataTypes.clinicalgenomics:
-                return 'Clinical Genomics';
-            case dataTypes.radiogenomics:
-                return 'Radiogenomics';
-            default:
-                return '';
-        }
-    };
-
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -54,7 +37,7 @@ const NavigationRev = () => {
         setIsMenuOpen(false);
     };
     return (
-        <div className="flex flex-row justify-between items-center px-10 py-2 drop-shadow bg-white">
+        <div className="flex flex-row justify-between items-center w-full px-10 py-2 drop-shadow bg-white fixed top-0 z-50">
             <div className="flex flex-row gap-10">
                 <img
                     onClick={() => navigate('/')}
