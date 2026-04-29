@@ -15,7 +15,6 @@ const get = async (req, res) => {
 		});
 		const datasetNotes = await DatasetNote.find({ _id: { $in: noteIDs } }); // Retrieve needed dataset notes
 		const noteMap = new Map(datasetNotes.map(note => [note._id.toString(), note])); // create map/dictionary for needed noteIDs --> note
-		console.log(noteMap)
 		datasetObjects.forEach(obj => {
 			obj.datasetNote = noteMap.get(obj.datasetNote?.toString());
 		});

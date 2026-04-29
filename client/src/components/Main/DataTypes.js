@@ -24,13 +24,13 @@ const DataTypes = () => {
                     stats.map(type => (
                         <div
                             onClick={() => navigate(`/datatypes/${type.path}`)}
-                            className="group w-[380px] h-[320px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden hover:cursor-pointer"
+                            className="group w-[380px] h-[300px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden hover:cursor-pointer"
                         >
-                            <div className="w-full h-[150px] rounded-t-3xl flex flex-col justify-center items-center overflow-hidden">
+                            <div className="w-full h-[175px] rounded-t-3xl flex flex-col justify-center items-center overflow-hidden">
                                 <img src={`/images/datatype-icons/${type.img}`} />
                             </div>
-                            <div className="flex flex-col p-3">
-                                <div className="flex flex-col min-h-[170px] gap-2">
+                            <div className="flex flex-col p-3 gap-2 h-full">
+                                <div className="flex flex-col gap-2">
                                     <h2 className="text-headingXl font-semibold text-lightBlue">{type.name}</h2>
                                     <div className="flex flex-row flex-wrap gap-2">
                                         {type.dataSources.map(field => (
@@ -59,7 +59,7 @@ const DataTypes = () => {
                                     )}
                                 </div>
 
-                                <p className="text-bodyMd text-gray-600 opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-all duration-700 overflow-hidden">
+                                <p className="text-bodyMd text-gray-600 italic opacity-0 h-0 group-hover:opacity-100 group-hover:h-20 transition-all duration-700 overflow-scroll">
                                     {type.description}
                                 </p>
                             </div>
