@@ -16,7 +16,8 @@ const SetSearch = () => {
     const { datatype } = useParams();
     const navigate = useNavigate();
 
-    const [datasets, setDatasets] = useState([]);
+    const [datasetNotes, setDatasetNotes] = useState([]);
+    const [filteredDatasets, setFilteredDatasets] = useState([]);
     const [selectedDatasets, setSelectedDatasets] = useState([]);
 
     useEffect(() => {
@@ -24,8 +25,16 @@ const SetSearch = () => {
             try {
                 const res = await axios.get(`/api/view/data-object-filter/${datatype}`);
                 console.log(res.data);
-                setDatasets(res.data);
-                setSelectedDatasets(res.data);
+
+                const uniqueNames = new Set(res.data.map(item => console.log(item.datasetNote)));
+                console.log(uniqueNames);
+                setDatasetNotes(
+                    Array.from(uniqueNames).map(name => ({
+                        name,
+                        id: name
+                    }))
+                );
+                setFilteredDatasets(res.data);
             } catch (error) {
                 console.log(error);
             }
@@ -54,9 +63,11 @@ const SetSearch = () => {
                         )}
                     </div>
                 </div>
-                <DatasetSelect />
+                {datasetNotes !== [] && (
+                    <DatasetSelect datasetNotes={datasetNotes} setSelectedDatasets={setFilteredDatasets} />
+                )}
                 <DataTable
-                    value={selectedDatasets}
+                    value={filteredDatasets}
                     sortMode="single"
                     sortField="Date Created"
                     size="small"

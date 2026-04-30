@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MultiSelect } from 'primereact/multiselect';
 
-export const DatasetSelect = ({ datasets }) => {
+export const DatasetSelect = ({ datasetNotes }) => {
     const [selectedCities, setSelectedCities] = useState(null);
     const cities = [
         { name: 'New York', code: 'NY' },
@@ -13,9 +13,9 @@ export const DatasetSelect = ({ datasets }) => {
     return (
         <div className="flex justify-start items-start w-1/4 smd:w-full">
             <MultiSelect
-                value={selectedCities}
+                value={datasetNotes}
                 onChange={e => setSelectedCities(e.value)}
-                options={cities}
+                options={datasetNotes}
                 optionLabel="name"
                 filterDelay={400}
                 placeholder="Select Dataset(s)"
