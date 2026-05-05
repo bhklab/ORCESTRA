@@ -11,7 +11,7 @@ const DataTypes = () => {
     useEffect(() => {
         const getStats = async () => {
             const res = await axios.get('/api/view/statistics');
-            setStats(res.data);
+            setStats([...res.data].sort((a, b) => a.priority - b.priority));
             console.log(res.data);
         };
         getStats();
