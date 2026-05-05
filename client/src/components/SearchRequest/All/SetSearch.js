@@ -16,25 +16,25 @@ const SetSearch = () => {
     const { datatype } = useParams();
     const navigate = useNavigate();
 
-    const [datasetNotes, setDatasetNotes] = useState([]);
-    const [filteredDatasets, setFilteredDatasets] = useState([]);
-    const [selectedDatasets, setSelectedDatasets] = useState([]);
+    const [datasetNotes, setDatasetNotes] = useState([]); // All datatype notes
+    const [filteredNotes, setFilteredNotes] = useState([]);
+    const [datasetObjects, setDatasetObjects] = useState([]); // All datatype objects
+    const [filteredDatasetObjects, setFilteredDatasetObjects] = useState([]);
+
+    const [selectedDatasets, setSelectedDatasets] = useState([]); //Selected datasets for saving mechanism (will be reintroduced later on)
 
     useEffect(() => {
         const getDatasets = async () => {
             try {
                 const res = await axios.get(`/api/view/data-object-filter/${datatype}`);
-                console.log(res.data);
-
-                const uniqueNames = new Set(res.data.map(item => console.log(item.datasetNote)));
-                console.log(uniqueNames);
+                const uniqueObjs = new Set(res.data.map(item => item.datasetNote.name)); // Get unique datasetNote names
                 setDatasetNotes(
-                    Array.from(uniqueNames).map(name => ({
-                        name,
-                        id: name
+                    Array.from(uniqueObjs).map(name => ({
+                        name: name,
+                        code: name
                     }))
-                );
-                setFilteredDatasets(res.data);
+                ); // Cast to array of objects for MultiSelect component ingestion
+                setDatasetObjects(res.data);
             } catch (error) {
                 console.log(error);
             }
@@ -42,14 +42,19 @@ const SetSearch = () => {
         getDatasets();
     }, []);
 
+    useEffect(() => {
+        const filteredNames = filteredNotes.map(note => note.name);
+        setFilteredDatasetObjects(datasetObjects.filter(obj => filteredNames.includes(obj.datasetNote.name)));
+    }, [filteredNotes]);
+
     return (
-        <div className="flex flex-col p-10 z-10 items-center min-h-screen">
+        <div className="flex flex-col px-10 py-32 z-10 items-center min-h-screen">
             <div className="flex flex-col gap-8 bg-white border-1 drop-shadow-sm rounded-lg p-10 w-full">
                 <div>
                     <h2 className="text-headingXl font-bold text-lightBlue">
                         Explore Multimodal {dataTypes[datatype].heading} Datasets
                     </h2>
-                    <div className="flex flex-col">
+                    {/* <div className="flex flex-col">
                         {auth.user ? (
                             <SaveDatasetButton
                                 selectedDatasets={selectedDatasets}
@@ -61,21 +66,26 @@ const SetSearch = () => {
                                 Login or register to save existing {datatype} to your profile.
                             </p>
                         )}
-                    </div>
+                    </div> */}
                 </div>
-                {datasetNotes !== [] && (
-                    <DatasetSelect datasetNotes={datasetNotes} setSelectedDatasets={setFilteredDatasets} />
+                {datasetNotes && (
+                    <DatasetSelect
+                        datasetNotes={datasetNotes}
+                        filteredNotes={filteredNotes}
+                        setFilteredNotes={setFilteredNotes}
+                    />
                 )}
                 <DataTable
-                    value={filteredDatasets}
+                    value={filteredDatasetObjects.length > 0 ? filteredDatasetObjects : datasetObjects} // when nothing is filtered, use base list of objects
                     sortMode="single"
-                    sortField="Date Created"
+                    sortField="info.dateCreated"
+                    sortOrder={-1}
                     size="small"
                     showGridlines={true}
                     stripedRows
                 >
                     <Column
-                        sortField="name"
+                        field="name"
                         body={rowData => (
                             <h2
                                 className="font-bold text-headingSm text-darkYellow break-all hover:cursor-pointer hover:underline underline-offset-[3px] decoration-[1.5px]"
@@ -89,14 +99,14 @@ const SetSearch = () => {
                         sortable
                     />
                     <Column
-                        sortField="datasetNote.name"
+                        field="datasetNote.name"
                         body={rowData => <p className="line-clamp-3">{rowData?.datasetNote?.name}</p>}
                         header="Dataset"
                         style={{ width: '5%' }}
                         sortable
                     />
                     <Column
-                        sortField="info.dateCreated"
+                        field="info.dateCreated"
                         body={rowData => (
                             <p className="line-clamp-3">
                                 {rowData?.info?.dateCreated ? (rowData?.info?.dateCreated).slice(0, 10) : ''}
