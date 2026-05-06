@@ -35,6 +35,7 @@ import TclTable from '../components/Tcl/TclTable';
 import DataTypes from '../components/Main/DataTypes';
 import SetSearch from '../components/SearchRequest/All/SetSearch';
 import QualityControlViewer from '../components/SingleDataset/QualityControlViewer';
+import CreateDatasetObjectDisplay from '../components/DatasetObjectDisplay/CreateDatasetObjectDisplay';
 // import Test from '../components/Test/Test';
 
 const Router = () => {
@@ -81,6 +82,7 @@ const Router = () => {
 					out there that reference the old link type in ORCESTRA */}
                     <Route path="/:datatype/:id1/:id2" element={<SingleDataset />} />
                     <Route path="/:datatype/:dataset_id" element={<SingleDatasetNew />} />
+                    <Route path="/submit-dataset" element={<CreateDatasetObjectDisplay />} />
                     <Route path="/qc-viewer" element={<QualityControlViewer />} />
                     <Route path="*" element={<NotFound404 />} />
                     <Route path="/tcl/table" element={<TclTable />} />
