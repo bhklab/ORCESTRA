@@ -25,29 +25,32 @@ const DatasetObjectDisplay = ({ dataset }) => {
                 <div className="flex flex-col flex-wrap gap-4">
                     <h1 className="font-bold text-heading3Xl text-darkYellow">{dataset.name}</h1>
                     <div className="flex flex-row gap-6 items-start">
-                        <a
-                            href={dataset.repositories.downloadLink[0]}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex flex-row items-center justify-center gap-2 px-3 py-1.5 text-headingSm rounded-md font-bold bg-white text-darkBlue hover:text duration-300 ease-in-out"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2.5"
-                                stroke="currentColor"
-                                className="size-4"
+                        {dataset.repositories.downloadLink.length > 0 && (
+                            <a
+                                href={dataset.repositories.downloadLink[0]}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex flex-row items-center justify-center gap-2 px-3 py-1.5 text-headingSm rounded-md font-bold bg-white text-darkBlue hover:text duration-300 ease-in-out"
                             >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-                                />
-                            </svg>
-                            Download Dataset Object
-                        </a>
-                        {dataset.repositories.csvLinks && (
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="2.5"
+                                    stroke="currentColor"
+                                    className="size-4"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                                    />
+                                </svg>
+                                Download Dataset Object(s)
+                            </a>
+                        )}
+
+                        {dataset?.repositories.csvLinks && dataset.repositories.csvLinks.length > 0 && (
                             <div className="flex flex-row gap-2 items-center">
                                 <Dropdown
                                     pt={{
@@ -134,6 +137,17 @@ const DatasetObjectDisplay = ({ dataset }) => {
                             </div>
                         )}
                     </div>
+                    <div className="flex">
+                        <a
+                            className="flex flex-row items-center gap-1"
+                            href={`https://doi.org/${dataset.repositories.doi}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <img src="/images/icons/zenodo.svg" alt="zenodo" className="w-5 h-5" />
+                            <span className="text-white text-headingSm">{dataset.repositories.doi}</span>
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -145,10 +159,11 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                 <h1 className="text-headingXl text-lightBlue">Description</h1>
                                 <div className="flex flex-col items-start w-full">
                                     <p
-                                        className={`text-bodyMd ${showDescription ? '' : 'line-clamp-4'} duration-300 transition`}
-                                    >
-                                        {dataset.description}
-                                    </p>
+                                        className={`text-bodyMd ${showDescription ? '' : 'line-clamp-4'} duration-300 transition [&_a]:text-blue-600 [&_a]:underline`}
+                                        dangerouslySetInnerHTML={{
+                                            __html: dataset.description
+                                        }}
+                                    />
                                     <button
                                         className="text-bodySm text-blue-600 font-bold"
                                         onClick={() => setShowDescription(!showDescription)}
@@ -199,28 +214,29 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                         }
                                     />
                                 )}
-                                {dataset.info?.other?.additionalRepo && (
-                                    <TechnicalInformation
-                                        header={
-                                            <>
-                                                <img src="/images/icons/additional-repo.png" className="w-6 h-6" />
-                                            </>
-                                        }
-                                        info={dataset.info?.other?.additionalRepo.map((repo, index) => (
-                                            <div className="text-wrap text-right">
-                                                <a
-                                                    href={`${repo.git_url.replace('.git', '')}/tree/${repo.commit_id}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <span className="text-black text-headingXs font-semibold hover:text-darkYellow">
-                                                        {repo.commit_id} ({repo.repo_type})
-                                                    </span>
-                                                </a>
-                                            </div>
-                                        ))}
-                                    />
-                                )}
+                                {dataset.info?.other?.additionalRepo &&
+                                    dataset.info?.other?.additionalRepo.length > 0 && (
+                                        <TechnicalInformation
+                                            header={
+                                                <>
+                                                    <img src="/images/icons/additional-repo.png" className="w-6 h-6" />
+                                                </>
+                                            }
+                                            info={dataset.info?.other?.additionalRepo.map((repo, index) => (
+                                                <div className="text-wrap text-right">
+                                                    <a
+                                                        href={`${repo.git_url.replace('.git', '')}/tree/${repo.commit_id}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        <span className="text-black text-headingXs font-semibold hover:text-darkYellow">
+                                                            {repo.commit_id} ({repo.repo_type})
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                            ))}
+                                        />
+                                    )}
                             </div>
                         </div>
                         {dataset?.datasetNote?.citations > 0 && (
