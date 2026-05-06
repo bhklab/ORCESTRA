@@ -29,8 +29,8 @@ const MainRev = () => {
                     View Data Types
                 </button>
             </div>
-            <div className="grid grid-cols-3 md:grid-cols-1 gap-6 mdlg:px-0">
-                <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-3 md:grid-cols-1 gap-8 mdlg:px-0">
+                <div className="flex flex-col gap-2 border-1 border-gray-100 p-4 rounded-md shadow-md">
                     <div className="flex flex-row gap-4 items-center">
                         <div className="bg-lightYellow p-3 rounded-lg">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="#001D3D" stroke-width="2">
@@ -48,7 +48,7 @@ const MainRev = () => {
                         in a unified framework
                     </p>
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 border-1 border-gray-100 p-4 rounded-md shadow-md">
                     <div className="flex flex-row gap-4 items-center">
                         <div className="bg-lightYellow p-3 rounded-lg">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="#001D3D" stroke-width="2">
@@ -65,7 +65,7 @@ const MainRev = () => {
                         Leverage industry-standard formats and schemas for maximum interoperability and reproducibility
                     </p>
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 border-1 border-gray-100 p-4 rounded-md shadow-md">
                     <div className="flex flex-row gap-4 items-center">
                         <div className="bg-lightYellow p-3 rounded-lg">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="#001D3D" stroke-width="2">
