@@ -16,7 +16,7 @@ const SingleDatasetNew = () => {
     }, []);
 
     return (
-        <div className="flex flex-col m-auto min-h-screen bg-gray-100">
+        <div className="flex flex-col m-auto min-h-screen bg-gray-100 py-24">
             {dataset && <DatasetObjectDisplay dataset={dataset} />}
         </div>
     );

@@ -20,12 +20,12 @@ const DatasetObjectDisplay = ({ dataset }) => {
     const [showDisclaimer, setShowDisclaimer] = useState(false);
 
     return (
-        <div className="flex flex-col py-24">
+        <div className="flex flex-col">
             <div className="flex py-4 px-24 flex-col bg-lightBlue gap-4 min-h-20">
                 <div className="flex flex-col flex-wrap gap-4">
                     <h1 className="font-bold text-heading3Xl text-darkYellow">{dataset.name}</h1>
                     <div className="flex flex-row gap-6 items-start">
-                        {dataset.repositories.downloadLink.length > 0 && (
+                        {dataset.repositories.downloadLink && dataset.repositories.downloadLink.length > 0 && (
                             <a
                                 href={dataset.repositories.downloadLink[0]}
                                 target="_blank"
