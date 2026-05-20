@@ -59,7 +59,7 @@ const DataTypes = () => {
                                     )}
                                 </div>
 
-                                <p className="text-bodyMd text-gray-600 italic opacity-0 h-0 group-hover:opacity-100 group-hover:h-20 transition-all duration-700 overflow-scroll">
+                                <p className="text-bodyMd text-gray-600 italic opacity-0 h-0 group-hover:opacity-100 group-hover:h-20 transition-all duration-700 overflow-y-auto custom-scrollbar expandable-text">
                                     {type.description}
                                 </p>
                             </div>
