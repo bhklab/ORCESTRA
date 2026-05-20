@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 html {
-    background-color: #FAFAFA;
+    background-color: #fafafa;
     font-family: 'Roboto';
 }
 
@@ -11,4 +11,27 @@ html {
     border-style: solid;
     border-width: 1px;
     border-radius: 8px;
+}
+
+.expandable-text {
+    overflow-y: hidden;
+}
+
+.group:hover .expandable-text {
+    animation: enable-scroll 1s linear 10ms forwards;
+}
+
+.group:not(:hover) .expandable-text {
+    overflow-y: hidden;
+}
+
+@keyframes enable-scroll {
+    to {
+        overflow-y: auto;
+    }
+}
+
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
 }
