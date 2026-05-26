@@ -105,6 +105,196 @@ const CreateDatasetObjectDisplay = () => {
         });
     };
 
+    const addDataSourceSection = () => {
+        setDataset(prev => {
+            const sectionNumber = Object.keys(prev.dataSources).length + 1;
+            const sectionName = `New Data Section ${sectionNumber}`;
+
+            return {
+                ...prev,
+                dataSources: {
+                    ...prev.dataSources,
+                    [sectionName]: []
+                }
+            };
+        });
+    };
+
+    const updateDataSourceSectionName = (oldSectionName, newSectionName) => {
+        setDataset(prev => {
+            if (!newSectionName || oldSectionName === newSectionName) {
+                return prev;
+            }
+
+            const updatedDataSources = { ...prev.dataSources };
+
+            if (updatedDataSources[newSectionName]) {
+                return prev;
+            }
+
+            const currentSection = updatedDataSources[oldSectionName];
+
+            delete updatedDataSources[oldSectionName];
+            updatedDataSources[newSectionName] = currentSection;
+
+            return {
+                ...prev,
+                dataSources: updatedDataSources
+            };
+        });
+    };
+
+    const removeDataSourceSection = sectionName => {
+        setDataset(prev => {
+            const updatedDataSources = { ...prev.dataSources };
+            delete updatedDataSources[sectionName];
+
+            return {
+                ...prev,
+                dataSources: updatedDataSources
+            };
+        });
+    };
+
+    const addDataSourceLink = sectionName => {
+        setDataset(prev => ({
+            ...prev,
+            dataSources: {
+                ...prev.dataSources,
+                [sectionName]: [
+                    ...prev.dataSources[sectionName],
+                    {
+                        name: '',
+                        description: '',
+                        url: '',
+                        current: ''
+                    }
+                ]
+            }
+        }));
+    };
+
+    const updateDataSourceLink = (sectionName, index, field, value) => {
+        setDataset(prev => ({
+            ...prev,
+            dataSources: {
+                ...prev.dataSources,
+                [sectionName]: prev.dataSources[sectionName].map((source, i) =>
+                    i === index
+                        ? {
+                              ...source,
+                              [field]: field === 'current' ? Number(value) || '' : value
+                          }
+                        : source
+                )
+            }
+        }));
+    };
+
+    const removeDataSourceLink = (sectionName, indexToRemove) => {
+        setDataset(prev => ({
+            ...prev,
+            dataSources: {
+                ...prev.dataSources,
+                [sectionName]: prev.dataSources[sectionName].filter((_, index) => index !== indexToRemove)
+            }
+        }));
+    };
+
+    const addReleaseNoteSection = () => {
+        setDataset(prev => {
+            const sectionNumber = Object.keys(prev.releaseNotes).length + 1;
+            const sectionName = `New Release Note Section ${sectionNumber}`;
+
+            return {
+                ...prev,
+                releaseNotes: {
+                    ...prev.releaseNotes,
+                    [sectionName]: []
+                }
+            };
+        });
+    };
+
+    const updateReleaseNoteSectionName = (oldSectionName, newSectionName) => {
+        setDataset(prev => {
+            if (!newSectionName || oldSectionName === newSectionName) {
+                return prev;
+            }
+
+            const updatedReleaseNotes = { ...prev.releaseNotes };
+
+            if (updatedReleaseNotes[newSectionName]) {
+                return prev;
+            }
+
+            const currentSection = updatedReleaseNotes[oldSectionName];
+
+            delete updatedReleaseNotes[oldSectionName];
+            updatedReleaseNotes[newSectionName] = currentSection;
+
+            return {
+                ...prev,
+                releaseNotes: updatedReleaseNotes
+            };
+        });
+    };
+
+    const removeReleaseNoteSection = sectionName => {
+        setDataset(prev => {
+            const updatedReleaseNotes = { ...prev.releaseNotes };
+            delete updatedReleaseNotes[sectionName];
+
+            return {
+                ...prev,
+                releaseNotes: updatedReleaseNotes
+            };
+        });
+    };
+
+    const addReleaseNote = sectionName => {
+        setDataset(prev => ({
+            ...prev,
+            releaseNotes: {
+                ...prev.releaseNotes,
+                [sectionName]: [
+                    ...prev.releaseNotes[sectionName],
+                    {
+                        current: '',
+                        name: ''
+                    }
+                ]
+            }
+        }));
+    };
+
+    const updateReleaseNote = (sectionName, index, field, value) => {
+        setDataset(prev => ({
+            ...prev,
+            releaseNotes: {
+                ...prev.releaseNotes,
+                [sectionName]: prev.releaseNotes[sectionName].map((note, i) =>
+                    i === index
+                        ? {
+                              ...note,
+                              [field]: field === 'current' ? Number(value) || '' : value
+                          }
+                        : note
+                )
+            }
+        }));
+    };
+
+    const removeReleaseNote = (sectionName, indexToRemove) => {
+        setDataset(prev => ({
+            ...prev,
+            releaseNotes: {
+                ...prev.releaseNotes,
+                [sectionName]: prev.releaseNotes[sectionName].filter((_, index) => index !== indexToRemove)
+            }
+        }));
+    };
+
     // useEffect(() => {
     //     console.log(dataset);
     // }, [dataset]);
@@ -173,8 +363,8 @@ const CreateDatasetObjectDisplay = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-row gap-2">
-                    <div className="flex flex-col justify-center gap-2 p-3 rounded-lg shadow-sm border-1 bg-white max-w-[400px]">
+                <div className="flex flex-row gap-2 w-full px-24 py-10">
+                    <div className="flex flex-col gap-2 p-3 rounded-lg shadow-sm border-1 bg-white max-w-[400px] self-start">
                         <h2 className="text-headingMd text-lightBlue">Technical Information</h2>
                         <div className="flex flex-col">
                             <h3 className="font-semibold text-bodyMd text-gray-700">Description</h3>
@@ -217,9 +407,7 @@ const CreateDatasetObjectDisplay = () => {
                                 placeholder="Ex. CC BY 4.0"
                                 type="text"
                                 value={dataset.license}
-                                onChange={e =>
-                                    setDataset({ ...dataset, info: { ...dataset.info, createdBy: e.target.value } })
-                                }
+                                onChange={e => setDataset({ ...dataset, license: e.target.value })}
                             />
                         </div>
                         <div className="flex flex-col">
@@ -269,7 +457,9 @@ const CreateDatasetObjectDisplay = () => {
                                             ...dataset,
                                             info: {
                                                 ...dataset.info,
-                                                dateCreated: `${e.value.getFullYear()}-${String(e.value.getMonth() + 1).padStart(2, '0')}-${String(e.value.getDate()).padStart(2, '0')}`
+                                                dateCreated: `${e.value.getFullYear()}-${String(
+                                                    e.value.getMonth() + 1
+                                                ).padStart(2, '0')}-${String(e.value.getDate()).padStart(2, '0')}`
                                             }
                                         })
                                     }
@@ -386,24 +576,7 @@ const CreateDatasetObjectDisplay = () => {
                                     )}
                                 </div>
                             ))}
-                            <button
-                                className="text-lightBlue"
-                                onClick={() =>
-                                    setDataset({
-                                        ...dataset,
-                                        info: {
-                                            ...dataset.info,
-                                            other: {
-                                                ...dataset.info.other,
-                                                additionalRepo: [
-                                                    ...dataset.info.other.additionalRepo,
-                                                    { git_url: '', commit_id: '', repo_type: '' }
-                                                ]
-                                            }
-                                        }
-                                    })
-                                }
-                            >
+                            <button className="text-lightBlue" onClick={addAdditionalRepo}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -469,11 +642,263 @@ const CreateDatasetObjectDisplay = () => {
                             />
                         </div>
                     </div>
-                    <div className="flex flex-col justify-center gap-2 p-3 rounded-lg shadow-sm border-1 bg-white">
-                        <h2 className="text-headingMd text-lightBlue">Data</h2>
-                        <div className="flex flex-col"></div>
+                    <div className="flex flex-col gap-2 p-3 rounded-lg shadow-sm border-1 bg-white w-full">
+                        <div className="flex flex-col gap-3">
+                            <div className="flex flex-row items-center gap-2">
+                                <h2 className="text-headingMd text-lightBlue">Data</h2>
+                                <button className="text-lightBlue" onClick={addDataSourceSection}>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        className="size-6"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
 
-                        <h2 className="text-headingMd text-lightBlue">Release Notes</h2>
+                            {Object.entries(dataset.dataSources).map(([sectionName, sources]) => (
+                                <div key={sectionName} className="flex flex-col gap-2">
+                                    <div className="flex flex-row gap-2">
+                                        <input
+                                            className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
+                                            placeholder="Ex. RNA, DNA, etc"
+                                            type="text"
+                                            value={sectionName}
+                                            onChange={e => updateDataSourceSectionName(sectionName, e.target.value)}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="text-lightBlue"
+                                            onClick={() => removeDataSourceSection(sectionName)}
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth="1.5"
+                                                stroke="currentColor"
+                                                className="size-6"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    {sources.map((source, index) => (
+                                        <div key={index} className="flex flex-col gap-2 pl-4">
+                                            <div className="flex flex-row gap-2">
+                                                <input
+                                                    className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
+                                                    placeholder="Ex. rnaseq"
+                                                    type="text"
+                                                    value={source.name}
+                                                    onChange={e =>
+                                                        updateDataSourceLink(sectionName, index, 'name', e.target.value)
+                                                    }
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className="text-lightBlue"
+                                                    onClick={() => removeDataSourceLink(sectionName, index)}
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth="1.5"
+                                                        stroke="currentColor"
+                                                        className="size-6"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <input
+                                                className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd"
+                                                placeholder="Ex. This dataset includes 2539 compounds tested at various concentrations and time points across a range of 241 cell lines. We do not include the cell painting data in this data object, only the whether or not the molecule was tested in the 2020 data release of the LINCS L1000 project."
+                                                type="text"
+                                                value={source.description}
+                                                onChange={e =>
+                                                    updateDataSourceLink(
+                                                        sectionName,
+                                                        index,
+                                                        'description',
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                            <input
+                                                className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd"
+                                                placeholder="Ex. https://lincsportal.ccs.miami.edu/signatures/datasets/LDG-1188"
+                                                type="text"
+                                                value={source.url}
+                                                onChange={e =>
+                                                    updateDataSourceLink(sectionName, index, 'url', e.target.value)
+                                                }
+                                            />
+                                            <input
+                                                className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd"
+                                                placeholder="Ex. 462"
+                                                value={source.current}
+                                                onChange={e =>
+                                                    updateDataSourceLink(sectionName, index, 'current', e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                    ))}
+
+                                    <button className="text-lightBlue" onClick={() => addDataSourceLink(sectionName)}>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="1.5"
+                                            className="size-6"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="flex flex-col gap-3">
+                            <div className="flex flex-row items-center gap-2">
+                                <h2 className="text-headingMd text-lightBlue">Release Notes</h2>
+                                <button className="text-lightBlue" onClick={addReleaseNoteSection}>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        className="size-6"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            {Object.entries(dataset.releaseNotes).map(([sectionName, notes]) => (
+                                <div key={sectionName} className="flex flex-col gap-2">
+                                    <div className="flex flex-row gap-2">
+                                        <input
+                                            className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
+                                            placeholder="Ex. Molecular Data, Drugs, etc"
+                                            type="text"
+                                            value={sectionName}
+                                            onChange={e => updateReleaseNoteSectionName(sectionName, e.target.value)}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="text-lightBlue"
+                                            onClick={() => removeReleaseNoteSection(sectionName)}
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth="1.5"
+                                                stroke="currentColor"
+                                                className="size-6"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    {notes.map((note, index) => (
+                                        <div key={index} className="flex flex-col gap-2 pl-4">
+                                            <div className="flex flex-row gap-2">
+                                                <input
+                                                    className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
+                                                    placeholder="Ex. RNA-seq"
+                                                    type="text"
+                                                    value={note.name}
+                                                    onChange={e =>
+                                                        updateReleaseNote(sectionName, index, 'name', e.target.value)
+                                                    }
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className="text-lightBlue"
+                                                    onClick={() => removeReleaseNote(sectionName, index)}
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth="1.5"
+                                                        stroke="currentColor"
+                                                        className="size-6"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <input
+                                                className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd"
+                                                placeholder="Ex. 462"
+                                                value={note.current}
+                                                onChange={e =>
+                                                    updateReleaseNote(sectionName, index, 'current', e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                    ))}
+
+                                    <button className="text-lightBlue" onClick={() => addReleaseNote(sectionName)}>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="1.5"
+                                            className="size-6"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
