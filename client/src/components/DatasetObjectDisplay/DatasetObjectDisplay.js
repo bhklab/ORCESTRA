@@ -178,7 +178,7 @@ const DatasetObjectDisplay = ({ dataset }) => {
                             <h1 className="text-headingXl text-lightBlue">Technical Information</h1>
                             <div className="flex flex-col items-start w-full gap-2">
                                 {dataset.repositories.downloadLink.length > 0 &&
-                                dataset.repositories?.csvLinks?.length > 0 ? (
+                                    dataset.repositories?.csvLinks?.length > 0 ? (
                                     <TechnicalInformation header="Format" info="RDS and CSV" />
                                 ) : (
                                     <TechnicalInformation header="Format" info="RDS" />
@@ -351,9 +351,29 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                 </button>
                             </div>
                         </div>
+                        {dataset?.datasetNote?.citations?.length > 0 && (
+                            <div className="flex flex-col items-start w-full gap-2" id="quality control">
+                                <h1 className="text-headingXl text-lightBlue">Citations</h1>
+                                <div className="flex flex-row flex-wrap gap-2">
+                                    {dataset.datasetNote?.citations?.map((citation, ind) => (
+
+                                        <div
+                                            className="flex flex-col gap-2 w-full  "
+                                            key={ind}
+                                        >
+                                            <ul className='text-headingSm italic list-disc list-inside'>
+                                                <li className="" dangerouslySetInnerHTML={{ __html: citation }} />
+                                            </ul>
+                                        </div>
+
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
+
                     <div className="flex flex-col w-full gap-2">
-                        {dataset.dataSources && (
+                        {dataset.dataSources && Object.keys(dataset.dataSources).length > 0 && (
                             <div className="flex flex-col w-full gap-2">
                                 <h1 className="text-headingXl text-lightBlue">Data</h1>
                                 {Object.entries(dataset.dataSources).map(([noteType, notes], ind) => {
@@ -404,7 +424,7 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                 })}
                             </div>
                         )}
-                        {dataset.tools > 0 && (
+                        {dataset.tools && dataset.tools.length > 0 && (
                             <div className="flex flex-col w-full gap-2">
                                 <h1 className="text-headingXl text-lightBlue">Tools</h1>
                                 {dataset.tools.map((tool, ind) => (
@@ -444,7 +464,7 @@ const DatasetObjectDisplay = ({ dataset }) => {
                             </div>
                         )}
 
-                        {dataset.releaseNotes && (
+                        {dataset.releaseNotes && Object.keys(dataset.releaseNotes).length > 0 && (
                             <div className="flex flex-col w-full gap-2">
                                 <h1 className="text-headingXl text-lightBlue">Release Notes</h1>
                                 {Object.entries(dataset.releaseNotes).map(([noteType, notes], ind) => {
