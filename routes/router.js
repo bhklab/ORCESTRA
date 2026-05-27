@@ -12,6 +12,7 @@ const statistics = require('./api/view/statistics-view');
 // const profile = require('./api/view/profile-view');
 // const documentation = require('./api/view/documentation-view');
 // const admin = require('./api/view/admin');
+const datasetObject = require('./api/dataset-object');
 
 // const dataObject = require('./api/data-object');
 // const userDataObject = require('./api/user-data-object');
@@ -50,6 +51,9 @@ router.get('/view/statistics', statistics.datatypeStats);
 // router.post('/data-object/sharelink', auth.verifyToken, dataObject.createShareLink);
 // router.post('/data-object/publish', auth.verifyToken, dataObject.publish);
 // router.post('/data-objects/update_canonical', auth.verifyToken, auth.isAdmin, dataObject.updateCanonical);
+
+
+router.post('/dataset-object/submit', datasetObject.submitDataset);
 
 
 // // user

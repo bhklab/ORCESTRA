@@ -75,10 +75,16 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                     }}
                                     value={selectedCSV}
                                     onChange={e => setSelectedCSV(e.value)}
-                                    options={dataset.repositories.csvLinks.map((link, ind) => ({
-                                        label: `${ind + 1}. ` + link.split('/files/')[1].split('?')[0],
-                                        value: link
-                                    }))}
+                                    options={dataset.repositories.csvLinks.map((link, ind) => {
+                                        let labelName = 'Empty Link';
+                                        if (link) {
+                                            labelName = link.includes('/files/') ? link.split('/files/')[1].split('?')[0] : link;
+                                        }
+                                        return {
+                                            label: `${ind + 1}. ${labelName}`,
+                                            value: link
+                                        };
+                                    })}
                                     placeholder="Select a file"
                                     dropdownIcon={
                                         <svg
@@ -177,6 +183,8 @@ const DatasetObjectDisplay = ({ dataset }) => {
                         <div className="flex flex-col items-start w-full gap-2" id="technical">
                             <h1 className="text-headingXl text-lightBlue">Technical Information</h1>
                             <div className="flex flex-col items-start w-full gap-2">
+                                <TechnicalInformation header="Dataset" info={dataset.datasetNote.name} />
+                                <TechnicalInformation header="Dataset Type" info={dataset.datasetType.charAt(0).toUpperCase() + dataset.datasetType.slice(1)} />
                                 {dataset.repositories.downloadLink.length > 0 &&
                                     dataset.repositories?.csvLinks?.length > 0 ? (
                                     <TechnicalInformation header="Format" info="RDS and CSV" />
