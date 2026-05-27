@@ -340,9 +340,15 @@ const CreateDatasetObjectDisplay = () => {
         }));
     };
 
-    const uploadDataset = () => {
-        axios.post('/api/dataset-object/submit', dataset);
-    }
+    const uploadDataset = async () => {
+        try {
+            await axios.post('/api/dataset-object/submit', dataset);
+            alert('Dataset successfully uploaded!');
+        } catch (error) {
+            console.error('Failed to upload dataset:', error);
+            alert('Failed to upload dataset. Check the console for details.');
+        }
+    };
 
     return (
         <div className="flex flex-col m-auto pt-32">
