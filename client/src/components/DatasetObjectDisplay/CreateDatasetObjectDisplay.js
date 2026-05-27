@@ -2,10 +2,34 @@ import React, { useEffect, useState } from 'react';
 import { Editor } from 'primereact/editor';
 import { Calendar } from 'primereact/calendar';
 import DatasetObjectDisplay from './DatasetObjectDisplay';
+import axios from 'axios';
 
+const SectionNameInput = ({ initialName, onNameChange, placeholder }) => {
+    const [name, setName] = useState(initialName);
+
+    useEffect(() => {
+        setName(initialName);
+    }, [initialName]);
+
+    return (
+        <input
+            className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
+            placeholder={placeholder}
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            onBlur={() => {
+                if (name !== initialName) {
+                    onNameChange(initialName, name);
+                }
+            }}
+        />
+    );
+};
 const CreateDatasetObjectDisplay = () => {
     const [dataset, setDataset] = useState({
         name: '',
+        datasetType: '',
         description: '',
         version: '',
         license: '',
@@ -295,9 +319,9 @@ const CreateDatasetObjectDisplay = () => {
         }));
     };
 
-    // useEffect(() => {
-    //     console.log(dataset);
-    // }, [dataset]);
+    const uploadDataset = () => {
+        axios.post('/api/dataset-object/submit', dataset);
+    }
 
     return (
         <div className="flex flex-col m-auto pt-32">
@@ -346,20 +370,67 @@ const CreateDatasetObjectDisplay = () => {
                                 }
                             />
                         </div>
-                        <div className="flex flex-col">
-                            <h3 className="font-semibold text-bodyMd text-gray-700">Csv Downloads</h3>
-                            <input
-                                className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd"
-                                placeholder="Ex. https://zenodo.org/records/20019577/files/colData.tsv?download=1"
-                                type="text"
-                                value={dataset.repositories.csvLinks[0]}
-                                onChange={e =>
-                                    setDataset({
-                                        ...dataset,
-                                        repositories: { ...dataset.repositories, csvLinks: [e.target.value] }
-                                    })
+                        <div className="flex flex-col gap-1">
+                            <div className="flex flex-row items-center gap-1">
+                                <h3 className="font-semibold text-bodyMd text-gray-700">Csv Downloads</h3>
+                                <button
+                                    type="button"
+                                    className="text-black"
+                                    onClick={() =>
+                                        setDataset({
+                                            ...dataset,
+                                            repositories: {
+                                                ...dataset.repositories,
+                                                csvLinks: [...dataset.repositories.csvLinks, '']
+                                            }
+                                        })
+                                    }
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" className="size-5" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div className='flex flex-col gap-2'>
+                                {
+                                    dataset.repositories.csvLinks.map((link, index) => (
+                                        <div key={index} className="flex flex-row gap-2">
+                                            <input
+                                                className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
+                                                placeholder="Ex. https://zenodo.org/records/20019577/files/colData.tsv?download=1"
+                                                type="text"
+                                                value={link}
+                                                onChange={e =>
+                                                    setDataset({
+                                                        ...dataset,
+                                                        repositories: {
+                                                            ...dataset.repositories,
+                                                            csvLinks: dataset.repositories.csvLinks.map((link, ind) => ind === index ? e.target.value : link)
+                                                        }
+                                                    })
+                                                }
+                                            />
+                                            <button
+                                                type="button"
+                                                className="text-black"
+                                                onClick={() =>
+                                                    setDataset({
+                                                        ...dataset,
+                                                        repositories: {
+                                                            ...dataset.repositories,
+                                                            csvLinks: dataset.repositories.csvLinks.filter((_, i) => i !== index)
+                                                        }
+                                                    })
+                                                }
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" className="size-5" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    ))
                                 }
-                            />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -755,12 +826,10 @@ const CreateDatasetObjectDisplay = () => {
                             {Object.entries(dataset.dataSources).map(([sectionName, sources]) => (
                                 <div key={sectionName} className="flex flex-col gap-2">
                                     <div className="flex flex-row gap-2">
-                                        <input
-                                            className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
+                                        <SectionNameInput
+                                            initialName={sectionName}
+                                            onNameChange={updateDataSourceSectionName}
                                             placeholder="Ex. RNA, DNA, etc"
-                                            type="text"
-                                            value={sectionName}
-                                            onChange={e => updateDataSourceSectionName(sectionName, e.target.value)}
                                         />
                                         <button
                                             type="button"
@@ -840,14 +909,14 @@ const CreateDatasetObjectDisplay = () => {
                                                     updateDataSourceLink(sectionName, index, 'url', e.target.value)
                                                 }
                                             />
-                                            <input
+                                            {/* <input
                                                 className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd"
                                                 placeholder="Ex. 462"
                                                 value={source.current}
                                                 onChange={e =>
                                                     updateDataSourceLink(sectionName, index, 'current', e.target.value)
                                                 }
-                                            />
+                                            /> */}
                                         </div>
                                     ))}
 
@@ -895,12 +964,10 @@ const CreateDatasetObjectDisplay = () => {
                             {Object.entries(dataset.releaseNotes).map(([sectionName, notes]) => (
                                 <div key={sectionName} className="flex flex-col gap-2">
                                     <div className="flex flex-row gap-2">
-                                        <input
-                                            className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
+                                        <SectionNameInput
+                                            initialName={sectionName}
+                                            onNameChange={updateReleaseNoteSectionName}
                                             placeholder="Ex. Molecular Data, Drugs, etc"
-                                            type="text"
-                                            value={sectionName}
-                                            onChange={e => updateReleaseNoteSectionName(sectionName, e.target.value)}
                                         />
                                         <button
                                             type="button"
@@ -989,6 +1056,26 @@ const CreateDatasetObjectDisplay = () => {
                         </div>
                     </div>
                 </div>
+
+                <div className="flex flex-col gap-2 p-3 rounded-lg shadow-sm border-1 bg-white w-full mt-4">
+                    <h2 className="text-headingMd text-lightBlue">Raw JSON</h2>
+                    <p className="text-sm text-gray-500">You can copy and paste JSON here. Click outside the text area to apply your changes.</p>
+                    <textarea
+                        className="w-full h-96 p-2 border border-gray-300 rounded font-mono text-sm bg-gray-50"
+                        defaultValue={JSON.stringify(dataset, null, 2)}
+                        key={JSON.stringify(dataset)}
+                        onBlur={(e) => {
+                            try {
+                                const parsed = JSON.parse(e.target.value);
+                                setDataset(parsed);
+                            } catch (err) {
+                                alert("Invalid JSON format. Please check your syntax.");
+                            }
+                        }}
+                    />
+                </div>
+                <button onClick={uploadDataset} className='p-3 bg-lightBlue text-white rounded-lg my-4'>Upload</button>
+
             </div>
 
             <div className="flex flex-col m-auto min-h-screen bg-gray-100 w-full">
