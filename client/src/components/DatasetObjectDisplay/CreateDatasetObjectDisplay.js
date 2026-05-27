@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Editor } from 'primereact/editor';
 import { Calendar } from 'primereact/calendar';
+import { Dropdown } from 'primereact/dropdown';
 import DatasetObjectDisplay from './DatasetObjectDisplay';
 import axios from 'axios';
 
@@ -27,6 +28,26 @@ const SectionNameInput = ({ initialName, onNameChange, placeholder }) => {
     );
 };
 const CreateDatasetObjectDisplay = () => {
+    const [datasetTypeOptions, setDatasetTypeOptions] = useState([]);
+
+    useEffect(() => {
+        const getDatatypes = async () => {
+            try {
+                const res = await axios.get('/api/view/statistics');
+                const options = res.data
+                    .sort((a, b) => a.priority - b.priority)
+                    .map(type => ({
+                        label: type.name,
+                        value: type.path
+                    }));
+                setDatasetTypeOptions(options);
+            } catch (error) {
+                console.log("Failed to fetch datatypes:", error);
+            }
+        };
+        getDatatypes();
+    }, []);
+
     const [dataset, setDataset] = useState({
         name: '',
         datasetType: '',
@@ -437,6 +458,30 @@ const CreateDatasetObjectDisplay = () => {
                 <div className="flex flex-row gap-2 w-full py-10">
                     <div className="flex flex-col gap-2 p-3 rounded-lg shadow-sm border-1 bg-white max-w-[400px] self-start">
                         <h2 className="text-headingMd text-lightBlue">Technical Information</h2>
+                        <div className="flex flex-col">
+                            <h3 className="font-semibold text-bodyMd text-gray-700">Dataset Note</h3>
+                            <input
+                                className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd"
+                                placeholder="Ex. CCLE"
+                                type="text"
+                                value={dataset.datasetNote.name}
+                                onChange={e => setDataset({ ...dataset, datasetNote: { ...dataset.datasetNote, name: e.target.value } })}
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <h3 className="font-semibold text-bodyMd text-gray-700">Dataset Type</h3>
+                            <Dropdown
+                                value={dataset.datasetType}
+                                options={datasetTypeOptions}
+                                onChange={(e) => setDataset({ ...dataset, datasetType: e.value })}
+                                placeholder="Select a Type"
+                                className="border-1 border-gray-300 rounded-[4px] h-[36px] text-bodyMd"
+                                pt={{
+                                    input: { className: 'px-2 py-[0.4rem]' },
+                                    trigger: { className: 'w-8' }
+                                }}
+                            />
+                        </div>
                         <div className="flex flex-col">
                             <h3 className="font-semibold text-bodyMd text-gray-700">Description</h3>
                             <Editor
