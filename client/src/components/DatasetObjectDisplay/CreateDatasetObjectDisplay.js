@@ -35,7 +35,7 @@ const CreateDatasetObjectDisplay = () => {
         },
         datasetNote: {
             name: '',
-            citation: [],
+            citations: [],
             disclaimer: 'The annotation data were accessed from ....',
             usagePolicy:
                 "The data is provided under <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'>Creative Commons Attribution 4.0 International License</a>."
@@ -182,9 +182,9 @@ const CreateDatasetObjectDisplay = () => {
                 [sectionName]: prev.dataSources[sectionName].map((source, i) =>
                     i === index
                         ? {
-                              ...source,
-                              [field]: field === 'current' ? Number(value) || '' : value
-                          }
+                            ...source,
+                            [field]: field === 'current' ? Number(value) || '' : value
+                        }
                         : source
                 )
             }
@@ -276,9 +276,9 @@ const CreateDatasetObjectDisplay = () => {
                 [sectionName]: prev.releaseNotes[sectionName].map((note, i) =>
                     i === index
                         ? {
-                              ...note,
-                              [field]: field === 'current' ? Number(value) || '' : value
-                          }
+                            ...note,
+                            [field]: field === 'current' ? Number(value) || '' : value
+                        }
                         : note
                 )
             }
@@ -301,7 +301,7 @@ const CreateDatasetObjectDisplay = () => {
 
     return (
         <div className="flex flex-col m-auto pt-32">
-            <div className="flex flex-col justify-center items-center gap-2 px-4">
+            <div className="flex flex-col justify-center items-start gap-2 px-24">
                 <h1 className="text-heading2Xl text-darkBlue">Dataset Object Creation</h1>
                 <div className="flex flex-col gap-2 p-3 rounded-lg shadow-sm border-1 bg-white">
                     <h2 className="text-headingMd text-lightBlue">Header Labels</h2>
@@ -363,7 +363,7 @@ const CreateDatasetObjectDisplay = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-row gap-2 w-full px-24 py-10">
+                <div className="flex flex-row gap-2 w-full py-10">
                     <div className="flex flex-col gap-2 p-3 rounded-lg shadow-sm border-1 bg-white max-w-[400px] self-start">
                         <h2 className="text-headingMd text-lightBlue">Technical Information</h2>
                         <div className="flex flex-col">
@@ -641,6 +641,94 @@ const CreateDatasetObjectDisplay = () => {
                                 }
                             />
                         </div>
+                        <div className="flex flex-col">
+                            <div className="flex flex-row items-center gap-1">
+                                <h3 className="font-semibold text-bodyMd text-gray-700">Citations</h3>
+
+                                <button
+                                    type="button"
+                                    className="text-black"
+                                    onClick={() =>
+                                        setDataset({
+                                            ...dataset,
+                                            datasetNote: {
+                                                ...dataset.datasetNote,
+                                                citations: [...dataset.datasetNote.citations, '']
+                                            }
+                                        })
+                                    }
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="2"
+                                        className="size-5"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div className="flex flex-col gap-1.5">
+                                {dataset.datasetNote.citations.map((citation, ind) => (
+                                    <div key={ind} className="flex flex-col gap-4">
+                                        <div className="flex flex-row gap-2">
+                                            <input
+                                                className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
+                                                placeholder="Ex. Citation text"
+                                                type="text"
+                                                value={citation}
+                                                onChange={e =>
+                                                    setDataset({
+                                                        ...dataset,
+                                                        datasetNote: {
+                                                            ...dataset.datasetNote,
+                                                            citations: dataset.datasetNote.citations.map((cite, idx) =>
+                                                                idx === ind ? e.target.value : cite
+                                                            )
+                                                        }
+                                                    })
+                                                }
+                                            />
+
+                                            <button
+                                                type="button"
+                                                className="text-lightBlue"
+                                                onClick={() =>
+                                                    setDataset({
+                                                        ...dataset,
+                                                        datasetNote: {
+                                                            ...dataset.datasetNote,
+                                                            citations: dataset.datasetNote.citations.filter((_, idx) => idx !== ind)
+                                                        }
+                                                    })
+                                                }
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth="1.5"
+                                                    stroke="currentColor"
+                                                    className="size-6"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                     <div className="flex flex-col gap-2 p-3 rounded-lg shadow-sm border-1 bg-white w-full">
                         <div className="flex flex-col gap-3">
@@ -906,7 +994,7 @@ const CreateDatasetObjectDisplay = () => {
             <div className="flex flex-col m-auto min-h-screen bg-gray-100 w-full">
                 <DatasetObjectDisplay dataset={dataset} />
             </div>
-        </div>
+        </div >
     );
 };
 export default CreateDatasetObjectDisplay;
