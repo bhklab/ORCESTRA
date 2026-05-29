@@ -64,7 +64,7 @@ const SingleDatasetNew = () => {
                                         </div>
                                         <ul className="list-style-card-main">
                                             <li>
-                                                <span>Curated By:</span> BHK lab
+                                                <span>Curated By:</span> {dataset.data?.info?.createdBy}
                                             </li>
                                             <li>
                                                 <span>Curated On: </span>
@@ -1254,6 +1254,56 @@ const SingleDatasetNew = () => {
                                                         <ul className="list-style-card-sub">
                                                             {releaseTab.data.releaseNotes.compounds &&
                                                                 releaseTab.data.releaseNotes.compounds.map(
+                                                                    (note, i) => (
+                                                                        <li key={i}>
+                                                                            <span>{note.current} </span>
+                                                                            {note.name.toLowerCase()}
+                                                                        </li>
+                                                                    )
+                                                                )}
+                                                        </ul>
+                                                    </div>
+                                                )}
+												{releaseTab.data.releaseNotes.antibodies &&
+                                                releaseTab.data.releaseNotes?.antibodies.length > 0 && (
+                                                    <div style={{ marginBottom: '10px' }}>
+                                                        <h4
+                                                            style={{
+                                                                fontSize: '16px',
+                                                                fontWeight: 'Bold',
+                                                                margin: '0 0 3px 0'
+                                                            }}
+                                                        >
+                                                            Antibodies
+                                                        </h4>
+                                                        <ul className="list-style-card-sub">
+                                                            {releaseTab.data.releaseNotes.antibodies &&
+                                                                releaseTab.data.releaseNotes.antibodies.map(
+                                                                    (note, i) => (
+                                                                        <li key={i}>
+                                                                            <span>{note.current} </span>
+                                                                            {note.name.toLowerCase()}
+                                                                        </li>
+                                                                    )
+                                                                )}
+                                                        </ul>
+                                                    </div>
+                                                )}
+												{releaseTab.data.releaseNotes.models &&
+                                                releaseTab.data.releaseNotes?.models.length > 0 && (
+                                                    <div style={{ marginBottom: '10px' }}>
+                                                        <h4
+                                                            style={{
+                                                                fontSize: '16px',
+                                                                fontWeight: 'Bold',
+                                                                margin: '0 0 3px 0'
+                                                            }}
+                                                        >
+                                                            Models
+                                                        </h4>
+                                                        <ul className="list-style-card-sub">
+                                                            {releaseTab.data.releaseNotes.models &&
+                                                                releaseTab.data.releaseNotes.models.map(
                                                                     (note, i) => (
                                                                         <li key={i}>
                                                                             <span>{note.current} </span>
