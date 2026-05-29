@@ -152,8 +152,12 @@ const CreateDatasetObjectDisplay = () => {
 
     const addDataSourceSection = () => {
         setDataset(prev => {
-            const sectionNumber = Object.keys(prev.dataSources).length + 1;
-            const sectionName = `New Data Section ${sectionNumber}`;
+            let sectionNumber = Object.keys(prev.dataSources).length + 1;
+            let sectionName = `New Data Section ${sectionNumber}`;
+            while (prev.dataSources[sectionName]) {
+                sectionNumber++;
+                sectionName = `New Data Section ${sectionNumber}`;
+            }
 
             return {
                 ...prev,
@@ -171,16 +175,18 @@ const CreateDatasetObjectDisplay = () => {
                 return prev;
             }
 
-            const updatedDataSources = { ...prev.dataSources };
-
-            if (updatedDataSources[newSectionName]) {
+            if (prev.dataSources[newSectionName]) {
                 return prev;
             }
 
-            const currentSection = updatedDataSources[oldSectionName];
-
-            delete updatedDataSources[oldSectionName];
-            updatedDataSources[newSectionName] = currentSection;
+            const updatedDataSources = {};
+            for (const key of Object.keys(prev.dataSources)) {
+                if (key === oldSectionName) {
+                    updatedDataSources[newSectionName] = prev.dataSources[oldSectionName];
+                } else {
+                    updatedDataSources[key] = prev.dataSources[key];
+                }
+            }
 
             return {
                 ...prev,
@@ -248,8 +254,12 @@ const CreateDatasetObjectDisplay = () => {
 
     const addReleaseNoteSection = () => {
         setDataset(prev => {
-            const sectionNumber = Object.keys(prev.releaseNotes).length + 1;
-            const sectionName = `New Release Note Section ${sectionNumber}`;
+            let sectionNumber = Object.keys(prev.releaseNotes).length + 1;
+            let sectionName = `New Release Note Section ${sectionNumber}`;
+            while (prev.releaseNotes[sectionName]) {
+                sectionNumber++;
+                sectionName = `New Release Note Section ${sectionNumber}`;
+            }
 
             return {
                 ...prev,
@@ -267,16 +277,18 @@ const CreateDatasetObjectDisplay = () => {
                 return prev;
             }
 
-            const updatedReleaseNotes = { ...prev.releaseNotes };
-
-            if (updatedReleaseNotes[newSectionName]) {
+            if (prev.releaseNotes[newSectionName]) {
                 return prev;
             }
 
-            const currentSection = updatedReleaseNotes[oldSectionName];
-
-            delete updatedReleaseNotes[oldSectionName];
-            updatedReleaseNotes[newSectionName] = currentSection;
+            const updatedReleaseNotes = {};
+            for (const key of Object.keys(prev.releaseNotes)) {
+                if (key === oldSectionName) {
+                    updatedReleaseNotes[newSectionName] = prev.releaseNotes[oldSectionName];
+                } else {
+                    updatedReleaseNotes[key] = prev.releaseNotes[key];
+                }
+            }
 
             return {
                 ...prev,
@@ -342,7 +354,23 @@ const CreateDatasetObjectDisplay = () => {
 
     const uploadDataset = async () => {
         try {
-            await axios.post('/api/dataset-object/submit', dataset);
+            const payload = JSON.parse(JSON.stringify(dataset));
+
+            const sanitizeKeys = (obj) => {
+                if (!obj) return {};
+                const sanitized = {};
+                for (const key of Object.keys(obj)) {
+                    // Replace dots to avoid MongoDB "key must not contain '.'" errors
+                    const cleanKey = key.replace(/\./g, '_').replace(/^\$/, '_');
+                    sanitized[cleanKey] = obj[key];
+                }
+                return sanitized;
+            };
+
+            payload.dataSources = sanitizeKeys(payload.dataSources);
+            payload.releaseNotes = sanitizeKeys(payload.releaseNotes);
+
+            await axios.post('/api/dataset-object/submit', payload);
             alert('Dataset successfully uploaded!');
         } catch (error) {
             console.error('Failed to upload dataset:', error);
