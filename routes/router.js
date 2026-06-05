@@ -20,13 +20,21 @@ const user = require('./api/user');
 const auth = require('./api/auth');
 // const public = require('./api/public');
 
-// view/component-specific routes
+// View get routes
+router.get('/view/data-object-filter/:datatype', dataObjectFilter.get); // Dataset filter options given a specific datatype
+router.get('/view/single-data-object/:datatype/:dataset_id', singleDataObject.get); // Single datasetobject and correlated datasetnote
+router.get('/view/single-data-object/qc', singleDataObject.qualityControl); // Rendering for QC object on DNL page
+router.get('/view/statistics', statistics.datatypeStats); // Datatype statistics that show up on /datatypes page
+
+// User pipeline/DNL routes
+
+router.post('/dataset-object/submit', datasetObject.submitDataset); // Submitting a datasets' DNL
+
+
+
 // router.get('/view/landing', landing.get);
-router.get('/view/data-object-filter/:datatype', dataObjectFilter.get);
-router.get('/view/single-data-object/:datatype/:dataset_id', singleDataObject.get);
-router.get('/view/single-data-object/qc', singleDataObject.qualityControl);
 // router.get('/view/canonical-data-objects', canonicalDataObjects.get);
-router.get('/view/statistics', statistics.datatypeStats);
+
 // router.get('/view/statistics/upset-plot', statistics.upsetPlot);
 // router.get('/view/user/profile/main', auth.verifyToken, profile.get);
 // router.get('/view/documentation/example-download/:file', documentation.downloadExampleFile);
@@ -53,12 +61,9 @@ router.get('/view/statistics', statistics.datatypeStats);
 // router.post('/data-objects/update_canonical', auth.verifyToken, auth.isAdmin, dataObject.updateCanonical);
 
 
-router.post('/dataset-object/submit', datasetObject.submitDataset);
-
-
-// // user
-// router.get('/user/find', user.find);
-// router.post('/user/submit', user.submit);
+// user
+router.get('/user/find', user.find);
+router.post('/user/submit', user.submit);
 router.get('/user/logout', user.logout);
 router.get('/user/session', auth.verifyToken, user.session);
 // router.post('/user/reset/email', user.sendResetPwdEmail);
