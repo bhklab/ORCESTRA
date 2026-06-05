@@ -118,7 +118,9 @@ const SetSearch = () => {
                     />
                     <Column field="version" header="Version" style={{ width: '5%' }} />
                     <Column
-                        body={rowData => <p className="line-clamp-3">{rowData?.description}</p>}
+                        body={rowData => (
+                            <p className="line-clamp-3" dangerouslySetInnerHTML={{ __html: rowData?.description }} />
+                 	    )}
                         header="Description"
                         style={{ width: '25%' }}
                     />
