@@ -80,7 +80,7 @@ const Authentication = () => {
             <Messages ref={el => (Authentication.messages = el)}></Messages>
             <CustomMessages trigger={error} message={errorMessage} />
             <div className="flex flex-col gap-4 bg-white rounded-lg p-4 shadow-lg border-1 border-gray-200">
-                <h3 className="text-headingSm font-bold ">Login / Register</h3>
+                <h3 className="text-headingSm font-bold">Login / Register</h3>
                 <div className="flex flex-col gap-1">
                     <label className="text-bodyMd font-semibold text-gray-600">Email</label>
                     <input

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -12,7 +12,7 @@ const StyledProfile = styled.div`
     width: 100%;
 `;
 
-const Profile = () =>{
+const Profile = () => {
     const auth = useContext(AuthContext);
     const [savedDatasets, setSavedDatasets] = useState([]);
     const [inProcessDatasets, setInProcessDatasets] = useState([]);
@@ -20,51 +20,49 @@ const Profile = () =>{
 
     useEffect(() => {
         const initialize = async () => {
-            const res = await axios.get('/api/view/user/profile/main', {params: {username: auth.user.username}});
+            const res = await axios.get('/api/view/user/profile/main', { params: { username: auth.user.username } });
             console.log(res.data);
             let complete = res.data.datasets.filter(item => item.info.status === 'complete');
             let pending = res.data.datasets.filter(item => item.info.status !== 'complete');
             setSavedDatasets(complete);
             setInProcessDatasets(pending);
             // setDataSubmissions(res.data.submissions);
-        }
+        };
         initialize();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const removeFromSavedList = async (selectedDatasets) => {
-        let datasetId = selectedDatasets.map(item => (item._id));
-        try{
-            await axios.post('/api/user/dataset/remove', {username: auth.user.username, datasetId: datasetId});
+    const removeFromSavedList = async selectedDatasets => {
+        let datasetId = selectedDatasets.map(item => item._id);
+        try {
+            await axios.post('/api/user/dataset/remove', { username: auth.user.username, datasetId: datasetId });
             let updated = savedDatasets.filter(item => !datasetId.includes(item._id));
             setSavedDatasets(updated);
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
-    }
+    };
 
-    return(
-        <StyledPage>
-            <StyledProfile>
-                <UserInfo />
-                <UserDataset 
-                    heading='Saved Datasets' 
-                    btnLabel='Remove from List' 
-                    datasets={savedDatasets} 
-                    handleBtnClick={removeFromSavedList}
-                />
-                <UserDataset 
+    return (
+        <div className="flex flex-col gap-2 py-24 px-20">
+            <UserInfo />
+            <UserDataset
+                heading="Saved Datasets"
+                btnLabel="Remove from List"
+                datasets={savedDatasets}
+                handleBtnClick={removeFromSavedList}
+            />
+            {/* <UserDataset 
                     heading='Dataset Requests in Process'
                     datasets={inProcessDatasets} 
                     pending={true}
-                />
-                {/* <DataSubmissionList 
+                /> */}
+            {/* <DataSubmissionList 
                     heading='Data Submissions'
                     datasets={dataSubmissions}
                 /> */}
-            </StyledProfile>
-        </StyledPage>
+        </div>
     );
-}
+};
 
 export default Profile;

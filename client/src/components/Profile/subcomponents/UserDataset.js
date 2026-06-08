@@ -12,23 +12,19 @@ const StyledUserDataset = styled.div`
     border-radius: 10px;
     padding: 1px 20px 20px 20px;
     background-color: rgba(255, 255, 255, 0.8);
-    .userPSetContent{
+    .userPSetContent {
         margin-top: 20px;
         width: 100%;
     }
-    .footer{
+    .footer {
         margin-top: 20px;
     }
 `;
 
-const UserDataset = (props) => {
+const UserDataset = props => {
     const { heading, btnLabel, datasets, handleBtnClick, pending } = props;
-    
-    const {
-        nameColumnTemplateUserDataset,
-        canonicalTemplate,
-        privateTemplate
-    } = useDataTable(null);
+
+    const { nameColumnTemplateUserDataset, canonicalTemplate, privateTemplate } = useDataTable(null);
 
     const [selectedDatasets, setSelectedDatasets] = useState([]);
     const [btnDisabled, setBtnDisabled] = useState(true);
@@ -36,9 +32,9 @@ const UserDataset = (props) => {
     const [btnYesDisplayed, setBtnYesDisplayed] = useState(false);
 
     useEffect(() => {
-        if(selectedDatasets.length > 0){
+        if (selectedDatasets.length > 0) {
             setBtnDisabled(false);
-        }else{
+        } else {
             setBtnDisabled(true);
         }
     }, [selectedDatasets]);
@@ -49,82 +45,111 @@ const UserDataset = (props) => {
         handleBtnClick(selectedDatasets);
         setSelectedDatasets([]);
         setDialogVisible(false);
-    }
-    
+    };
+
     const onHide = () => {
         setDialogVisible(false);
         setBtnYesDisplayed(false);
-    }
+    };
 
     const dialogFooter = (
         <div>
-            <Button label="Yes" onClick={onClickYes} disabled={btnYesDisplayed}/>
+            <Button label="Yes" onClick={onClickYes} disabled={btnYesDisplayed} />
             <Button label="Cancel" onClick={onHide} />
         </div>
     );
 
-    return(
-        <StyledUserDataset>
-            <h3>{heading}</h3>
-            <div className='userPSetContent'>
-                {
-                    datasets.length > 0 ? 
-                    <React.Fragment>
+    return (
+        <div className="flex flex-col gap-4 bg-white rounded-lg p-4 shadow-lg border-1 border-gray-200">
+            <h3 className="text-headingSm font-bold">{heading}</h3>
+            <div className="userPSetContent">
+                {datasets.length > 0 ? (
+                    <>
                         <div>
-                            <DataTable 
-                                value={datasets} 
-                                selection={selectedDatasets} 
-                                onSelectionChange={(e) => {setSelectedDatasets(e.value)}} 
-                                paginator={true} 
-                                rows={10} 
-                                resizableColumns={true} 
-                                scrollable={true} 
+                            <DataTable
+                                value={datasets}
+                                selection={selectedDatasets}
+                                onSelectionChange={e => {
+                                    setSelectedDatasets(e.value);
+                                }}
+                                paginator={true}
+                                rows={10}
+                                resizableColumns={true}
+                                scrollable={true}
                                 scrollHeight={'300px'}
                             >
-                                {
-                                    !pending && <Column selectionMode="multiple" style={{width: '40px', textAlign: 'center'}} />
-                                }
-                                <Column className='textField' field='name' header='Name' style={{width:'150px'}} body={nameColumnTemplateUserDataset} sortable={true} />
-                                <Column className='textField' field='dataset.name' header='Dataset' style={{width:'100px'}} sortable={true} />
-                                <Column className='textField' field='datasetType.label' header='Dataset Type' style={{width:'100px'}} sortable={true} />
-                                {
-                                    !pending && <Column field='info.canonical' body={canonicalTemplate} style={{width:'90px', textAlign: 'center'}} header='Canonical' />
-                                }
-                                <Column field='info.private' body={privateTemplate} style={{width:'60px', textAlign: 'center'}} header='Private' /> 
+                                {!pending && (
+                                    <Column selectionMode="multiple" style={{ width: '40px', textAlign: 'center' }} />
+                                )}
+                                <Column
+                                    className="textField"
+                                    field="name"
+                                    header="Name"
+                                    style={{ width: '150px' }}
+                                    body={nameColumnTemplateUserDataset}
+                                    sortable={true}
+                                />
+                                <Column
+                                    className="textField"
+                                    field="dataset.name"
+                                    header="Dataset"
+                                    style={{ width: '100px' }}
+                                    sortable={true}
+                                />
+                                <Column
+                                    className="textField"
+                                    field="datasetType.label"
+                                    header="Dataset Type"
+                                    style={{ width: '100px' }}
+                                    sortable={true}
+                                />
+                                {!pending && (
+                                    <Column
+                                        field="info.canonical"
+                                        body={canonicalTemplate}
+                                        style={{ width: '90px', textAlign: 'center' }}
+                                        header="Canonical"
+                                    />
+                                )}
+                                <Column
+                                    field="info.private"
+                                    body={privateTemplate}
+                                    style={{ width: '60px', textAlign: 'center' }}
+                                    header="Private"
+                                />
                             </DataTable>
                         </div>
-                        <div className='footer'>
-                        { 
-                            !pending && 
-                            <Button 
-                                label={btnLabel} 
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setDialogVisible(true);
-                                }} 
-                                disabled={btnDisabled} 
-                            /> 
-                        } 
+                        <div className="footer">
+                            {!pending && (
+                                <Button
+                                    label={btnLabel}
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        setDialogVisible(true);
+                                    }}
+                                    disabled={btnDisabled}
+                                />
+                            )}
                         </div>
-                    </React.Fragment> 
-                    : 
-                    <p>None</p>
-                }
+                    </>
+                ) : (
+                    <p className="text-bodyMd font-semibold text-gray-600">None</p>
+                )}
             </div>
             <div>
-                <Dialog 
-                    header='Removing Dataset(s)'
-                    footer={dialogFooter} 
-                    visible={dialogVisible} 
-                    style={{width: '300px'}} 
-                    modal={true} 
+                <Dialog
+                    header="Removing Dataset(s)"
+                    footer={dialogFooter}
+                    visible={dialogVisible}
+                    style={{ width: '300px' }}
+                    modal={true}
                     onHide={onHide}
                 >
                     Are you sure you would like to remove the selected Dataset(s) from the saved list?
                 </Dialog>
             </div>
-        </StyledUserDataset>
+        </div>
     );
-}
+};
 
 export default UserDataset;
