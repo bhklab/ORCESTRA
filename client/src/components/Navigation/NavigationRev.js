@@ -78,16 +78,31 @@ const NavigationRev = () => {
                     </NavLink>
                 </div>
             </div>
-            <NavLink
-                to="/app/authentication"
-                className={({ isActive }) =>
-                    `flex font-semibold text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
-                        isActive ? 'text-darkYellow font-bold' : 'text-gray-600'
-                    }`
-                }
-            >
-                {auth.user ? <span onClick={onLogoutClick}>Logout</span> : 'Login/Register'}
-            </NavLink>
+            <div className="flex flex-row gap-4">
+                {auth.user && (
+                    <NavLink
+                        to="/app/profile"
+                        className={({ isActive }) =>
+                            `flex font-semibold text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
+                                isActive ? 'text-darkYellow font-bold' : 'text-gray-600'
+                            }`
+                        }
+                    >
+                        Profile
+                    </NavLink>
+                )}
+
+                <NavLink
+                    to="/app/authentication"
+                    className={({ isActive }) =>
+                        `flex font-semibold text-headingMd duration-300 hover:cursor-pointer hover:text-darkYellow hover:font-bold ${
+                            isActive ? 'text-darkYellow font-bold' : 'text-gray-600'
+                        }`
+                    }
+                >
+                    {auth.user ? <span onClick={onLogoutClick}>Logout</span> : 'Login/Register'}
+                </NavLink>
+            </div>
         </div>
     );
 };
