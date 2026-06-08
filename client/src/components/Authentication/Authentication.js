@@ -76,77 +76,80 @@ const Authentication = () => {
     };
 
     return (
-        <StyledPage>
-            <StyledAuthForm>
-                <h3>Login / Register</h3>
-                <Messages ref={el => (Authentication.messages = el)}></Messages>
-                <CustomMessages trigger={error} message={errorMessage} />
-                <h5>Enter your email:</h5>
-                <div className="emailInput">
-                    <InputText
+        <div className="flex flex-col justify-center items-center min-h-screen">
+            <Messages ref={el => (Authentication.messages = el)}></Messages>
+            <CustomMessages trigger={error} message={errorMessage} />
+            <div className="flex flex-col gap-4 bg-white rounded-lg p-4 shadow-lg border-1 border-gray-200">
+                <h3 className="text-headingSm font-bold ">Login / Register</h3>
+                <div className="flex flex-col gap-1">
+                    <label className="text-bodyMd font-semibold text-gray-600">Email</label>
+                    <input
                         type="email"
                         name="email"
                         value={user.username}
+                        className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg"
                         onChange={e => setUser({ ...user, username: e.target.value })}
                     />
-                    <Button
-                        className="btnLoginFind"
+                    <button
+                        className={`bg-darkBlue text-white px-2 py-2 rounded-md text-bodyMd font-semibold ${user.action.length > 0 ? 'hidden' : ''}`}
                         onClick={findUser}
-                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                         disabled={disableFind()}
                     >
-                        <img
-                            src="/images/icons/search-icon.svg"
-                            style={{
-                                width: '15px',
-                                height: '15px',
-                                marginRight: '5px'
-                            }}
-                            alt="search-icon"
-                        />
-                        Find
-                    </Button>
+                        Login / Register
+                    </button>
                 </div>
                 {user.action.length > 0 && (
-                    <>
-                        <h4>{user.action === 'login' ? '' : 'Please register:'}</h4>
-                        <div className="message">Password needs to be at least 6 characters in length</div>
-                        <InputText
-                            className="pwdInput"
-                            type="password"
-                            value={user.password1}
-                            onChange={e => setUser({ ...user, password1: e.target.value })}
-                        />
+                    <div className="flex flex-col gap-2">
+                        <div className="flex flex-col">
+                            <label className="text-bodyMd font-semibold text-gray-600">Password</label>
+                            <input
+                                className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg"
+                                type="password"
+                                value={user.password1}
+                                onChange={e => setUser({ ...user, password1: e.target.value })}
+                            />
+                            <h5
+                                className={`${user.action === 'login' ? 'hidden' : 'text-bodySm font-semibold text-red-600'}`}
+                            >
+                                Password needs to be at least 6 characters in length
+                            </h5>
+                        </div>
                         {user.action === 'register' && (
-                            <div>
-                                <label>Confirm your password:</label>
-                                <InputText
-                                    className="pwdInput"
+                            <div className="flex flex-col">
+                                <label className="text-bodyMd font-semibold text-gray-600">Confirm password</label>
+                                <input
+                                    className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg"
                                     type="password"
                                     value={user.password2}
                                     onChange={e => setUser({ ...user, password2: e.target.value })}
                                 />
+                                <h5
+                                    className={`${user.action === 'login' ? 'hidden' : 'text-bodySm font-semibold text-red-600'}`}
+                                >
+                                    Password needs to be at least 6 characters in length
+                                </h5>
                             </div>
                         )}
-                        <div>
-                            <Button
-                                label={user.action === 'login' ? 'Login' : 'Register'}
-                                onClick={e => {
-                                    e.preventDefault();
-                                    submitUser(user, location);
-                                }}
-                                disabled={disableSubmit()}
-                            />
-                        </div>
-                        <div style={{ marginTop: '20px', marginLeft: '-10px' }}>
-                            <Button className="forgotPasswordBtn" onClick={onResetClick}>
-                                Reset your password
-                            </Button>
-                        </div>
-                    </>
+                        <button
+                            className="bg-darkBlue text-white px-2 py-2 rounded-md text-bodyMd font-semibold"
+                            onClick={e => {
+                                e.preventDefault();
+                                submitUser(user, location);
+                            }}
+                            disabled={disableSubmit()}
+                        >
+                            {user.action === 'login' ? 'Login' : 'Register'}
+                        </button>
+                        <button
+                            className={`bg-darkBlue text-white px-2 py-2 rounded-md text-bodyMd font-semibold ${user.action === 'register' ? 'hidden' : ''}`}
+                            onClick={onResetClick}
+                        >
+                            Reset password
+                        </button>
+                    </div>
                 )}
-            </StyledAuthForm>
-        </StyledPage>
+            </div>
+        </div>
     );
 };
 
