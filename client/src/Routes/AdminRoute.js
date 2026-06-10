@@ -10,7 +10,13 @@ const AdminRoute = ({ element: Element, redirect }) => {
         return null;
     }
 
-    return user && user.admin ? <Element /> : <Navigate to={redirect} replace />;
+    return user && user.admin ? (
+        <div className="flex flex-col justify-center py-24">
+            <Element />
+        </div>
+    ) : (
+        <Navigate to={redirect} replace />
+    );
 };
 
 export default AdminRoute;
