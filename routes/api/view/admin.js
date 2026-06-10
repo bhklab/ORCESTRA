@@ -1,4 +1,4 @@
-import axios from "axios"
+const axios = require('axios');
 const CreatePipeline = require('../../../db/models/data_processing_api/create-pipeline');
 const RunPipeline = require('../../../db/models/data_processing_api/run-pipeline');
 const ZenodoObject = require('../../../db/models/data_processing_api/zenodo-object');
@@ -33,7 +33,7 @@ const createPipeline = async (req, res) => {
  */
 const getCreatedPipelines = async (req, res) => {
     try{
-		const createdPipelines = await CreatePipeline.find();
+		const createdPipelines = await CreatePipeline.find({});
         res.send(createdPipelines);
     } catch(error){
         console.log(error);
@@ -56,6 +56,20 @@ const runPipeline = async (req, res) => {
         res.send(result)
     }
 }
+
+const getRunPipelines = async (req, res) => {
+    try{
+		const runPipelines = await RunPipeline.find({});
+        res.send(runPipelines);
+    } catch(error){
+        console.log(error);
+		res.status(500).send({
+            message: 'Failed to get run pipelines',
+            error: error.response?.data || error.message
+        });    
+	}
+}
+
 
 const processedDataObjects = async (req, res) => {
     let result = [];
@@ -95,10 +109,12 @@ const submitObject = async (req, res) => {
 
 
 module.exports = {
-    canonicalPSets,
+    // canonicalPSets,
     createPipeline,
-    getPipelines,
+	getCreatedPipelines,
+    // getPipelines,
     runPipeline,
+	getRunPipelines,
     processedDataObjects,
     uploadDataObject,
     submitObject
