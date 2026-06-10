@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -37,41 +37,43 @@ const RunPipeline = () => {
     }, [runPipelineFields]);
 
     const submitRunPipeline = async () => {
-        setRunPipelineFields(...runPipelineFields, selectedCreatePipeline.pipeline_name);
-        try {
-            const res = await axios.post('/api/user/run_pipeline', runPipelineFields);
-            toast.current.show({
-                severity: 'success',
-                summary: 'Success',
-                detail: `Successful pipeline submission: ${res.data}`,
-                life: 3000
-            });
-        } catch (error) {
-            toast.current.show({
-                severity: 'error',
-                summary: 'Error',
-                detail: `Failed to submit pipeline: ${error}`,
-                life: 3000
-            });
-        }
+        setRunPipelineFields({ ...runPipelineFields, pipeline_name: selectedCreatePipeline.pipeline_name });
+        // try {
+        //     const res = await axios.post('/api/user/run_pipeline', runPipelineFields);
+        //     toast.current.show({
+        //         severity: 'success',
+        //         summary: 'Success',
+        //         detail: `Successful pipeline submission: ${res.data}`,
+        //         life: 3000
+        //     });
+        // } catch (error) {
+        //     toast.current.show({
+        //         severity: 'error',
+        //         summary: 'Error',
+        //         detail: `Failed to submit pipeline: ${error}`,
+        //         life: 3000
+        //     });
+        // }
     };
 
     return (
         <div className="flex flex-col gap-2">
             <Toast ref={toast} />
-            <DataTable
-                value={createdPipelines}
-                sortOrder={-1}
-                size="small"
-                showGridlines={true}
-                stripedRows
-                selectionMode="single"
-                selection={selectedCreatePipeline}
-                onSelectionChange={e => setSelectedCreatePipeline(e.value)}
-            >
-                <Column field="pipeline_name" header="Pipeline Name"></Column>
-                <Column field="git_url" header="Github URL"></Column>
-            </DataTable>
+            <div>
+                <DataTable
+                    value={createdPipelines}
+                    sortOrder={-1}
+                    size="small"
+                    showGridlines={true}
+                    stripedRows
+                    selectionMode="single"
+                    selection={selectedCreatePipeline}
+                    onSelectionChange={e => setSelectedCreatePipeline(e.value)}
+                >
+                    <Column field="pipeline_name" header="Create Pipeline Name"></Column>
+                    <Column field="git_url" header="Github URL"></Column>
+                </DataTable>
+            </div>
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col">
                     <label className="text-bodyMd font-semibold text-gray-600">Pipeline Name</label>
@@ -199,7 +201,7 @@ const RunPipeline = () => {
                 </div>
                 <button
                     className="bg-darkBlue text-white px-2 py-2 rounded-md text-bodyMd font-semibold max-w-24"
-                    // onClick={e => ()}
+                    onClick={submitRunPipeline}
                 >
                     Submit
                 </button>
