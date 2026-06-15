@@ -26,7 +26,7 @@ const RunPipeline = () => {
 
     useEffect(() => {
         const getCreatedPipelines = async () => {
-            const res = await axios.get('/api/user/created_pipelines');
+            const res = await axios.get('/api/user/created-pipelines');
             setCreatedPipelines(res.data);
         };
         getCreatedPipelines();
@@ -38,22 +38,22 @@ const RunPipeline = () => {
 
     const submitRunPipeline = async () => {
         setRunPipelineFields({ ...runPipelineFields, pipeline_name: selectedCreatePipeline.pipeline_name });
-        // try {
-        //     const res = await axios.post('/api/user/run_pipeline', runPipelineFields);
-        //     toast.current.show({
-        //         severity: 'success',
-        //         summary: 'Success',
-        //         detail: `Successful pipeline submission: ${res.data}`,
-        //         life: 3000
-        //     });
-        // } catch (error) {
-        //     toast.current.show({
-        //         severity: 'error',
-        //         summary: 'Error',
-        //         detail: `Failed to submit pipeline: ${error}`,
-        //         life: 3000
-        //     });
-        // }
+        try {
+            const res = await axios.post('/api/user/run-pipeline', runPipelineFields);
+            toast.current.show({
+                severity: 'success',
+                summary: 'Success',
+                detail: `Successful pipeline submission: ${res.data}`,
+                life: 3000
+            });
+        } catch (error) {
+            toast.current.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: `Failed to submit pipeline: ${error}`,
+                life: 3000
+            });
+        }
     };
 
     return (
