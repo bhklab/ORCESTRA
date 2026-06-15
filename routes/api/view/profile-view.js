@@ -1,8 +1,7 @@
 const User = require('../../../db/models/user');
-const DataObject = require('../../../db/models/data-object').DataObject;
+const DatasetObject = require('../../../db/models/dataset-object');
 const { dataTypes } = require('../../../helper/enum');
 const dataObjectHelper = require('../../../helper/data-object');
-require('../../../db/models/dataset');
 
 const getDatasetTypeLabel = (datatype) => {
     switch(datatype){
@@ -27,7 +26,7 @@ const get = async (req, res) => {
         let userDatasets = [];
         const user = await User.findOne({email: req.query.username});
         for(const type of Object.values(dataTypes)){
-            let found = await DataObject.find({datasetType: type, _id: {$in: user.userDataObjects}}).populate('dataset', 'name').lean();
+            let found = await DatasetObject.find({datasetType: type, _id: {$in: user.userDataObjects}}).populate('dataset', 'name').lean();
             found = found.map(item => {
                 let repository = item.repositories.find(repo => repo.version === dataObjectHelper.getDataVersion(type))
                 return({
@@ -43,8 +42,6 @@ const get = async (req, res) => {
             });
             userDatasets = userDatasets.concat(found);
         }
-
-        // const submissions = await dataSubmission.list({'info.email': req.query.username}, {'projection': {'info': true}});
         
         result = {datasets: userDatasets, submissions: []};
     }catch(error){

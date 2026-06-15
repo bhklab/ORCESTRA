@@ -9,13 +9,13 @@ const dataObjectFilter = require('./api/view/data-object-filter-view');
 const singleDataObject = require('./api/view/single-data-object-view');
 // const canonicalDataObjects = require('./api/view/canonical-data-object-view');
 const statistics = require('./api/view/statistics-view');
-// const profile = require('./api/view/profile-view');
+const profile = require('./api/view/profile-view');
 // const documentation = require('./api/view/documentation-view');
-// const admin = require('./api/view/admin');
+const admin = require('./api/view/admin');
 const datasetObject = require('./api/dataset-object');
 
 // const dataObject = require('./api/data-object');
-// const userDataObject = require('./api/user-data-object');
+const userDataObject = require('./api/user-data-object');
 const user = require('./api/user');
 const auth = require('./api/auth');
 // const public = require('./api/public');
@@ -36,7 +36,7 @@ router.post('/dataset-object/submit', datasetObject.submitDataset); // Submittin
 // router.get('/view/canonical-data-objects', canonicalDataObjects.get);
 
 // router.get('/view/statistics/upset-plot', statistics.upsetPlot);
-// router.get('/view/user/profile/main', auth.verifyToken, profile.get);
+router.get('/view/user/profile/main', auth.verifyToken, profile.get);
 // router.get('/view/documentation/example-download/:file', documentation.downloadExampleFile);
 // router.get('/view/admin/canonical_psets', auth.verifyToken, auth.isAdmin, admin.canonicalPSets);
 // router.get('/view/admin/processed_data_obj', auth.verifyToken, auth.isAdmin, admin.processedDataObjects);
@@ -66,13 +66,25 @@ router.get('/user/find', user.find);
 router.post('/user/submit', user.submit);
 router.get('/user/logout', user.logout);
 router.get('/user/session', auth.verifyToken, user.session);
-// router.post('/user/reset/email', user.sendResetPwdEmail);
-// router.post('/user/reset/token', user.resetPwdWithToken);
-// router.post('/user/reset', auth.verifyToken, user.resetPwd);
+router.post('/user/reset/email', user.sendResetPwdEmail);
+router.post('/user/reset/token', user.resetPwdWithToken);
+router.post('/user/reset', auth.verifyToken, user.resetPwd);
+
+// user admin actions
+router.post('/user/create-pipeline', admin.createPipeline);
+// router.post('/user/create-pipeline', auth.verifyToken, auth.isAdmin, admin.createPipeline);
+router.get('/user/created-pipelines', admin.getCreatedPipelines);
+// router.get('/user/created-pipelines', auth.verifyToken, auth.isAdmin, admin.getCreatedPipelines);
+router.post('/user/run-pipeline', admin.runPipeline);
+// router.post('/user/run-pipeline', auth.verifyToken, auth.isAdmin, admin.runPipeline);
+router.get('/user/run-pipelines', admin.getRunPipelines);
+// router.get('/user/run-pipelines', auth.verifyToken, auth.isAdmin, admin.getRunPipelines);
+
+
 
 // // user-dataset routes
-// router.post('/user/dataset/add', auth.verifyToken, userDataObject.add);
-// router.post('/user/dataset/remove', auth.verifyToken, userDataObject.remove);
+router.post('/user/dataset/add', auth.verifyToken, userDataObject.add);
+router.post('/user/dataset/remove', auth.verifyToken, userDataObject.remove);
 
 // //public api
 // router.get('/:datasetType/:filter', public.getDatasets);
