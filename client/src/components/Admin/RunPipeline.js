@@ -5,6 +5,26 @@ import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { Tooltip } from 'primereact/tooltip';
 
+const InfoTooltip = ({ text }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="2"
+        stroke="currentColor"
+        className="size-4 text-gray-500 custom-tooltip"
+        data-pr-tooltip={text}
+        data-pr-position="right"
+        style={{ cursor: 'pointer' }}
+    >
+        <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+        />
+    </svg>
+);
+
 const RunPipeline = () => {
     const [createdPipelines, setCreatedPipelines] = useState([]);
     const [selectedCreatePipeline, setSelectedCreatePipeline] = useState({});
@@ -60,6 +80,7 @@ const RunPipeline = () => {
     return (
         <div className="flex flex-col gap-2">
             <Toast ref={toast} />
+            <Tooltip target=".custom-tooltip" />
             <div>
                 <DataTable
                     value={createdPipelines}
@@ -97,9 +118,9 @@ const RunPipeline = () => {
                     />
                 </div>
                 <div className="flex flex-col gap-1">
-                    <div className="flex flex-col">
+                    <div className="flex flex-row items-center gap-1">
                         <label className="text-bodyMd font-semibold text-gray-600">Branch</label>
-                        <label className="text-bodyXs italic text-gray-400">Optional (defaults to 'main' branch)</label>
+                        <InfoTooltip text="Optional (defaults to 'main' branch)" />
                     </div>
                     <input
                         type="text"
@@ -111,11 +132,9 @@ const RunPipeline = () => {
                     />
                 </div>
                 <div className="flex flex-col gap-1">
-                    <div className="flex flex-col">
+                    <div className="flex flex-row items-center gap-1">
                         <label className="text-bodyMd font-semibold text-gray-600">Commit ID (SHA)</label>
-                        <label className="text-bodyXs italic text-gray-400">
-                            Optional (defaults to most recent commit id)
-                        </label>
+                        <InfoTooltip text="Optional (defaults to most recent commit id)" />
                     </div>
                     <input
                         type="text"
@@ -180,9 +199,7 @@ const RunPipeline = () => {
                         onChange={e => setRunPipelineFields({ ...runPipelineFields, pixi_use: e.target.checked })}
                         className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg max-w-96 focus:outline-none"
                     />
-                    <label className="text-bodyXs italic text-gray-400">
-                        Optional: unchecked: conda will configs will be available
-                    </label>
+                    <InfoTooltip text="unchecked: conda will configs will be available" />
                 </div>
                 {!runPipelineFields.pixi_use && (
                     <div className="flex flex-col gap-1">
@@ -190,8 +207,8 @@ const RunPipeline = () => {
                             <label className="text-bodyMd font-semibold text-gray-600">
                                 Conda Environment File Path
                             </label>
-                            <label className="text-bodyXs italic text-gray-400">
-                                Optional: only needed if a conda environment is utilized
+                            <label className="text-bodyXs italic text-red-500">
+                                Required: needed if a conda environment is utilized
                             </label>
                         </div>
                         <input
@@ -217,10 +234,7 @@ const RunPipeline = () => {
                         }
                         className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg max-w-96 focus:outline-none"
                     />
-                    <label className="text-bodyXs italic text-gray-400">
-                        Optional: checked: max 24 GB RAM and 7 vCPUs will be available to the pipeline; unchecked: max
-                        12 GB RAM and 3 vCPUs will be available to the pipeline
-                    </label>
+                    <InfoTooltip text="checked: max 24 GB RAM and 7 vCPUs will be available to the pipeline; unchecked: max 12 GB RAM and 3 vCPUs will be available to the pipeline" />
                 </div>
                 <div className="flex flex-col gap-1">
                     <div className="flex flex-col">
@@ -241,11 +255,9 @@ const RunPipeline = () => {
                     />
                 </div>
                 <div className="flex flex-col gap-1">
-                    <div className="flex flex-col">
+                    <div className="flex flex-row items-center gap-1">
                         <label className="text-bodyMd font-semibold text-gray-600">QC Command</label>
-                        <label className="text-bodyXs italic text-gray-400">
-                            Optional: command used to commence quality control from the top level of the repository
-                        </label>
+                        <InfoTooltip text="command used to commence quality control from the top level of the repository" />
                     </div>
                     <input
                         type="text"
@@ -265,7 +277,7 @@ const RunPipeline = () => {
                         onChange={e => setRunPipelineFields({ ...runPipelineFields, new_release: e.target.checked })}
                         className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg max-w-96 focus:outline-none"
                     />
-                    <label className="text-bodyXs italic text-red-500">Required</label>
+                    <InfoTooltip text="check: new commit id being run within pipeline; unchecked: rerunning a previous commit id" />
                 </div>
                 <button
                     className="bg-darkBlue text-white px-2 py-2 rounded-md text-bodyMd font-semibold max-w-24"
