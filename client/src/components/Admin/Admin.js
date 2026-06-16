@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CreatePipeline from './CreatePipeline';
 import RunPipeline from './RunPipeline';
+import ZenodoUpload from './ZenodoUpload';
 
 const Admin = () => {
     const [selectedMenu, setSelectedMenu] = useState('create-pipeline');
@@ -30,10 +31,22 @@ const Admin = () => {
                         >
                             Run a Pipeline
                         </span>
+                        <div className="w-[1px] bg-gray-300 h-4" />
+                        <span
+                            className={`hover:text-darkBlue hover:cursor-pointer ${
+                                selectedMenu === 'zenodo-upload' ? 'text-darkBlue' : 'text-gray-400'
+                            }`}
+                            onClick={e => {
+                                setSelectedMenu('zenodo-upload');
+                            }}
+                        >
+                            Upload to Zenodo
+                        </span>
                     </div>
                 </div>
                 {selectedMenu === 'create-pipeline' && <CreatePipeline />}
                 {selectedMenu === 'run-pipeline' && <RunPipeline />}
+                {selectedMenu === 'zenodo-upload' && <ZenodoUpload />}
             </div>
         </div>
     );
