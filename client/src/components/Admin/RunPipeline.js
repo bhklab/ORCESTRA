@@ -59,6 +59,22 @@ const RunPipeline = () => {
 
     const submitRunPipeline = async () => {
         setRunPipelineFields({ ...runPipelineFields, pipeline_name: selectedCreatePipeline.pipeline_name });
+        if (
+            runPipelineFields.pipeline_name === '' ||
+            runPipelineFields.email === '' ||
+            runPipelineFields.output_directories.length === 0 ||
+            runPipelineFields.snakefile_path === '' ||
+            runPipelineFields.config_file_path === '' ||
+            runPipelineFields.pipeline_run_command === ''
+        ) {
+            toast.current.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: `Failed to submit pipeline: Check that email, output directories, snakefile path and config file path are specified.`,
+                life: 3000
+            });
+            return;
+        }
         try {
             const res = await axios.post('/api/user/run-pipeline', runPipelineFields);
             toast.current.show({
@@ -93,7 +109,22 @@ const RunPipeline = () => {
                     onSelectionChange={e => setSelectedCreatePipeline(e.value)}
                 >
                     <Column field="pipeline_name" header="Create Pipeline Name"></Column>
-                    <Column field="git_url" header="Github URL"></Column>
+                    <Column
+                        field="git_url"
+                        header="Github URL"
+                        body={rowData => (
+                            <div className="line-clamp-2" title={rowData.git_url}>
+                                <a
+                                    className="text-blue-600 underline"
+                                    href={rowData.git_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {rowData.git_url}
+                                </a>
+                            </div>
+                        )}
+                    ></Column>
                 </DataTable>
             </div>
             <div className="flex flex-col gap-4">
@@ -104,7 +135,7 @@ const RunPipeline = () => {
                         name="pipeline_name"
                         disabled={true}
                         value={selectedCreatePipeline.pipeline_name}
-                        className="px-2 py-1 rounded-md text-bodyLg max-w-96 focus:outline-none bg-gray-200"
+                        className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg max-w-96 focus:outline-none bg-gray-200"
                     />
                 </div>
                 <div className="flex flex-col">
@@ -114,7 +145,7 @@ const RunPipeline = () => {
                         name="git_url"
                         disabled={true}
                         value={selectedCreatePipeline.git_url}
-                        className="px-2 py-1 rounded-md text-bodyLg max-w-96 focus:outline-none bg-gray-200"
+                        className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg max-w-96 focus:outline-none bg-gray-200"
                     />
                 </div>
                 <div className="flex flex-col gap-1">
@@ -159,6 +190,67 @@ const RunPipeline = () => {
                     />
                 </div>
                 <div className="flex flex-col gap-1">
+                    <div className="flex flex-row items-center gap-2">
+                        <div className="flex flex-col">
+                            <div className="flex flex-row items-center gap-1">
+                                <label className="text-bodyMd font-semibold text-gray-600">Output Directories</label>
+                                <button
+                                    onClick={() => {
+                                        setRunPipelineFields({
+                                            ...runPipelineFields,
+                                            output_directories: [...runPipelineFields.output_directories, '']
+                                        });
+                                    }}
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className="size-5 text-darkBlue cursor-pointer"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <label className="text-bodyXs italic text-red-500">Required</label>
+                        </div>
+                    </div>
+                    {runPipelineFields.output_directories.map((dir, index) => (
+                        <div key={index} className="flex flex-row items-center gap-2">
+                            <input
+                                type="text"
+                                value={dir}
+                                onChange={e => {
+                                    const newDirs = [...runPipelineFields.output_directories];
+                                    newDirs[index] = e.target.value;
+                                    setRunPipelineFields({ ...runPipelineFields, output_directories: newDirs });
+                                }}
+                                placeholder="data/results"
+                                className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg w-full max-w-96 focus:outline-none"
+                            />
+                            <button
+                                onClick={() => {
+                                    const newDirs = runPipelineFields.output_directories.filter((_, i) => i !== index);
+                                    setRunPipelineFields({ ...runPipelineFields, output_directories: newDirs });
+                                }}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="size-5 text-red-500 cursor-pointer hover:text-red-700"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    ))}
+                </div>
+                <div className="flex flex-col gap-1">
                     <div className="flex flex-col">
                         <label className="text-bodyMd font-semibold text-gray-600">Snakefile Path</label>
                         <label className="text-bodyXs italic text-red-500">
@@ -199,7 +291,7 @@ const RunPipeline = () => {
                         onChange={e => setRunPipelineFields({ ...runPipelineFields, pixi_use: e.target.checked })}
                         className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg max-w-96 focus:outline-none"
                     />
-                    <InfoTooltip text="unchecked: conda will configs will be available" />
+                    <InfoTooltip text="unchecked: conda will environment configurations will be available" />
                 </div>
                 {!runPipelineFields.pixi_use && (
                     <div className="flex flex-col gap-1">
@@ -277,7 +369,7 @@ const RunPipeline = () => {
                         onChange={e => setRunPipelineFields({ ...runPipelineFields, new_release: e.target.checked })}
                         className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg max-w-96 focus:outline-none"
                     />
-                    <InfoTooltip text="check: new commit id being run within pipeline; unchecked: rerunning a previous commit id" />
+                    <InfoTooltip text="check: re-running pipeline with the expectation of a new dataset upload; unchecked: rerunning previous pipeline run " />
                 </div>
                 <button
                     className="bg-darkBlue text-white px-2 py-2 rounded-md text-bodyMd font-semibold max-w-24"
