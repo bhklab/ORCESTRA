@@ -34,7 +34,7 @@ const ZenodoUpload = () => {
     const [zenodoObject, setZenodoObject] = useState({
         description: '',
         resource_type: '',
-        creators: [''],
+        creators: [{ name: '', type: 'DataCurator', affiliations: [''] }],
         subjects: [''],
         references: ['']
     });
@@ -157,7 +157,7 @@ const ZenodoUpload = () => {
                 <div className="flex flex-col gap-1">
                     <div className="flex flex-row items-center gap-1">
                         <label className="text-bodyMd font-semibold text-gray-600">Resource Type</label>
-                        <InfoTooltip text="Required (the type)" />
+                        <InfoTooltip text="The type of work being uploaded to Zenodo" />
                     </div>
                     <select
                         className="px-2 py-1.5 rounded-md border-1 border-darkYellow text-bodyLg w-full max-w-96 focus:outline-none bg-white"
@@ -178,7 +178,10 @@ const ZenodoUpload = () => {
                                     onClick={() => {
                                         setZenodoObject({
                                             ...zenodoObject,
-                                            creators: [...zenodoObject.creators, '']
+                                            creators: [
+                                                ...zenodoObject.creators,
+                                                { name: '', type: 'DataCurator', affiliations: [''] }
+                                            ]
                                         });
                                     }}
                                 >
@@ -193,21 +196,24 @@ const ZenodoUpload = () => {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                     </svg>
                                 </button>
-                                <label className="text-bodyXs italic text-red-500">Required</label>
+                                <label className="text-bodyXs italic text-red-500">
+                                    Required (Benjamin Haibe-Kains will be added to the creators as a ContactPerson by
+                                    default)
+                                </label>
                             </div>
                         </div>
                     </div>
                     {zenodoObject.creators.map((person, index) => (
-                        <div key={index} className="flex flex-row items-center gap-2">
-                            <div className="flex flex-row gap-2">
+                        <div key={index} className="flex flex-row items-center gap-2 w-full">
+                            <div className="flex flex-row flex-wrap gap-2 flex-1">
                                 <div className="flex flex-col">
                                     <label className="text-bodySm font-semibold text-gray-500">Name</label>
                                     <input
                                         type="text"
-                                        value={person}
+                                        value={person.name}
                                         onChange={e => {
                                             const creators = [...zenodoObject.creators];
-                                            creators[index] = e.target.value;
+                                            creators[index] = { ...creators[index], name: e.target.value };
                                             setZenodoObject({ ...zenodoObject, creators });
                                         }}
                                         placeholder="Matthew Boccalon"
@@ -218,10 +224,10 @@ const ZenodoUpload = () => {
                                     <label className="text-bodySm font-semibold text-gray-500">Type</label>
                                     <select
                                         className="px-2 py-1.5 rounded-md border-1 border-darkYellow text-bodyLg w-full max-w-96 focus:outline-none bg-white"
-                                        value={person}
+                                        value={person.type}
                                         onChange={e => {
                                             const creators = [...zenodoObject.creators];
-                                            creators[index] = e.target.value;
+                                            creators[index] = { ...creators[index], type: e.target.value };
                                             setZenodoObject({ ...zenodoObject, creators });
                                         }}
                                     >
@@ -247,6 +253,79 @@ const ZenodoUpload = () => {
                                         <option value="Supervisor">Supervisor</option>
                                         <option value="WorkPackageLeader">WorkPackageLeader</option>
                                     </select>
+                                </div>
+                                <div className="flex flex-col">
+                                    <div className="flex flex-row items-center gap-1">
+                                        <label className="text-bodySm font-semibold text-gray-500">Affiliations</label>
+                                        <button
+                                            onClick={() => {
+                                                const creators = [...zenodoObject.creators];
+                                                creators[index].affiliations = [
+                                                    ...(creators[index].affiliations || []),
+                                                    ''
+                                                ];
+                                                setZenodoObject({ ...zenodoObject, creators });
+                                            }}
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth="1.5"
+                                                stroke="currentColor"
+                                                className="size-4 text-darkBlue cursor-pointer"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M12 4.5v15m7.5-7.5h-15"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                        {(person.affiliations || ['']).map((aff, affIndex) => (
+                                            <div key={affIndex} className="flex flex-row items-center gap-2">
+                                                <input
+                                                    type="text"
+                                                    value={aff}
+                                                    onChange={e => {
+                                                        const creators = [...zenodoObject.creators];
+                                                        const newAffs = [...creators[index].affiliations];
+                                                        newAffs[affIndex] = e.target.value;
+                                                        creators[index].affiliations = newAffs;
+                                                        setZenodoObject({ ...zenodoObject, creators });
+                                                    }}
+                                                    placeholder="University Health Network"
+                                                    className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg w-full max-w-96 focus:outline-none"
+                                                />
+                                                <button
+                                                    onClick={() => {
+                                                        const creators = [...zenodoObject.creators];
+                                                        creators[index].affiliations = creators[
+                                                            index
+                                                        ].affiliations.filter((_, i) => i !== affIndex);
+                                                        setZenodoObject({ ...zenodoObject, creators });
+                                                    }}
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth="2"
+                                                        stroke="currentColor"
+                                                        className="size-4 text-red-500 cursor-pointer hover:text-red-700"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                                 <button
                                     onClick={() => {
@@ -361,9 +440,9 @@ const ZenodoUpload = () => {
                                 value={ref}
                                 rows={5}
                                 onChange={e => {
-                                    const creators = [...zenodoObject.creators];
-                                    creators[index] = e.target.value;
-                                    setZenodoObject({ ...zenodoObject, creators });
+                                    const references = [...zenodoObject.references];
+                                    references[index] = e.target.value;
+                                    setZenodoObject({ ...zenodoObject, references });
                                 }}
                                 placeholder="BindingDB in 2024: a FAIR knowledgebase of protein-small molecule binding data Nucleic Acids Research 53:D1633-D1644 (2025)"
                                 className="px-2 py-1 rounded-md border-1 border-darkYellow text-bodyLg w-full max-w-96 focus:outline-none"
