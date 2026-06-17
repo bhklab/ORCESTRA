@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
+import { Toast } from 'primereact/toast';
 
 const CreatePipeline = () => {
     const [pipeline, setPipeline] = useState({
@@ -7,11 +8,34 @@ const CreatePipeline = () => {
         git_url: ''
     });
 
+    const toast = useRef(null);
+
+    const submitPipeline = async () => {
+        try {
+            const res = await axios.post('/api/user/create-pipeline', pipeline);
+            toast.current.show({
+                severity: 'success',
+                summary: 'Success',
+                detail: `Successful create pipeline submission: ${res.data?.configuration_checks}`,
+                life: 20000
+            });
+        } catch (error) {
+            console.log(error.response.data);
+            toast.current.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: `Failed to submit pipeline: ${error.response?.data?.error?.detail || error}`,
+                life: 20000
+            });
+        }
+    };
+
     return (
         <div className="flex flex-col gap-2">
+            <Toast ref={toast} />
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col">
-                    <label className="text-bodyMd font-semibold text-gray-600">Pipeline Name</label>
+                    <label className="text-bodyMd font-semibold text-gray-600">Resource Name</label>
                     <input
                         type="text"
                         name="pipeline_name"
@@ -32,7 +56,7 @@ const CreatePipeline = () => {
                 </div>
                 <button
                     className="bg-darkBlue text-white px-2 py-2 rounded-md text-bodyMd font-semibold max-w-24"
-                    // onClick={e => ()}
+                    onClick={submitPipeline}
                 >
                     Submit
                 </button>
