@@ -214,7 +214,9 @@ const RunPipeline = () => {
                                     </svg>
                                 </button>
                             </div>
-                            <label className="text-bodyXs italic text-red-500">Required</label>
+                            <label className="text-bodyXs italic text-red-500">
+                                Required: output directories (one or many) from the top level of repository
+                            </label>
                         </div>
                     </div>
                     {runPipelineFields.output_directories.map((dir, index) => (
@@ -254,7 +256,7 @@ const RunPipeline = () => {
                     <div className="flex flex-col">
                         <label className="text-bodyMd font-semibold text-gray-600">Snakefile Path</label>
                         <label className="text-bodyXs italic text-red-500">
-                            Required: Snakefile location relative to top level of repository
+                            Required: Snakefile location from the top level of repository
                         </label>
                     </div>
                     <input
@@ -270,7 +272,7 @@ const RunPipeline = () => {
                     <div className="flex flex-col">
                         <label className="text-bodyMd font-semibold text-gray-600">Configuration File Path</label>
                         <label className="text-bodyXs italic text-red-500">
-                            Required: configuration file location relative to top level of repository
+                            Required: configuration file location from the top level of repository
                         </label>
                     </div>
                     <input
