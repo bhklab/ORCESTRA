@@ -58,7 +58,10 @@ const RunPipeline = () => {
     }, [runPipelineFields]);
 
     const submitRunPipeline = async () => {
-        setRunPipelineFields({ ...runPipelineFields, pipeline_name: selectedCreatePipeline.pipeline_name });
+        setRunPipelineFields({
+            ...runPipelineFields,
+            pipeline_name: selectedCreatePipeline.pipeline_name
+        });
         if (
             runPipelineFields.pipeline_name === '' ||
             runPipelineFields.email === '' ||
@@ -71,24 +74,25 @@ const RunPipeline = () => {
                 severity: 'error',
                 summary: 'Error',
                 detail: `Failed to submit pipeline: Check that email, output directories, snakefile path and config file path are specified.`,
-                life: 3000
+                life: 20000
             });
             return;
         }
         try {
             const res = await axios.post('/api/user/run-pipeline', runPipelineFields);
+            console.log(res.data);
             toast.current.show({
                 severity: 'success',
                 summary: 'Success',
                 detail: `Successful pipeline submission: ${res.data}`,
-                life: 3000
+                life: 20000
             });
         } catch (error) {
             toast.current.show({
                 severity: 'error',
                 summary: 'Error',
-                detail: `Failed to submit pipeline: ${error}`,
-                life: 3000
+                detail: `Failed to submit pipeline: ${error.response?.data?.error?.detail || error}`,
+                life: 20000
             });
         }
     };
@@ -108,7 +112,7 @@ const RunPipeline = () => {
                     selection={selectedCreatePipeline}
                     onSelectionChange={e => setSelectedCreatePipeline(e.value)}
                 >
-                    <Column field="pipeline_name" header="Create Pipeline Name"></Column>
+                    <Column field="pipeline_name" header="Create Resource Name"></Column>
                     <Column
                         field="git_url"
                         header="Github URL"
@@ -129,7 +133,7 @@ const RunPipeline = () => {
             </div>
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col">
-                    <label className="text-bodyMd font-semibold text-gray-600">Pipeline Name</label>
+                    <label className="text-bodyMd font-semibold text-gray-600">Resource Name</label>
                     <input
                         type="text"
                         name="pipeline_name"
