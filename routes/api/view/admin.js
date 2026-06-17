@@ -12,12 +12,11 @@ const ZenodoObject = require('../../../db/models/data_processing_api/zenodo-obje
 const createPipeline = async (req, res) => {
     try{
 		const request = await axios.post(`${process.env.DATA_PROCESSING_API}/api/create-pipeline`, {
-			git_url: req.body.git_url,
-			pipeline_name: req.body.pipeline_name
+			...req.body
 		})
         res.send(request.data);
     } catch(error){
-        console.log(error);
+        console.log(error.response?.data);
 		res.status(500).send({
             message: 'Failed to create pipeline',
             error: error.response?.data || error.message
@@ -46,17 +45,24 @@ const getCreatedPipelines = async (req, res) => {
 
 
 const runPipeline = async (req, res) => {
-    let result = {};
     try{
-
-    }catch(error){
-        console.log(error);
-        res.status(500);
-    }finally{
-        res.send(result)
-    }
+		const request = await axios.post(`${process.env.DATA_PROCESSING_API}/api/run-pipeline`, {
+			...req.body
+		})
+        res.send(request.data);
+    } catch(error){
+		console.log(JSON.stringify(error.response?.data, null, 2));
+		res.status(500).send({
+            message: 'Failed to run pipeline',
+            error: error.response?.data || error.message
+        });    
+	}
 }
-
+/**
+ * Get all pipelines that have been run (run_snakemake_pipeline collection)
+ * @param {*} req 
+ * @param {*} res the list of pipeline objects that have been run
+ */
 const getRunPipelines = async (req, res) => {
     try{
 		const runPipelines = await RunPipeline.find({});
@@ -65,7 +71,7 @@ const getRunPipelines = async (req, res) => {
         console.log(error);
 		res.status(500).send({
             message: 'Failed to get run pipelines',
-            error: error.response?.data || error.message
+            error: JSON.stringify(error.response?.data, null, 2) || error.message
         });    
 	}
 }
