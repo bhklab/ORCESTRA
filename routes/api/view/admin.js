@@ -16,10 +16,10 @@ const createPipeline = async (req, res) => {
 		})
         res.send(request.data);
     } catch(error){
-        console.log(error.response?.data);
+        console.log(JSON.stringify(error.response?.data, null, 2) || error.message);
 		res.status(500).send({
             message: 'Failed to create pipeline',
-            error: error.response?.data || error.message
+            error: JSON.stringify(error.response?.data, null, 2) || error.message
         });    
 	}
 }
@@ -35,10 +35,10 @@ const getCreatedPipelines = async (req, res) => {
 		const createdPipelines = await CreatePipeline.find({});
         res.send(createdPipelines);
     } catch(error){
-        console.log(error);
+        console.log(JSON.stringify(error.response?.data, null, 2) || error.message);
 		res.status(500).send({
             message: 'Failed to get created pipelines',
-            error: error.response?.data || error.message
+            error: JSON.stringify(error.response?.data, null, 2) || error.message
         });    
 	}
 }
@@ -51,10 +51,10 @@ const runPipeline = async (req, res) => {
 		})
         res.send(request.data);
     } catch(error){
-		console.log(JSON.stringify(error.response?.data, null, 2));
+		console.log(JSON.stringify(error.response?.data, null, 2) || error.message);
 		res.status(500).send({
             message: 'Failed to run pipeline',
-            error: error.response?.data || error.message
+            error: JSON.stringify(error.response?.data, null, 2) || error.message
         });    
 	}
 }
@@ -68,9 +68,39 @@ const getRunPipelines = async (req, res) => {
 		const runPipelines = await RunPipeline.find({});
         res.send(runPipelines);
     } catch(error){
-        console.log(error);
+        console.log(JSON.stringify(error.response?.data, null, 2) || error.message);
 		res.status(500).send({
             message: 'Failed to get run pipelines',
+            error: JSON.stringify(error.response?.data, null, 2) || error.message
+        });    
+	}
+}
+
+const getRunFiles = async (req, res) => {
+    try{
+		const request = await axios.post(`${process.env.DATA_PROCESSING_API}/api/get-run-files`, {
+			pipeline_name: req.body.pipeline_name	
+		})
+        res.send(request.data);
+    } catch(error){
+		console.log(JSON.stringify(error.response?.data, null, 2) || error.message);
+		res.status(500).send({
+            message: 'Failed to get completed run files',
+            error: JSON.stringify(error.response?.data, null, 2) || error.message
+        });    
+	}
+}
+
+const ZenodoUpload = async (req, res) => {
+	try{
+		const request = await axios.post(`${process.env.DATA_PROCESSING_API}/api/zenodo`, {
+			...req.body
+		})
+        res.send(request.data);
+    } catch(error){
+		console.log(JSON.stringify(error.response?.data, null, 2) || error.message);
+		res.status(500).send({
+            message: 'Failed to upload dataset to Zenodo',
             error: JSON.stringify(error.response?.data, null, 2) || error.message
         });    
 	}
