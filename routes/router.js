@@ -79,6 +79,10 @@ router.post('/user/run-pipeline', admin.runPipeline);
 // router.post('/user/run-pipeline', auth.verifyToken, auth.isAdmin, admin.runPipeline);
 router.get('/user/run-pipelines', admin.getRunPipelines);
 // router.get('/user/run-pipelines', auth.verifyToken, auth.isAdmin, admin.getRunPipelines);
+router.get('/user/run-pipelines/files/:pipeline_name', admin.getRunFiles);
+// router.get('/user/run-pipelines', auth.verifyToken, auth.isAdmin, admin.getRunPipelines);
+router.post('/user/zenodo-upload', admin.ZenodoUpload);
+// router.get('/user/run-pipelines', auth.verifyToken, auth.isAdmin, admin.getRunPipelines);
 
 
 
