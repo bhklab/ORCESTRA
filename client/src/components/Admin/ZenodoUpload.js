@@ -31,21 +31,27 @@ const ZenodoUpload = () => {
         pipeline_name: '',
         repo_url: ''
     });
+    const [selectedRunPipelineFiles, setSelectedRunPipelineFiles] = useState([]);
     const [zenodoObject, setZenodoObject] = useState({
         description: '',
         resource_type: '',
         creators: [{ name: '', type: 'DataCurator', affiliations: [''] }],
-        subjects: [''],
+        subjects: [{ subject: '' }],
         references: ['']
     });
 
     const toast = useRef(null);
 
-    useEffect(() => {
-        const getRunPipelines = async () => {
+    const getRunPipelines = async () => {
+        try {
             const res = await axios.get('/api/user/run-pipelines');
             setRunPipelines(res.data);
-        };
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
         getRunPipelines();
     }, []);
 
@@ -53,12 +59,40 @@ const ZenodoUpload = () => {
         setZenodoObject({ ...zenodoObject, run_pipeline_id: selectedRunPipeline._id });
     };
 
+    const selectPipelineFiles = async pipeline_name => {
+        try {
+            const res = await axios.get(`/api/user/run-pipelines/files/${pipeline_name}`);
+            console.log(res.data.files);
+            setSelectedRunPipelineFiles(Object.values(res.data.files));
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div className="flex flex-col gap-2">
             <Toast ref={toast} />
             <Tooltip target=".custom-tooltip" />
             {runPipelines.length > 0 && (
-                <div>
+                <div className="flex flex-col gap-2">
+                    <button className="cursor-pointer text-blue-600 float-end w-10" onClick={getRunPipelines}>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            className="size-6 custom-tooltip"
+                            data-pr-tooltip={'Refresh resource table'}
+                            data-pr-position="right"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+                            />
+                        </svg>
+                    </button>
                     <DataTable
                         value={runPipelines}
                         sortOrder={-1}
@@ -67,9 +101,12 @@ const ZenodoUpload = () => {
                         stripedRows
                         selectionMode="single"
                         selection={selectedRunPipeline}
-                        onSelectionChange={e => setSelectedRunPipeline(e.value)}
+                        onSelectionChange={e => {
+                            setSelectedRunPipeline(e.value);
+                            selectPipelineFiles(e.value.pipeline_name);
+                        }}
                     >
-                        <Column field="pipeline_name" header="Run Pipeline Name"></Column>
+                        <Column field="pipeline_name" header="Run Resource Name"></Column>
                         <Column field="version" header="Version"></Column>
                         <Column field="status" header="Run Status"></Column>
                         <Column field="current_stage" header="Run Step"></Column>
@@ -116,6 +153,49 @@ const ZenodoUpload = () => {
                                 </div>
                             )}
                         ></Column>
+                    </DataTable>
+                </div>
+            )}
+            {selectedRunPipelineFiles.length > 0 && (
+                <div className="flex flex-col gap-2">
+                    <DataTable
+                        value={selectedRunPipelineFiles}
+                        sortOrder={-1}
+                        size="small"
+                        showGridlines={true}
+                        stripedRows
+                    >
+                        <Column
+                            header="Selection"
+                            body={rowData => (
+                                <div className="line-clamp-2">
+                                    <input type="checkbox" />
+                                </div>
+                            )}
+                        ></Column>
+                        <Column
+                            field="relative_path"
+                            header="File"
+                            body={rowData => (
+                                <div className="line-clamp-2" title={rowData.relative_path}>
+                                    {rowData.relative_path.split('/').pop()}
+                                </div>
+                            )}
+                        ></Column>
+                        <Column field="relative_path" header="Relative Output Path"></Column>
+                        <Column
+                            field="size_bytes"
+                            header="File Size"
+                            body={rowData => {
+                                const sizeInGB = (rowData.size_bytes / (1024 * 1024 * 1024)).toFixed(4);
+                                return (
+                                    <div className="line-clamp-2" title={`${sizeInGB} GB`}>
+                                        {sizeInGB} GB
+                                    </div>
+                                );
+                            }}
+                        ></Column>
+                        <Column field="md5" header="MD5"></Column>
                     </DataTable>
                 </div>
             )}
@@ -357,7 +437,7 @@ const ZenodoUpload = () => {
                                     onClick={() => {
                                         setZenodoObject({
                                             ...zenodoObject,
-                                            subjects: [...zenodoObject.subjects, '']
+                                            subjects: [...zenodoObject.subjects, { subject: '' }]
                                         });
                                     }}
                                 >
@@ -375,13 +455,13 @@ const ZenodoUpload = () => {
                             </div>
                         </div>
                     </div>
-                    {zenodoObject.subjects.map((subject, index) => (
+                    {zenodoObject.subjects.map((sub, index) => (
                         <div key={index} className="flex flex-row items-center gap-2">
                             <input
-                                value={subject}
+                                value={sub.subject}
                                 onChange={e => {
                                     const subjects = [...zenodoObject.subjects];
-                                    subjects[index] = e.target.value;
+                                    subjects[index] = { subject: e.target.value };
                                     setZenodoObject({ ...zenodoObject, subjects });
                                 }}
                                 placeholder="Snakemake, ORCESTRA, Pharmacogenomics"
