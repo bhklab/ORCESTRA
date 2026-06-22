@@ -78,9 +78,7 @@ const getRunPipelines = async (req, res) => {
 
 const getRunFiles = async (req, res) => {
     try{
-		const request = await axios.post(`${process.env.DATA_PROCESSING_API}/api/get-run-files`, {
-			pipeline_name: req.body.pipeline_name	
-		})
+		const request = await axios.get(`${process.env.DATA_PROCESSING_API}/api/manifest/${req.params.pipeline_name}`)
         res.send(request.data);
     } catch(error){
 		console.log(JSON.stringify(error.response?.data, null, 2) || error.message);
@@ -151,6 +149,8 @@ module.exports = {
     // getPipelines,
     runPipeline,
 	getRunPipelines,
+	getRunFiles,
+	ZenodoUpload,
     processedDataObjects,
     uploadDataObject,
     submitObject
