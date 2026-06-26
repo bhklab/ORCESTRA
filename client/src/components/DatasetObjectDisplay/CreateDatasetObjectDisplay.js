@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Editor } from 'primereact/editor';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
@@ -28,6 +28,22 @@ const SectionNameInput = ({ initialName, onNameChange, placeholder }) => {
     );
 };
 const CreateDatasetObjectDisplay = () => {
+    const dataSourceSectionIds = useRef(new Map());
+    const getDataSourceSectionId = (name) => {
+        if (!dataSourceSectionIds.current.has(name)) {
+            dataSourceSectionIds.current.set(name, Math.random().toString());
+        }
+        return dataSourceSectionIds.current.get(name);
+    };
+
+    const releaseNoteSectionIds = useRef(new Map());
+    const getReleaseNoteSectionId = (name) => {
+        if (!releaseNoteSectionIds.current.has(name)) {
+            releaseNoteSectionIds.current.set(name, Math.random().toString());
+        }
+        return releaseNoteSectionIds.current.get(name);
+    };
+
     const [datasetTypeOptions, setDatasetTypeOptions] = useState([]);
 
     useEffect(() => {
@@ -170,11 +186,15 @@ const CreateDatasetObjectDisplay = () => {
     };
 
     const updateDataSourceSectionName = (oldSectionName, newSectionName) => {
+        if (!newSectionName || oldSectionName === newSectionName) {
+            return;
+        }
+        const id = dataSourceSectionIds.current.get(oldSectionName);
+        if (id) {
+            dataSourceSectionIds.current.delete(oldSectionName);
+            dataSourceSectionIds.current.set(newSectionName, id);
+        }
         setDataset(prev => {
-            if (!newSectionName || oldSectionName === newSectionName) {
-                return prev;
-            }
-
             if (prev.dataSources[newSectionName]) {
                 return prev;
             }
@@ -196,6 +216,7 @@ const CreateDatasetObjectDisplay = () => {
     };
 
     const removeDataSourceSection = sectionName => {
+        dataSourceSectionIds.current.delete(sectionName);
         setDataset(prev => {
             const updatedDataSources = { ...prev.dataSources };
             delete updatedDataSources[sectionName];
@@ -208,48 +229,57 @@ const CreateDatasetObjectDisplay = () => {
     };
 
     const addDataSourceLink = sectionName => {
-        setDataset(prev => ({
-            ...prev,
-            dataSources: {
-                ...prev.dataSources,
-                [sectionName]: [
-                    ...prev.dataSources[sectionName],
-                    {
-                        name: '',
-                        description: '',
-                        url: '',
-                        current: ''
-                    }
-                ]
-            }
-        }));
+        setDataset(prev => {
+            if (!prev.dataSources[sectionName]) return prev;
+            return {
+                ...prev,
+                dataSources: {
+                    ...prev.dataSources,
+                    [sectionName]: [
+                        ...prev.dataSources[sectionName],
+                        {
+                            name: '',
+                            description: '',
+                            url: '',
+                            current: ''
+                        }
+                    ]
+                }
+            };
+        });
     };
 
     const updateDataSourceLink = (sectionName, index, field, value) => {
-        setDataset(prev => ({
-            ...prev,
-            dataSources: {
-                ...prev.dataSources,
-                [sectionName]: prev.dataSources[sectionName].map((source, i) =>
-                    i === index
-                        ? {
-                            ...source,
-                            [field]: field === 'current' ? Number(value) || '' : value
-                        }
-                        : source
-                )
-            }
-        }));
+        setDataset(prev => {
+            if (!prev.dataSources[sectionName]) return prev;
+            return {
+                ...prev,
+                dataSources: {
+                    ...prev.dataSources,
+                    [sectionName]: prev.dataSources[sectionName].map((source, i) =>
+                        i === index
+                            ? {
+                                ...source,
+                                [field]: field === 'current' ? Number(value) || '' : value
+                            }
+                            : source
+                    )
+                }
+            };
+        });
     };
 
     const removeDataSourceLink = (sectionName, indexToRemove) => {
-        setDataset(prev => ({
-            ...prev,
-            dataSources: {
-                ...prev.dataSources,
-                [sectionName]: prev.dataSources[sectionName].filter((_, index) => index !== indexToRemove)
-            }
-        }));
+        setDataset(prev => {
+            if (!prev.dataSources[sectionName]) return prev;
+            return {
+                ...prev,
+                dataSources: {
+                    ...prev.dataSources,
+                    [sectionName]: prev.dataSources[sectionName].filter((_, index) => index !== indexToRemove)
+                }
+            };
+        });
     };
 
     const addReleaseNoteSection = () => {
@@ -272,11 +302,15 @@ const CreateDatasetObjectDisplay = () => {
     };
 
     const updateReleaseNoteSectionName = (oldSectionName, newSectionName) => {
+        if (!newSectionName || oldSectionName === newSectionName) {
+            return;
+        }
+        const id = releaseNoteSectionIds.current.get(oldSectionName);
+        if (id) {
+            releaseNoteSectionIds.current.delete(oldSectionName);
+            releaseNoteSectionIds.current.set(newSectionName, id);
+        }
         setDataset(prev => {
-            if (!newSectionName || oldSectionName === newSectionName) {
-                return prev;
-            }
-
             if (prev.releaseNotes[newSectionName]) {
                 return prev;
             }
@@ -298,6 +332,7 @@ const CreateDatasetObjectDisplay = () => {
     };
 
     const removeReleaseNoteSection = sectionName => {
+        releaseNoteSectionIds.current.delete(sectionName);
         setDataset(prev => {
             const updatedReleaseNotes = { ...prev.releaseNotes };
             delete updatedReleaseNotes[sectionName];
@@ -310,46 +345,55 @@ const CreateDatasetObjectDisplay = () => {
     };
 
     const addReleaseNote = sectionName => {
-        setDataset(prev => ({
-            ...prev,
-            releaseNotes: {
-                ...prev.releaseNotes,
-                [sectionName]: [
-                    ...prev.releaseNotes[sectionName],
-                    {
-                        current: '',
-                        name: ''
-                    }
-                ]
-            }
-        }));
+        setDataset(prev => {
+            if (!prev.releaseNotes[sectionName]) return prev;
+            return {
+                ...prev,
+                releaseNotes: {
+                    ...prev.releaseNotes,
+                    [sectionName]: [
+                        ...prev.releaseNotes[sectionName],
+                        {
+                            current: '',
+                            name: ''
+                        }
+                    ]
+                }
+            };
+        });
     };
 
     const updateReleaseNote = (sectionName, index, field, value) => {
-        setDataset(prev => ({
-            ...prev,
-            releaseNotes: {
-                ...prev.releaseNotes,
-                [sectionName]: prev.releaseNotes[sectionName].map((note, i) =>
-                    i === index
-                        ? {
-                            ...note,
-                            [field]: field === 'current' ? Number(value) || '' : value
-                        }
-                        : note
-                )
-            }
-        }));
+        setDataset(prev => {
+            if (!prev.releaseNotes[sectionName]) return prev;
+            return {
+                ...prev,
+                releaseNotes: {
+                    ...prev.releaseNotes,
+                    [sectionName]: prev.releaseNotes[sectionName].map((note, i) =>
+                        i === index
+                            ? {
+                                ...note,
+                                [field]: field === 'current' ? Number(value) || '' : value
+                            }
+                            : note
+                    )
+                }
+            };
+        });
     };
 
     const removeReleaseNote = (sectionName, indexToRemove) => {
-        setDataset(prev => ({
-            ...prev,
-            releaseNotes: {
-                ...prev.releaseNotes,
-                [sectionName]: prev.releaseNotes[sectionName].filter((_, index) => index !== indexToRemove)
-            }
-        }));
+        setDataset(prev => {
+            if (!prev.releaseNotes[sectionName]) return prev;
+            return {
+                ...prev,
+                releaseNotes: {
+                    ...prev.releaseNotes,
+                    [sectionName]: prev.releaseNotes[sectionName].filter((_, index) => index !== indexToRemove)
+                }
+            };
+        });
     };
 
     const uploadDataset = async () => {
@@ -903,7 +947,7 @@ const CreateDatasetObjectDisplay = () => {
                             </div>
 
                             {Object.entries(dataset.dataSources).map(([sectionName, sources]) => (
-                                <div key={sectionName} className="flex flex-col gap-2">
+                                <div key={getDataSourceSectionId(sectionName)} className="flex flex-col gap-2">
                                     <div className="flex flex-row gap-2">
                                         <SectionNameInput
                                             initialName={sectionName}
@@ -1041,7 +1085,7 @@ const CreateDatasetObjectDisplay = () => {
                             </div>
 
                             {Object.entries(dataset.releaseNotes).map(([sectionName, notes]) => (
-                                <div key={sectionName} className="flex flex-col gap-2">
+                                <div key={getReleaseNoteSectionId(sectionName)} className="flex flex-col gap-2">
                                     <div className="flex flex-row gap-2">
                                         <SectionNameInput
                                             initialName={sectionName}
