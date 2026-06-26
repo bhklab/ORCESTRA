@@ -98,7 +98,13 @@ const SingleDatasetNew = () => {
                                             </li>
                                             <li>
                                                 <span>Data Usage Policy: </span>
-                                                {disclaimerTab.data.usagePolicy}
+                                                <div className="citations">
+                                                    <p
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: disclaimerTab.data.usagePolicy
+                                                        }}
+                                                    />
+                                                </div>
                                             </li>
                                             {disclaimerTab.data.citations.length > 0 && (
                                                 <li>
@@ -1264,7 +1270,7 @@ const SingleDatasetNew = () => {
                                                         </ul>
                                                     </div>
                                                 )}
-												{releaseTab.data.releaseNotes.antibodies &&
+                                            {releaseTab.data.releaseNotes.antibodies &&
                                                 releaseTab.data.releaseNotes?.antibodies.length > 0 && (
                                                     <div style={{ marginBottom: '10px' }}>
                                                         <h4
@@ -1289,7 +1295,7 @@ const SingleDatasetNew = () => {
                                                         </ul>
                                                     </div>
                                                 )}
-												{releaseTab.data.releaseNotes.models &&
+                                            {releaseTab.data.releaseNotes.models &&
                                                 releaseTab.data.releaseNotes?.models.length > 0 && (
                                                     <div style={{ marginBottom: '10px' }}>
                                                         <h4
@@ -1303,14 +1309,12 @@ const SingleDatasetNew = () => {
                                                         </h4>
                                                         <ul className="list-style-card-sub">
                                                             {releaseTab.data.releaseNotes.models &&
-                                                                releaseTab.data.releaseNotes.models.map(
-                                                                    (note, i) => (
-                                                                        <li key={i}>
-                                                                            <span>{note.current} </span>
-                                                                            {note.name.toLowerCase()}
-                                                                        </li>
-                                                                    )
-                                                                )}
+                                                                releaseTab.data.releaseNotes.models.map((note, i) => (
+                                                                    <li key={i}>
+                                                                        <span>{note.current} </span>
+                                                                        {note.name.toLowerCase()}
+                                                                    </li>
+                                                                ))}
                                                         </ul>
                                                     </div>
                                                 )}
