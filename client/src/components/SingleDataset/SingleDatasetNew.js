@@ -748,6 +748,48 @@ const SingleDatasetNew = () => {
                                         </div>
                                     )}
 
+                                    {datasetTab.data?.chemicalAnnotations?.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Chemical Annotations</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            <ul className="list-style-card-main">
+                                                <li>
+                                                    <ul className="list-style-card-sub">
+                                                        {datasetTab.data.chemicalAnnotations.map((item, i) => {
+                                                            const paragraphs = (item.description ?? '')
+                                                                .split(/\n/)
+                                                                .map(s => s.trim())
+                                                                .filter(Boolean);
+
+                                                            return (
+                                                                <li key={i}>
+                                                                    {item.url ? (
+                                                                        <a
+                                                                            href={item.url}
+                                                                            target="_blank"
+                                                                            rel="noreferrer"
+                                                                        >
+                                                                            <span>{item.name}</span>
+                                                                        </a>
+                                                                    ) : (
+                                                                        <span>{item.name}</span>
+                                                                    )}
+                                                                    {paragraphs.map((text, i) => (
+                                                                        <p index={i} style={{ margin: '5px 0 5px 0' }}>
+                                                                            {text}
+                                                                        </p>
+                                                                    ))}
+                                                                </li>
+                                                            );
+                                                        })}
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    )}
+
                                     {datasetTab.data.imagingFeatures.length > 0 && (
                                         <div className="card-container">
                                             <div className="card-title ">Imaging Features</div>

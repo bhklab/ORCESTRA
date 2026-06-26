@@ -42,6 +42,7 @@ const getTabData = async (dataObject, dataset, filter) => {
 	  methylation: dataset?.methylation || [],
 	  metabolomics: dataset?.metabolomics || [],
 	  proteomics: dataset?.proteomics || [],
+	  chemicalAnnotations: dataset?.chemicalAnnotations || [],
 	  imagingFeatures: dataset?.imagingFeatures || [],
 	  imaging: dataset?.imaging || [],
 	  qualityControl: dataset?.qualityControl || [],
