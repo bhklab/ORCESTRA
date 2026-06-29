@@ -1121,7 +1121,9 @@ const SingleDatasetNew = () => {
                                         <div className="hr-container">
                                             <hr className="hr-style" />
                                         </div>
-                                        {datasetTab.data.description && <p>{datasetTab.data.description}</p>}
+                                        {datasetTab.data.description && (
+                                            <div dangerouslySetInnerHTML={{ __html: datasetTab.data.description }} />
+                                        )}
                                         {/* {datasetTab.data?.descriptionExpanded?.length > 0 && (
                                             <Accordion multiple activeIndex={[0]}>
                                                 {datasetTab.data.descriptionExpanded.map((entry, entryIndex) => (
