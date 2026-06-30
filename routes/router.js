@@ -91,9 +91,9 @@ router.post('/user/dataset/add', auth.verifyToken, userDataObject.add);
 router.post('/user/dataset/remove', auth.verifyToken, userDataObject.remove);
 
 //public api
-router.get('/public/datasets/all', public.getAllDatasets);
-router.get('/public/datasets/:datatype', public.getDatasets);
-router.get('/public/datasets/:datatype/:id', public.getDataset);
+router.get('/public/datasets/all/:info', public.getAllDatasets);
+router.get('/public/datasets/:datatype/:info', public.getDatasets);
+router.get('/public/dataset/:id/:info', public.getDataset);
 
 // router.get('/:datasetType/:filter', public.getDatasets);
 // router.get('/:datasetType/:doi1/:doi2', public.getDataset);
