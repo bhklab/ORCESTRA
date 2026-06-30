@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionTab } from 'primereact/accordion';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 import { useLocation, useParams } from 'react-router-dom';
 import useSingleDataset from '../../hooks/useSingleDataset';
 import { dataTypes } from '../Shared/Enums';
@@ -16,6 +18,75 @@ import {
     StyledContainerInner,
     StyledQualityControl
 } from '../SearchRequest/RadiomicSet/Styles/StyledRadiomicSetSearch';
+const renderPairedNotes = notes => {
+    const pairs = [];
+    const others = [];
+    const used = new Set();
+
+    notes.forEach(note => {
+        if (used.has(note.name)) return;
+        const lowerName = note.name.toLowerCase();
+
+        if (lowerName.includes('total compound')) {
+            const prefix = lowerName.replace('total compounds', '').replace('total compound', '').trim();
+            const matchNameStr = prefix ? `${prefix} compounds with cid` : 'total compounds with cid';
+            const match = notes.find(n => n.name.toLowerCase() === matchNameStr);
+
+            if (match) {
+                pairs.push({ name: prefix ? prefix.toUpperCase() : 'Full Dataset', total: note, cid: match });
+                used.add(note.name);
+                used.add(match.name);
+            } else {
+                others.push(note);
+                used.add(note.name);
+            }
+        }
+    });
+
+    notes.forEach(note => {
+        if (!used.has(note.name)) {
+            others.push(note);
+        }
+    });
+
+    const tableData = pairs.map(p => ({
+        name: p.name,
+        total: p.total.current,
+        cid: p.cid.current
+    }));
+
+    const headerDataset = <div style={{ textAlign: 'center', width: '100%' }}>Dataset</div>;
+    const headerTotal = <div style={{ textAlign: 'center', width: '100%' }}>Total Compounds</div>;
+    const headerCid = <div style={{ textAlign: 'center', width: '100%' }}>With CID</div>;
+
+    const bodyName = rowData => <div style={{ textAlign: 'center', width: '100%' }}>{rowData.name}</div>;
+    const bodyTotal = rowData => <div style={{ textAlign: 'center', width: '100%' }}>{rowData.total}</div>;
+    const bodyCid = rowData => <div style={{ textAlign: 'center', width: '100%' }}>{rowData.cid}</div>;
+
+    return (
+        <>
+            {pairs.length > 0 && (
+                <div style={{ marginBottom: '10px' }}>
+                    <DataTable value={tableData} size="small" stripedRows responsiveLayout="scroll">
+                        <Column field="name" header={headerDataset} body={bodyName}></Column>
+                        <Column field="total" header={headerTotal} body={bodyTotal}></Column>
+                        <Column field="cid" header={headerCid} body={bodyCid}></Column>
+                    </DataTable>
+                </div>
+            )}
+            {others.length > 0 && (
+                <ul className="list-style-card-sub">
+                    {others.map((note, i) => (
+                        <li key={i}>
+                            <span>{note.current} </span>
+                            {note.name.toLowerCase()}
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </>
+    );
+};
 
 const SingleDatasetNew = () => {
     const location = useLocation();
@@ -1278,15 +1349,8 @@ const SingleDatasetNew = () => {
                                                         >
                                                             Drugs
                                                         </h4>
-                                                        <ul className="list-style-card-sub">
-                                                            {releaseTab.data.releaseNotes.drugs &&
-                                                                releaseTab.data.releaseNotes.drugs.map((note, i) => (
-                                                                    <li key={i}>
-                                                                        <span>{note.current} </span>
-                                                                        {note.name.toLowerCase()}
-                                                                    </li>
-                                                                ))}
-                                                        </ul>
+                                                        {releaseTab.data.releaseNotes.drugs &&
+                                                            renderPairedNotes(releaseTab.data.releaseNotes.drugs)}
                                                     </div>
                                                 )}
                                             {releaseTab.data.releaseNotes.compounds &&
@@ -1301,17 +1365,8 @@ const SingleDatasetNew = () => {
                                                         >
                                                             Compounds
                                                         </h4>
-                                                        <ul className="list-style-card-sub">
-                                                            {releaseTab.data.releaseNotes.compounds &&
-                                                                releaseTab.data.releaseNotes.compounds.map(
-                                                                    (note, i) => (
-                                                                        <li key={i}>
-                                                                            <span>{note.current} </span>
-                                                                            {note.name.toLowerCase()}
-                                                                        </li>
-                                                                    )
-                                                                )}
-                                                        </ul>
+                                                        {releaseTab.data.releaseNotes.compounds &&
+                                                            renderPairedNotes(releaseTab.data.releaseNotes.compounds)}
                                                     </div>
                                                 )}
                                             {releaseTab.data.releaseNotes.antibodies &&
