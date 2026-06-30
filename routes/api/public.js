@@ -2,12 +2,10 @@
  * Contains functions used for publically exposed API calls.
  */
 const enums = require('../../helper/enum');
-const DataObject = require('../../db/models/data-object').DataObject;
-const dataObjectHelper = require('../../helper/data-object');
-require('../../db/models/dataset');
+const DatasetObject = require('../../db/models/dataset-object');
+const DatasetNote = require('../../db/models/dataset-note')
 
 const parseDataObject = (dataObject, repoVersion) => {
-    
     const findDataSource = (dataName) => {
         found = dataObject.dataset.availableData.find(avail => avail.name === dataName);
         return(found ? found.source : null); 
@@ -35,79 +33,62 @@ const parseDataObject = (dataObject, repoVersion) => {
     });
 }
 
-const getDatasets = async (req, res) => {
-    let datasetType = req.params.datasetType;
-    let dataTypes = Object.values(enums.dataTypes);
-    let results = [];
-    try{
-        if(dataTypes.includes(datasetType)){
-            let repoVersion = dataObjectHelper.getDataVersion(datasetType, req.query.version);
-            let filter = { 
-                datasetType: datasetType, 
-                'info.status': 'complete', 
-                'info.private': false,
-                'repositories.version': repoVersion
-            };
-            if(req.params.filter === 'canonical'){
-                filter['info.canonical'] = true;
-            }
+const getAllDatasets = async (req, res) => {
+	try {
+		const datasetObjects = await DatasetObject.find();
+		const noteIDs = datasetObjects.map(obj =>  { // Store all ids for notes needed for datasetObjects
+			return obj.datasetNote
+		});
+		const datasetNotes = await DatasetNote.find({ _id: { $in: noteIDs } }); // Retrieve needed dataset notes
+		const noteMap = new Map(datasetNotes.map(note => [note._id.toString(), note])); // create map/dictionary for needed noteIDs --> note
+		datasetObjects.forEach(obj => {
+			obj.datasetNote = noteMap.get(obj.datasetNote?.toString());
+		});
+		res.send(datasetObjects)
+	} catch (err){
+		console.log(err);
+		res.status(500);
+	}
+}
 
-            let dataObjects = await DataObject.find(filter).populate('dataset', {stats: 0}).lean();
-            dataObjects = dataObjects.map(obj => parseDataObject(obj, repoVersion)); 
-            for(let obj of dataObjects){
-                if(Array.isArray(obj.downloadLink)){
-                    let objects = obj.downloadLink.map(link => ({
-                        ...obj,
-                        name: link.name,
-                        downloadLink: link.link
-                    }));
-                    results = results.concat(objects);
-                }else{
-                    results.push(obj)
-                }
-            }
-        }else{
-            results = `Please use the correct dataset type. It should be one of [
-                ${dataTypes.map(type => type === 'clinicalgenomics' ? type : type.concat('s')).join(', ')}
-            ].`;
-        }
-    }catch(error){
-        console.log(error);
-        res.status(500);
-    }finally{
-        res.send(results);
-    }
+const getDatasets = async (req, res) => {
+    const { datatype } = req.params
+	try {
+		const datasetObjects = await DatasetObject.find({datasetType: datatype});
+		const noteIDs = datasetObjects.map(obj =>  { // Store all ids for notes needed for datasetObjects
+			return obj.datasetNote
+		});
+		const datasetNotes = await DatasetNote.find({ _id: { $in: noteIDs } }); // Retrieve needed dataset notes
+		const noteMap = new Map(datasetNotes.map(note => [note._id.toString(), note])); // create map/dictionary for needed noteIDs --> note
+		datasetObjects.forEach(obj => {
+			obj.datasetNote = noteMap.get(obj.datasetNote?.toString());
+		});
+		res.send(datasetObjects)
+	} catch (err){
+		console.log(err);
+		res.status(500);
+	}
 }
 
 const getDataset = async (req, res) => {
-    let dataTypes = Object.values(enums.dataTypes);
-    const doi = req.params.doi1 + '/' + req.params.doi2;
-    let result = {};
-    try{
-        if(dataTypes.includes(req.params.datasetType)){
-            let filter = { 
-                datasetType: req.params.datasetType, 
-                'info.status': 'complete', 
-                'info.private': false,
-                'repositories.doi': doi
-            };
-            let dataObject = await DataObject.findOne(filter).populate('dataset', {stats: 0}).lean();
-            if(dataObject){
-                let repository = dataObject.repositories.find(repo => repo.doi === doi);
-                result = parseDataObject(dataObject, repository.version); 
-            }
-        }else{
-            result = `Please use the correct dataset type. It should be one of [
-                ${dataTypes.join(', ')}
-            ].`;
-        }
-    }catch(error){
-        console.log(error);
-        res.status(500);
-    }finally{
-        res.send(result);
-    }
+    const { datatype, id } = req.params
+	try {
+		const datasetObjects = await DatasetObject.find({_id: id, datasetType: datatype});
+		const noteIDs = datasetObjects.map(obj =>  { // Store all ids for notes needed for datasetObjects
+			return obj.datasetNote
+		});
+		const datasetNotes = await DatasetNote.find({ _id: { $in: noteIDs } }); // Retrieve needed dataset notes
+		const noteMap = new Map(datasetNotes.map(note => [note._id.toString(), note])); // create map/dictionary for needed noteIDs --> note
+		datasetObjects.forEach(obj => {
+			obj.datasetNote = noteMap.get(obj.datasetNote?.toString());
+		});
+		res.send(datasetObjects)
+	} catch (err){
+		console.log(err);
+		res.status(500);
+	}
 }
+
 
 /**
  * Used by PharmacoGx to update PSet download count when a user downloads a PSet from ORCESTRA through PharmacoGx
@@ -131,17 +112,18 @@ const getDataset = async (req, res) => {
                 ${dataTypes.join(', ')}
             ].`;
         }
-    }catch(error){
+    } catch(error){
         console.log(error);
         result = error;
         res.status(500);
-    }finally{
+    } finally{
         res.send(result);
     }
 }
 
 module.exports = {
-    getDatasets,
+    getAllDatasets,
+	getDatasets,
     getDataset,
     updateDownloadCount
 }

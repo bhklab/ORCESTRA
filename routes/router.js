@@ -18,7 +18,7 @@ const datasetObject = require('./api/dataset-object');
 const userDataObject = require('./api/user-data-object');
 const user = require('./api/user');
 const auth = require('./api/auth');
-// const public = require('./api/public');
+const public = require('./api/public');
 
 // View get routes
 router.get('/view/data-object-filter/:datatype', dataObjectFilter.get); // Dataset filter options given a specific datatype
@@ -86,11 +86,15 @@ router.post('/user/zenodo-upload', admin.ZenodoUpload);
 
 
 
-// // user-dataset routes
+// user-dataset routes
 router.post('/user/dataset/add', auth.verifyToken, userDataObject.add);
 router.post('/user/dataset/remove', auth.verifyToken, userDataObject.remove);
 
-// //public api
+//public api
+router.get('/public/datasets/all', public.getAllDatasets);
+router.get('/public/datasets/:datatype', public.getDatasets);
+router.get('/public/datasets/:datatype/:id', public.getDataset);
+
 // router.get('/:datasetType/:filter', public.getDatasets);
 // router.get('/:datasetType/:doi1/:doi2', public.getDataset);
 // router.get('/:datasetType/update-download/:doi1/:doi2', public.updateDownloadCount);
