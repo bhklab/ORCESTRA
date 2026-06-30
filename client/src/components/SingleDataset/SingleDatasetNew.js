@@ -1344,7 +1344,7 @@ const SingleDatasetNew = () => {
                                                             style={{
                                                                 fontSize: '16px',
                                                                 fontWeight: 'Bold',
-                                                                margin: '0 0 3px 0'
+                                                                margin: '0 0 8px 0'
                                                             }}
                                                         >
                                                             Drugs
@@ -1360,7 +1360,7 @@ const SingleDatasetNew = () => {
                                                             style={{
                                                                 fontSize: '16px',
                                                                 fontWeight: 'Bold',
-                                                                margin: '0 0 3px 0'
+                                                                margin: '0 0 8px 0'
                                                             }}
                                                         >
                                                             Compounds
