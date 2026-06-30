@@ -22,17 +22,18 @@ const getAllDatasets = async (req, res) => {
 			res.send(datasetObjects)
 		} 
 		else if (info === "concise") {
-			const datasetObjects = await DatasetObject.find({}, "name _id info description dataSources repositories.downloadLink");
-			const noteIDs = datasetObjects.map(obj =>  { // Store all ids for notes needed for datasetObjects
-				return obj.datasetNote
+			const datasetObjects = await DatasetObject.find({}, "name _id info description dataSources repositories");
+			const outputObjects = datasetObjects.map(obj => {
+				return {
+					name: obj.name,
+					dateCreated: obj.info.dateCreated,
+					doi: obj.repositories.doi,
+					main_downloads: obj.repositories.downloadLink,
+					secondary_downloads: obj.repositories.csvLinks,
+					data: obj.dataSources,
+				}
 			});
-			const datasetNotes = await DatasetNote.find({ _id: { $in: noteIDs } }); // Retrieve needed dataset notes
-			const noteMap = new Map(datasetNotes.map(note => [note._id.toString(), note])); // create map/dictionary for needed noteIDs --> note
-			datasetObjects.forEach(obj => {
-				obj.datasetNote = noteMap.get(obj.datasetNote?.toString());
-			});
-			datasetObjects.sort((a, b) => a.name.localeCompare(b.name));
-			res.send(datasetObjects)
+			res.send(outputObjects)
 		}
 		else {
 			res.status(500).send(`Missing info parameter, can be either 'full' or 'concise'.
@@ -96,7 +97,7 @@ const getDatasets = async (req, res) => {
 
 const getDataset = async (req, res) => {
     const { id, info } = req.params
-	if (info === "full" || info === "") {
+	if (info === "full") {
 		try {
 			const datasetObjects = await DatasetObject.find({ _id: id}, '-availableData -availableDatatypes -status');
 			const noteIDs = datasetObjects.map(obj =>  { // Store all ids for notes needed for datasetObjects
@@ -113,7 +114,7 @@ const getDataset = async (req, res) => {
 			console.log(err);
 			res.status(500);
 		}
-	} else if (info === "concise" || info === "") {
+	} else if (info === "concise") {
 		try {
 			const datasetObjects = await DatasetObject.find({ _id: id}, 'name _id info description dataSources repositories');
 			const outputObjects = datasetObjects.map(obj => {
