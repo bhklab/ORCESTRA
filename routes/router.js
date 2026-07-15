@@ -7,6 +7,7 @@ const router = express.Router();
 // const landing = require('./api/view/landing-view');
 const dataObjectFilter = require('./api/view/data-object-filter-view');
 const singleDataObject = require('./api/view/single-data-object-view');
+const datasetNoteObject = require('./api/view/dataset-note')
 // const canonicalDataObjects = require('./api/view/canonical-data-object-view');
 const statistics = require('./api/view/statistics-view');
 const profile = require('./api/view/profile-view');
@@ -20,14 +21,18 @@ const user = require('./api/user');
 const auth = require('./api/auth');
 const public = require('./api/public');
 
-// View get routes
+// View get routes data object
 router.get('/view/data-object-filter/:datatype', dataObjectFilter.get); // Dataset filter options given a specific datatype
 router.get('/view/single-data-object/:datatype/:dataset_id', singleDataObject.get); // Single datasetobject and correlated datasetnote
 router.get('/view/single-data-object/qc', singleDataObject.qualityControl); // Rendering for QC object on DNL page
+
+// View get route stats
 router.get('/view/statistics', statistics.datatypeStats); // Datatype statistics that show up on /datatypes page
 
-// User pipeline/DNL routes
+// View get route dataset notes
+router.get('/view/dataset-notes', datasetNoteObject.getAll); // Single datasetobject and correlated datasetnote
 
+// User pipeline/DNL routes
 router.post('/dataset-object/submit', datasetObject.submitDataset); // Submitting a datasets' DNL
 
 
