@@ -4,13 +4,31 @@ import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import DatasetObjectDisplay from './DatasetObjectDisplay';
 import axios from 'axios';
+import datasetNote from '../../../../db/models/dataset-note';
 
 const SectionNameInput = ({ initialName, onNameChange, placeholder }) => {
     const [name, setName] = useState(initialName);
+    const [datasetNotes, setDatasetNotes] = useState([]);
 
     useEffect(() => {
         setName(initialName);
     }, [initialName]);
+
+    useEffect(() => {
+        const getDatasetNotes = async () => {
+            try {
+                const res = await axios.get('/api/view/dataset-notes');
+                setDatasetNotes(res.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getDatasetNotes();
+    }, []);
+
+    const selectDatasetNote = datasetNote => {
+        console.log(datasetNote);
+    };
 
     return (
         <input
@@ -29,7 +47,7 @@ const SectionNameInput = ({ initialName, onNameChange, placeholder }) => {
 };
 const CreateDatasetObjectDisplay = () => {
     const dataSourceSectionIds = useRef(new Map());
-    const getDataSourceSectionId = (name) => {
+    const getDataSourceSectionId = name => {
         if (!dataSourceSectionIds.current.has(name)) {
             dataSourceSectionIds.current.set(name, Math.random().toString());
         }
@@ -37,7 +55,7 @@ const CreateDatasetObjectDisplay = () => {
     };
 
     const releaseNoteSectionIds = useRef(new Map());
-    const getReleaseNoteSectionId = (name) => {
+    const getReleaseNoteSectionId = name => {
         if (!releaseNoteSectionIds.current.has(name)) {
             releaseNoteSectionIds.current.set(name, Math.random().toString());
         }
@@ -58,7 +76,7 @@ const CreateDatasetObjectDisplay = () => {
                     }));
                 setDatasetTypeOptions(options);
             } catch (error) {
-                console.log("Failed to fetch datatypes:", error);
+                console.log('Failed to fetch datatypes:', error);
             }
         };
         getDatatypes();
@@ -169,10 +187,10 @@ const CreateDatasetObjectDisplay = () => {
     const addDataSourceSection = () => {
         setDataset(prev => {
             let sectionNumber = Object.keys(prev.dataSources).length + 1;
-            let sectionName = `New Data Section ${sectionNumber}`;
+            let sectionName = `RNA, DNA, Methylation, Mutation, CNV, Proteomics, etc.`;
             while (prev.dataSources[sectionName]) {
                 sectionNumber++;
-                sectionName = `New Data Section ${sectionNumber}`;
+                sectionName = `RNA, DNA, Methylation, Mutation, CNV, Proteomics, etc.`;
             }
 
             return {
@@ -259,9 +277,9 @@ const CreateDatasetObjectDisplay = () => {
                     [sectionName]: prev.dataSources[sectionName].map((source, i) =>
                         i === index
                             ? {
-                                ...source,
-                                [field]: field === 'current' ? Number(value) || '' : value
-                            }
+                                  ...source,
+                                  [field]: field === 'current' ? Number(value) || '' : value
+                              }
                             : source
                     )
                 }
@@ -373,9 +391,9 @@ const CreateDatasetObjectDisplay = () => {
                     [sectionName]: prev.releaseNotes[sectionName].map((note, i) =>
                         i === index
                             ? {
-                                ...note,
-                                [field]: field === 'current' ? Number(value) || '' : value
-                            }
+                                  ...note,
+                                  [field]: field === 'current' ? Number(value) || '' : value
+                              }
                             : note
                     )
                 }
@@ -400,7 +418,7 @@ const CreateDatasetObjectDisplay = () => {
         try {
             const payload = JSON.parse(JSON.stringify(dataset));
 
-            const sanitizeKeys = (obj) => {
+            const sanitizeKeys = obj => {
                 if (!obj) return {};
                 const sanitized = {};
                 for (const key of Object.keys(obj)) {
@@ -485,50 +503,74 @@ const CreateDatasetObjectDisplay = () => {
                                         })
                                     }
                                 >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" className="size-5" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="2"
+                                        className="size-5"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                        />
                                     </svg>
                                 </button>
                             </div>
-                            <div className='flex flex-col gap-2'>
-                                {
-                                    dataset.repositories.csvLinks.map((link, index) => (
-                                        <div key={index} className="flex flex-row gap-2">
-                                            <input
-                                                className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
-                                                placeholder="Ex. https://zenodo.org/records/20019577/files/colData.tsv?download=1"
-                                                type="text"
-                                                value={link}
-                                                onChange={e =>
-                                                    setDataset({
-                                                        ...dataset,
-                                                        repositories: {
-                                                            ...dataset.repositories,
-                                                            csvLinks: dataset.repositories.csvLinks.map((link, ind) => ind === index ? e.target.value : link)
-                                                        }
-                                                    })
-                                                }
-                                            />
-                                            <button
-                                                type="button"
-                                                className="text-black"
-                                                onClick={() =>
-                                                    setDataset({
-                                                        ...dataset,
-                                                        repositories: {
-                                                            ...dataset.repositories,
-                                                            csvLinks: dataset.repositories.csvLinks.filter((_, i) => i !== index)
-                                                        }
-                                                    })
-                                                }
+                            <div className="flex flex-col gap-2">
+                                {dataset.repositories.csvLinks.map((link, index) => (
+                                    <div key={index} className="flex flex-row gap-2">
+                                        <input
+                                            className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
+                                            placeholder="Ex. https://zenodo.org/records/20019577/files/colData.tsv?download=1"
+                                            type="text"
+                                            value={link}
+                                            onChange={e =>
+                                                setDataset({
+                                                    ...dataset,
+                                                    repositories: {
+                                                        ...dataset.repositories,
+                                                        csvLinks: dataset.repositories.csvLinks.map((link, ind) =>
+                                                            ind === index ? e.target.value : link
+                                                        )
+                                                    }
+                                                })
+                                            }
+                                        />
+                                        <button
+                                            type="button"
+                                            className="text-black"
+                                            onClick={() =>
+                                                setDataset({
+                                                    ...dataset,
+                                                    repositories: {
+                                                        ...dataset.repositories,
+                                                        csvLinks: dataset.repositories.csvLinks.filter(
+                                                            (_, i) => i !== index
+                                                        )
+                                                    }
+                                                })
+                                            }
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth="2"
+                                                className="size-5"
+                                                stroke="currentColor"
                                             >
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" className="size-5" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    ))
-                                }
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -543,15 +585,31 @@ const CreateDatasetObjectDisplay = () => {
                                 placeholder="Ex. CCLE"
                                 type="text"
                                 value={dataset.datasetNote.name}
-                                onChange={e => setDataset({ ...dataset, datasetNote: { ...dataset.datasetNote, name: e.target.value } })}
+                                onChange={e =>
+                                    setDataset({
+                                        ...dataset,
+                                        datasetNote: { ...dataset.datasetNote, name: e.target.value }
+                                    })
+                                }
                             />
+                            {datasetNote && (
+                                <Dropdown
+                                    value={dataset.datasetNote}
+                                    onChange={e => setDataset({ ...dataset, datasetNote: e.value })}
+                                    options={datasetNotes}
+                                    optionLabel="name"
+                                    editable
+                                    placeholder="Select a note"
+                                    className="w-full md:w-14rem"
+                                />
+                            )}
                         </div>
                         <div className="flex flex-col">
                             <h3 className="font-semibold text-bodyMd text-gray-700">Dataset Type</h3>
                             <Dropdown
                                 value={dataset.datasetType}
                                 options={datasetTypeOptions}
-                                onChange={(e) => setDataset({ ...dataset, datasetType: e.value })}
+                                onChange={e => setDataset({ ...dataset, datasetType: e.value })}
                                 placeholder="Select a Type"
                                 className="border-1 border-gray-300 rounded-[4px] h-[36px] text-bodyMd"
                                 pt={{
@@ -898,7 +956,9 @@ const CreateDatasetObjectDisplay = () => {
                                                         ...dataset,
                                                         datasetNote: {
                                                             ...dataset.datasetNote,
-                                                            citations: dataset.datasetNote.citations.filter((_, idx) => idx !== ind)
+                                                            citations: dataset.datasetNote.citations.filter(
+                                                                (_, idx) => idx !== ind
+                                                            )
                                                         }
                                                     })
                                                 }
@@ -924,7 +984,7 @@ const CreateDatasetObjectDisplay = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-2 p-3 rounded-lg shadow-sm border-1 bg-white w-full">
+                    <div className="flex flex-col gap-2 p-3 rounded-lg w-full">
                         <div className="flex flex-col gap-3">
                             <div className="flex flex-row items-center gap-2">
                                 <h2 className="text-headingMd text-lightBlue">Data</h2>
@@ -977,11 +1037,14 @@ const CreateDatasetObjectDisplay = () => {
                                     </div>
 
                                     {sources.map((source, index) => (
-                                        <div key={index} className="flex flex-col gap-2 pl-4">
+                                        <div key={index} className="flex flex-col gap-2 p-4 bg-white border rounded">
+                                            <p className="font-headingS text-darkYellow">
+                                                {sectionName} Link {index + 1}
+                                            </p>
                                             <div className="flex flex-row gap-2">
                                                 <input
                                                     className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
-                                                    placeholder="Ex. rnaseq"
+                                                    placeholder="Link Name (Ex. rnaseq)"
                                                     type="text"
                                                     value={source.name}
                                                     onChange={e =>
@@ -1011,7 +1074,7 @@ const CreateDatasetObjectDisplay = () => {
                                             </div>
                                             <input
                                                 className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd"
-                                                placeholder="Ex. This dataset includes 2539 compounds tested at various concentrations and time points across a range of 241 cell lines. We do not include the cell painting data in this data object, only the whether or not the molecule was tested in the 2020 data release of the LINCS L1000 project."
+                                                placeholder="Description of link contents"
                                                 type="text"
                                                 value={source.description}
                                                 onChange={e =>
@@ -1025,7 +1088,7 @@ const CreateDatasetObjectDisplay = () => {
                                             />
                                             <input
                                                 className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd"
-                                                placeholder="Ex. https://lincsportal.ccs.miami.edu/signatures/datasets/LDG-1188"
+                                                placeholder="Raw data source link (Ex. https://lincsportal.ccs.miami.edu/signatures/datasets/LDG-1188)"
                                                 type="text"
                                                 value={source.url}
                                                 onChange={e =>
@@ -1115,7 +1178,10 @@ const CreateDatasetObjectDisplay = () => {
                                     </div>
 
                                     {notes.map((note, index) => (
-                                        <div key={index} className="flex flex-col gap-2 pl-4">
+                                        <div key={index} className="flex flex-col gap-2 p-4 bg-white border rounded">
+                                            <p className="font-headingS text-darkYellow">
+                                                {sectionName} Link {index + 1}
+                                            </p>
                                             <div className="flex flex-row gap-2">
                                                 <input
                                                     className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
@@ -1180,7 +1246,7 @@ const CreateDatasetObjectDisplay = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-2 p-3 rounded-lg shadow-sm border-1 bg-white w-full mt-4">
+                {/* <div className="flex flex-col gap-2 p-3 rounded-lg shadow-sm border-1 bg-white w-full mt-4">
                     <h2 className="text-headingMd text-lightBlue">Raw JSON</h2>
                     <p className="text-sm text-gray-500">You can copy and paste JSON here. Click outside the text area to apply your changes.</p>
                     <textarea
@@ -1196,15 +1262,13 @@ const CreateDatasetObjectDisplay = () => {
                             }
                         }}
                     />
-                </div>
-                <button onClick={uploadDataset} className='p-3 bg-lightBlue text-white rounded-lg my-4'>Upload</button>
-
+                </div> */}
             </div>
 
             <div className="flex flex-col m-auto min-h-screen bg-gray-100 w-full">
                 <DatasetObjectDisplay dataset={dataset} />
             </div>
-        </div >
+        </div>
     );
 };
 export default CreateDatasetObjectDisplay;
