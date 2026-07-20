@@ -4,31 +4,13 @@ import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import DatasetObjectDisplay from './DatasetObjectDisplay';
 import axios from 'axios';
-import datasetNote from '../../../../db/models/dataset-note';
 
 const SectionNameInput = ({ initialName, onNameChange, placeholder }) => {
     const [name, setName] = useState(initialName);
-    const [datasetNotes, setDatasetNotes] = useState([]);
 
     useEffect(() => {
         setName(initialName);
     }, [initialName]);
-
-    useEffect(() => {
-        const getDatasetNotes = async () => {
-            try {
-                const res = await axios.get('/api/view/dataset-notes');
-                setDatasetNotes(res.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        getDatasetNotes();
-    }, []);
-
-    const selectDatasetNote = datasetNote => {
-        console.log(datasetNote);
-    };
 
     return (
         <input
@@ -63,6 +45,7 @@ const CreateDatasetObjectDisplay = () => {
     };
 
     const [datasetTypeOptions, setDatasetTypeOptions] = useState([]);
+    const [datasetNotes, setDatasetNotes] = useState([]);
 
     useEffect(() => {
         const getDatatypes = async () => {
@@ -81,6 +64,34 @@ const CreateDatasetObjectDisplay = () => {
         };
         getDatatypes();
     }, []);
+
+    useEffect(() => {
+        const getDatasetNotes = async () => {
+            try {
+                const res = await axios.get('/api/view/dataset-notes');
+                console.log(res.data);
+                setDatasetNotes(res.data);
+            } catch (error) {
+                console.log('Failed to fetch dataset notes:', error);
+            }
+        };
+        getDatasetNotes();
+    }, []);
+
+    const selectDatasetNote = selectedNote => {
+        if (!selectedNote) return;
+        setDataset(prev => ({
+            ...prev,
+            datasetNote: {
+                ...prev.datasetNote,
+                name: selectedNote.name,
+                citations: [
+                    ...prev.datasetNote.citations,
+                    ...(selectedNote.citations || []).filter(c => !prev.datasetNote.citations.includes(c))
+                ]
+            }
+        }));
+    };
 
     const [dataset, setDataset] = useState({
         name: '',
@@ -580,29 +591,19 @@ const CreateDatasetObjectDisplay = () => {
                         <h2 className="text-headingMd text-lightBlue">Technical Information</h2>
                         <div className="flex flex-col">
                             <h3 className="font-semibold text-bodyMd text-gray-700">Dataset Note</h3>
-                            <input
-                                className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd"
-                                placeholder="Ex. CCLE"
-                                type="text"
+                            <Dropdown
                                 value={dataset.datasetNote.name}
-                                onChange={e =>
-                                    setDataset({
-                                        ...dataset,
-                                        datasetNote: { ...dataset.datasetNote, name: e.target.value }
-                                    })
-                                }
+                                onChange={e => selectDatasetNote(e.value)}
+                                options={datasetNotes}
+                                optionLabel="name"
+                                placeholder="Select a dataset note"
+                                // editable
+                                className="border-1 border-gray-300 rounded-[4px] h-[36px] text-bodyMd"
+                                pt={{
+                                    input: { className: 'px-2 py-[0.4rem]' },
+                                    trigger: { className: 'w-8' }
+                                }}
                             />
-                            {datasetNote && (
-                                <Dropdown
-                                    value={dataset.datasetNote}
-                                    onChange={e => setDataset({ ...dataset, datasetNote: e.value })}
-                                    options={datasetNotes}
-                                    optionLabel="name"
-                                    editable
-                                    placeholder="Select a note"
-                                    className="w-full md:w-14rem"
-                                />
-                            )}
                         </div>
                         <div className="flex flex-col">
                             <h3 className="font-semibold text-bodyMd text-gray-700">Dataset Type</h3>
@@ -896,7 +897,6 @@ const CreateDatasetObjectDisplay = () => {
                         <div className="flex flex-col">
                             <div className="flex flex-row items-center gap-1">
                                 <h3 className="font-semibold text-bodyMd text-gray-700">Citations</h3>
-
                                 <button
                                     type="button"
                                     className="text-black"
@@ -928,57 +928,65 @@ const CreateDatasetObjectDisplay = () => {
                             </div>
                             <div className="flex flex-col gap-1.5">
                                 {dataset.datasetNote.citations.map((citation, ind) => (
-                                    <div key={ind} className="flex flex-col gap-4">
-                                        <div className="flex flex-row gap-2">
-                                            <input
-                                                className="border-1 border-gray-300 rounded-[4px] h-[36px] px-2 text-bodyMd w-full"
-                                                placeholder="Ex. Citation text"
-                                                type="text"
+                                    <div key={ind} className="flex flex-row gap-2 items-start">
+                                        <div className="flex-1 min-w-0">
+                                            <Editor
+                                                pt={{
+                                                    root: {
+                                                        className: 'bg-white'
+                                                    },
+                                                    toolbar: {
+                                                        className: 'rounded-t-md'
+                                                    },
+                                                    content: {
+                                                        className: 'rounded-b-md'
+                                                    }
+                                                }}
+                                                headerTemplate={renderPolicyHeader()}
                                                 value={citation}
-                                                onChange={e =>
+                                                onTextChange={e =>
                                                     setDataset({
                                                         ...dataset,
                                                         datasetNote: {
                                                             ...dataset.datasetNote,
                                                             citations: dataset.datasetNote.citations.map((cite, idx) =>
-                                                                idx === ind ? e.target.value : cite
+                                                                idx === ind ? e.htmlValue : cite
                                                             )
                                                         }
                                                     })
                                                 }
                                             />
-
-                                            <button
-                                                type="button"
-                                                className="text-lightBlue"
-                                                onClick={() =>
-                                                    setDataset({
-                                                        ...dataset,
-                                                        datasetNote: {
-                                                            ...dataset.datasetNote,
-                                                            citations: dataset.datasetNote.citations.filter(
-                                                                (_, idx) => idx !== ind
-                                                            )
-                                                        }
-                                                    })
-                                                }
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth="1.5"
-                                                    stroke="currentColor"
-                                                    className="size-6"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                                                    />
-                                                </svg>
-                                            </button>
                                         </div>
+                                        <button
+                                            type="button"
+                                            className="text-lightBlue flex-shrink-0 mt-2"
+                                            onClick={() =>
+                                                setDataset({
+                                                    ...dataset,
+                                                    datasetNote: {
+                                                        ...dataset.datasetNote,
+                                                        citations: dataset.datasetNote.citations.filter(
+                                                            (_, idx) => idx !== ind
+                                                        )
+                                                    }
+                                                })
+                                            }
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth="1.5"
+                                                stroke="currentColor"
+                                                className="size-6"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                />
+                                            </svg>
+                                        </button>
                                     </div>
                                 ))}
                             </div>

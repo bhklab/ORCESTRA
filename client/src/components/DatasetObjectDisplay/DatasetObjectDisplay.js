@@ -370,7 +370,7 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                             key={ind}
                                         >
                                             <ul className='text-headingSm italic list-disc list-inside'>
-                                                <li className="" dangerouslySetInnerHTML={{ __html: citation }} />
+                                                <li className="" dangerouslySetInnerHTML={{ __html: citation?.replace(/^<p>([\s\S]*?)<\/p>$/, '$1').replace(/<br\s*\/?>/g, '') }} />
                                             </ul>
                                         </div>
 

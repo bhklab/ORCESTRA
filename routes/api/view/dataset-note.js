@@ -1,4 +1,4 @@
-const DatasetNote = require('../../../db/models/dataset-note')
+import DatasetNote from '../../../db/models/dataset-note.js';
 
 /**
  * Retrives a dataset by dataType and dataset_id to be used for the single dataset page.
@@ -6,17 +6,14 @@ const DatasetNote = require('../../../db/models/dataset-note')
  * @param {*} res datasetObject (extracted dataset information from db)
  */
 const getAll = async (req, res) => {
-	const { datatype, dataset_id } = req.params
-	let datasetObject = {}
+	let datasetNotes = []
 	try {
-		datasetObject = await DatasetObject.findOne({datasetType: datatype, _id: dataset_id});
-		const datasetNote = await DatasetNote.findOne({ _id: { $in: datasetObject.datasetNote } }); // Retrieve needed dataset notes
-		datasetObject.datasetNote = datasetNote;
+		datasetNotes = await DatasetNote.find(); // Retrieve all dataset notes
 	} catch (error) {
 		console.log(error);
 		res.status(500);
 	} finally {
-		res.send(datasetObject);
+		res.send(datasetNotes);
 	}
 };
 
