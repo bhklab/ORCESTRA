@@ -1218,12 +1218,14 @@ const SingleDatasetNew = () => {
                                                                             <span>{item.name}</span>
                                                                         )}
                                                                         {paragraphs.map((text, i) => (
-                                                                            <p
-                                                                                index={i}
+                                                                            <div
+                                                                                key={i}
                                                                                 style={{ margin: '5px 0 5px 0' }}
-                                                                            >
-                                                                                {text}
-                                                                            </p>
+                                                                                className="metadata"
+                                                                                dangerouslySetInnerHTML={{
+                                                                                    __html: text
+                                                                                }}
+                                                                            />
                                                                         ))}
                                                                     </li>
                                                                 );

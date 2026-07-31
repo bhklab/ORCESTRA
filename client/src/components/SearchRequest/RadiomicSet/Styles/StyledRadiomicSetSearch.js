@@ -224,6 +224,20 @@ const StyledContainerInner = styled.div`
         transform: translateY(-2px);
         box-shadow: 0 5px 20px rgba(0, 0, 0, 1);
     }
+
+    .metadata {
+        ul {
+            margin-left: 20px;
+            padding-left: 15px;
+        }
+        a {
+            color: blue !important;
+        }
+        a:hover {
+            color: blue !important;
+            border-bottom: none !important;
+        }
+    }
 `;
 
 const StyledTopBar = styled.div`
