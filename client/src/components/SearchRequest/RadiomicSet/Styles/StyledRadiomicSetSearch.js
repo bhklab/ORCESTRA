@@ -226,9 +226,10 @@ const StyledContainerInner = styled.div`
     }
 
     .metadata {
-        ul {
-            margin-left: 20px;
-            padding-left: 15px;
+        ul,
+        li {
+            margin-left: 25px;
+            list-style-type: disc;
         }
         a {
             color: blue !important;
