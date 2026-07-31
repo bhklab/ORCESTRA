@@ -165,7 +165,13 @@ const SingleDatasetNew = () => {
                                             </li>
                                             <li>
                                                 <span>Data Disclaimer: </span>
-                                                {disclaimerTab.data.disclaimer}
+                                                <div className="citations">
+                                                    <p
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: disclaimerTab.data.disclaimer
+                                                        }}
+                                                    />
+                                                </div>
                                             </li>
                                             <li>
                                                 <span>Data Usage Policy: </span>
