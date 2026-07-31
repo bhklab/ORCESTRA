@@ -1242,6 +1242,54 @@ const SingleDatasetNew = () => {
                                             )}
                                         </div>
                                     )}
+                                    {datasetTab.data.cellLineMetadata?.length > 0 && (
+                                        <div className="card-container">
+                                            <div className="card-title ">Cell Line Metadata</div>
+                                            <div className="hr-container">
+                                                <hr className="hr-style" />
+                                            </div>
+                                            {datasetTab.data.cellLineMetadata.length > 0 && (
+                                                <ul className="list-style-card-main">
+                                                    <li>
+                                                        <ul className="list-style-card-sub">
+                                                            {datasetTab.data.cellLineMetadata.map((item, i) => {
+                                                                const paragraphs = (item.description ?? '')
+                                                                    .split(/\n/)
+                                                                    .map(s => s.trim())
+                                                                    .filter(Boolean);
+
+                                                                return (
+                                                                    <li key={i}>
+                                                                        {item.url ? (
+                                                                            <a
+                                                                                href={item.url}
+                                                                                target="_blank"
+                                                                                rel="noreferrer"
+                                                                            >
+                                                                                <span>{item.name}</span>
+                                                                            </a>
+                                                                        ) : (
+                                                                            <span>{item.name}</span>
+                                                                        )}
+                                                                        {paragraphs.map((text, i) => (
+                                                                            <div
+                                                                                key={i}
+                                                                                style={{ margin: '5px 0 5px 0' }}
+                                                                                className="metadata"
+                                                                                dangerouslySetInnerHTML={{
+                                                                                    __html: text
+                                                                                }}
+                                                                            />
+                                                                        ))}
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            )}
+                                        </div>
+                                    )}
                                     {datasetTab.data.expAssays?.length > 0 && (
                                         <div className="card-container">
                                             <div className="card-title ">Experiments or Assays</div>

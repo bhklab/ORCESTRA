@@ -50,6 +50,7 @@ const getTabData = async (dataObject, dataset, filter) => {
 	  hepatotoxicity: dataset?.hepatotoxicity || [],
 	  drugStatus: dataset?.drugStatus || [],
 	  compoundMetadata: dataset?.compoundMetadata || [],
+	  cellLineMetadata: dataset?.cellLineMetadata || [],
 	  expAssays: dataset?.expAssays || [],
     },
   };
