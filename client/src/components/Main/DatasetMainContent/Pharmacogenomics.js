@@ -7,6 +7,7 @@ import RequestStatusBox from '../MainBoxes/RequestStatusBox';
 import PopularDatasetBox from '../MainBoxes/PopularDatasetBox';
 import YourOwnDataBox from '../MainBoxes/YourOwnDataBox';
 import { dataTypes } from '../../Shared/Enums';
+import { Message } from 'primereact/message';
 
 const Pharmacogenomics = () => {
     const [statsData, setStatsData] = useState([]);
@@ -66,6 +67,17 @@ const Pharmacogenomics = () => {
             <MainStyle.DatasetHeaderGroup>
                 <h1>ORCESTRA for Pharmacogenomics</h1>
                 <h2>Explore and request multimodal Pharmacogenomic Datasets (PSets)</h2>
+                <div className="warning-wrapper">
+                    <Message
+                        severity="warn"
+                        text="We have recently discovered minor differences between the results of some dataset curation runs in regards to
+						recomputed fits produced by PharmacoGx in some of our Pharmacogenomic datasets. We have deduced this is caused
+						by the way in which operating systems resolve floating point-noise. Differences in floating-point
+						calculations can alter the PharmacoGx's optimizer's path, stopping point, or selected minimum, particularly
+						for weakly responsive or poorly identified curves. This may affect several of our Pharmacogenomics datasets including
+						but not limited to CCLE_2019 and CTRPv2.1_2016."
+                    />
+                </div>
             </MainStyle.DatasetHeaderGroup>
             <MainStyle.Row>
                 <MainStyle.Column>

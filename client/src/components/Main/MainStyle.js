@@ -69,6 +69,11 @@ const DatasetHeaderGroup = styled.div`
             text-align: center;
         }
     }
+    .warning-wrapper {
+        max-width: 900px;
+        margin: auto;
+        margin-top: 20px;
+    }
 `;
 
 const Button = styled.a`

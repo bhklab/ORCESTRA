@@ -208,7 +208,9 @@ const StyledTopBar = styled.div`
         background: linear-gradient(45deg, #36589b, ${colors.standard_dark_blue});
         color: white;
         cursor: pointer;
-        transition: transform 0.3s, box-shadow 0.3s;
+        transition:
+            transform 0.3s,
+            box-shadow 0.3s;
 
         &:hover {
             background: linear-gradient(45deg, ${colors.standard_dark_blue}, #36589b);

@@ -39,6 +39,13 @@ const LayoutContainer = styled.div`
 		font-size: 15px;
 	}
 
+	.tools {
+		font-weight: 400;
+		ul {
+			list-style-type: disc;
+		}
+	}
+
 	.list-style-card-main {
 		list-style-type: none;
 		padding-left: 0;
@@ -102,6 +109,12 @@ const StyledContainerOuter = styled.div`
     flex-direction: column;
     gap: 20px;
     font-size: 14px;
+
+    .description {
+        a {
+            color: blue;
+        }
+    }
 
     .card-container {
         border-radius: 8px;

@@ -1483,7 +1483,10 @@ const SingleDatasetNew = () => {
                                             <hr className="hr-style" />
                                         </div>
                                         {datasetTab.data.description && (
-                                            <div dangerouslySetInnerHTML={{ __html: datasetTab.data.description }} />
+                                            <p
+                                                className="description"
+                                                dangerouslySetInnerHTML={{ __html: datasetTab.data.description }}
+                                            />
                                         )}
                                         {/* {datasetTab.data?.descriptionExpanded?.length > 0 && (
                                             <Accordion multiple activeIndex={[0]}>
@@ -1553,7 +1556,12 @@ const SingleDatasetNew = () => {
                                                                         >
                                                                             <span>{tool.name}: </span>
                                                                         </a>
-                                                                        {tool.description}
+                                                                        <span
+                                                                            dangerouslySetInnerHTML={{
+                                                                                __html: tool.description
+                                                                            }}
+                                                                            className="tools"
+                                                                        />
                                                                     </li>
                                                                 ))}
                                                             </ul>
