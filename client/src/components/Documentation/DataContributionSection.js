@@ -1,0 +1,456 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import download from 'downloadjs';
+
+const exampleTemplates = [
+    {
+        filename: 'example_sample_annotation.csv',
+        title: 'Sample Annotation Template',
+        description: 'Maps sample identifiers with Cellosaurus Accession IDs, tissue types, and sample-level metadata.',
+        content: `unique.sample.id,sample.id,Cellosaurus.Accession.id,tissue.id
+MPP 89,MPP-89,CVCL_1427,pleura
+NCI-H1048,NCI-H1048,CVCL_1453,lung
+380,380,NA,haematopoietic_and_lymphoid_tissue`
+    },
+    {
+        filename: 'example_drug_annotation.csv',
+        title: 'Drug / Compound Annotation Template',
+        description: 'Standardizes chemical compound identifiers, aliases, and PubChem Compound Identifiers (CID).',
+        content: `unique.drug.id,drug.id,PubChem.cid
+Acadesine,AICAR,17513
+Vincaleukoblastine,Vinblastine,241902
+XMD8-85,XMD8-85,NA`
+    },
+    {
+        filename: 'example_raw_drug_dose.csv',
+        title: 'Raw Drug Doses Template',
+        description: 'Tested drug concentration values (in micromolar, µM) for each experiment (sample + drug pair).',
+        content: `unique.experiment.id,dose1,dose2,dose3,dose4,dose5,dose6
+NCI-H1048_Acadesine,0.001528,0.004583,0.01375,0.04125,0.12375,0.37125
+380_XMD8-85,0.001528,0.004583,0.01375,0.04125,0.12375,NA`
+    },
+    {
+        filename: 'example_raw_drug_viability.csv',
+        title: 'Raw Drug Viability Template',
+        description: 'Cell viability percentage (%) measurements corresponding to each tested drug concentration.',
+        content: `unique.experiment.id,dose1,dose2,dose3,dose4,dose5,dose6
+NCI-H1048_Acadesine,99.89466,89.47876,86.5826733,73.9341949,71.748281,68.829123
+380_XMD8-85,97.3491,96.482238,90.8890157,106.2000039,84.8888717,NA`
+    },
+    {
+        filename: 'example_sensitivity_info.csv',
+        title: 'Sensitivity Metadata Template',
+        description: 'Experiment-level metadata specifying sample ID, drug ID, and tested concentration ranges.',
+        content: `unique.experiment.id,unique.sample.id,unique.drug.id,min.dose,max.dose
+NCI-H1048_Acadesine,NCI-H1048,Acadesine,0.001528,0.37125
+380_XMD8-85,380,XMD8-85,0.001528,0.12375`
+    },
+    {
+        filename: 'example_rnaseq.csv',
+        title: 'Molecular Profile Matrix Template (RNA-seq)',
+        description: 'Expression matrix where rows denote genes/transcripts (Ensembl IDs) and columns denote samples.',
+        content: `Gene.id,MPP 89,NCI-H1048,380
+ENSG00000000003.15,5.677246,6.117843,6.828962
+ENSG00000067048.17,6.748462,6.621223,7.518115
+ENSG00000066557.6,7.296302,5.793411,11.341132`
+    }
+];
+
+export const DataContributionSection = ({ scrollTarget }) => {
+    const navigate = useNavigate();
+    const [previewFile, setPreviewFile] = useState(null);
+
+    useEffect(() => {
+        async function scrollTo() {
+            await new Promise(resolve => setTimeout(resolve, 75));
+            if (!scrollTarget) return;
+            const el = document.getElementById(scrollTarget);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        scrollTo();
+    }, [scrollTarget]);
+
+    const handleDownload = template => {
+        const blob = new Blob([template.content], { type: 'text/csv;charset=utf-8;' });
+        download(blob, template.filename, 'text/csv');
+    };
+
+    return (
+        <div className="flex flex-col gap-12 text-darkBlue">
+            {/* Header / Hero */}
+            <div className="flex flex-col gap-3 pb-6 border-b border-gray-100">
+                <h1 className="text-heading3Xl md:text-heading2Xl font-bold text-darkBlue">Contributing Your Data</h1>
+                <p className="text-bodyLg text-gray-600 leading-relaxed">
+                    Learn how to format, structure, and submit your experimental or computational datasets to ORCESTRA
+                    to generate FAIR-compliant, version-controlled multi-omic data objects.
+                </p>
+            </div>
+
+            {/* Subsection 1: Submission & Publishing Workflow */}
+            <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-2">
+                    <h3 className="text-headingXl font-bold text-darkBlue scroll-mt-32" id="submission-workflow">
+                        Submission & Processing Lifecycle
+                    </h3>
+                    <p className="text-bodyLg text-gray-700 leading-relaxed">
+                        ORCESTRA streamlines dataset ingestion into 4 standardized phases, automating data
+                        harmonization, pipeline orchestration with Snakemake and Pixi, and publication to Zenodo.
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-4 md:grid-cols-2 xs:grid-cols-1 gap-4">
+                    <div className="flex flex-col p-5 bg-gray-50 rounded-2xl border border-gray-200 gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-blue-100 text-lightBlue flex items-center justify-center font-bold text-headingSm">
+                            1
+                        </div>
+                        <h4 className="text-headingMd font-bold text-darkBlue">Prepare Files</h4>
+                        <p className="text-bodySm text-gray-600">
+                            Format your sample annotations, drug IDs, raw viability data, and molecular matrices
+                            according to ORCESTRA schemas.
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col p-5 bg-gray-50 rounded-2xl border border-gray-200 gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center font-bold text-headingSm">
+                            2
+                        </div>
+                        <h4 className="text-headingMd font-bold text-darkBlue">Submit via Portal</h4>
+                        <p className="text-bodySm text-gray-600">
+                            Upload your data tables or connect your pipeline Git repository using our authenticated
+                            submission portal.
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col p-5 bg-gray-50 rounded-2xl border border-gray-200 gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-purple-100 text-purple-900 flex items-center justify-center font-bold text-headingSm">
+                            3
+                        </div>
+                        <h4 className="text-headingMd font-bold text-darkBlue">Automated Pipeline & QC</h4>
+                        <p className="text-bodySm text-gray-600">
+                            Jenkins executes your Snakemake workflow inside isolated Pixi/Conda environments and
+                            produces Quality Control reports.
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col p-5 bg-gray-50 rounded-2xl border border-gray-200 gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-green-100 text-green-900 flex items-center justify-center font-bold text-headingSm">
+                            4
+                        </div>
+                        <h4 className="text-headingMd font-bold text-darkBlue">DOI & DNL Published</h4>
+                        <p className="text-bodySm text-gray-600">
+                            Indicated dataset files are deposited on Zenodo with a permanent DOI attachhed.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="flex flex-wrap gap-4 pt-2">
+                    <button
+                        onClick={() => navigate('/app/data_submission')}
+                        className="bg-lightBlue text-white font-bold px-6 py-3 rounded-xl hover:bg-darkBlue duration-200 ease-in-out flex items-center gap-2 shadow-sm"
+                    >
+                        <span>Go to Data Submission</span>
+                        <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                    <button
+                        onClick={() => navigate('/submit-dataset')}
+                        className="bg-white text-darkBlue border border-gray-300 font-bold px-6 py-3 rounded-xl hover:border-darkBlue duration-200 ease-in-out flex items-center gap-2 shadow-sm"
+                    >
+                        <span>Create Data Nutrition Entry</span>
+                        <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            {/* Subsection 2: Data Specifications & Schemas */}
+            <div className="flex flex-col gap-6 pt-6 border-t border-gray-100">
+                <div className="flex flex-col gap-2">
+                    <h3 className="text-headingXl font-bold text-darkBlue scroll-mt-32" id="data-specifications">
+                        Recommended Formats & Schemas
+                    </h3>
+                    <p className="text-bodyLg text-gray-600">
+                        To ensure interoperability and automated validation, submitted files must follow standard CSV
+                        column naming:
+                    </p>
+                </div>
+
+                <div className="flex flex-col gap-4">
+                    {/* Item 1 */}
+                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-3">
+                        <div className="flex items-center justify-between">
+                            <h4 className="text-headingLg font-bold text-darkBlue">1. Sample Annotation File (.csv)</h4>
+                            <span className="text-bodyXs font-mono bg-blue-100 text-lightBlue px-2.5 py-1 rounded">
+                                example_sample_annotation.csv
+                            </span>
+                        </div>
+                        <p className="text-bodyMd text-gray-700">
+                            Must include every sample with a unique identifier (<code>unique.sample.id</code>). For
+                            human cancer cell lines, provide the <strong>Cellosaurus Accession ID</strong> (e.g.{' '}
+                            <code>CVCL_1427</code>). If a sample is not present in Cellosaurus, indicate with{' '}
+                            <code>NA</code>. Include tissue ontology names (<code>tissue.id</code>) and any
+                            supplementary sample metadata (e.g. disease subtype, ethnicity).
+                        </p>
+                        <div className="text-bodySm text-gray-500">
+                            Cellosaurus Reference:{' '}
+                            <a
+                                href="https://web.expasy.org/cellosaurus/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 font-semibold underline"
+                            >
+                                https://web.expasy.org/cellosaurus/
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* Item 2 */}
+                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-3">
+                        <div className="flex items-center justify-between">
+                            <h4 className="text-headingLg font-bold text-darkBlue">
+                                2. Drug & Compound Annotation File (.csv)
+                            </h4>
+                            <span className="text-bodyXs font-mono bg-blue-100 text-lightBlue px-2.5 py-1 rounded">
+                                example_drug_annotation.csv
+                            </span>
+                        </div>
+                        <p className="text-bodyMd text-gray-700">
+                            Must include each tested compound with a unique identifier (<code>unique.drug.id</code>) and
+                            common alias (<code>drug.id</code>). Provide the <strong>PubChem Compound ID (CID)</strong>{' '}
+                            for cross-database chemical resolution. If an experimental compound lacks a PubChem entry,
+                            indicate CID with <code>NA</code>.
+                        </p>
+                        <div className="text-bodySm text-gray-500">
+                            PubChem Compound Search:{' '}
+                            <a
+                                href="https://pubchem.ncbi.nlm.nih.gov"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 font-semibold underline"
+                            >
+                                https://pubchem.ncbi.nlm.nih.gov
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* Item 3 */}
+                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-3">
+                        <div className="flex items-center justify-between">
+                            <h4 className="text-headingLg font-bold text-darkBlue">
+                                3. Raw Treatment Sensitivity Data (.csv)
+                            </h4>
+                            <span className="text-bodyXs font-mono bg-blue-100 text-lightBlue px-2.5 py-1 rounded">
+                                example_raw_drug_dose.csv & viability.csv
+                            </span>
+                        </div>
+                        <p className="text-bodyMd text-gray-700">
+                            Split into two matching matrices linked by <code>unique.experiment.id</code> (formatted as{' '}
+                            <code>unique.sampleid_unique.drugid</code>):
+                        </p>
+                        <ul className="list-disc pl-6 text-bodyMd text-gray-700 flex flex-col gap-1.5">
+                            <li>
+                                <strong>Dose Matrix:</strong> Drug concentrations tested (in micromolar, µM) for each
+                                experiment (e.g. <code>dose1</code> to <code>dose6</code>).
+                            </li>
+                            <li>
+                                <strong>Viability Matrix:</strong> Percentage cell viability (% relative to control)
+                                measured at each corresponding dose concentration.
+                            </li>
+                            <li>
+                                <em>Replicate Handling:</em> If an experiment was replicated, append <code>_1</code>,{' '}
+                                <code>_2</code>, etc. (e.g., <code>380_XMD8-85_1</code>).
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Item 4 */}
+                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-3">
+                        <div className="flex items-center justify-between">
+                            <h4 className="text-headingLg font-bold text-darkBlue">
+                                4. Sensitivity Summary Information (.csv)
+                            </h4>
+                            <span className="text-bodyXs font-mono bg-blue-100 text-lightBlue px-2.5 py-1 rounded">
+                                example_sensitivity_info.csv
+                            </span>
+                        </div>
+                        <p className="text-bodyMd text-gray-700">
+                            Defines minimum and maximum drug doses tested for each <code>unique.experiment.id</code>{' '}
+                            along with the paired <code>unique.sample.id</code> and <code>unique.drug.id</code>.
+                        </p>
+                    </div>
+
+                    {/* Item 5 */}
+                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-3">
+                        <div className="flex items-center justify-between">
+                            <h4 className="text-headingLg font-bold text-darkBlue">
+                                5. Processed Molecular Profiles (.csv)
+                            </h4>
+                            <span className="text-bodyXs font-mono bg-blue-100 text-lightBlue px-2.5 py-1 rounded">
+                                example_rnaseq.csv
+                            </span>
+                        </div>
+                        <p className="text-bodyMd text-gray-700">
+                            Accepts processed RNA-seq, microarrays, mutation calls, and copy number variations (CNVs).
+                            Rows must be standard gene, transcript, or probe identifiers (e.g., Ensembl{' '}
+                            <code>ENSG00000000003</code>, Hugo symbols), while columns must match sample IDs (
+                            <code>unique.sample.id</code>).
+                        </p>
+                        <p className="text-bodySm text-gray-600">
+                            Please document quantification tools and reference genomes used (e.g. Kallisto v0.43.1 with
+                            Gencode v33 for RNA-seq; SureSelectHumanAllExonV5 BED for mutation calling).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Subsection 3: Downloadable Example Templates */}
+            <div className="flex flex-col gap-6 pt-6 border-t border-gray-100">
+                <div className="flex flex-col gap-2">
+                    <h3 className="text-headingXl font-bold text-darkBlue scroll-mt-32" id="downloadable-templates">
+                        Downloadable CSV Templates
+                    </h3>
+                    <p className="text-bodyLg text-gray-600">
+                        Use these template files as blueprints when structuring your data submission:
+                    </p>
+                </div>
+
+                <div className="flex flex-col border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+                    <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                        <span className="font-bold text-bodyMd text-darkBlue">Template File</span>
+                        <span className="font-bold text-bodyMd text-darkBlue">Actions</span>
+                    </div>
+
+                    <div className="divide-y divide-gray-200 bg-white">
+                        {exampleTemplates.map(template => (
+                            <div key={template.filename} className="p-6 flex flex-col gap-3">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex flex-col">
+                                        <div className="flex items-center gap-2">
+                                            <svg
+                                                className="w-5 h-5 text-gray-400"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                                />
+                                            </svg>
+                                            <span className="font-bold text-headingMd text-darkBlue">
+                                                {template.title}
+                                            </span>
+                                        </div>
+                                        <span className="text-bodySm font-mono text-gray-400 mt-0.5">
+                                            {template.filename}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={() =>
+                                                setPreviewFile(
+                                                    previewFile === template.filename ? null : template.filename
+                                                )
+                                            }
+                                            className="px-3.5 py-1.5 rounded-lg border border-gray-300 text-bodySm font-semibold text-gray-700 hover:bg-gray-50"
+                                        >
+                                            {previewFile === template.filename ? 'Hide Preview' : 'Preview'}
+                                        </button>
+                                        <button
+                                            onClick={() => handleDownload(template)}
+                                            className="px-4 py-1.5 rounded-lg bg-lightBlue text-white text-bodySm font-bold hover:bg-darkBlue flex items-center gap-1.5 shadow-sm"
+                                        >
+                                            <svg
+                                                className="w-4 h-4"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                strokeWidth="2.5"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                                                />
+                                            </svg>
+                                            <span>Download</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <p className="text-bodySm text-gray-600">{template.description}</p>
+
+                                {previewFile === template.filename && (
+                                    <div className="mt-2 p-4 bg-gray-900 text-gray-100 rounded-xl overflow-x-auto text-bodySm font-mono">
+                                        <pre>{template.content}</pre>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Subsection 4: Pipelines & Environments */}
+            <div className="flex flex-col gap-6 pt-6 border-t border-gray-100">
+                <div className="flex flex-col gap-2">
+                    <h3 className="text-headingXl font-bold text-darkBlue scroll-mt-32" id="pipeline-configs">
+                        Pipelines & Computing Environments
+                    </h3>
+                    <p className="text-bodyLg text-gray-700 leading-relaxed">
+                        If submitting a custom processing pipeline, provide a GitHub repository configured for automated
+                        execution:
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-1 gap-6">
+                    <div className="flex flex-col p-6 rounded-2xl bg-gray-50 border border-gray-200 gap-3">
+                        <div className="flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-40 flex items-center justify-center text-darkBlue font-bold">
+                                1
+                            </span>
+                            <h4 className="text-headingLg font-bold text-darkBlue">Snakemake Workflow</h4>
+                        </div>
+                        <p className="text-bodyMd text-gray-700">
+                            Provide a root <code>Snakefile</code> defining clear input files, output targets, rule
+                            dependencies, and script invocations. Ensure all rules are deterministic and parameterized.
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col p-6 rounded-2xl bg-gray-50 border border-gray-200 gap-3">
+                        <div className="flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-40 flex items-center justify-center text-darkBlue font-bold">
+                                2
+                            </span>
+                            <h4 className="text-headingLg font-bold text-darkBlue">Pixi / Conda Environments</h4>
+                        </div>
+                        <p className="text-bodyMd text-gray-700">
+                            Include declarative dependency manifests: <code>pixi.toml</code> or{' '}
+                            <code>environment.yml</code> with exact package versions (R packages, Bioconductor
+                            libraries, Python dependencies, and command-line tools).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default DataContributionSection;

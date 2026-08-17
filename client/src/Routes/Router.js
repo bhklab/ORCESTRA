@@ -54,7 +54,10 @@ const Router = () => {
                     <Route path="/:datatype/canonical" element={<CanonicalPSets />} />
                     <Route path="/:datatype/status" element={<RequestStatus />} />
                     <Route path="/:datatype/stats" element={<Stats />} />
+                    <Route path="/app/documentation" element={<Documentation />} />
                     <Route path="/app/documentation/:section" element={<Documentation />} />
+                    <Route path="/:datatype/documentation" element={<Documentation />} />
+                    <Route path="/:datatype/documentation/:section" element={<Documentation />} />
                     <Route path="/app/contact" element={<Contact />} />
                     <Route path="/app/authentication" element={<Authentication />} />
                     <Route path="/user/reset/:token" element={<Reset />} />
