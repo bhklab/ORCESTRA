@@ -64,17 +64,17 @@ const apiEndpoints = [
             }
         ],
         exampleUrl: '/api/public/dataset/694953faa3591a7b70fce109/concise'
+    },
+    {
+        method: 'GET',
+        path: '/api/view/statistics',
+        title: 'Get Platform Datatype Statistics',
+        id: 'api-statistics',
+        description:
+            'Returns metadata, priorities, dataset counts, and canonical counts for all supported data layers.',
+        params: [],
+        exampleUrl: '/api/view/statistics'
     }
-    // {
-    //     method: 'GET',
-    //     path: '/api/view/statistics',
-    //     title: 'Get Platform Datatype Statistics',
-    //     id: 'api-statistics',
-    //     description:
-    //         'Returns metadata, priorities, dataset counts, and canonical counts for all supported data layers.',
-    //     params: [],
-    //     exampleUrl: '/api/view/statistics'
-    // }
 ];
 
 const getSnippet = (lang, endpoint) => {

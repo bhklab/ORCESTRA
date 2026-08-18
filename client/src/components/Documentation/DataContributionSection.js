@@ -403,7 +403,7 @@ export const DataContributionSection = ({ scrollTarget }) => {
                     </div>
 
                     {/* Item 3 */}
-                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-3">
+                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-4">
                         <div className="flex items-center justify-between">
                             <h4 className="text-headingLg font-bold text-darkBlue">
                                 3. Raw Treatment Sensitivity Data (.csv)
@@ -414,7 +414,8 @@ export const DataContributionSection = ({ scrollTarget }) => {
                         </div>
                         <p className="text-bodyMd text-gray-700">
                             Split into two matching matrices linked by <code>unique.experiment.id</code> (formatted as{' '}
-                            <code>unique.sampleid_unique.drugid</code>):
+                            <code>unique.sampleid_unique.drugid</code>) representing the raw treatment response
+                            experimental series:
                         </p>
                         <ul className="list-disc pl-6 text-bodyMd text-gray-700 flex flex-col gap-1.5">
                             <li>
@@ -426,14 +427,73 @@ export const DataContributionSection = ({ scrollTarget }) => {
                                 measured at each corresponding dose concentration.
                             </li>
                             <li>
-                                <em>Replicate Handling:</em> If an experiment was replicated, append <code>_1</code>,{' '}
-                                <code>_2</code>, etc. (e.g., <code>380_XMD8-85_1</code>).
+                                <em>Replicate & Matrix Handling:</em> If an experiment was replicated, append{' '}
+                                <code>_1</code>, <code>_2</code>, etc. (e.g., <code>380_XMD8-85_1</code>). For drug
+                                combination grids, matrices represent multi-dose titration pairs.
                             </li>
                         </ul>
+
+                        {/* PharmacoGx Reference Box */}
+                        <div className="flex flex-col p-4 bg-white border border-gray-200 rounded-xl gap-3 mt-1">
+                            <div className="flex items-center justify-between flex-wrap gap-2">
+                                <div className="flex items-center gap-2">
+                                    <span className="bg-lightBlue text-white text-headingXs font-bold px-2 py-0.5 rounded uppercase">
+                                        PharmacoGx Standard
+                                    </span>
+                                    <span className="text-bodySm font-bold text-darkBlue">
+                                        CoreGx TreatmentResponseExperiment (@raw slot)
+                                    </span>
+                                </div>
+                                <a
+                                    href="https://github.com/bhklab/PharmacoGx"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-bodySm font-semibold text-blue-600 hover:underline flex items-center gap-1"
+                                >
+                                    <span>PharmacoGx</span>
+                                    <svg
+                                        className="w-3.5 h-3.5"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+                            <p className="text-bodySm text-gray-600">
+                                In <strong>PharmacoGx</strong>, raw sensitivity data is stored inside the S4{' '}
+                                <code>TreatmentResponseExperiment</code> object as a pair of aligned matrices in the{' '}
+                                <code>@raw</code> slot:
+                            </p>
+                            <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
+                                <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
+                                    <span>R / PharmacoGx TreatmentResponseExperiment Construction</span>
+                                    <span className="text-gray-400">R</span>
+                                </div>
+                                <div className="p-3 text-gray-100 overflow-x-auto">
+                                    <pre>
+                                        <code>{`# Raw Dose & Viability matrices ingest into TreatmentResponseExperiment
+tre <- CoreGx::TreatmentResponseExperiment(
+    raw = list(
+        dose = as.matrix(read.csv("raw_drug_dose.csv", row.names = 1)),
+        viability = as.matrix(read.csv("raw_drug_viability.csv", row.names = 1))
+    ),
+    info = read.csv("sensitivity_info.csv", row.names = 1)
+)`}</code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Item 4 */}
-                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-3">
+                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-4">
                         <div className="flex items-center justify-between">
                             <h4 className="text-headingLg font-bold text-darkBlue">
                                 4. Sensitivity Summary Information (.csv)
@@ -443,9 +503,70 @@ export const DataContributionSection = ({ scrollTarget }) => {
                             </span>
                         </div>
                         <p className="text-bodyMd text-gray-700">
-                            Defines minimum and maximum drug doses tested for each <code>unique.experiment.id</code>{' '}
-                            along with the paired <code>unique.sample.id</code> and <code>unique.drug.id</code>.
+                            Defines experimental parameters for each <code>unique.experiment.id</code>, linking paired{' '}
+                            <code>unique.sample.id</code> and <code>unique.drug.id</code> along with testing boundaries
+                            (<code>min.dose</code>, <code>max.dose</code>, <code>dose.unit</code>, and incubation
+                            duration).
                         </p>
+
+                        {/* PharmacoGx Computed Profiles Reference Box */}
+                        <div className="flex flex-col p-4 bg-white border border-gray-200 rounded-xl gap-3 mt-1">
+                            <div className="flex items-center justify-between flex-wrap gap-2">
+                                <div className="flex items-center gap-2">
+                                    <span className="bg-lightBlue text-white text-headingXs font-bold px-2 py-0.5 rounded uppercase">
+                                        PharmacoGx Pipeline
+                                    </span>
+                                    <span className="text-bodySm font-bold text-darkBlue">
+                                        Automated Sensitivity Curve Fitting & Metrics (@profiles slot)
+                                    </span>
+                                </div>
+                                <a
+                                    href="https://github.com/bhklab/PharmacoGx"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-bodySm font-semibold text-blue-600 hover:underline flex items-center gap-1"
+                                >
+                                    <span>PharmacoGx</span>
+                                    <svg
+                                        className="w-3.5 h-3.5"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+                            <p className="text-bodySm text-gray-600">
+                                During automated pipeline execution in ORCESTRA, <strong>PharmacoGx</strong> algorithms
+                                fit log-logistic Hill / biphasic curves and populate the{' '}
+                                <code>sensitivityProfiles(pset)</code> slot with standard pharmacological response
+                                metrics:
+                            </p>
+                            <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
+                                <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
+                                    <span>Automated Metric Computation in PharmacoGx</span>
+                                    <span className="text-gray-400">R</span>
+                                </div>
+                                <div className="p-3 text-gray-100 overflow-x-auto">
+                                    <pre>
+                                        <code>{`# Standard sensitivity profile generation:
+pset <- computeAUC(pset)  # Recomputed Area Above Curve (AAC / AUC)
+pset <- computeIC50(pset) # Half-maximal inhibitory concentration (IC50 in µM)
+pset <- computeDSS(pset)  # Drug Sensitivity Score (DSS)
+pset <- computeSlope(pset) # Hill slope (HS) and inflection parameters
+
+# Returns data.frame with aac_recomputed, ic50_recomputed, dss_recomputed:
+head(sensitivityProfiles(pset))`}</code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Item 5 */}
@@ -468,6 +589,67 @@ export const DataContributionSection = ({ scrollTarget }) => {
                             Please document quantification tools and reference genomes used (e.g. Kallisto v0.43.1 with
                             Gencode v33 for RNA-seq; SureSelectHumanAllExonV5 BED for mutation calling).
                         </p>
+
+                        {/* PharmacoGx Molecular Data Standards Box */}
+                        <div className="flex flex-col p-4 bg-white border border-gray-200 rounded-xl gap-3 mt-1">
+                            <div className="flex items-center justify-between flex-wrap gap-2">
+                                <div className="flex items-center gap-2">
+                                    <span className="bg-lightBlue text-white text-headingXs font-bold px-2 py-0.5 rounded uppercase">
+                                        PharmacoGx Standards
+                                    </span>
+                                    <span className="text-bodySm font-bold text-darkBlue">
+                                        MultiAssayExperiment & SummarizedExperiment (@molecularProfiles slot)
+                                    </span>
+                                </div>
+                                <a
+                                    href="https://github.com/bhklab/PharmacoGx"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-bodySm font-semibold text-blue-600 hover:underline flex items-center gap-1"
+                                >
+                                    <span>PharmacoGx</span>
+                                    <svg
+                                        className="w-3.5 h-3.5"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+                            <p className="text-bodySm text-gray-600">
+                                As defined in <strong>PharmacoGx Molecular Data Standards</strong>, each molecular
+                                profile is encapsulated in a <code>SummarizedExperiment</code> with synchronized{' '}
+                                <code>rowData</code> (Ensembl / HUGO gene metadata) and <code>colData</code> (sample
+                                metadata), bundled into <code>PharmacoSet2</code>'s <code>MultiAssayExperiment</code>{' '}
+                                container:
+                            </p>
+                            <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
+                                <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
+                                    <span>SummarizedExperiment Molecular Profile Construction</span>
+                                    <span className="text-gray-400">R</span>
+                                </div>
+                                <div className="p-3 text-gray-100 overflow-x-auto">
+                                    <pre>
+                                        <code>{`# Standardized SummarizedExperiment for RNA-seq in PharmacoSet2
+rnaseq_se <- SummarizedExperiment::SummarizedExperiment(
+    assays = list(exprs = as.matrix(read.csv("rnaseq.csv", row.names = 1))),
+    rowData = S4Vectors::DataFrame(gene_annotations), # Ensembl IDs, Gene Symbols
+    colData = S4Vectors::DataFrame(sample_annotations[colnames(rnaseq_matrix), , drop = FALSE])
+)
+
+# Assigned into the molecularProfiles slot of the PharmacoSet:
+molecularProfiles(pset)$rnaseq <- rnaseq_se`}</code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
 
                         {/* AnnotationDB Gene Annotation Reference & Examples */}
                         <div className="flex flex-col p-4 bg-white border border-gray-200 rounded-xl gap-3 mt-1">
