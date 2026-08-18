@@ -150,15 +150,6 @@ const NavigationRev = () => {
                             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-darkBlue text-white hover:bg-lightBlue text-bodySm font-bold shadow-xs hover:shadow-md transition-all duration-200"
                         >
                             <span>Login / Register</span>
-                            <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
                         </NavLink>
                     )}
                 </div>
