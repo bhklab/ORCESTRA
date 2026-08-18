@@ -61,13 +61,6 @@ const Contact = () => {
                             >
                                 Email Support
                             </a>
-                            <button
-                                onClick={() => handleCopy('support', 'support@orcestra.ca')}
-                                className="flex-1 py-2 px-3 rounded-lg border border-gray-300 text-gray-700 text-bodySm font-semibold hover:bg-gray-100 transition-colors"
-                                title="Copy Email"
-                            >
-                                {copiedEmail === 'support' ? 'Copied!' : 'Copy'}
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -96,29 +89,16 @@ const Contact = () => {
                     </div>
                     <div className="flex flex-col gap-2 pt-4 border-t border-gray-100">
                         <span className="text-bodySm font-mono font-bold text-lightBlue truncate">
-                            benjamin.haibe.kains@utoronto.ca
+                            https://bhklab.ca
                         </span>
                         <div className="flex items-center gap-2">
                             <a
                                 href="https://bhklab.ca"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex-1 justify-center py-2 px-3 rounded-lg border border-gray-300 text-gray-700 text-bodySm font-semibold hover:bg-gray-100 transition-colors flex items-center gap-1"
+                                className="flex-1 text-center py-2 px-3 rounded-lg bg-darkBlue text-white text-bodySm font-semibold hover:bg-lightBlue transition-colors"
                             >
-                                <span>Lab Site</span>
-                                <svg
-                                    className="w-3.5 h-3.5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    />
-                                </svg>
+                                <span>Lab Website</span>
                             </a>
                         </div>
                     </div>
