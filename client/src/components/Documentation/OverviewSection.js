@@ -131,8 +131,8 @@ const fairPrinciples = [
         borderColor: 'border-emerald-100',
         features: [
             'Standardized identifier mapping to community ontologies (PubChem CIDs, Cellosaurus, Ensembl, HUGO)',
-            'Harmonized multimodal data structures aligning molecular profiles with dose-response curves',
-            'Cross-dataset harmonization allowing comparative meta-analyses across diverse preclinical and clinical studies'
+            'Harmonized multimodal data structures aligning molecular profiles',
+            'Cross-dataset harmonization allowing comparative meta-analyses across diverse preclinical studies'
         ]
     },
     {
@@ -146,7 +146,7 @@ const fairPrinciples = [
         features: [
             'Transparent Data Nutrition Labels documenting raw sources, tool versions, scripts, and commit IDs',
             'Automated workflow execution using reproducible Snakemake pipelines and Pixi/Conda environments',
-            'Clear Creative Commons (CC BY 4.0) licensing, citation guidelines, and academic usage terms'
+            'Clear licensing, citation guidelines, and academic usage terms'
         ]
     }
 ];
@@ -198,7 +198,7 @@ export const OverviewSection = ({ scrollTarget }) => {
 
                 <div className="grid grid-cols-3 md:grid-cols-1 gap-4 pt-2">
                     <div className="flex flex-col p-4 rounded-xl bg-gray-50 border border-gray-200">
-                        <span className="text-headingXl font-bold text-lightBlue">8+</span>
+                        <span className="text-headingXl font-bold text-lightBlue">8</span>
                         <span className="text-bodyMd font-semibold text-darkBlue">Data Layers</span>
                         <span className="text-bodySm text-gray-600 mt-1">
                             Spanning pharmacogenomics, toxicogenomics, xenografts, radiomics, clinical genomics, and
@@ -206,7 +206,7 @@ export const OverviewSection = ({ scrollTarget }) => {
                         </span>
                     </div>
                     <div className="flex flex-col p-4 rounded-xl bg-gray-50 border border-gray-200">
-                        <span className="text-headingXl font-bold text-lightBlue">100% FAIR</span>
+                        <span className="text-headingXl font-bold text-lightBlue">FAIR</span>
                         <span className="text-bodyMd font-semibold text-darkBlue">Data Principles</span>
                         <span className="text-bodySm text-gray-600 mt-1">
                             Permanent Zenodo DOIs, standardized ontologies, open RESTful APIs, and direct RDS/CSV
@@ -230,9 +230,9 @@ export const OverviewSection = ({ scrollTarget }) => {
                         The FAIR Data Principles in ORCESTRA
                     </h3>
                     <p className="text-bodyLg text-gray-600">
-                        ORCESTRA implements the international <strong>FAIR</strong> (Findable, Accessible,
-                        Interoperable, Reusable) data stewardship principles to maximize scientific utility,
-                        reproducibility, and cross-study meta-analyses.
+                        ORCESTRA implements the <strong>FAIR</strong> (Findable, Accessible, Interoperable, Reusable)
+                        data stewardship principles to maximize scientific utility, reproducibility, and cross-study
+                        meta-analyses.
                     </p>
                 </div>
 
@@ -282,10 +282,18 @@ export const OverviewSection = ({ scrollTarget }) => {
                         The "Data Nutrition Label" (DNL)
                     </h3>
                     <p className="text-bodyLg text-gray-700 leading-relaxed">
-                        Inspired by nutritional labels on consumer goods that list ingredients, origins, and nutritional
-                        values, ORCESTRA automatically generates an interactive{' '}
-                        <strong>Data Nutrition Label (DNL)</strong> for every processed dataset. This gives researchers
-                        an exhaustive, verifiable provenance summary.
+                        Inspired by the{' '}
+                        <a
+                            href="https://datanutrition.org/"
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            style={{ color: 'blue', textDecoration: 'underline' }}
+                        >
+                            Data Nutrition Project
+                        </a>{' '}
+                        ORCESTRA integrates it's own <strong>Data Nutrition Label (DNL)</strong> for every processed
+                        dataset. This gives researchers an easy way to customize an exhaustive and verifiable provenance
+                        summary for produced datasets.
                     </p>
                 </div>
 
@@ -308,8 +316,8 @@ export const OverviewSection = ({ scrollTarget }) => {
                         </div>
                         <h5 className="text-headingMd font-bold text-darkBlue">Raw & Preprocessed Data</h5>
                         <p className="text-bodySm text-gray-600">
-                            Direct links and origins for raw screening tables, microarrays, sequencing reads, and sample
-                            identifiers.
+                            Direct links and origins for raw data including genomic, imaging, drug response, and
+                            clinical data.
                         </p>
                     </div>
 
@@ -329,10 +337,9 @@ export const OverviewSection = ({ scrollTarget }) => {
                                 />
                             </svg>
                         </div>
-                        <h5 className="text-headingMd font-bold text-darkBlue">Pipeline Scripts & Commits</h5>
+                        <h5 className="text-headingMd font-bold text-darkBlue">Pipelines & Version Tracking</h5>
                         <p className="text-bodySm text-gray-600">
-                            Explicit GitHub repository URLs and exact git commit hashes executing each transformation
-                            step.
+                            Explicit GitHub repository URLs and exact git commit hashes step.
                         </p>
                     </div>
 

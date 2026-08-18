@@ -145,8 +145,10 @@ export const DataContributionSection = ({ scrollTarget }) => {
 
                 <div className="flex flex-wrap gap-4 pt-2">
                     <button
-                        onClick={() => navigate('/app/data_submission')}
-                        className="bg-lightBlue text-white font-bold px-6 py-3 rounded-xl hover:bg-darkBlue duration-200 ease-in-out flex items-center gap-2 shadow-sm"
+                        disabled={true}
+                        // onClick={() => navigate('/app/data_submission')}
+                        // className="bg-lightBlue text-white font-bold px-6 py-3 rounded-xl hover:bg-darkBlue duration-200 ease-in-out flex items-center gap-2 shadow-sm"
+                        className="bg-lightBlue text-white font-bold px-6 py-3 rounded-xl hover:bg-gray-600 duration-200 ease-in-out flex items-center gap-2 shadow-sm hover:cursor-not-allowed"
                     >
                         <span>Go to Data Submission</span>
                         <svg
@@ -160,8 +162,10 @@ export const DataContributionSection = ({ scrollTarget }) => {
                         </svg>
                     </button>
                     <button
-                        onClick={() => navigate('/submit-dataset')}
-                        className="bg-white text-darkBlue border border-gray-300 font-bold px-6 py-3 rounded-xl hover:border-darkBlue duration-200 ease-in-out flex items-center gap-2 shadow-sm"
+                        disabled={true}
+                        // onClick={() => navigate('/submit-dataset')}
+                        // className="bg-lightBlue text-white font-bold px-6 py-3 rounded-xl hover:bg-darkBlue duration-200 ease-in-out flex items-center gap-2 shadow-sm"
+                        className="bg-lightBlue text-white font-bold px-6 py-3 rounded-xl hover:bg-gray-600 duration-200 ease-in-out flex items-center gap-2 shadow-sm hover:cursor-not-allowed"
                     >
                         <span>Create Data Nutrition Entry</span>
                         <svg
@@ -184,14 +188,14 @@ export const DataContributionSection = ({ scrollTarget }) => {
                         Recommended Formats & Schemas
                     </h3>
                     <p className="text-bodyLg text-gray-600">
-                        To ensure interoperability and automated validation, submitted files must follow standard CSV
-                        column naming:
+                        To ensure interoperability and automated validation, submitted files must follow standard
+                        annotations and field naming (in both csvs and RDS'):
                     </p>
                 </div>
 
                 <div className="flex flex-col gap-4">
                     {/* Item 1 */}
-                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-3">
+                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-4">
                         <div className="flex items-center justify-between">
                             <h4 className="text-headingLg font-bold text-darkBlue">1. Sample Annotation File (.csv)</h4>
                             <span className="text-bodyXs font-mono bg-blue-100 text-lightBlue px-2.5 py-1 rounded">
@@ -216,10 +220,75 @@ export const DataContributionSection = ({ scrollTarget }) => {
                                 https://web.expasy.org/cellosaurus/
                             </a>
                         </div>
+
+                        {/* AnnotationDB Cell Line Reference & Examples */}
+                        <div className="flex flex-col p-4 bg-white border border-gray-200 rounded-xl gap-3 mt-1">
+                            <div className="flex items-center justify-between flex-wrap gap-2">
+                                <div className="flex items-center gap-2">
+                                    <span className="bg-lightYellow text-darkBlue text-headingXs font-bold px-2 py-0.5 rounded uppercase">
+                                        AnnotationDB Reference
+                                    </span>
+                                    <span className="text-bodySm font-bold text-darkBlue">
+                                        Automated Cell Line Lookup via BHKLab AnnotationDB
+                                    </span>
+                                </div>
+                                <a
+                                    href="https://annotationdb.bhklab.ca/docs"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-bodySm font-semibold text-blue-600 hover:underline flex items-center gap-1"
+                                >
+                                    <span>AnnotationDB Docs</span>
+                                    <svg
+                                        className="w-3.5 h-3.5"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+                            <p className="text-bodySm text-gray-600">
+                                You can query BHK Lab's <strong>AnnotationDB API</strong> to automatically search,
+                                validate, and retrieve standardized Cellosaurus accession IDs, derived tissue sites, sex
+                                of origin, donor demographics, and disease ontologies:
+                            </p>
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
+                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
+                                        <span>Retrieve all available cell line identifiers</span>
+                                        <span className="text-gray-400">GET</span>
+                                    </div>
+                                    <div className="p-3 text-gray-100 overflow-x-auto">
+                                        <code>curl https://annotationdb.bhklab.ca/cell_line/all</code>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
+                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
+                                        <span>
+                                            Query full metadata for cell lines (comma-separated names or CVCL IDs)
+                                        </span>
+                                        <span className="text-gray-400">GET</span>
+                                    </div>
+                                    <div className="p-3 text-gray-100 overflow-x-auto">
+                                        <code>
+                                            curl
+                                            "https://annotationdb.bhklab.ca/cell_line/many?cell_lines=HL-60,HeLa,CVCL_0060,CVCL_2030"
+                                        </code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Item 2 */}
-                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-3">
+                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-4">
                         <div className="flex items-center justify-between">
                             <h4 className="text-headingLg font-bold text-darkBlue">
                                 2. Drug & Compound Annotation File (.csv)
@@ -244,6 +313,92 @@ export const DataContributionSection = ({ scrollTarget }) => {
                             >
                                 https://pubchem.ncbi.nlm.nih.gov
                             </a>
+                        </div>
+
+                        {/* AnnotationDB Compound Reference & Examples */}
+                        <div className="flex flex-col p-4 bg-white border border-gray-200 rounded-xl gap-3 mt-1">
+                            <div className="flex items-center justify-between flex-wrap gap-2">
+                                <div className="flex items-center gap-2">
+                                    <span className="bg-lightYellow text-darkBlue text-headingXs font-bold px-2 py-0.5 rounded uppercase">
+                                        AnnotationDB Reference
+                                    </span>
+                                    <span className="text-bodySm font-bold text-darkBlue">
+                                        Automated Compound & Substance Lookup via BHKLab AnnotationDB
+                                    </span>
+                                </div>
+                                <a
+                                    href="https://annotationdb.bhklab.ca/docs"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-bodySm font-semibold text-blue-600 hover:underline flex items-center gap-1"
+                                >
+                                    <span>AnnotationDB Docs</span>
+                                    <svg
+                                        className="w-3.5 h-3.5"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+                            <p className="text-bodySm text-gray-600">
+                                Use <strong>AnnotationDB</strong> to resolve compound identifiers to standardized
+                                PubChem CIDs, canonical SMILES, InChIKeys, ChEMBL Mechanisms of Action (MOA), FDA
+                                approval statuses, and toxicity ratings (LTKB / DILIrank):
+                            </p>
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
+                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
+                                        <span>Retrieve all indexed compounds, PubChem CIDs, SMILES, and InChIKeys</span>
+                                        <span className="text-gray-400">GET</span>
+                                    </div>
+                                    <div className="p-3 text-gray-100 overflow-x-auto">
+                                        <code>curl https://annotationdb.bhklab.ca/compound/all</code>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
+                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
+                                        <span>
+                                            Query compound metadata with ChEMBL Mechanism of Action (MOA) and Toxicity
+                                        </span>
+                                        <span className="text-gray-400">GET</span>
+                                    </div>
+                                    <div className="p-3 text-gray-100 overflow-x-auto">
+                                        <code>
+                                            curl
+                                            "https://annotationdb.bhklab.ca/compound/many?compound=Acetaminophen&mechanism=true&toxicity=true&bioassay=true"
+                                        </code>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
+                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
+                                        <span>Query substances / biologics by name or PubChem SID</span>
+                                        <span className="text-gray-400">GET</span>
+                                    </div>
+                                    <div className="p-3 text-gray-100 overflow-x-auto">
+                                        <code>
+                                            curl
+                                            "https://annotationdb.bhklab.ca/substance/many?substance=Bevacizumab&mechanism=true&toxicity=true"
+                                        </code>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
+                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
+                                        <span>Query Antibody-Drug Conjugates (ADCs) by ADC ID or name</span>
+                                        <span className="text-gray-400">GET</span>
+                                    </div>
+                                    <div className="p-3 text-gray-100 overflow-x-auto">
+                                        <code>curl "https://annotationdb.bhklab.ca/adc/many?adc=DRG0AAJTS"</code>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -294,7 +449,7 @@ export const DataContributionSection = ({ scrollTarget }) => {
                     </div>
 
                     {/* Item 5 */}
-                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-3">
+                    <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col gap-4">
                         <div className="flex items-center justify-between">
                             <h4 className="text-headingLg font-bold text-darkBlue">
                                 5. Processed Molecular Profiles (.csv)
@@ -313,6 +468,59 @@ export const DataContributionSection = ({ scrollTarget }) => {
                             Please document quantification tools and reference genomes used (e.g. Kallisto v0.43.1 with
                             Gencode v33 for RNA-seq; SureSelectHumanAllExonV5 BED for mutation calling).
                         </p>
+
+                        {/* AnnotationDB Gene Annotation Reference & Examples */}
+                        <div className="flex flex-col p-4 bg-white border border-gray-200 rounded-xl gap-3 mt-1">
+                            <div className="flex items-center justify-between flex-wrap gap-2">
+                                <div className="flex items-center gap-2">
+                                    <span className="bg-lightYellow text-darkBlue text-headingXs font-bold px-2 py-0.5 rounded uppercase">
+                                        AnnotationDB Reference
+                                    </span>
+                                    <span className="text-bodySm font-bold text-darkBlue">
+                                        Gene & Transcript Annotation Files via BHKLab AnnotationDB
+                                    </span>
+                                </div>
+                                <a
+                                    href="https://annotationdb.bhklab.ca/docs"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-bodySm font-semibold text-blue-600 hover:underline flex items-center gap-1"
+                                >
+                                    <span>AnnotationDB Docs</span>
+                                    <svg
+                                        className="w-3.5 h-3.5"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+                            <p className="text-bodySm text-gray-600">
+                                You can retrieve the standardized{' '}
+                                <strong>Gencode and Ensembl gene annotation reference files</strong> used by our team
+                                across all curated pipelines directly from the AnnotationDB API:
+                            </p>
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
+                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
+                                        <span>
+                                            Download standardized Gencode & Ensembl gene annotation reference files
+                                        </span>
+                                        <span className="text-gray-400">GET</span>
+                                    </div>
+                                    <div className="p-3 text-gray-100 overflow-x-auto">
+                                        <code>curl https://annotationdb.bhklab.ca/gene/annotation-files</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
