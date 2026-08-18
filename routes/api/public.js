@@ -25,6 +25,7 @@ const getAllDatasets = async (req, res) => {
 			const datasetObjects = await DatasetObject.find({}, "name _id info description dataSources repositories");
 			const outputObjects = datasetObjects.map(obj => {
 				return {
+					id: obj._id,
 					name: obj.name,
 					dateCreated: obj.info.dateCreated,
 					doi: obj.repositories.doi,
@@ -71,6 +72,7 @@ const getDatasets = async (req, res) => {
 				const datasetObjects = await DatasetObject.find({datasetType: dataTypes[datatype]}, 'name _id info description dataSources repositories');
 				const outputObjects = datasetObjects.map(obj => {
 					return {
+						id: obj._id,
 						name: obj.name,
 						dateCreated: obj.info.dateCreated,
 						doi: obj.repositories.doi,
@@ -119,6 +121,7 @@ const getDataset = async (req, res) => {
 			const datasetObjects = await DatasetObject.find({ _id: id}, 'name _id info description dataSources repositories');
 			const outputObjects = datasetObjects.map(obj => {
 				return {
+					id: obj._id,
 					name: obj.name,
 					dateCreated: obj.info.dateCreated,
 					doi: obj.repositories.doi,
