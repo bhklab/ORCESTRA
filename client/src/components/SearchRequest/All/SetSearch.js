@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../hooks/Context';
+import { Check, X, Download } from 'lucide-react';
 import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 // import { dataTypes } from '../../Shared/Enums';
 import { dataTypes } from './dictionaries/dataTypes';
@@ -105,6 +106,7 @@ const SetSearch = () => {
                         style={{ width: '5%' }}
                         sortable
                     />
+                    <Column field="version" header="Version" style={{ width: '2%' }} />
                     <Column
                         field="info.dateCreated"
                         body={rowData => (
@@ -116,11 +118,25 @@ const SetSearch = () => {
                         style={{ width: '5%' }}
                         sortable
                     />
-                    <Column field="version" header="Version" style={{ width: '5%' }} />
+                    <Column
+                        field="info.canonical"
+                        body={rowData => (
+                            <div className="flex flex-col justify-center items-center">
+                                {rowData?.info?.canonical ? (
+                                    <Check className="text-green-700 font-bold w-6" strokeWidth={3} />
+                                ) : (
+                                    <X className="text-red-700 font-bold w-6" strokeWidth={3} />
+                                )}
+                            </div>
+                        )}
+                        header="Canonical"
+                        style={{ width: '5%' }}
+                        sortable
+                    />
                     <Column
                         body={rowData => (
-                            <p className="line-clamp-3" dangerouslySetInnerHTML={{ __html: rowData?.description }} />
-                 	    )}
+                            <p className="line-clamp-3">{rowData?.description?.replace(/<[^>]+>/g, '')}</p>
+                        )}
                         header="Description"
                         style={{ width: '25%' }}
                     />
@@ -146,15 +162,15 @@ const SetSearch = () => {
                         body={rowData => (
                             <div className="flex flex-col justify-center items-center">
                                 <a
-                                    className="flex flex-col py-1 px-4 rounded-full justify-center items-center bg-lightBlue text-darkYellow font-bold"
+                                    className="flex flex-col justify-center items-center hover:-translate-y-0.5 transition text-gray-400 hover:text-lightBlue"
                                     href={rowData?.repositories.downloadLink}
                                     target="_blank"
                                 >
-                                    Download
+                                    <Download className="w-7" strokeWidth={2.5} />
                                 </a>
                             </div>
                         )}
-                        header="Dataset Download"
+                        header="Download"
                         style={{ width: '5%' }}
                     />
                 </DataTable>
