@@ -102,9 +102,8 @@ const fairPrinciples = [
         bgSoft: 'bg-blue-50',
         borderColor: 'border-blue-100',
         features: [
-            'Persistent Zenodo Digital Object Identifiers (DOIs) assigned to every dataset build and release',
-            'Granular, structured metadata indexed across all dataset types, cell lines, drugs, and assay types',
-            'Searchable multi-attribute query catalog spanning compounds, tissues, genomic layers, and versions'
+            'Persistent Zenodo Digital Object Identifiers (DOIs) assigned to every dataset object release',
+            'All datasets include structured metadata, raw data sources, and processing pipelines with flexible environments'
         ]
     },
     {
@@ -116,9 +115,8 @@ const fairPrinciples = [
         bgSoft: 'bg-amber-50',
         borderColor: 'border-amber-100',
         features: [
-            'Open RESTful API endpoints for programmatic catalog discovery and dataset metadata retrieval',
-            'Direct HTTPS downloads for both binary R data objects (RDS) and standardized CSV tabular files',
-            'Seamless automated package integration via Bioconductor R libraries (PharmacoGx, ToxicoGx, Xeva, RadioGx)'
+            'Web app access of datasets, their metadata, and downloadable objects',
+            'API access of datasets, their metadata, and downloadable objects'
         ]
     },
     {
@@ -130,9 +128,9 @@ const fairPrinciples = [
         bgSoft: 'bg-emerald-50',
         borderColor: 'border-emerald-100',
         features: [
-            'Standardized identifier mapping to community ontologies (PubChem CIDs, Cellosaurus, Ensembl, HUGO)',
+            'Standardized identifier mapping to community ontologies (PubChem CIDs, Cellosaurus, Ensembl)',
             'Harmonized multimodal data structures aligning molecular profiles',
-            'Cross-dataset harmonization allowing comparative meta-analyses across diverse preclinical studies'
+            'Cross-dataset harmonization with the utilization of Gx packages (e.g. PharmacoGx, ToxicoGx, Xeva, RadioGx)'
         ]
     },
     {
@@ -178,48 +176,70 @@ export const OverviewSection = ({ scrollTarget }) => {
             {/* Subsection 1: Platform Overview */}
             <div className="flex flex-col gap-4">
                 <h3 className="text-headingXl font-bold text-darkBlue scroll-mt-32" id="orcestra-overview">
-                    What is ORCESTRA?
+                    Motivation
                 </h3>
                 <div className="flex flex-col gap-4 text-bodyLg text-gray-700 leading-relaxed">
                     <p>
-                        In computational oncology and translational pharmacology, integrating preclinical screening data
-                        (e.g., cell line pharmacogenomics, patient-derived xenografts, radiation assays) with
-                        high-throughput molecular profiles (RNA-seq, microarrays, mutation panels) is critical for
-                        biomarker discovery and drug repurposing. However, data in these domains is frequently
-                        fragmented across disparate repositories, lacks standardized compound and cell identifiers, and
-                        is processed using divergent computational workflows.
+                        ORCESTRA was founded on the idea that scientific progress builds upon the work and discoveries
+                        of those who came before us. However, too often, research lacks transparency and reproducibility
+                        in how researchers relay their work to the broader scientific community. This leads to redundant
+                        work and an inability for others to build upon previous findings. Bothered by this realization{' '}
+                        <a
+                            href="https://bhklab.ca"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 font-bold hover:underline"
+                        >
+                            The Benjamin Haibe-Kains lab
+                        </a>{' '}
+                        set out on a mission to overcome the hurdles in accessibility, reproducibility, and transparency
+                        of published works in cancer research by developing a centralized platform for providing full
+                        dataset provenance.
                     </p>
                     <p>
-                        <strong>ORCESTRA</strong> overcomes these reproducibility and harmonization bottlenecks. It
-                        provides an automated infrastructure to generate, version-control, and publicly distribute
-                        standardized data objects accompanied by comprehensive provenance records.
+                        Benjamin has been a passionate advocate for open science throughout his academic career, even
+                        being quoted{' '}
+                        <span className="italic font-semibold">
+                            &quot;Science builds upon the work of others,&quot;
+                        </span>{' '}
+                        he says{' '}
+                        <span className="italic font-semibold">
+                            &quot;If you don't share the code and the data, then I would say more than half of the
+                            impact that you could have is gone.&quot;
+                        </span>{' '}
+                        [
+                        <a
+                            className="font-bold text-blue-600 hover:underline"
+                            href="https://www.uhn.ca/corporate/News/Pages/New_cloud_based_tool_ORCESTRA_brings_symphony_of_collaboration_to_cancer_research.aspx"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            1
+                        </a>
+                        ,{' '}
+                        <a
+                            className="font-bold text-blue-600 hover:underline"
+                            href="https://thepmcf.ca/getmedia/c88b7153-ef48-4b4b-a512-1422d2638f07/PMCF_2022-Annual-Report_Sept-30.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            2
+                        </a>
+                        ]. The team aims to remain true to this sentiment for all datasets on the platform and ensure
+                        future researchers can build upon previous discoveries. To ensure ORCESTRA stays true to this
+                        mission, the platform has been built on the{' '}
+                        <a
+                            href="https://www.nature.com/articles/sdata201618"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-bold text-blue-600 hover:underline"
+                        >
+                            FAIR principles
+                        </a>{' '}
+                        which allows for a structured framework for making research data <strong>findable</strong>,{' '}
+                        <strong>accessible</strong>, <strong>interoperable</strong>, and <strong>reusable</strong>{' '}
+                        before they reach scientists.
                     </p>
-                </div>
-
-                <div className="grid grid-cols-3 md:grid-cols-1 gap-4 pt-2">
-                    <div className="flex flex-col p-4 rounded-xl bg-gray-50 border border-gray-200">
-                        <span className="text-headingXl font-bold text-lightBlue">8</span>
-                        <span className="text-bodyMd font-semibold text-darkBlue">Data Layers</span>
-                        <span className="text-bodySm text-gray-600 mt-1">
-                            Spanning pharmacogenomics, toxicogenomics, xenografts, radiomics, clinical genomics, and
-                            annotations.
-                        </span>
-                    </div>
-                    <div className="flex flex-col p-4 rounded-xl bg-gray-50 border border-gray-200">
-                        <span className="text-headingXl font-bold text-lightBlue">FAIR</span>
-                        <span className="text-bodyMd font-semibold text-darkBlue">Data Principles</span>
-                        <span className="text-bodySm text-gray-600 mt-1">
-                            Permanent Zenodo DOIs, standardized ontologies, open RESTful APIs, and direct RDS/CSV
-                            downloads.
-                        </span>
-                    </div>
-                    <div className="flex flex-col p-4 rounded-xl bg-gray-50 border border-gray-200">
-                        <span className="text-headingXl font-bold text-lightBlue">End-to-End</span>
-                        <span className="text-bodyMd font-semibold text-darkBlue">Workflow Provenance</span>
-                        <span className="text-bodySm text-gray-600 mt-1">
-                            Automated Snakemake pipelines, Pixi/Conda environments, and granular Data Nutrition Labels.
-                        </span>
-                    </div>
                 </div>
             </div>
 
@@ -227,12 +247,12 @@ export const OverviewSection = ({ scrollTarget }) => {
             <div className="flex flex-col gap-4 pt-6 border-t border-gray-100">
                 <div className="flex flex-col gap-2">
                     <h3 className="text-headingXl font-bold text-darkBlue scroll-mt-32" id="fair-principles">
-                        The FAIR Data Principles in ORCESTRA
+                        The FAIR Principles in ORCESTRA
                     </h3>
                     <p className="text-bodyLg text-gray-600">
-                        ORCESTRA implements the <strong>FAIR</strong> (Findable, Accessible, Interoperable, Reusable)
-                        data stewardship principles to maximize scientific utility, reproducibility, and cross-study
-                        meta-analyses.
+                        <strong>FAIR Principles</strong> (Findable, Accessible, Interoperable, Reusable) are the
+                        foundational data guidelines of ORCESTRA to maximize scientific utility, reproducibility, and
+                        cross-study analyses.
                     </p>
                 </div>
 
@@ -287,7 +307,7 @@ export const OverviewSection = ({ scrollTarget }) => {
                             href="https://datanutrition.org/"
                             target="_blank"
                             rel="noreferrer noopener"
-                            style={{ color: 'blue', textDecoration: 'underline' }}
+                            className="font-bold text-blue-600 hover:underline"
                         >
                             Data Nutrition Project
                         </a>{' '}
