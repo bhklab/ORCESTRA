@@ -1,0 +1,280 @@
+openapi: 3.0.3
+info:
+  title: ORCESTRA Public API
+  version: 1.0.0
+  description: |
+    Public REST API for querying and retrieving multimodal
+    Data Nutrition Labels from ORCESTRA datasets.
+  contact:
+    name: ORCESTRA Team
+    url: https://orcestra.ca
+    email: support@orcestra.ca
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+
+
+tags:
+  - name: Datasets
+    description: Check dataset available and retrieve metadata
+  - name: Platform
+    description: Overall platform metadata and statistics
+
+paths:
+  /public/datasets/all/{info}:
+    get:
+      tags:
+        - Datasets
+      summary: Get all datasets
+      description: |
+        Retrieves all public datasets across all data types in ORCESTRA.
+        Use `concise` for a lightweight overview or `full` for complete Data Nutrition Label metadata.
+      operationId: getAllDatasets
+      parameters:
+        - name: info
+          in: path
+          required: false
+          description: Level of detail returned for each dataset
+          schema:
+            type: string
+            enum: [concise, full]
+            default: concise
+      responses:
+        '200':
+          description: List of datasets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: '#/components/schemas/ConciseDataset'
+                    - $ref: '#/components/schemas/FullDataset'
+        '500':
+          description: Invalid parameters or server error
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /public/datasets/{datatype}/{info}:
+    get:
+      tags:
+        - Datasets
+      summary: Get datasets by datatype
+      description: |
+        Retrieves all public datasets of a specific data type
+        (e.g., pharmacogenomics, toxicogenomics, xenographic).
+      operationId: getDatasetsByDatatype
+      parameters:
+        - name: datatype
+          in: path
+          required: true
+          description: The biomedical data layer type
+          schema:
+            type: string
+            enum:
+              - pharmacogenomics
+              - toxicogenomics
+              - xenographic
+              - clinicalgenomics
+              - radiogenomics
+              - radiomics
+              - icb
+              - annotations
+            example: pharmacogenomics
+        - name: info
+          in: path
+          required: false
+          description: Level of detail returned for each dataset
+          schema:
+            type: string
+            enum: [concise, full]
+            default: concise
+      responses:
+        '200':
+          description: List of datasets matching the specified datatype
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: '#/components/schemas/ConciseDataset'
+                    - $ref: '#/components/schemas/FullDataset'
+        '500':
+          description: Invalid datatype, parameter, or server error
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /public/dataset/{id}/{info}:
+    get:
+      tags:
+        - Datasets
+      summary: Get single dataset by ID
+      description: |
+        Retrieves detailed metadata, repositories, and Data Nutrition Label
+        for a single dataset specified by its MongoDB ObjectId. IDs
+        can be retrieved from the 'id' field in the response from getAllDatasets
+        or getDatasetsByDatatype.
+      operationId: getDatasetById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique MongoDB identifier of the dataset
+          schema:
+            type: string
+            example: 61dd8f80bcf33b679faebc3d
+        - name: info
+          in: path
+          required: false
+          description: Level of detail returned
+          schema:
+            type: string
+            enum: [concise, full]
+            default: concise
+      responses:
+        '200':
+          description: Dataset metadata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: '#/components/schemas/ConciseDataset'
+                    - $ref: '#/components/schemas/FullDataset'
+        '500':
+          description: Invalid ID, missing parameter, or server error
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /view/statistics:
+    get:
+      tags:
+        - Platform
+      summary: Get platform datatype statistics
+      description: |
+        Returns aggregated counts, priorities, data sources, and canonical
+        dataset counts for all data layers supported on ORCESTRA.
+      operationId: getDatatypeStatistics
+      responses:
+        '200':
+          description: Array of datatype statistics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatatypeStatistic'
+        '500':
+          description: Server error retrieving statistics
+
+components:
+  schemas:
+    ConciseDataset:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 61dd8f80bcf33b679faebc3d
+        name:
+          type: string
+          example: CCLE_2015
+        dateCreated:
+          type: string
+          format: date-time
+          example: '2022-01-11T14:32:00.000Z'
+        doi:
+          type: string
+          example: 10.5281/zenodo.5838521
+        main_downloads:
+          type: array
+          items:
+            type: string
+          example: ['https://zenodo.org/record/5838521/files/CCLE.rds']
+        secondary_downloads:
+          type: array
+          items:
+            type: string
+          example: ['https://zenodo.org/record/5838521/files/CCLE_profiles.csv']
+        data:
+          type: object
+          description: Data sources and molecular assays available within the dataset
+          additionalProperties: true
+
+    FullDataset:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 61dd8f80bcf33b679faebc3d
+        name:
+          type: string
+          example: CCLE_2015
+        datasetType:
+          type: string
+          example: pset
+        description:
+          type: string
+          description: HTML-formatted or raw text description of the dataset
+        info:
+          type: object
+          properties:
+            dateCreated:
+              type: string
+              format: date-time
+            canonical:
+              type: boolean
+            private:
+              type: boolean
+            status:
+              type: string
+        repositories:
+          type: object
+          properties:
+            doi:
+              type: string
+            downloadLink:
+              type: array
+              items:
+                type: string
+            csvLinks:
+              type: array
+              items:
+                type: string
+        dataSources:
+          type: object
+          additionalProperties: true
+        datasetNote:
+          type: object
+          description: Expanded dataset note metadata
+
+    DatatypeStatistic:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          example: Pharmacogenomics
+        path:
+          type: string
+          example: pset
+        dataSources:
+          type: array
+          items:
+            type: string
+          example: [ccle, gdsc, gcsi]
+        canonicalCount:
+          type: integer
+          example: 8
+        datasetCount:
+          type: integer
+          example: 42
