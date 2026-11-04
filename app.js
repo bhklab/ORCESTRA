@@ -24,13 +24,46 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.set('js', path.join(__dirname, 'js'));
 
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const getOpenapiSpec = () => YAML.load(path.join(__dirname, 'openapi.yaml'));
+
+app.use('/api/docs', swaggerUi.serve, (req, res, next) => {
+    swaggerUi.setup(getOpenapiSpec(), {
+        customSiteTitle: 'ORCESTRA API Documentation'
+    })(req, res, next);
+});
+app.get('/api/openapi.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(getOpenapiSpec());
+});
+app.get('/api/openapi.yaml', (req, res) => {
+    res.sendFile(path.join(__dirname, 'openapi.yaml'));
+});
+app.get('/api/docs', (req, res) => res.redirect('/api/docs/'));
+app.get('/api', (req, res) => res.redirect('/api/docs/'));
+app.get('/docs', (req, res) => res.redirect('/api/docs/'));
+
 app.use('/api', router);
 
+// Handle unmatched /api routes with a clean JSON 404 response
+app.use('/api', (req, res) => {
+    res.status(404).json({ error: 'API endpoint not found', path: req.originalUrl });
+});
+
 // configure express to use public folder
-app.use(express.static(path.join(__dirname, '/client/build'))); 
+const fs = require('fs');
+const clientBuildPath = path.join(__dirname, '/client/build');
+const clientIndexHtml = path.join(clientBuildPath, 'index.html');
+
+app.use(express.static(clientBuildPath)); 
 
 app.get('/*', (req, res) => {
-  res.sendFile('index.html', { root: './client/build' });
+    if (fs.existsSync(clientIndexHtml)) {
+        res.sendFile('index.html', { root: clientBuildPath });
+    } else {
+        res.status(404).send('Client build not found. In development, access the client app on http://localhost:3000');
+    }
 });
 
 var port = process.env.PORT || '2000';
