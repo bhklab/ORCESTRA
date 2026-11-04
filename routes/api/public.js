@@ -6,9 +6,9 @@ const DatasetObject = require('../../db/models/dataset-object');
 const DatasetNote = require('../../db/models/dataset-note')
 
 const getAllDatasets = async (req, res) => {
-	const { info } = req.params
+	const info = req.params.info || 'concise';
 	try {
-		if (info === "full" || info === "") {
+		if (info === "full") {
 			const datasetObjects = await DatasetObject.find({}, "-availableData -availableDatatypes -status");
 			const noteIDs = datasetObjects.map(obj =>  { // Store all ids for notes needed for datasetObjects
 				return obj.datasetNote
@@ -37,7 +37,7 @@ const getAllDatasets = async (req, res) => {
 			res.send(outputObjects)
 		}
 		else {
-			res.status(500).send(`Missing info parameter, can be either 'full' or 'concise'.
+			res.status(400).send(`Invalid info parameter, can be either 'full' or 'concise'.
 				Example: https://orcestra.ca/api/public/datasets/all/concise`);
 		}
 	} catch (err){
@@ -47,7 +47,8 @@ const getAllDatasets = async (req, res) => {
 }
 
 const getDatasets = async (req, res) => {
-    const { datatype, info } = req.params
+    const datatype = req.params.datatype;
+    const info = req.params.info || 'concise';
 	if (Object.keys(dataTypes).includes(datatype)) {
 		if (info === "full"){
 			try {
@@ -87,18 +88,19 @@ const getDatasets = async (req, res) => {
 				res.status(500);
 			}
 		} else {
-			res.status(500).send(`Missing info parameter, can be either 'full' or 'concise'.
+			res.status(400).send(`Invalid info parameter, can be either 'full' or 'concise'.
 				Example: https://orcestra.ca/api/public/datasets/pharmacogenomics/concise`);
 		}
 	} else {
-		res.status(500).send(`Please use the correct dataset type. It should be one of 
+		res.status(400).send(`Please use the correct dataset type. It should be one of 
                 [${Object.keys(dataTypes).join(', ')}].
 				Example: https://orcestra.ca/api/public/datasets/pharmacogenomics/concise`);
 	}
 }
 
 const getDataset = async (req, res) => {
-    const { id, info } = req.params
+    const id = req.params.id;
+    const info = req.params.info || 'concise';
 	if (info === "full") {
 		try {
 			const datasetObjects = await DatasetObject.find({ _id: id}, '-availableData -availableDatatypes -status');
@@ -137,10 +139,9 @@ const getDataset = async (req, res) => {
 		}
 	}
 	else {
-		res.status(500).send(`Missing info parameter, can be either 'full' or 'concise'.
+		res.status(400).send(`Invalid info parameter, can be either 'full' or 'concise'.
 			Example: https://orcestra.ca/api/public/dataset/61dd8f80bcf33b679faebc3d/concise`);
 	}
-	
 }
 
 
