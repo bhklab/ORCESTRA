@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import download from 'downloadjs';
+import CodeBlock from './CodeBlock';
 
 const exampleTemplates = [
     {
@@ -260,29 +261,14 @@ export const DataContributionSection = ({ scrollTarget }) => {
                                 of origin, donor demographics, and disease ontologies:
                             </p>
                             <div className="flex flex-col gap-2">
-                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
-                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
-                                        <span>Retrieve all available cell line identifiers</span>
-                                        <span className="text-gray-400">GET</span>
-                                    </div>
-                                    <div className="p-3 text-gray-100 overflow-x-auto">
-                                        <code>curl https://annotationdb.bhklab.ca/cell_line/all</code>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
-                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
-                                        <span>
-                                            Query full metadata for cell lines (comma-separated names or CVCL IDs)
-                                        </span>
-                                        <span className="text-gray-400">GET</span>
-                                    </div>
-                                    <div className="p-3 text-gray-100 overflow-x-auto">
-                                        <code>
-                                            curl
-                                            "https://annotationdb.bhklab.ca/cell_line/many?cell_lines=HL-60,HeLa,CVCL_0060,CVCL_2030"
-                                        </code>
-                                    </div>
-                                </div>
+                                <CodeBlock
+                                    title="Retrieve all available cell line identifiers"
+                                    href="https://annotationdb.bhklab.ca/cell_line/all"
+                                />
+                                <CodeBlock
+                                    title="Query full metadata for cell lines (comma-separated names or CVCL IDs)"
+                                    href="https://annotationdb.bhklab.ca/cell_line/many?cell_lines=HL-60,HeLa,CVCL_0060,CVCL_2030"
+                                />
                             </div>
                         </div>
                     </div>
@@ -354,50 +340,22 @@ export const DataContributionSection = ({ scrollTarget }) => {
                                 approval statuses, and toxicity ratings (LTKB / DILIrank):
                             </p>
                             <div className="flex flex-col gap-2">
-                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
-                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
-                                        <span>Retrieve all indexed compounds, PubChem CIDs, SMILES, and InChIKeys</span>
-                                        <span className="text-gray-400">GET</span>
-                                    </div>
-                                    <div className="p-3 text-gray-100 overflow-x-auto">
-                                        <code>curl https://annotationdb.bhklab.ca/compound/all</code>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
-                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
-                                        <span>
-                                            Query compound metadata with ChEMBL Mechanism of Action (MOA) and Toxicity
-                                        </span>
-                                        <span className="text-gray-400">GET</span>
-                                    </div>
-                                    <div className="p-3 text-gray-100 overflow-x-auto">
-                                        <code>
-                                            curl
-                                            "https://annotationdb.bhklab.ca/compound/many?compound=Acetaminophen&mechanism=true&toxicity=true&bioassay=true"
-                                        </code>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
-                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
-                                        <span>Query substances / biologics by name or PubChem SID</span>
-                                        <span className="text-gray-400">GET</span>
-                                    </div>
-                                    <div className="p-3 text-gray-100 overflow-x-auto">
-                                        <code>
-                                            curl
-                                            "https://annotationdb.bhklab.ca/substance/many?substance=Bevacizumab&mechanism=true&toxicity=true"
-                                        </code>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
-                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
-                                        <span>Query Antibody-Drug Conjugates (ADCs) by ADC ID or name</span>
-                                        <span className="text-gray-400">GET</span>
-                                    </div>
-                                    <div className="p-3 text-gray-100 overflow-x-auto">
-                                        <code>curl "https://annotationdb.bhklab.ca/adc/many?adc=DRG0AAJTS"</code>
-                                    </div>
-                                </div>
+                                <CodeBlock
+                                    title="Retrieve all indexed compounds, PubChem CIDs, SMILES, and InChIKeys"
+                                    href="https://annotationdb.bhklab.ca/compound/all"
+                                />
+                                <CodeBlock
+                                    title="Query compound metadata with ChEMBL Mechanism of Action (MOA) and Toxicity"
+                                    href="https://annotationdb.bhklab.ca/compound/many?compound=Acetaminophen&mechanism=true&toxicity=true&bioassay=true"
+                                />
+                                <CodeBlock
+                                    title="Query substances / biologics by name or PubChem SID"
+                                    href="https://annotationdb.bhklab.ca/substance/many?substance=Bevacizumab&mechanism=true&toxicity=true"
+                                />
+                                <CodeBlock
+                                    title="Query Antibody-Drug Conjugates (ADCs) by ADC ID or name"
+                                    href="https://annotationdb.bhklab.ca/adc/many?adc=DRG0AAJTS"
+                                />
                             </div>
                         </div>
                     </div>
@@ -471,24 +429,18 @@ export const DataContributionSection = ({ scrollTarget }) => {
                                 <code>TreatmentResponseExperiment</code> object as a pair of aligned matrices in the{' '}
                                 <code>@raw</code> slot:
                             </p>
-                            <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
-                                <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
-                                    <span>R / PharmacoGx TreatmentResponseExperiment Construction</span>
-                                    <span className="text-gray-400">R</span>
-                                </div>
-                                <div className="p-3 text-gray-100 overflow-x-auto">
-                                    <pre>
-                                        <code>{`# Raw Dose & Viability matrices ingest into TreatmentResponseExperiment
+                            <CodeBlock
+                                title="R / PharmacoGx TreatmentResponseExperiment Construction"
+                                label="R"
+                                code={`# Raw Dose & Viability matrices ingest into TreatmentResponseExperiment
 tre <- CoreGx::TreatmentResponseExperiment(
     raw = list(
         dose = as.matrix(read.csv("raw_drug_dose.csv", row.names = 1)),
         viability = as.matrix(read.csv("raw_drug_viability.csv", row.names = 1))
     ),
     info = read.csv("sensitivity_info.csv", row.names = 1)
-)`}</code>
-                                    </pre>
-                                </div>
-                            </div>
+)`}
+                            />
                         </div>
                     </div>
 
@@ -548,24 +500,18 @@ tre <- CoreGx::TreatmentResponseExperiment(
                                 <code>sensitivityProfiles(pset)</code> slot with standard pharmacological response
                                 metrics:
                             </p>
-                            <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
-                                <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
-                                    <span>Automated Metric Computation in PharmacoGx</span>
-                                    <span className="text-gray-400">R</span>
-                                </div>
-                                <div className="p-3 text-gray-100 overflow-x-auto">
-                                    <pre>
-                                        <code>{`# Standard sensitivity profile generation:
+                            <CodeBlock
+                                title="Automated Metric Computation in PharmacoGx"
+                                label="R"
+                                code={`# Standard sensitivity profile generation:
 pset <- computeAUC(pset)  # Recomputed Area Above Curve (AAC / AUC)
 pset <- computeIC50(pset) # Half-maximal inhibitory concentration (IC50 in µM)
 pset <- computeDSS(pset)  # Drug Sensitivity Score (DSS)
 pset <- computeSlope(pset) # Hill slope (HS) and inflection parameters
 
 # Returns data.frame with aac_recomputed, ic50_recomputed, dss_recomputed:
-head(sensitivityProfiles(pset))`}</code>
-                                    </pre>
-                                </div>
-                            </div>
+head(sensitivityProfiles(pset))`}
+                            />
                         </div>
                     </div>
 
@@ -630,14 +576,10 @@ head(sensitivityProfiles(pset))`}</code>
                                 metadata), bundled into <code>PharmacoSet2</code>'s <code>MultiAssayExperiment</code>{' '}
                                 container:
                             </p>
-                            <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
-                                <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
-                                    <span>SummarizedExperiment Molecular Profile Construction</span>
-                                    <span className="text-gray-400">R</span>
-                                </div>
-                                <div className="p-3 text-gray-100 overflow-x-auto">
-                                    <pre>
-                                        <code>{`# Standardized SummarizedExperiment for RNA-seq in PharmacoSet2
+                            <CodeBlock
+                                title="SummarizedExperiment Molecular Profile Construction"
+                                label="R"
+                                code={`# Standardized SummarizedExperiment for RNA-seq in PharmacoSet2
 rnaseq_se <- SummarizedExperiment::SummarizedExperiment(
     assays = list(exprs = as.matrix(read.csv("rnaseq.csv", row.names = 1))),
     rowData = S4Vectors::DataFrame(gene_annotations), # Ensembl IDs, Gene Symbols
@@ -645,10 +587,8 @@ rnaseq_se <- SummarizedExperiment::SummarizedExperiment(
 )
 
 # Assigned into the molecularProfiles slot of the PharmacoSet:
-molecularProfiles(pset)$rnaseq <- rnaseq_se`}</code>
-                                    </pre>
-                                </div>
-                            </div>
+molecularProfiles(pset)$rnaseq <- rnaseq_se`}
+                            />
                         </div>
 
                         {/* AnnotationDB Gene Annotation Reference & Examples */}
@@ -690,17 +630,10 @@ molecularProfiles(pset)$rnaseq <- rnaseq_se`}</code>
                                 across all curated pipelines directly from the AnnotationDB API:
                             </p>
                             <div className="flex flex-col gap-2">
-                                <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden text-bodyXs font-mono">
-                                    <div className="px-3 py-1.5 bg-gray-800 text-gray-300 font-semibold flex justify-between items-center">
-                                        <span>
-                                            Download standardized Gencode & Ensembl gene annotation reference files
-                                        </span>
-                                        <span className="text-gray-400">GET</span>
-                                    </div>
-                                    <div className="p-3 text-gray-100 overflow-x-auto">
-                                        <code>curl https://annotationdb.bhklab.ca/gene/annotation-files</code>
-                                    </div>
-                                </div>
+                                <CodeBlock
+                                    title="Download standardized Gencode & Ensembl gene annotation reference files"
+                                    href="https://annotationdb.bhklab.ca/gene/annotation-files"
+                                />
                             </div>
                         </div>
                     </div>
