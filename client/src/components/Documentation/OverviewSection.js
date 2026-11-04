@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CircleCheckBig, Link, CodeXml, FlaskConical, CircleCheck, BookOpen, Download } from 'lucide-react';
 
 const dataLayers = [
     {
@@ -109,20 +110,20 @@ const fairPrinciples = [
     {
         letter: 'A',
         name: 'Accessible',
-        tagline: 'Open access without barriers',
+        tagline: 'Open access for researchers and machines',
         color: 'from-amber-500 to-orange-600',
         textColor: 'text-amber-600',
         bgSoft: 'bg-amber-50',
         borderColor: 'border-amber-100',
         features: [
-            'Web app access of datasets, their metadata, and downloadable objects',
-            'API access of datasets, their metadata, and downloadable objects'
+            '<b>Web app access</b> of datasets, their metadata, and downloadable objects',
+            '<b>API access</b> of datasets, their metadata, and downloadable objects'
         ]
     },
     {
         letter: 'I',
         name: 'Interoperable',
-        tagline: 'Standardized schemas & ontologies',
+        tagline: 'Standardized schemas & harmonized data',
         color: 'from-emerald-500 to-teal-700',
         textColor: 'text-emerald-600',
         bgSoft: 'bg-emerald-50',
@@ -276,17 +277,12 @@ export const OverviewSection = ({ scrollTarget }) => {
 
                             <ul className="flex flex-col gap-2.5 pt-2 border-t border-gray-100">
                                 {principle.features.map((feature, idx) => (
-                                    <li key={idx} className="flex items-start gap-2.5 text-bodyMd text-gray-700">
-                                        <svg
-                                            className={`w-5 h-5 flex-shrink-0 mt-0.5 ${principle.textColor}`}
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            strokeWidth="2.5"
-                                        >
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                        </svg>
-                                        <span>{feature}</span>
+                                    <li key={idx} className="flex items-center gap-2.5 text-bodyMd text-gray-700">
+                                        <CircleCheckBig
+                                            className={`w-5 shrink-0 ${principle.textColor}`}
+                                            strokeWidth={2.75}
+                                        />
+                                        <span dangerouslySetInnerHTML={{ __html: feature }} />
                                     </li>
                                 ))}
                             </ul>
@@ -319,22 +315,12 @@ export const OverviewSection = ({ scrollTarget }) => {
 
                 <div className="grid grid-cols-3 md:grid-cols-1 gap-4">
                     <div className="flex flex-col p-4 bg-gray-50 rounded-xl border border-gray-200 gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-50 flex items-center justify-center text-darkBlue font-bold">
-                            <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                                />
-                            </svg>
+                        <div className="flex flex-row items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-50 flex items-center justify-center text-darkBlue font-bold">
+                                <Link className="h-4 w-4" strokeWidth={2.5} />
+                            </div>
+                            <h5 className="text-headingMd font-bold text-darkBlue">Raw & Preprocessed Data</h5>
                         </div>
-                        <h5 className="text-headingMd font-bold text-darkBlue">Raw & Preprocessed Data</h5>
                         <p className="text-bodySm text-gray-600">
                             Direct links and origins for raw data including genomic, imaging, drug response, and
                             clinical data.
@@ -342,44 +328,24 @@ export const OverviewSection = ({ scrollTarget }) => {
                     </div>
 
                     <div className="flex flex-col p-4 bg-gray-50 rounded-xl border border-gray-200 gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-50 flex items-center justify-center text-darkBlue font-bold">
-                            <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                                />
-                            </svg>
+                        <div className="flex flex-row items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-50 flex items-center justify-center text-darkBlue font-bold">
+                                <CodeXml className="h-4 w-4" strokeWidth={2.5} />
+                            </div>
+                            <h5 className="text-headingMd font-bold text-darkBlue">Pipelines & Version Tracking</h5>
                         </div>
-                        <h5 className="text-headingMd font-bold text-darkBlue">Pipelines & Version Tracking</h5>
                         <p className="text-bodySm text-gray-600">
                             Explicit GitHub repository URLs and exact git commit hashes step.
                         </p>
                     </div>
 
                     <div className="flex flex-col p-4 bg-gray-50 rounded-xl border border-gray-200 gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-50 flex items-center justify-center text-darkBlue font-bold">
-                            <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-                                />
-                            </svg>
+                        <div className="flex flex-row items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-50 flex items-center justify-center text-darkBlue font-bold">
+                                <FlaskConical className="h-4 w-4" strokeWidth={2.5} />
+                            </div>
+                            <h5 className="text-headingMd font-bold text-darkBlue">Tools & Environments</h5>
                         </div>
-                        <h5 className="text-headingMd font-bold text-darkBlue">Tools & Environments</h5>
                         <p className="text-bodySm text-gray-600">
                             Specific bioinformatics package versions (e.g. PharmacoGx, Kallisto, Salmon, Gencode
                             transcriptome).
@@ -387,22 +353,12 @@ export const OverviewSection = ({ scrollTarget }) => {
                     </div>
 
                     <div className="flex flex-col p-4 bg-gray-50 rounded-xl border border-gray-200 gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-50 flex items-center justify-center text-darkBlue font-bold">
-                            <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                            </svg>
+                        <div className="flex flex-row items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-50 flex items-center justify-center text-darkBlue font-bold">
+                                <CircleCheck className="h-4 w-4" strokeWidth={2.5} />
+                            </div>
+                            <h5 className="text-headingMd font-bold text-darkBlue">Quality Control (QC)</h5>
                         </div>
-                        <h5 className="text-headingMd font-bold text-darkBlue">Quality Control (QC)</h5>
                         <p className="text-bodySm text-gray-600">
                             Embedded MultiQC reports and interactive QC viewers checking data consistency and alignment
                             quality.
@@ -410,48 +366,26 @@ export const OverviewSection = ({ scrollTarget }) => {
                     </div>
 
                     <div className="flex flex-col p-4 bg-gray-50 rounded-xl border border-gray-200 gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-50 flex items-center justify-center text-darkBlue font-bold">
-                            <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                                />
-                            </svg>
+                        <div className="flex flex-row items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-50 flex items-center justify-center text-darkBlue font-bold">
+                                <BookOpen className="h-4 w-4" strokeWidth={2.5} />
+                            </div>
+                            <h5 className="text-headingMd font-bold text-darkBlue">Citations & Disclaimers</h5>
                         </div>
-                        <h5 className="text-headingMd font-bold text-darkBlue">Citations & Disclaimers</h5>
                         <p className="text-bodySm text-gray-600">
-                            Literature citations with 1-click clipboard copy, academic usage policy, and standard
-                            license terms.
+                            Literature citations, academic usage policy, and standard license terms.
                         </p>
                     </div>
 
                     <div className="flex flex-col p-4 bg-gray-50 rounded-xl border border-gray-200 gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-50 flex items-center justify-center text-darkBlue font-bold">
-                            <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                                />
-                            </svg>
+                        <div className="flex flex-row items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-50 flex items-center justify-center text-darkBlue font-bold">
+                                <Download className="h-4 w-4" strokeWidth={2.5} />
+                            </div>
+                            <h5 className="text-headingMd font-bold text-darkBlue">Multi-Format Downloads</h5>
                         </div>
-                        <h5 className="text-headingMd font-bold text-darkBlue">Multi-Format Downloads</h5>
                         <p className="text-bodySm text-gray-600">
-                            Download direct RDS data objects, individual CSV files, or access the persistent Zenodo DOI
-                            archive.
+                            Download RDS data objects, CSVs, or access via Zenodo archive.
                         </p>
                     </div>
                 </div>
@@ -459,12 +393,12 @@ export const OverviewSection = ({ scrollTarget }) => {
                 {/* Example DNL Card Callout */}
                 <div className="flex flex-row md:flex-col items-center justify-between p-6 bg-lightBlue rounded-xl text-white gap-6">
                     <div className="flex flex-col gap-1.5">
-                        <div className="flex items-center gap-2">
+                        {/* <div className="flex items-center gap-2">
                             <span className="bg-darkYellow text-darkBlue px-2.5 py-0.5 rounded text-headingXs font-bold uppercase">
                                 Example Data Nutrition Page
                             </span>
-                        </div>
-                        <h4 className="text-headingLg font-bold">View an Example Annotation Dataset</h4>
+                        </div> */}
+                        <h4 className="text-headingLg font-bold">View a Dataset's Data Nutrition Label</h4>
                         <p className="text-bodyMd text-blue-100">
                             Inspect how raw data sources, tools, release notes, and Zenodo DOI links are organized on an
                             actual dataset page.
@@ -489,7 +423,7 @@ export const OverviewSection = ({ scrollTarget }) => {
             </div>
 
             {/* Subsection 4: Data Processing Architecture & API */}
-            <div className="flex flex-col gap-6 pt-6 border-t border-gray-100">
+            {/* <div className="flex flex-col gap-6 pt-6 border-t border-gray-100">
                 <div className="flex flex-col gap-2">
                     <h3 className="text-headingXl font-bold text-darkBlue scroll-mt-32" id="pipeline-architecture">
                         Data Processing API & Pipeline Architecture
@@ -506,9 +440,9 @@ export const OverviewSection = ({ scrollTarget }) => {
                 <div className="grid grid-cols-3 md:grid-cols-1 gap-5">
                     <div className="flex flex-col p-5 rounded-xl bg-gray-50 border border-gray-200 gap-3">
                         <span className="text-headingSm font-bold px-3 py-1 bg-blue-100 text-lightBlue rounded-full w-fit">
-                            Step 1: Pipeline Submission
+                            Step 1
                         </span>
-                        <h5 className="text-headingMd font-bold text-darkBlue">Environment & Recipe Definition</h5>
+                        <h5 className="text-headingMd font-bold text-darkBlue">Environment Definition</h5>
                         <p className="text-bodySm text-gray-600">
                             Pipelines are version-controlled in Git repositories with declarative Conda (
                             <code>environment.yml</code>) or Pixi (<code>pixi.toml</code>) environments. Snakemake
@@ -518,28 +452,27 @@ export const OverviewSection = ({ scrollTarget }) => {
 
                     <div className="flex flex-col p-5 rounded-xl bg-gray-50 border-1 border-gray-200 gap-3 relative">
                         <span className="text-headingSm font-bold px-3 py-1 bg-amber-100 text-amber-900 rounded-full w-fit">
-                            Step 2: Automated Execution
+                            Step 2
                         </span>
-                        <h5 className="text-headingMd font-bold text-darkBlue">Jenkins & Pixi Orchestration</h5>
+                        <h5 className="text-headingMd font-bold text-darkBlue">Automated Execution</h5>
                         <p className="text-bodySm text-gray-600">
                             Jenkins schedules and executes the Snakemake pipelines in isolated Pixi/Conda sandboxes,
-                            managing compute allocation, rule execution, logging, and artifact generation.
+                            managing compute allocation, rule execution, logging, and dataset generation.
                         </p>
                     </div>
 
                     <div className="flex flex-col p-5 rounded-xl bg-gray-50 border border-gray-200 gap-3">
                         <span className="text-headingSm font-bold px-3 py-1 bg-green-100 text-green-800 rounded-full w-fit">
-                            Step 3: DNL Workflow & Archival
+                            Step 3
                         </span>
                         <h5 className="text-headingMd font-bold text-darkBlue">DNL Entry Generation & Zenodo DOI</h5>
                         <p className="text-bodySm text-gray-600">
-                            New automated workflows extract execution manifests, upload/update Data Nutrition Label
-                            entries in MongoDB, and archive finalized dataset artifacts to Zenodo to mint permanent
-                            DOIs.
+                            Automated workflows extract execution manifests, upload/update Data Nutrition Label entries
+                            in MongoDB, and archive finalized dataset artifacts to Zenodo to mint permanent DOIs.
                         </p>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };
