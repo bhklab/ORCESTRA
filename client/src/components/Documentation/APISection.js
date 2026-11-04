@@ -129,38 +129,19 @@ export const APISection = ({ scrollTarget }) => {
                     ORCESTRA exposes public RESTful API endpoints for programmatic search, catalog retrieval, and Data
                     Nutrition Label extraction.
                 </p>
-            </div>
-
-            {/* Subsection 1: API Overview */}
-            <div className="flex flex-col gap-4">
-                <h3 className="text-headingXl font-bold text-darkBlue scroll-mt-32" id="api-overview">
-                    API Overview & Base URLs
-                </h3>
-                <div className="flex flex-col gap-4 text-bodyLg text-gray-700 leading-relaxed">
-                    <p>
-                        All endpoints are served over HTTP/HTTPS and return JSON responses. No authentication or API
-                        keys are required for public dataset discovery and download link resolution.
-                    </p>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-1 gap-4 pt-2">
-                    <div className="p-4 rounded-xl bg-gray-50 border border-gray-200 flex flex-col gap-1">
-                        <span className="text-bodySm font-bold text-gray-500 uppercase tracking-wider">
-                            Base API URL
-                        </span>
-                        <span className="text-headingMd font-mono font-semibold text-lightBlue">{BASE_URL}/api/</span>
-                    </div>
-                    <div className="p-4 rounded-xl bg-gray-50 border border-gray-200 flex flex-col gap-1">
-                        <span className="text-bodySm font-bold text-gray-500 uppercase tracking-wider">
-                            Response Format
-                        </span>
-                        <span className="text-headingMd font-mono font-semibold text-lightBlue">application/json</span>
-                    </div>
-                </div>
+                <a
+                    href={`${BASE_URL}/api/docs`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-headingMd font-semibold text-white flex items-center gap-2 p-3 rounded-xl bg-darkBlue border border-gray-200 w-fit hover:bg-lightBlue transition-all duration-200"
+                >
+                    <img src="/images/icons/swagger-white.svg" className="text-white w-5" alt="Swagger" />
+                    <span>Swagger Documentation</span>
+                </a>
             </div>
 
             {/* Endpoints Reference */}
-            <div className="flex flex-col gap-8 pt-6 border-t border-gray-100">
+            <div className="flex flex-col gap-8">
                 <h3 className="text-headingXl font-bold text-darkBlue">API Endpoints Reference</h3>
 
                 <div className="flex flex-col gap-6">
