@@ -82,8 +82,8 @@ export const DataContributionSection = ({ scrollTarget }) => {
             <div className="flex flex-col gap-3 pb-6 border-b border-gray-100">
                 <h1 className="text-heading3Xl md:text-heading2Xl font-bold text-darkBlue">Contributing Your Data</h1>
                 <p className="text-bodyLg text-gray-600 leading-relaxed">
-                    Learn how to format, structure, and submit your experimental or computational datasets to ORCESTRA
-                    to generate FAIR-compliant, version-controlled multi-omic data objects.
+                    Learn how to format, structure, and submit your computational datasets to ORCESTRA to generate
+                    FAIR-compliant, version-controlled multi-omic data objects.
                 </p>
             </div>
 
@@ -99,15 +99,16 @@ export const DataContributionSection = ({ scrollTarget }) => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-4 md:grid-cols-2 xs:grid-cols-1 gap-4">
+                <div className="grid grid-cols-5 md:grid-cols-2 xs:grid-cols-1 gap-4">
                     <div className="flex flex-col p-5 bg-gray-50 rounded-2xl border border-gray-200 gap-3">
                         <div className="w-9 h-9 rounded-xl bg-blue-100 text-lightBlue flex items-center justify-center font-bold text-headingSm">
                             1
                         </div>
                         <h4 className="text-headingMd font-bold text-darkBlue">Prepare Files</h4>
                         <p className="text-bodySm text-gray-600">
-                            Format your sample annotations, drug IDs, raw viability data, and molecular matrices
-                            according to ORCESTRA schemas.
+                            Format annotations and molecular data according to ORCESTRA schemas. Wrap your pipeline in a
+                            Pixi or Conda environment. Include a Snakefile Orchestration file that triggers jobs/scripts
+                            in needed order
                         </p>
                     </div>
 
@@ -117,8 +118,7 @@ export const DataContributionSection = ({ scrollTarget }) => {
                         </div>
                         <h4 className="text-headingMd font-bold text-darkBlue">Submit via Portal</h4>
                         <p className="text-bodySm text-gray-600">
-                            Upload your data tables or connect your pipeline Git repository using our authenticated
-                            submission portal.
+                            Connect your pipeline Git repository using our authenticated submission portal.
                         </p>
                     </div>
 
@@ -134,12 +134,22 @@ export const DataContributionSection = ({ scrollTarget }) => {
                     </div>
 
                     <div className="flex flex-col p-5 bg-gray-50 rounded-2xl border border-gray-200 gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-green-100 text-green-900 flex items-center justify-center font-bold text-headingSm">
+                        <div className="w-9 h-9 rounded-xl bg-red-100 text-red-900 flex items-center justify-center font-bold text-headingSm">
                             4
                         </div>
                         <h4 className="text-headingMd font-bold text-darkBlue">DOI & DNL Published</h4>
                         <p className="text-bodySm text-gray-600">
                             Indicated dataset files are deposited on Zenodo with a permanent DOI attachhed.
+                        </p>
+                    </div>
+                    <div className="flex flex-col p-5 bg-gray-50 rounded-2xl border border-gray-200 gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-green-100 text-green-900 flex items-center justify-center font-bold text-headingSm">
+                            5
+                        </div>
+                        <h4 className="text-headingMd font-bold text-darkBlue">Create DNL</h4>
+                        <p className="text-bodySm text-gray-600">
+                            Create Data Nutrition Label to include a dataset description, links to raw data sources,
+                            release notes, literature citations, and academic usage policy.
                         </p>
                     </div>
                 </div>
@@ -181,6 +191,46 @@ export const DataContributionSection = ({ scrollTarget }) => {
                     </button>
                 </div>
             </div>
+            <div className="flex flex-col gap-6 pt-6 border-t border-gray-100">
+                <div className="flex flex-col gap-2">
+                    <h3 className="text-headingXl font-bold text-darkBlue scroll-mt-32" id="pipeline-configs">
+                        Pipelines & Computing Environments
+                    </h3>
+                    <p className="text-bodyLg text-gray-700 leading-relaxed">
+                        If submitting a custom processing pipeline, provide a GitHub repository configured for automated
+                        execution:
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-1 gap-6">
+                    <div className="flex flex-col p-6 rounded-2xl bg-gray-50 border border-gray-200 gap-3">
+                        <div className="flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-40 flex items-center justify-center text-darkBlue font-bold">
+                                1
+                            </span>
+                            <h4 className="text-headingLg font-bold text-darkBlue">Snakemake Workflow</h4>
+                        </div>
+                        <p className="text-bodyMd text-gray-700">
+                            Provide a root <code>Snakefile</code> defining clear input files, output targets, rule
+                            dependencies, and script invocations. Ensure all rules are deterministic and parameterized.
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col p-6 rounded-2xl bg-gray-50 border border-gray-200 gap-3">
+                        <div className="flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-40 flex items-center justify-center text-darkBlue font-bold">
+                                2
+                            </span>
+                            <h4 className="text-headingLg font-bold text-darkBlue">Pixi / Conda Environments</h4>
+                        </div>
+                        <p className="text-bodyMd text-gray-700">
+                            Include declarative dependency manifests: <code>pixi.toml</code> or{' '}
+                            <code>environment.yml</code> with exact package versions (R packages, Bioconductor
+                            libraries, Python dependencies, and command-line tools).
+                        </p>
+                    </div>
+                </div>
+            </div>
 
             {/* Subsection 2: Data Specifications & Schemas */}
             <div className="flex flex-col gap-6 pt-6 border-t border-gray-100">
@@ -189,7 +239,7 @@ export const DataContributionSection = ({ scrollTarget }) => {
                         Recommended Formats & Schemas
                     </h3>
                     <p className="text-bodyLg text-gray-600">
-                        To ensure interoperability and automated validation, submitted files must follow standard
+                        To ensure interoperability and automated validation, submitted files should follow standard
                         annotations and field naming (in both csvs and RDS'):
                     </p>
                 </div>
@@ -727,48 +777,6 @@ molecularProfiles(pset)$rnaseq <- rnaseq_se`}
                                 )}
                             </div>
                         ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Subsection 4: Pipelines & Environments */}
-            <div className="flex flex-col gap-6 pt-6 border-t border-gray-100">
-                <div className="flex flex-col gap-2">
-                    <h3 className="text-headingXl font-bold text-darkBlue scroll-mt-32" id="pipeline-configs">
-                        Pipelines & Computing Environments
-                    </h3>
-                    <p className="text-bodyLg text-gray-700 leading-relaxed">
-                        If submitting a custom processing pipeline, provide a GitHub repository configured for automated
-                        execution:
-                    </p>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-1 gap-6">
-                    <div className="flex flex-col p-6 rounded-2xl bg-gray-50 border border-gray-200 gap-3">
-                        <div className="flex items-center gap-2">
-                            <span className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-40 flex items-center justify-center text-darkBlue font-bold">
-                                1
-                            </span>
-                            <h4 className="text-headingLg font-bold text-darkBlue">Snakemake Workflow</h4>
-                        </div>
-                        <p className="text-bodyMd text-gray-700">
-                            Provide a root <code>Snakefile</code> defining clear input files, output targets, rule
-                            dependencies, and script invocations. Ensure all rules are deterministic and parameterized.
-                        </p>
-                    </div>
-
-                    <div className="flex flex-col p-6 rounded-2xl bg-gray-50 border border-gray-200 gap-3">
-                        <div className="flex items-center gap-2">
-                            <span className="w-8 h-8 rounded-lg bg-lightYellow bg-opacity-40 flex items-center justify-center text-darkBlue font-bold">
-                                2
-                            </span>
-                            <h4 className="text-headingLg font-bold text-darkBlue">Pixi / Conda Environments</h4>
-                        </div>
-                        <p className="text-bodyMd text-gray-700">
-                            Include declarative dependency manifests: <code>pixi.toml</code> or{' '}
-                            <code>environment.yml</code> with exact package versions (R packages, Bioconductor
-                            libraries, Python dependencies, and command-line tools).
-                        </p>
                     </div>
                 </div>
             </div>

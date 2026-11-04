@@ -36,8 +36,8 @@ const Documentation = () => {
                 subsections: [
                     { id: 'orcestra-overview', value: 'Platform Overview' },
                     { id: 'fair-principles', value: 'FAIR Data Principles' },
-                    { id: 'data-nutrition-label', value: 'Data Nutrition Label (DNL)' },
-                    { id: 'pipeline-architecture', value: 'Data Processing API & Pipeline' }
+                    { id: 'data-nutrition-label', value: 'Data Nutrition Label (DNL)' }
+                    // { id: 'pipeline-architecture', value: 'Data Processing API & Pipeline' }
                 ]
             },
             {
@@ -45,9 +45,9 @@ const Documentation = () => {
                 component: DataContributionSection,
                 subsections: [
                     { id: 'submission-workflow', value: 'Submission & Publishing Lifecycle' },
-                    { id: 'data-specifications', value: 'Required Formats & Schemas' },
-                    { id: 'downloadable-templates', value: 'Downloadable CSV Templates' },
-                    { id: 'pipeline-configs', value: 'Pipelines & Environments' }
+                    { id: 'pipeline-configs', value: 'Pipelines & Environments' },
+                    { id: 'data-specifications', value: 'Recommended Formats & Schemas' },
+                    { id: 'downloadable-templates', value: 'Downloadable CSV Templates' }
                 ]
             },
             {

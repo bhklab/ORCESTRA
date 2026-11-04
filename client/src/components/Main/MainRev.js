@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PathContext } from '../../hooks/Context';
+import { Database, ArrowLeftRight, ShieldCheck } from 'lucide-react';
 
 const MainRev = () => {
     const path = useContext(PathContext);
@@ -55,44 +56,20 @@ const MainRev = () => {
                 <div className="flex flex-col gap-3.5 p-6 rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
                     <div className="flex items-center gap-3.5">
                         <div className="w-12 h-12 rounded-xl bg-lightYellow/50 text-darkBlue flex items-center justify-center shrink-0">
-                            <svg
-                                className="w-6 h-6"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
-                                />
-                            </svg>
+                            <Database className="w-6 h-6" />
                         </div>
                         <h3 className="text-headingLg text-darkBlue font-bold">Multimodal Integration</h3>
                     </div>
                     <p className="text-bodyMd text-gray-600 leading-relaxed">
-                        Seamlessly combine genomic, transcriptomic, proteomic, clinical, imaging, and metabolomic data
-                        in a unified framework.
+                        Seamlessly combine genomic, transcriptomic, proteomic, clinical, and imaging data in a unified
+                        framework.
                     </p>
                 </div>
 
                 <div className="flex flex-col gap-3.5 p-6 rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
                     <div className="flex items-center gap-3.5">
                         <div className="w-12 h-12 rounded-xl bg-lightYellow/50 text-darkBlue flex items-center justify-center shrink-0">
-                            <svg
-                                className="w-6 h-6"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-                                />
-                            </svg>
+                            <ArrowLeftRight className="w-6 h-6" />
                         </div>
                         <h3 className="text-headingLg text-darkBlue font-bold">Standardized Formats</h3>
                     </div>
@@ -104,19 +81,7 @@ const MainRev = () => {
                 <div className="flex flex-col gap-3.5 p-6 rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
                     <div className="flex items-center gap-3.5">
                         <div className="w-12 h-12 rounded-xl bg-lightYellow/50 text-darkBlue flex items-center justify-center shrink-0">
-                            <svg
-                                className="w-6 h-6"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                                />
-                            </svg>
+                            <ShieldCheck className="w-6 h-6" />
                         </div>
                         <h3 className="text-headingLg text-darkBlue font-bold">Quality Assurance</h3>
                     </div>
