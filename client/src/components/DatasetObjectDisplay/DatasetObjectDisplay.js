@@ -78,7 +78,9 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                     options={dataset.repositories.csvLinks.map((link, ind) => {
                                         let labelName = 'Empty Link';
                                         if (link) {
-                                            labelName = link.includes('/files/') ? link.split('/files/')[1].split('?')[0] : link;
+                                            labelName = link.includes('/files/')
+                                                ? link.split('/files/')[1].split('?')[0]
+                                                : link;
                                         }
                                         return {
                                             label: `${ind + 1}. ${labelName}`,
@@ -164,8 +166,12 @@ const DatasetObjectDisplay = ({ dataset }) => {
                             <div className="flex flex-col gap-2 items-start">
                                 <h1 className="text-headingXl text-lightBlue">Description</h1>
                                 <div className="flex flex-col items-start w-full">
-                                    <p
-                                        className={`text-bodyMd ${showDescription ? '' : 'line-clamp-4'} duration-300 transition [&_a]:text-blue-600 [&_a]:underline`}
+                                    <div
+                                        className={`text-bodyMd ${
+                                            showDescription
+                                                ? '[&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_li]:mb-1 [&_strong]:block [&_strong]:mt-3 [&_strong]:mb-1'
+                                                : 'line-clamp-2 [&_*]:inline'
+                                        } duration-300 transition [&_a]:text-blue-600 [&_a]:underline`}
                                         dangerouslySetInnerHTML={{
                                             __html: dataset.description
                                         }}
@@ -184,9 +190,12 @@ const DatasetObjectDisplay = ({ dataset }) => {
                             <h1 className="text-headingXl text-lightBlue">Technical Information</h1>
                             <div className="flex flex-col items-start w-full gap-2">
                                 <TechnicalInformation header="Dataset" info={dataset.datasetNote.name} />
-                                <TechnicalInformation header="Dataset Type" info={dataset.datasetType.charAt(0).toUpperCase() + dataset.datasetType.slice(1)} />
+                                <TechnicalInformation
+                                    header="Dataset Type"
+                                    info={dataset.datasetType.charAt(0).toUpperCase() + dataset.datasetType.slice(1)}
+                                />
                                 {dataset.repositories.downloadLink.length > 0 &&
-                                    dataset.repositories?.csvLinks?.length > 0 ? (
+                                dataset.repositories?.csvLinks?.length > 0 ? (
                                     <TechnicalInformation header="Format" info="RDS and CSV" />
                                 ) : (
                                     <TechnicalInformation header="Format" info="RDS" />
@@ -364,16 +373,18 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                 <h1 className="text-headingXl text-lightBlue">Citations</h1>
                                 <div className="flex flex-row flex-wrap gap-2">
                                     {dataset.datasetNote?.citations?.map((citation, ind) => (
-
-                                        <div
-                                            className="flex flex-col gap-2 w-full  "
-                                            key={ind}
-                                        >
-                                            <ul className='text-headingSm italic list-disc list-inside'>
-                                                <li className="" dangerouslySetInnerHTML={{ __html: citation?.replace(/^<p>([\s\S]*?)<\/p>$/, '$1').replace(/<br\s*\/?>/g, '') }} />
+                                        <div className="flex flex-col gap-2 w-full  " key={ind}>
+                                            <ul className="text-headingSm italic list-disc list-inside">
+                                                <li
+                                                    className=""
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: citation
+                                                            ?.replace(/^<p>([\s\S]*?)<\/p>$/, '$1')
+                                                            .replace(/<br\s*\/?>/g, '')
+                                                    }}
+                                                />
                                             </ul>
                                         </div>
-
                                     ))}
                                 </div>
                             </div>
@@ -386,48 +397,55 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                 <h1 className="text-headingXl text-lightBlue">Data</h1>
                                 {Object.entries(dataset.dataSources).map(([noteType, notes], ind) => {
                                     return (
-                                        <div className="flex flex-col gap-2" key={ind}>
-                                            <h2 className="text-headingMd text-gray-700 font-semibold" key={noteType}>
-                                                {noteType}
-                                            </h2>
-                                            <div className="flex flex-row gap-2 flex-wrap">
-                                                {notes.map((note, ind) => (
-                                                    <a
-                                                        className="flex flex-col gap-2 w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm group hover:cursor-pointer"
-                                                        key={ind}
-                                                        href={note.url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
+                                        <>
+                                            {notes.length > 0 ? (
+                                                <div className="flex flex-col gap-2" key={ind}>
+                                                    <h2
+                                                        className="text-headingMd text-gray-700 font-semibold"
+                                                        key={noteType}
                                                     >
-                                                        <div
-                                                            href={note.url}
-                                                            className="flex justify-between text-gray-600"
-                                                        >
-                                                            <h3 className="text-headingMd">{note.name}</h3>
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                fill="none"
-                                                                viewBox="0 0 24 24"
-                                                                strokeWidth="2"
-                                                                stroke="currentColor"
-                                                                className="size-5 group-hover:text-darkYellow"
+                                                        {noteType}
+                                                    </h2>
+                                                    <div className="flex flex-row gap-2 flex-wrap">
+                                                        {notes.map((note, ind) => (
+                                                            <a
+                                                                className="flex flex-col gap-2 w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm group hover:cursor-pointer"
+                                                                key={ind}
+                                                                href={note.url}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
                                                             >
-                                                                <path
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                    d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                                                                />
-                                                            </svg>
-                                                        </div>
-                                                        <div className="flex flex-row justify-between items-center gap-2">
-                                                            <span className="text-black text-headingSm font-semibold">
-                                                                {note.description}
-                                                            </span>
-                                                        </div>
-                                                    </a>
-                                                ))}
-                                            </div>
-                                        </div>
+                                                                <div
+                                                                    href={note.url}
+                                                                    className="flex justify-between text-gray-600"
+                                                                >
+                                                                    <h3 className="text-headingMd">{note.name}</h3>
+                                                                    <svg
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none"
+                                                                        viewBox="0 0 24 24"
+                                                                        strokeWidth="2"
+                                                                        stroke="currentColor"
+                                                                        className="size-5 group-hover:text-darkYellow"
+                                                                    >
+                                                                        <path
+                                                                            strokeLinecap="round"
+                                                                            strokeLinejoin="round"
+                                                                            d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                                                                        />
+                                                                    </svg>
+                                                                </div>
+                                                                <div className="flex flex-row justify-between items-center gap-2">
+                                                                    <span className="text-black text-headingSm font-semibold">
+                                                                        {note.description}
+                                                                    </span>
+                                                                </div>
+                                                            </a>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ) : null}
+                                        </>
                                     );
                                 })}
                             </div>
