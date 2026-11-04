@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { AuthContext, PathContext } from '../hooks/Context';
 import useFindUser from '../hooks/useFindUser';
+
+const ExternalRedirect = ({ to }) => {
+    useEffect(() => {
+        window.location.href = to;
+    }, [to]);
+    return null;
+};
 
 // routes
 import PrivateRoute from './PrivateRoute';
@@ -48,6 +55,9 @@ const Router = () => {
                 <NavigationRev />
                 <Routes>
                     <Route path="/" element={<MainRev />} />
+                    <Route path="/api" element={<ExternalRedirect to="/api/docs/" />} />
+                    <Route path="/api/docs" element={<ExternalRedirect to="/api/docs/" />} />
+                    <Route path="/docs" element={<ExternalRedirect to="/api/docs/" />} />
                     <Route path="/datatypes" element={<DataTypes />} />
                     <Route path="/:datatype" element={<DatasetMain />} />
                     <Route path="/:datatype/search" element={<SearchRequest />} />
