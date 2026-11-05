@@ -88,7 +88,7 @@ const NavigationRev = () => {
                 <div className="flex md:hidden items-center gap-3">
                     {auth.user ? (
                         <>
-                            <NavLink
+                            {/* <NavLink
                                 to="/app/data_submission"
                                 className={({ isActive }) =>
                                     `flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-bodySm font-semibold transition-all ${
@@ -108,7 +108,7 @@ const NavigationRev = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                                 </svg>
                                 <span>Submit Data</span>
-                            </NavLink>
+                            </NavLink> */}
 
                             <NavLink
                                 to="/app/profile"
@@ -221,7 +221,7 @@ const NavigationRev = () => {
                     <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
                         {auth.user ? (
                             <>
-                                <NavLink
+                                {/* <NavLink
                                     to="/app/data_submission"
                                     className="px-4 py-2 rounded-xl text-bodyMd font-semibold text-gray-700 hover:bg-gray-100 flex items-center gap-2"
                                 >
@@ -235,7 +235,7 @@ const NavigationRev = () => {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                                     </svg>
                                     <span>Submit Data</span>
-                                </NavLink>
+                                </NavLink> */}
                                 <NavLink
                                     to="/app/profile"
                                     className="px-4 py-2 rounded-xl text-bodyMd font-semibold text-gray-700 hover:bg-gray-100 flex items-center gap-2"
