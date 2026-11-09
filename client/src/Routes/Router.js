@@ -2,24 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { AuthContext, PathContext } from '../hooks/Context';
 import useFindUser from '../hooks/useFindUser';
-
-const ExternalRedirect = ({ to }) => {
-    useEffect(() => {
-        window.location.href = to;
-    }, [to]);
-    return null;
-};
-
 // routes
 import PrivateRoute from './PrivateRoute';
 // import DatasetRoute from './DatasetRoute'; // no longer used
 import RestrictedRoute from './RestrictedRoute';
 import AdminRoute from './AdminRoute';
-
 // navigation and footer
 import NavigationRev from '../components/Navigation/NavigationRev';
-import Footer from '../components/Footer/Footer';
-
 // views
 import MainRev from '../components/Main/MainRev';
 import DatasetMain from '../components/Main/DatasetMain';
@@ -44,6 +33,13 @@ import SetSearch from '../components/SearchRequest/All/SetSearch';
 import QualityControlViewer from '../components/SingleDataset/QualityControlViewer';
 import CreateDatasetObjectDisplay from '../components/DatasetObjectDisplay/CreateDatasetObjectDisplay';
 // import Test from '../components/Test/Test';
+
+const ExternalRedirect = ({ to }) => {
+    useEffect(() => {
+        window.location.href = to;
+    }, [to]);
+    return null;
+};
 
 const Router = () => {
     const { user, setUser, loading } = useFindUser();
