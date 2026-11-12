@@ -181,10 +181,13 @@ const SetSearch = () => {
                     />
                     <Column
                         body={rowData => (
-                            <div className="flex gap-1 flex-wrap">
+                            <div className="flex gap-1 flex-wrap max-h-[86px] overflow-hidden">
                                 {rowData?.dataSources &&
-                                    Object.keys(rowData?.dataSources).map(source => (
-                                        <div className="flex px-3 py-1.5 text-bodyXs shadow-sm text-white bg-lightBlue rounded-full ">
+                                    Object.keys(rowData?.dataSources).map((source, ind) => (
+                                        <div
+                                            key={ind}
+                                            className="flex px-3 py-1.5 text-bodyXs shadow-sm text-white bg-lightBlue rounded-full whitespace-nowrap"
+                                        >
                                             {source}
                                         </div>
                                     ))}

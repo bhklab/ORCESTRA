@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Dropdown } from 'primereact/dropdown';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Download, ChevronDown, ChevronUp } from 'lucide-react';
 
 const TechnicalInformation = ({ header, info }) => (
@@ -20,6 +20,26 @@ const DatasetObjectDisplay = ({ dataset }) => {
     const [showDescription, setShowDescription] = useState(false);
     const [showPolicy, setShowPolicy] = useState(false);
     const [showDisclaimer, setShowDisclaimer] = useState(false);
+
+    // Ref to handle the 'show more' for clamping for descriptions, policy, and disclaimers
+    const descriptionRef = useRef(null);
+    const policyRef = useRef(null);
+    const disclaimerRef = useRef(null);
+    const [isDescriptionClamped, setIsDescriptionClamped] = useState(false);
+    const [isPolicyClamped, setIsPolicyClamped] = useState(false);
+    const [isDisclaimerClamped, setIsDisclaimerClamped] = useState(false);
+
+    useEffect(() => {
+        if (descriptionRef.current) {
+            setIsDescriptionClamped(descriptionRef.current.scrollHeight > descriptionRef.current.clientHeight);
+        }
+        if (policyRef.current) {
+            setIsPolicyClamped(policyRef.current.scrollHeight > policyRef.current.clientHeight);
+        }
+        if (disclaimerRef.current) {
+            setIsDisclaimerClamped(disclaimerRef.current.scrollHeight > disclaimerRef.current.clientHeight);
+        }
+    }, [dataset]);
 
     return (
         <div className="flex flex-col">
@@ -185,6 +205,7 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                 <h1 className="text-headingXl text-lightBlue">Description</h1>
                                 <div className="flex flex-col items-start w-full">
                                     <div
+                                        ref={descriptionRef}
                                         className={`text-bodyMd ${
                                             showDescription
                                                 ? '[&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_li]:mb-1 [&_strong]:block [&_strong]:mt-3 [&_strong]:mb-1'
@@ -194,12 +215,14 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                             __html: dataset.description
                                         }}
                                     />
-                                    <button
-                                        className="text-bodySm text-blue-600 font-bold"
-                                        onClick={() => setShowDescription(!showDescription)}
-                                    >
-                                        {showDescription ? 'show less' : 'show more'}
-                                    </button>
+                                    {isDescriptionClamped && (
+                                        <button
+                                            className="text-bodySm text-blue-600 font-bold"
+                                            onClick={() => setShowDescription(!showDescription)}
+                                        >
+                                            {showDescription ? 'show less' : 'show more'}
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -223,7 +246,7 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                 <TechnicalInformation header="Author" info={dataset.info.createdBy} />
                                 <TechnicalInformation
                                     header="Date Uploaded"
-                                    info={dataset.info.dateCreated.slice(0, 10)}
+                                    info={dataset?.info?.dateCreated?.slice(0, 10)}
                                 />
                                 <TechnicalInformation header="User Downloads" info={dataset.info.numDownload} />
                                 {dataset.info?.other?.pipeline?.url && (
@@ -360,30 +383,36 @@ const DatasetObjectDisplay = ({ dataset }) => {
                             <h1 className="text-headingXl text-lightBlue">Usage Policy</h1>
                             <div className="flex flex-col items-start">
                                 <p
+                                    ref={policyRef}
                                     dangerouslySetInnerHTML={{ __html: dataset.datasetNote.usagePolicy }}
-                                    className={`text-bodyMd ${showPolicy ? '' : 'line-clamp-2'} duration-300 transition break-all [&_a]:text-blue-600 [&_a]:underline`}
+                                    className={`text-bodyMd ${showPolicy ? '' : 'line-clamp-2'} duration-300 transition [&_a]:text-blue-600 [&_a]:underline`}
                                 />
-                                <button
-                                    className="text-bodySm text-blue-600 font-bold"
-                                    onClick={() => setShowPolicy(!showPolicy)}
-                                >
-                                    {showPolicy ? 'show less' : 'show more'}
-                                </button>
+                                {isPolicyClamped && (
+                                    <button
+                                        className="text-bodySm text-blue-600 font-bold"
+                                        onClick={() => setShowPolicy(!showPolicy)}
+                                    >
+                                        {showPolicy ? 'show less' : 'show more'}
+                                    </button>
+                                )}
                             </div>
                         </div>
                         <div className="flex flex-col items-start w-full gap-2" id="policy">
                             <h1 className="text-headingXl text-lightBlue">Data Disclaimer</h1>
                             <div className="flex flex-col items-start">
                                 <p
+                                    ref={disclaimerRef}
                                     dangerouslySetInnerHTML={{ __html: dataset.datasetNote.disclaimer }}
-                                    className={`text-bodyMd ${showDisclaimer ? '' : 'line-clamp-2'} duration-300 transition break-all [&_a]:text-blue-600 [&_a]:underline`}
+                                    className={`text-bodyMd ${showDisclaimer ? '' : 'line-clamp-2'} duration-300 transition [&_a]:text-blue-600 [&_a]:underline`}
                                 />
-                                <button
-                                    className="text-bodySm text-blue-600 font-bold"
-                                    onClick={() => setShowDisclaimer(!showDisclaimer)}
-                                >
-                                    {showDisclaimer ? 'show less' : 'show more'}
-                                </button>
+                                {isDisclaimerClamped && (
+                                    <button
+                                        className="text-bodySm text-blue-600 font-bold"
+                                        onClick={() => setShowDisclaimer(!showDisclaimer)}
+                                    >
+                                        {showDisclaimer ? 'show less' : 'show more'}
+                                    </button>
+                                )}
                             </div>
                         </div>
                         {dataset?.datasetNote?.citations?.length > 0 && (
