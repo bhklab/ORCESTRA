@@ -79,7 +79,7 @@ const SetSearch = () => {
                 <DataTable
                     value={filteredDatasetObjects.length > 0 ? filteredDatasetObjects : datasetObjects} // when nothing is filtered, use base list of objects
                     sortMode="single"
-                    sortField="info.dateCreated"
+                    sortField="info.canonical"
                     sortOrder={-1}
                     size="small"
                     showGridlines={true}
