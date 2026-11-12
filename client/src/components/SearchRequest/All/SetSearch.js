@@ -78,9 +78,11 @@ const SetSearch = () => {
                 )}
                 <DataTable
                     value={filteredDatasetObjects.length > 0 ? filteredDatasetObjects : datasetObjects} // when nothing is filtered, use base list of objects
-                    sortMode="single"
-                    sortField="info.canonical"
-                    sortOrder={-1}
+                    sortMode="multiple"
+                    multiSortMeta={[
+                        { field: 'info.canonical', order: -1 },
+                        { field: 'info.dateCreated', order: -1 }
+                    ]}
                     size="small"
                     showGridlines={true}
                     stripedRows
@@ -149,7 +151,7 @@ const SetSearch = () => {
                         header="Data"
                         style={{ width: '15%' }}
                     />
-                    <Column
+                    {/* <Column
                         body={rowData =>
                             rowData?.releaseNotes && (
                                 <p className="line-clamp-3">{Object.keys(rowData?.releaseNotes).join(', ')}</p>
@@ -157,7 +159,7 @@ const SetSearch = () => {
                         }
                         header="Release Notes"
                         style={{ width: '15%' }}
-                    />
+                    /> */}
                     <Column
                         body={rowData => (
                             <div className="flex flex-col justify-center items-center">
