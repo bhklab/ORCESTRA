@@ -13,6 +13,7 @@ const TechnicalInformation = ({ header, info }) => (
 
 const DatasetObjectDisplay = ({ dataset }) => {
     // header state
+    const [selectedObject, setSelectedObject] = useState('');
     const [selectedCSV, setSelectedCSV] = useState('');
 
     // Main content state
@@ -25,30 +26,73 @@ const DatasetObjectDisplay = ({ dataset }) => {
             <div className="flex py-4 px-24 flex-col bg-lightBlue gap-4 min-h-20">
                 <div className="flex flex-col flex-wrap gap-4">
                     <h1 className="font-bold text-heading3Xl text-darkYellow">{dataset.name}</h1>
-                    <div className="flex flex-row gap-6 items-start">
-                        {dataset.repositories.downloadLink && dataset.repositories.downloadLink.length > 0 && (
-                            <a
-                                href={dataset.repositories.downloadLink[0]}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex flex-row items-center justify-center gap-2 px-3 py-1.5 text-headingSm rounded-md font-bold bg-white text-darkBlue hover:text duration-300 ease-in-out"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="2.5"
-                                    stroke="currentColor"
-                                    className="size-4"
+                    <div className="flex flex-row gap-3 items-start">
+                        {dataset?.repositories.downloadLink && dataset.repositories.downloadLink.length > 0 && (
+                            <div className="flex flex-row gap-2 items-center">
+                                <Dropdown
+                                    pt={{
+                                        root: {
+                                            className: 'flex gap-4 rounded-md px-3 py-1.5'
+                                        },
+                                        input: ({ props }) => ({
+                                            className: `${props.value ? 'text-darkBlue' : 'text-gray-600'} text-headingSm font-bold p-0`
+                                        }),
+                                        item: { className: 'p-2 pr-6' },
+                                        itemLabel: { className: 'text-headingSm' },
+                                        wrapper: { className: 'rounded-md' },
+                                        list: { className: 'py-0' },
+
+                                        trigger: { className: 'p-0 w-4' },
+                                        dropdownIcon: ({ props }) => ({
+                                            className: `${props.value ? 'text-darkBlue' : 'text-gray-600'}`
+                                        }),
+                                        collapseIcon: ({ props }) => ({
+                                            className: `${props.value ? 'text-darkBlue' : 'text-gray-600'}`
+                                        })
+                                    }}
+                                    value={selectedObject}
+                                    onChange={e => setSelectedObject(e.value)}
+                                    options={dataset.repositories.downloadLink.map((link, ind) => {
+                                        let labelName = 'Empty Link';
+                                        if (link) {
+                                            labelName = link.includes('/files/')
+                                                ? link.split('/files/')[1].split('?')[0]
+                                                : link;
+                                        }
+                                        return {
+                                            label: `${ind + 1}. ${labelName}`,
+                                            value: link
+                                        };
+                                    })}
+                                    placeholder="Download Dataset Object(s)"
+                                    dropdownIcon={
+                                        <>
+                                            <ChevronDown
+                                                className={`size-4 ${selectedObject ? 'text-darkBlue' : 'text-gray-600'}`}
+                                                strokeWidth={4}
+                                            />
+                                        </>
+                                    }
+                                    collapseIcon={
+                                        <>
+                                            <ChevronUp
+                                                className={`size-4 ${selectedObject ? 'text-darkBlue' : 'text-gray-600'}`}
+                                                strokeWidth={4}
+                                            />
+                                        </>
+                                    }
+                                />
+                                <a
+                                    href={selectedObject}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="rounded-md px-2 py-1.5"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-                                    />
-                                </svg>
-                                Download Dataset Object(s)
-                            </a>
+                                    <>
+                                        <Download className="w-[18px] h-[18px] text-white" strokeWidth={3} />
+                                    </>
+                                </a>
+                            </div>
                         )}
 
                         {dataset?.repositories.csvLinks && dataset.repositories.csvLinks.length > 0 && (
