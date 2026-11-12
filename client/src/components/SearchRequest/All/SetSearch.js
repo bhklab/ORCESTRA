@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../hooks/Context';
-import { Check, X, Download } from 'lucide-react';
+import { Check, X, Info } from 'lucide-react';
 import SaveDatasetButton from '../../Shared/Buttons/SaveDatasetButton';
 // import { dataTypes } from '../../Shared/Enums';
 import { dataTypes } from './dictionaries/dataTypes';
@@ -95,20 +95,20 @@ const SetSearch = () => {
                                 onClick={() => navigate(`/${datatype}/${rowData._id}`)}
                             >
                                 {rowData?.name}
+                                {rowData?.version ? ` (v${rowData.version})` : ''}
                             </h2>
                         )}
                         header="Object Name"
-                        style={{ width: '15%' }}
+                        style={{ width: '20%' }}
                         sortable
                     />
                     <Column
                         field="datasetNote.name"
                         body={rowData => <p className="line-clamp-3">{rowData?.datasetNote?.name}</p>}
                         header="Dataset"
-                        style={{ width: '5%' }}
+                        style={{ width: '15%' }}
                         sortable
                     />
-                    <Column field="version" header="Version" style={{ width: '2%' }} />
                     <Column
                         field="info.dateCreated"
                         body={rowData => (
@@ -117,7 +117,7 @@ const SetSearch = () => {
                             </p>
                         )}
                         header="Date Created"
-                        style={{ width: '5%' }}
+                        style={{ width: '10%' }}
                         sortable
                     />
                     <Column
@@ -131,25 +131,39 @@ const SetSearch = () => {
                                 )}
                             </div>
                         )}
-                        header="Canonical"
+                        header={
+                            <div className="flex items-center gap-2">
+                                Canonical <Info className="text-lightBlue/90 font-bold w-4" strokeWidth={3} />
+                            </div>
+                        }
                         style={{ width: '5%' }}
                         sortable
                     />
                     <Column
-                        body={rowData => (
-                            <p className="line-clamp-3">{rowData?.description?.replace(/<[^>]+>/g, '')}</p>
-                        )}
+                        body={rowData => {
+                            const plainDescription = rowData?.description?.replace(/<[^>]+>/g, '');
+                            return (
+                                <p className="line-clamp-3" title={plainDescription}>
+                                    {plainDescription}
+                                </p>
+                            );
+                        }}
                         header="Description"
-                        style={{ width: '25%' }}
+                        style={{ width: '30%' }}
                     />
                     <Column
                         body={rowData => (
-                            <p className="line-clamp-3">
-                                {rowData?.dataSources && Object.keys(rowData?.dataSources).join(', ')}
-                            </p>
+                            <div className="flex gap-1 flex-wrap">
+                                {rowData?.dataSources &&
+                                    Object.keys(rowData?.dataSources).map(source => (
+                                        <div className="flex px-3 py-1.5 text-bodyXs shadow-sm text-white bg-lightBlue rounded-full ">
+                                            {source}
+                                        </div>
+                                    ))}
+                            </div>
                         )}
-                        header="Data"
-                        style={{ width: '15%' }}
+                        header="Raw Data Sources"
+                        style={{ width: '20%' }}
                     />
                     {/* <Column
                         body={rowData =>
@@ -160,7 +174,7 @@ const SetSearch = () => {
                         header="Release Notes"
                         style={{ width: '15%' }}
                     /> */}
-                    <Column
+                    {/* <Column
                         body={rowData => (
                             <div className="flex flex-col justify-center items-center">
                                 <a
@@ -174,7 +188,7 @@ const SetSearch = () => {
                         )}
                         header="Download"
                         style={{ width: '5%' }}
-                    />
+                    /> */}
                 </DataTable>
             </div>
         </div>
