@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Dropdown } from 'primereact/dropdown';
 import { useState } from 'react';
+import { Download, ChevronDown, ChevronUp } from 'lucide-react';
 
 const TechnicalInformation = ({ header, info }) => (
     <div className="flex justify-between items-center w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm">
@@ -89,58 +90,31 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                     })}
                                     placeholder="Select a file"
                                     dropdownIcon={
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20"
-                                            fill="none"
-                                            className={`size-4 ${selectedCSV ? 'text-darkBlue' : 'text-gray-600'}`}
-                                        >
-                                            <path
-                                                d="M5 7.5L10 12.5L15 7.5"
-                                                stroke="currentColor"
-                                                strokeWidth="3.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
+                                        <>
+                                            <ChevronDown
+                                                className={`size-4 ${selectedCSV ? 'text-darkBlue' : 'text-gray-600'}`}
+                                                strokeWidth={4}
                                             />
-                                        </svg>
+                                        </>
                                     }
                                     collapseIcon={
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20"
-                                            fill="none"
-                                            className={`size-4 ${selectedCSV ? 'text-darkBlue' : 'text-gray-600'}`}
-                                        >
-                                            <path
-                                                d="M5 12.5L10 7.5L15 12.5"
-                                                stroke="currentColor"
-                                                strokeWidth="3.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
+                                        <>
+                                            <ChevronUp
+                                                className={`size-4 ${selectedCSV ? 'text-darkBlue' : 'text-gray-600'}`}
+                                                strokeWidth={4}
                                             />
-                                        </svg>
+                                        </>
                                     }
                                 />
                                 <a
                                     href={selectedCSV}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="rounded-md text-white px-2 py-1.5"
+                                    className="rounded-md px-2 py-1.5"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="3"
-                                        stroke="currentColor"
-                                        className="size-4"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-                                        />
-                                    </svg>
+                                    <>
+                                        <Download className="w-[18px] h-[18px] text-white" strokeWidth={3} />
+                                    </>
                                 </a>
                             </div>
                         )}
