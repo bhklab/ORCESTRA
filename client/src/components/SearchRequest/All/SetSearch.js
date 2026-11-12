@@ -11,6 +11,7 @@ import { DatasetSelect } from './Dropdowns/DatasetSelect';
 // PrimeReact Imports
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Tooltip } from 'primereact/tooltip';
 
 const SetSearch = () => {
     const auth = useContext(AuthContext);
@@ -76,6 +77,17 @@ const SetSearch = () => {
                         setFilteredNotes={setFilteredNotes}
                     />
                 )}
+                <Tooltip
+                    key={filteredDatasetObjects.length || datasetObjects.length}
+                    target=".description-info-tooltip"
+                    position="top"
+                    pt={{
+                        text: {
+                            className:
+                                'bg-gray-800 text-white text-bodyXs font-normal px-3 py-2 rounded-md shadow-md max-w-md'
+                        }
+                    }}
+                />
                 <DataTable
                     value={filteredDatasetObjects.length > 0 ? filteredDatasetObjects : datasetObjects} // when nothing is filtered, use base list of objects
                     sortMode="multiple"
@@ -133,7 +145,23 @@ const SetSearch = () => {
                         )}
                         header={
                             <div className="flex items-center gap-2">
-                                Canonical <Info className="text-lightBlue/90 font-bold w-4" strokeWidth={3} />
+                                Canonical
+                                <Tooltip
+                                    target=".canonical-info-tooltip"
+                                    position="top"
+                                    pt={{
+                                        text: {
+                                            className:
+                                                'bg-gray-800 text-white text-bodyXs font-normal px-3 py-2 rounded-md shadow-md max-w-xs'
+                                        }
+                                    }}
+                                />
+                                <span
+                                    className="canonical-info-tooltip flex items-center cursor-pointer"
+                                    data-pr-tooltip="Latest versions of datasets curated by the Benjamin Haibe-Kains lab"
+                                >
+                                    <Info className="text-gray-600 font-bold w-3.5" strokeWidth={3.5} />
+                                </span>
                             </div>
                         }
                         style={{ width: '5%' }}
@@ -143,7 +171,7 @@ const SetSearch = () => {
                         body={rowData => {
                             const plainDescription = rowData?.description?.replace(/<[^>]+>/g, '');
                             return (
-                                <p className="line-clamp-3" title={plainDescription}>
+                                <p className="line-clamp-3 description-info-tooltip" data-pr-tooltip={plainDescription}>
                                     {plainDescription}
                                 </p>
                             );
