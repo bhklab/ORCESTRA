@@ -35,6 +35,9 @@ router.get('/view/dataset-notes', datasetNoteObject.getAll); // Single datasetob
 // User pipeline/DNL routes
 router.post('/dataset-object/submit', datasetObject.submitDataset); // Submitting a datasets' DNL
 
+// Creating shareable link for private datasets
+router.post('/dataset-object/sharelink', auth.verifyToken, datasetObject.createShareLink); // Create 1-week expiring share link for private dataset
+
 
 
 // router.get('/view/landing', landing.get);

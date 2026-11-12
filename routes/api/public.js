@@ -9,7 +9,7 @@ const getAllDatasets = async (req, res) => {
 	const info = req.params.info || 'concise';
 	try {
 		if (info === "full") {
-			const datasetObjects = await DatasetObject.find({}, "-availableData -availableDatatypes -status");
+			const datasetObjects = await DatasetObject.find({ 'info.private': { $ne: true } }, "-availableData -availableDatatypes -status");
 			const noteIDs = datasetObjects.map(obj =>  { // Store all ids for notes needed for datasetObjects
 				return obj.datasetNote
 			});
@@ -22,7 +22,7 @@ const getAllDatasets = async (req, res) => {
 			res.send(datasetObjects)
 		} 
 		else if (info === "concise") {
-			const datasetObjects = await DatasetObject.find({}, "name _id info description dataSources repositories");
+			const datasetObjects = await DatasetObject.find({ 'info.private': { $ne: true } }, "name _id info description dataSources repositories");
 			const outputObjects = datasetObjects.map(obj => {
 				return {
 					id: obj._id,
@@ -52,7 +52,7 @@ const getDatasets = async (req, res) => {
 	if (Object.keys(dataTypes).includes(datatype)) {
 		if (info === "full"){
 			try {
-				const datasetObjects = await DatasetObject.find({datasetType: dataTypes[datatype]}, '-availableData -availableDatatypes -status');
+				const datasetObjects = await DatasetObject.find({ datasetType: dataTypes[datatype], 'info.private': { $ne: true } }, '-availableData -availableDatatypes -status');
 				const noteIDs = datasetObjects.map(obj =>  { // Store all ids for notes needed for datasetObjects
 					return obj.datasetNote
 				});
@@ -70,7 +70,7 @@ const getDatasets = async (req, res) => {
 		} 
 		else if (info === "concise") {
 			try {
-				const datasetObjects = await DatasetObject.find({datasetType: dataTypes[datatype]}, 'name _id info description dataSources repositories');
+				const datasetObjects = await DatasetObject.find({ datasetType: dataTypes[datatype], 'info.private': { $ne: true } }, 'name _id info description dataSources repositories');
 				const outputObjects = datasetObjects.map(obj => {
 					return {
 						id: obj._id,
@@ -103,7 +103,7 @@ const getDataset = async (req, res) => {
     const info = req.params.info || 'concise';
 	if (info === "full") {
 		try {
-			const datasetObjects = await DatasetObject.find({ _id: id}, '-availableData -availableDatatypes -status');
+			const datasetObjects = await DatasetObject.find({ _id: id, 'info.private': { $ne: true } }, '-availableData -availableDatatypes -status');
 			const noteIDs = datasetObjects.map(obj =>  { // Store all ids for notes needed for datasetObjects
 				return obj.datasetNote
 			});
@@ -120,7 +120,7 @@ const getDataset = async (req, res) => {
 		}
 	} else if (info === "concise") {
 		try {
-			const datasetObjects = await DatasetObject.find({ _id: id}, 'name _id info description dataSources repositories');
+			const datasetObjects = await DatasetObject.find({ _id: id, 'info.private': { $ne: true } }, 'name _id info description dataSources repositories');
 			const outputObjects = datasetObjects.map(obj => {
 				return {
 					id: obj._id,

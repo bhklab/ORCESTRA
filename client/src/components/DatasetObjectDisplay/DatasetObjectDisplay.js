@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Dropdown } from 'primereact/dropdown';
 import { useState, useRef, useEffect } from 'react';
-import { Download, ChevronDown, ChevronUp } from 'lucide-react';
+import { Download, ChevronDown, ChevronUp, Share2, Check } from 'lucide-react';
 
 const TechnicalInformation = ({ header, info }) => (
     <div className="flex justify-between items-center w-full py-4 px-4 bg-white border-1 border-gray-200 drop-shadow-sm">
@@ -15,6 +15,28 @@ const DatasetObjectDisplay = ({ dataset }) => {
     // header state
     const [selectedObject, setSelectedObject] = useState('');
     const [selectedCSV, setSelectedCSV] = useState('');
+    const [shareInfo, setShareInfo] = useState(null); // state for the shareable link ot be created
+    const [copiedShareLink, setCopiedShareLink] = useState(false); // state for rendering notice when link is clipboard copied
+
+    const handleGetShareLink = async () => {
+        try {
+            const res = await axios.post('/api/dataset-object/sharelink', {
+                datasetId: dataset._id
+            });
+            const url = `${window.location.origin}/${dataset.datasetType}/${dataset._id}?shared=${res.data.token}`;
+            setShareInfo({
+                url,
+                expireDate: new Date(res.data.expire).toLocaleDateString()
+            });
+            if (navigator.clipboard) {
+                await navigator.clipboard.writeText(url);
+                setCopiedShareLink(true);
+                setTimeout(() => setCopiedShareLink(false), 3000);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     // Main content state
     const [showDescription, setShowDescription] = useState(false);
@@ -180,6 +202,31 @@ const DatasetObjectDisplay = ({ dataset }) => {
                                         <Download className="w-[18px] h-[18px] text-white" strokeWidth={3} />
                                     </>
                                 </a>
+                            </div>
+                        )}
+                        {dataset?.info?.private && dataset?.isOwner && (
+                            <div className="flex flex-row items-center gap-3">
+                                <button
+                                    onClick={handleGetShareLink}
+                                    className="flex flex-row items-center gap-2 px-3 py-1.5 text-headingSm rounded-md font-bold bg-white text-darkBlue hover:bg-gray-100 duration-200"
+                                >
+                                    {copiedShareLink ? (
+                                        <>
+                                            <Check className="size-4 text-green-700" strokeWidth={3} />
+                                            <span>Copied Share Link!</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Share2 className="size-4" strokeWidth={2.5} />
+                                            <span>Get Shareable Link</span>
+                                        </>
+                                    )}
+                                </button>
+                                {shareInfo && (
+                                    <span className="text-bodyXs text-white">
+                                        Expires {shareInfo.expireDate}: <span className="underline">{shareInfo.url}</span>
+                                    </span>
+                                )}
                             </div>
                         )}
                     </div>

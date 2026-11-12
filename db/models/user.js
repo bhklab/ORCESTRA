@@ -10,7 +10,14 @@ const userSchema = new Schema({
         expire: Number,
         token: String
     },
-    userDataObjects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'DatasetObject' }]
+    userDataObjects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'DatasetObject' }],
+    shareLinks: [
+        {
+            datasetId: { type: mongoose.Schema.Types.ObjectId, ref: 'DatasetObject' },
+            token: String,
+            expire: Number
+        }
+    ]
 });
 
 module.exports = mongoose.model('User', userSchema);
