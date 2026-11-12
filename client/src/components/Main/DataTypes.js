@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PathContext } from '../../hooks/Context';
 import axios from 'axios';
@@ -24,12 +24,12 @@ const DataTypes = () => {
                     stats.map(type => (
                         <div
                             onClick={() => navigate(`/datatypes/${type.path}`)}
-                            className="group w-[380px] h-[300px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden hover:cursor-pointer"
+                            className="group w-[380px] h-[350px] flex flex-col rounded-3xl drop-shadow-md bg-white transition-all duration-700 overflow-hidden hover:drop-shadow-2xl hover:cursor-pointer"
                         >
-                            <div className="w-full h-[175px] rounded-t-3xl flex flex-col justify-center items-center overflow-hidden">
+                            <div className="w-full h-[250px] rounded-t-3xl flex flex-col justify-center items-center overflow-hidden transition-all duration-700 group-hover:h-0">
                                 <img src={`/images/datatype-icons/${type.img}`} />
                             </div>
-                            <div className="flex flex-col p-3 gap-2 h-full">
+                            <div className="flex flex-col p-3 gap-2 h-full overflow-y-scroll">
                                 <div className="flex flex-col gap-2">
                                     <h2 className="text-headingXl font-semibold text-lightBlue">{type.name}</h2>
                                     <div className="flex flex-row flex-wrap gap-2">
@@ -59,7 +59,7 @@ const DataTypes = () => {
                                     )}
                                 </div>
 
-                                <p className="text-bodyMd text-gray-600 italic opacity-0 h-0 group-hover:opacity-100 group-hover:h-20 transition-all duration-700 overflow-y-auto custom-scrollbar expandable-text">
+                                <p className="text-bodyMd text-gray-600 italic opacity-0 group-hover:opacity-100 transition-all duration-700">
                                     {type.description}
                                 </p>
                             </div>
